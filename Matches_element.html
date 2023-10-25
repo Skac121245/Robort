@@ -70,6 +70,8 @@
 <body>
   <script>
     function onPageLoad() {
+      const landing = document.getElementById("google.blah");
+      landing.innerHTML = '';
       const eventCode = document.getElementById("eventCode").value || "2023necmp2";
       setupWebhookSubscription(eventCode);
     }
