@@ -3,7 +3,6 @@
 
 <head>
   <style>
-    /* Fancy CSS for the team table */
     #teamsTable {
       width: 60%;
       margin: 0 auto;
@@ -30,7 +29,12 @@
 
   <h1 style="text-align: center;">List of Teams at the Event</h1>
   
-  <!-- The table where the list of teams will be displayed -->
+  <div style="text-align: center;">
+    <label for="eventCode">Enter Event Code:</label>
+    <input type="text" id="eventCode" value="2023necmp2">
+    <button onclick="fetchTeams()">Load Teams</button>
+  </div>
+
   <table id="teamsTable">
     <thead>
       <tr>
@@ -38,18 +42,21 @@
       </tr>
     </thead>
     <tbody>
-      <!-- Data will be inserted here -->
     </tbody>
   </table>
 
   <script>
-    // Function to fetch match data and populate the table of teams
     function fetchTeams() {
-      const url = 'https://www.thebluealliance.com/api/v3/event/2023necmp2/matches/simple';
+      const eventCode = document.getElementById('eventCode').value;
+      const url = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
       const headers = new Headers({
         'X-TBA-Auth-Key': 'J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV'
       });
-      
+
+      // Clear existing table rows
+      const tableBody = document.querySelector('#teamsTable tbody');
+      tableBody.innerHTML = '';
+
       fetch(url, { method: 'GET', headers: headers })
         .then(response => response.json())
         .then(data => {
@@ -62,7 +69,6 @@
           });
           
           const sortedTeams = Array.from(teamsSet).sort((a, b) => a - b);
-          const tableBody = document.querySelector('#teamsTable tbody');
           
           sortedTeams.forEach(team => {
             const row = document.createElement('tr');

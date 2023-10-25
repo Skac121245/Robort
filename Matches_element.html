@@ -9,8 +9,7 @@
       border-spacing: 10px 5px;
     }
 
-    td,
-    th {
+    td, th {
       padding: 10px;
       text-align: center;
       width: 10%;
@@ -40,32 +39,43 @@
       text-align: center;
       font-family: inherit;
     }
-    #teamHighlight {
-  border-radius: 12px;
-  border: 1px solid grey;
-  background-color: white;
-  color: grey;
-  padding: 8px 12px;
-  font-size: 16px;
-  outline: none;
-}
+    #eventCode, #teamHighlight {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    
+    button {
+      padding: 11px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    label {
+      font-size: 18px;
+      margin-right: 10px;
+    }
+
   </style>
 </head>
 
 <body>
   <script>
-    function handleWebhookEvent(eventData) {
-      console.log("Received webhook event:", eventData);
-      const resultDiv = document.getElementById("event-result");
-      resultDiv.textContent = JSON.stringify(eventData, null, 2);
+    function onPageLoad() {
+      const eventCode = document.getElementById("eventCode").value || "2023necmp2";
+      setupWebhookSubscription(eventCode);
     }
 
-    function setupWebhookSubscription() {
-      const webhookEndpoint = "https://www.thebluealliance.com/api/v3/event/2023necmp2/matches/simple";
-      const subscriptionData = {
-        eventType: "example_event",
-        secret: "your_secret_key",
-      };
+    function setupWebhookSubscription(eventCode) {
+      const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
 
       fetch(webhookEndpoint, {
         method: "GET",
@@ -73,19 +83,15 @@
           "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
         },
       })
-        .then((response) => response.json())
-        .then((responseData) => {
-          console.log(responseData)
-          writeMatchResults(responseData);
-          highlightCells();
-        })
-        .catch((error) => {
-          console.error("Error setting up the webhook subscription:", error);
-        });
-    }
-
-    function onPageLoad() {
-      setupWebhookSubscription();
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log(responseData)
+        writeMatchResults(responseData);
+        highlightCells();
+      })
+      .catch((error) => {
+        console.error("Error setting up the webhook subscription:", error);
+      });
     }
 
     function sortAscending(list) {
@@ -194,18 +200,23 @@
       }
     }
 
+    
     window.addEventListener("load", onPageLoad);
   </script>
-
-  <div style ="text-align: center;">
+ <div style="text-align: center;">
     <h1>Matches (DCMP -- WILSON)</h1>
+    <label for="eventCode">Event Code: </label>
+    <input type="text" id="eventCode" value="2023necmp2">
+    <button onclick="onPageLoad()">Load Data</button><br><br>
     <label for="teamHighlight">Select a team to highlight: </label>
     <select id="teamHighlight" onchange="highlightCells()"></select>
     <pre id="event-result"></pre>
   </div>
+
   <div>
     <pre id="google.blah"></pre>
   </div>
+
   <footer style="text-align: center; margin-top: 20px; font-family: Arial;">
     <i>Made with love in cooperation with <s>your future overlord 😈</s> GPT-4</i><br>
     <span>&copy; <script>document.write(new Date().getFullYear());</script> Watertown High School Robotics</span>
