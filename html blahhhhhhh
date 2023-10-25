@@ -184,7 +184,7 @@
   </script>
 
   <div style="text-align: center;">
-    <h1>Matches (DCMP -- WILSON) </h1>
+    <h1>Matches (DCMP -- WILSON)</h1>
     <label for="teamHighlight">Select a team to highlight: </label>
     <select id="teamHighlight" onchange="highlightCells()"></select>
     <pre id="event-result"></pre>
