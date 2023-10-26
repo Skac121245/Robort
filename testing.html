@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h5 {
+      color: #333;
+    }
+
+    #mainHeader {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    #eventCodeDiv {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    #eventCode {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 11px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 15px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #teamsTable {
+      width: 80%;
+      margin: 0 auto;
+      border-collapse: collapse;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    #teamsTable th, #teamsTable td {
+      border: 1px solid #ccc;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    #teamsTable th {
+      background-color: #333;
+      color: white;
+      font-weight: bold;
+    }
+
+    #teamsTable tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    label {
+      font-size: 18px;
+      margin-right: 10px;
+    }
+
+    #showRankings {
+      margin-right: 15px;
+    }
+  </style>
+</head>
+
+<body onload="fetchTeams()">
+
+    <h1 id="mainHeader" style="text-align: center;">Team List</h1>
+    <h5 style="text-align: center;">Click on a team for more info!</h5>
+  
+    <div id="eventCodeDiv" style="flex-direction: column; align-items: center;">
+        <div>
+          <input type="checkbox" id="showRankings" onchange="fetchTeams()">
+          <label for="showRankings">Show Rankings</label>
+        </div>
+        <div>
+          <label for="eventCode">Enter Event Code:</label>
+          <input type="text" id="eventCode" value="2023necmp2">
+          <button onclick="fetchTeams()">Load</button>
+        </div>
+      </div>
+  
+    <table id="teamsTable">
+      <thead>
+        <tr>
+          <th>Team Number</th>
+        </tr>
+      </thead>
+      <tbody onclick="cellClickHandler(event.target.textContent)">
+      </tbody>
+    </table>
+  
+
+    <div id="teamInfo">
+        <h2 id="teamTitle"></h2>
+        <p id="teamLocation"></p>
+        <p id="teamSchoolName"></p>
+        <p id="teamCity"></p>
+        <p id="teamCountry"></p>
+        <p id="teamMotto"></p>
+        <p id="teamRookieYear"></p>
+        <p id="teamHomeChampionship"></p>
+        <p id="teamWebsite"></p>
+        <button id="backButton" onclick="goBack()">Back</button>
+      </div>
+  
+
+  <script>
+        async function fetchTeams() {
+            const showRankings = document.getElementById('showRankings').checked;
+  const eventCode = document.getElementById('eventCode').value;
+  const headers = new Headers({
+    'X-TBA-Auth-Key': 'J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV'
+  });
+
+  const tableBody = document.querySelector('#teamsTable tbody');
+  tableBody.innerHTML = '';
+  const mainHeader = document.getElementById('mainHeader');
+
+  if (showRankings) {
+    const url = `https://www.thebluealliance.com/api/v3/event/${eventCode}/rankings`;
+    const response = await fetch(url, { method: 'GET', headers: headers });
+    const data = await response.json();
+    
+    mainHeader.textContent = 'Rankings';
+
+    // Sort by rank
+    const sortedRankings = data.rankings.sort((a, b) => a.rank - b.rank);
+    
+    sortedRankings.forEach(rank => {
+      const row = document.createElement('tr');
+      const cell = document.createElement('td');
+      cell.textContent = `${rank.rank} - Team ${rank.team_key.substring(3)}`;
+      row.appendChild(cell);
+      tableBody.appendChild(row);
+    });
+  } else {
+  const eventCode = document.getElementById('eventCode').value;
+  const url = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
+  const headers = new Headers({
+    'X-TBA-Auth-Key': 'J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV'
+  });
+
+  // Clear existing table rows
+  const tableBody = document.querySelector('#teamsTable tbody');
+  tableBody.innerHTML = '';
+
+  const response = await fetch(url, { method: 'GET', headers: headers });
+  const data = await response.json();
+  
+  const teamsSet = new Set();
+  data.forEach(match => {
+    if (match.comp_level === 'qm') {
+      match.alliances.blue.team_keys.forEach(team => teamsSet.add(team));
+      match.alliances.red.team_keys.forEach(team => teamsSet.add(team));
+    }
+  });
+  
+  const sortedTeams = Array.from(teamsSet).sort((a, b) => a.substring(3) - b.substring(3));
+
+  for (const teamKey of sortedTeams) {
+        const teamUrl = `https://www.thebluealliance.com/api/v3/team/${teamKey}`;
+        const teamResponse = await fetch(teamUrl, { method: 'GET', headers: headers });
+        const teamData = await teamResponse.json();
+
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.textContent = `${teamData.team_number} - ${teamData.nickname}`;
+        cell.style.cursor = 'pointer';
+        cell.onclick = function() { displayTeamData(teamData); };
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+      }
+    }
+    mainHeader.textContent = 'Team Number';
+}
+
+
+    function fetchTeamData(teamNumber) {
+      const teamKey = "frc" + teamNumber;
+      const teamEndpoint = `https://www.thebluealliance.com/api/v3/team/${teamKey}`;
+
+      fetch(teamEndpoint, {
+        method: "GET",
+        headers: {
+          "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
+        },
+      })
+      .then((response) => response.json())
+      .then((teamData) => {
+        displayTeamData(teamData);
+      })
+      .catch((error) => {
+        console.error("Error fetching the team data:", error);
+      });
+    }
+
+    function displayTeamData(teamData) {
+  const teamsTable = document.getElementById('teamsTable');
+  const teamInfo = document.getElementById('teamInfo');
+  
+  document.getElementById('teamTitle').innerText = `Team ${teamData.team_number} - ${teamData.nickname}`;
+  document.getElementById('teamLocation').innerText = `Location: ${teamData.city}, ${teamData.state_prov}, ${teamData.country}`;
+  
+  // Display the website as a clickable link if it exists
+  const teamWebsiteElement = document.getElementById('teamWebsite');
+  if (teamData.website) {
+    teamWebsiteElement.innerHTML = `Website: <a href="${teamData.website}" target="_blank">${teamData.website}</a>`;
+  } else {
+    teamWebsiteElement.innerText = 'Website: N/A';
+  }
+  
+  teamsTable.style.display = 'none';
+  teamInfo.style.display = 'block';
+
+  document.getElementById('teamMotto').innerText = `Motto: ${teamData.motto ? teamData.motto : 'N/A'}`;
+      document.getElementById('teamRookieYear').innerText = `Rookie Year: ${teamData.rookie_year ? teamData.rookie_year : 'N/A'}`;
+      document.getElementById('teamHomeChampionship').innerText = `Home Championship: ${teamData.home_championship ? JSON.stringify(teamData.home_championship) : 'N/A'}`;
+      document.getElementById('teamSchoolName').innerText = `School: ${teamData.school_name ? teamData.school_name : 'N/A'}`;
+      document.getElementById('teamCity').innerText = `City: ${teamData.city ? teamData.city : 'N/A'}`;
+      document.getElementById('teamCountry').innerText = `Country: ${teamData.country ? teamData.country : 'N/A'}`;
+      
+    }
+
+
+    function cellClickHandler(teamNumber) {
+      // Ensure only numeric values trigger a data fetch
+      if (!isNaN(teamNumber)) {
+        fetchTeamData(teamNumber);  // Fetch and display team data
+      }
+    }
+
+    function goBack() {
+      const teamsTable = document.getElementById('teamsTable');
+      const teamInfo = document.getElementById('teamInfo');
+      
+      teamsTable.style.display = 'table';
+      teamInfo.style.display = 'none';
+    }
+
+  </script>
+
+</body>
+</html>
