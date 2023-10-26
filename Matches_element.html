@@ -3,7 +3,7 @@
 
 <head>
   <style>
-    table {
+      table {
       width: 100%;
       border-collapse: separate;
       border-spacing: 10px 5px;
@@ -64,155 +64,157 @@
       margin-right: 10px;
     }
 
+    .error-message {
+      text-align: center;
+      font-size: 18px;
+      color: red;
+    }
   </style>
 </head>
 
 <body>
   <script>
-    function onPageLoad() {
+      function onPageLoad() {
       const landing = document.getElementById("google.blah");
       landing.innerHTML = '';
+      const dropdown = document.getElementById("teamHighlight");
+      dropdown.innerHTML = '';
       const eventCode = document.getElementById("eventCode").value || "2023necmp2";
       setupWebhookSubscription(eventCode);
     }
 
     function setupWebhookSubscription(eventCode) {
       const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
-
       fetch(webhookEndpoint, {
         method: "GET",
         headers: {
           "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
         },
       })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Invalid Event Code');
+        }
+        return response.json();
+      })
       .then((responseData) => {
-        console.log(responseData)
         writeMatchResults(responseData);
         highlightCells();
       })
       .catch((error) => {
-        console.error("Error setting up the webhook subscription:", error);
+        const errorMsg = document.createElement("div");
+        errorMsg.textContent = "Invalid Event Code. Please try again.";
+        errorMsg.className = "error-message";
+        document.getElementById("google.blah").appendChild(errorMsg);
       });
-    }
-
-    function sortAscending(list) {
-      return list.sort((a, b) => a - b);
     }
 
     function writeMatchResults(data) {
-  data.sort((a, b) => a.match_number - b.match_number);
+      data.sort((a, b) => a.match_number - b.match_number);
+      var element = document.createElement("table");
+      var landing = document.getElementById("google.blah");
+      landing.appendChild(element);
+      element.id = "google.yay";
 
-  var element = document.createElement("table");
-  var landing = document.getElementById("google.blah");
-  landing.appendChild(element);
-  element.id = "google.yay";
-
-  var headerRow = document.createElement("tr");
-  var headers = ["Match", "Winning Alliance", "Blue 1", "Blue 2", "Blue 3", "Red 1", "Red 2", "Red 3"];
-  headers.forEach(headerText => {
-    var headerCell = document.createElement("th");
-    headerCell.appendChild(document.createTextNode(headerText));
-    headerRow.appendChild(headerCell);
-  });
-  element.appendChild(headerRow);
-
-  const addedTeams = new Set(); // Create a set to keep track of added teams
-
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].comp_level == "qm") {
-      const table_line = document.createElement("tr");
-      element.appendChild(table_line);
-
-      var columns = [
-        "Match " + data[i].match_number,
-        data[i].winning_alliance,
-        data[i].alliances.blue.team_keys[0].substring(3, 7),
-        data[i].alliances.blue.team_keys[1].substring(3, 7),
-        data[i].alliances.blue.team_keys[2].substring(3, 7),
-        data[i].alliances.red.team_keys[0].substring(3, 7),
-        data[i].alliances.red.team_keys[1].substring(3, 7),
-        data[i].alliances.red.team_keys[2].substring(3, 7)
-      ];
-
-      columns.forEach((text, index) => {
-        const cell = document.createElement("td");
-        cell.appendChild(document.createTextNode(text));
-        if (index >= 2 && index <= 4) {
-          cell.classList.add("blue-cell");
-          cell.addEventListener("click", () => cellClickHandler(text));
-        } else if (index >= 5 && index <= 7) {
-          cell.classList.add("red-cell");
-          cell.addEventListener("click", () => cellClickHandler(text));
-        }
-        table_line.appendChild(cell);
+      var headerRow = document.createElement("tr");
+      var headers = ["Match", "Winning Alliance", "Blue 1", "Blue 2", "Blue 3", "Red 1", "Red 2", "Red 3"];
+      headers.forEach(headerText => {
+        var headerCell = document.createElement("th");
+        headerCell.appendChild(document.createTextNode(headerText));
+        headerRow.appendChild(headerCell);
       });
+      element.appendChild(headerRow);
 
-      const teams = [
-        data[i].alliances.blue.team_keys[0].substring(3, 7),
-        data[i].alliances.blue.team_keys[1].substring(3, 7),
-        data[i].alliances.blue.team_keys[2].substring(3, 7),
-        data[i].alliances.red.team_keys[0].substring(3, 7),
-        data[i].alliances.red.team_keys[1].substring(3, 7),
-        data[i].alliances.red.team_keys[2].substring(3, 7)
-      ];
+      const addedTeams = new Set();
 
-      for (let team of teams) {
-        addedTeams.add(team); // Add the team to the set of added teams
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].comp_level == "qm") {
+          const table_line = document.createElement("tr");
+          element.appendChild(table_line);
+
+          var columns = [
+            "Match " + data[i].match_number,
+            data[i].winning_alliance,
+            data[i].alliances.blue.team_keys[0].substring(3, 7),
+            data[i].alliances.blue.team_keys[1].substring(3, 7),
+            data[i].alliances.blue.team_keys[2].substring(3, 7),
+            data[i].alliances.red.team_keys[0].substring(3, 7),
+            data[i].alliances.red.team_keys[1].substring(3, 7),
+            data[i].alliances.red.team_keys[2].substring(3, 7)
+          ];
+
+          columns.forEach((text, index) => {
+            const cell = document.createElement("td");
+            cell.appendChild(document.createTextNode(text));
+            if (index >= 2 && index <= 4) {
+              cell.classList.add("blue-cell");
+              cell.addEventListener("click", () => cellClickHandler(text));
+            } else if (index >= 5 && index <= 7) {
+              cell.classList.add("red-cell");
+              cell.addEventListener("click", () => cellClickHandler(text));
+            }
+            table_line.appendChild(cell);
+          });
+
+          const teams = [
+            data[i].alliances.blue.team_keys[0].substring(3, 7),
+            data[i].alliances.blue.team_keys[1].substring(3, 7),
+            data[i].alliances.blue.team_keys[2].substring(3, 7),
+            data[i].alliances.red.team_keys[0].substring(3, 7),
+            data[i].alliances.red.team_keys[1].substring(3, 7),
+            data[i].alliances.red.team_keys[2].substring(3, 7)
+          ];
+
+          for (let team of teams) {
+            addedTeams.add(team);
+          }
+        }
+      }
+
+      const sortedTeams = Array.from(addedTeams).sort((a, b) => a - b);
+      const dropdown = document.getElementById("teamHighlight");
+      dropdown.innerHTML = '';
+
+      for (let team of sortedTeams) {
+        const option = document.createElement("option");
+        option.value = team;
+        option.textContent = team;
+        if (team === "2423") {
+          option.selected = true;
+        }
+        dropdown.appendChild(option);
       }
     }
-  }
-
-  // Convert the set to an array and sort it in ascending order
-  const sortedTeams = Array.from(addedTeams).sort((a, b) => a - b);
-
-  // Populate the dropdown
-  const dropdown = document.getElementById("teamHighlight");
-  for (let team of sortedTeams) {
-    const option = document.createElement("option");
-    option.value = team;
-    option.textContent = team;
-    if (team === "2423") {
-      option.selected = true;
-    }
-    dropdown.appendChild(option);
-  }
-}
-
-
 
     function highlightCells() {
-      const selectedTeam = document.getElementById("teamHighlight").value;
-      const tableCells = document.querySelectorAll("td");
-      tableCells.forEach(cell => {
-        cell.classList.remove("highlight"); // remove previous highlights
-        // Ensure only exact matches are highlighted
-        if (cell.textContent.trim() === selectedTeam) {
-          cell.classList.add("highlight");
+      var table = document.getElementById("google.yay");
+      var cells = table.getElementsByTagName("td");
+      var highlightTeam = document.getElementById("teamHighlight").value;
+      for (var i = 0; i < cells.length; i++) {
+        if (cells[i].innerText == highlightTeam) {
+          cells[i].classList.add("highlight");
+        } else {
+          cells[i].classList.remove("highlight");
         }
-      });
-    }
-
-    function cellClickHandler(teamNumber) {
-      // Ensure only numeric values trigger a dropdown update and highlight
-      if (!isNaN(teamNumber)) {
-        const dropdown = document.getElementById("teamHighlight");
-        dropdown.value = teamNumber;  // Update the dropdown selection
-        highlightCells();  // Highlight cells based on the new selection
       }
     }
 
-    
+    function cellClickHandler(team) {
+      var dropdown = document.getElementById("teamHighlight");
+      dropdown.value = team;
+      highlightCells();
+    }
+
     window.addEventListener("load", onPageLoad);
   </script>
- <div style="text-align: center;">
+
+  <div style="text-align: center;">
     <h1>Matches (DCMP -- WILSON)</h1>
     <label for="eventCode">Event Code: </label>
     <input type="text" id="eventCode" value="2023necmp2">
     <button onclick="onPageLoad()">Load Data</button><br><br>
     <label for="teamHighlight">Select a team to highlight: </label>
     <select id="teamHighlight" onchange="highlightCells()"></select>
-    <pre id="event-result"></pre>
   </div>
 
   <div>
