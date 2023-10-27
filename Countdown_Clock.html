@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FRC Kickoff Countdown</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background-color: rgb(255, 255, 255);
+      color: rgb(80, 80, 80);
+    }
+    #lcd-container {
+      background-color: rgb(199, 199, 199);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      width: 400px;
+      margin: auto;
+    }
+    #countdown {
+      font-size: 48px;
+      color: #ff0000;
+      background-color: rgb(255, 255, 255);
+      padding: 10px;
+      font-family: 'Digital-7 Mono', monospace;
+      letter-spacing: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Countdown to the next FRC Kickoff</h1>
+  <div id="lcd-container">
+    <div id="countdown">Loading...</div>
+  </div>
+
+  <script>
+    function getTimeRemaining() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const kickoffDate = new Date(`${year}-01-08T00:00:00`);
+      if (now > kickoffDate) {
+        kickoffDate.setFullYear(year + 1);
+      }
+      const total = kickoffDate - now;
+      const seconds = Math.floor((total / 1000) % 60);
+      const minutes = Math.floor((total / 1000 / 60) % 60);
+      const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+      const days = Math.floor(total / (1000 * 60 * 60 * 24));
+      
+      return {
+        total,
+        days,
+        hours,
+        minutes,
+        seconds
+      };
+    }
+
+    function updateCountdown() {
+      const t = getTimeRemaining();
+      const countdown = document.getElementById('countdown');
+      countdown.innerHTML = `${t.days}D ${t.hours}H ${t.minutes}M ${t.seconds}S`;
+      if (t.total <= 0) {
+        clearInterval(timeinterval);
+        countdown.innerHTML = "FRC Kickoff is here!";
+      }
+    }
+
+    updateCountdown();
+    const timeinterval = setInterval(updateCountdown, 1000);
+  </script>
+
+</body>
+</html>
