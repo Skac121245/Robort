@@ -190,17 +190,32 @@
         const sortedTeams = Array.from(teamsSet).sort((a, b) => a.substring(3) - b.substring(3));
 
         for (const teamKey of sortedTeams) {
-          const teamUrl = `https://www.thebluealliance.com/api/v3/team/${teamKey}`;
-          const teamResponse = await fetch(teamUrl, { method: 'GET', headers: headers });
-          const teamData = await teamResponse.json();
+            const teamUrl = `https://www.thebluealliance.com/api/v3/team/${teamKey}`;
+            const headers = new Headers({
+                'X-TBA-Auth-Key': 'J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV'
+            });
 
-          const row = document.createElement('tr');
-          const cell = document.createElement('td');
-          cell.textContent = `${teamData.team_number} - ${teamData.nickname}`;
-          cell.style.cursor = 'pointer';
-          cell.onclick = function() { displayTeamData(teamData); };
-          row.appendChild(cell);
-          table.appendChild(row);
+            let teamData;
+            try {
+                const teamResponse = await fetch(teamUrl, { method: 'GET', headers: headers });
+                teamData = await teamResponse.json();
+            } catch (error) {
+                console.error(`Error fetching data for team ${teamKey}:`, error);
+            }
+
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.style.cursor = 'pointer';
+
+            if (teamData) {
+                cell.textContent = `${teamData.team_number} - ${teamData.nickname}`;
+                cell.onclick = function() { displayTeamData(teamData); };
+            } else {
+                cell.textContent = teamKey.replace('frc', '');
+            }
+
+            row.appendChild(cell);
+            table.appendChild(row);
         }
       }
     }
@@ -208,22 +223,22 @@
 
 
     function fetchTeamData(teamNumber) {
-      const teamKey = "frc" + teamNumber;
-      const teamEndpoint = `https://www.thebluealliance.com/api/v3/team/${teamKey}`;
+        const teamKey = "frc" + teamNumber;
+        const teamEndpoint = `https://www.thebluealliance.com/api/v3/team/${teamKey}`;
 
-      fetch(teamEndpoint, {
-        method: "GET",
-        headers: {
-          "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
-        },
-      })
-      .then((response) => response.json())
-      .then((teamData) => {
-        displayTeamData(teamData);
-      })
-      .catch((error) => {
-        console.error("Error fetching the team data:", error);
-      });
+        fetch(teamEndpoint, {
+            method: "GET",
+            headers: {
+                "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
+            },
+        })
+        .then((response) => response.json())
+        .then((teamData) => {
+            displayTeamData(teamData);
+        })
+        .catch((error) => {
+            console.error("Error fetching the team data:", error);
+        });
     }
 
     function displayTeamData(teamData) {
