@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.gallery-img {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+}
+
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.close {
+    position: absolute;
+    color: #f1f1f1;
+    top: 50px;
+    right: 25px;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    margin-top: -50px;
+    padding: 16px;
+    color: #f1f1f1;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev {
+    left: 0;
+    border-radius: 0 3px 3px 0;
+}
+
+.lightbox-content {
+    position: relative;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+.lightbox-slide {
+    display: none;
+}
+
+.lightbox-slide img {
+    width: 100%;
+    height: auto;
+}
+
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Library</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="gallery" class="gallery">
+        <img src="travis.png" alt="Image 1" class="gallery-img" onclick="openLightbox(); currentSlide(1)">
+        <img src="2423-467_charge.png" alt="Image 2" class="gallery-img" onclick="openLightbox(); currentSlide(2)">
+        <!-- Add more images as needed -->
+    </div>
+
+    <div id="lightbox" class="lightbox">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+        <a class="next" onclick="changeSlide(1)">&#10095;</a>
+
+        <div class="lightbox-content">
+            <div class="lightbox-slide">
+                <img src="travis.png" alt="Image 1">
+            </div>
+            <div class="lightbox-slide">
+                <img src="2423-467_charge.png" alt="Image 2">
+            </div>
+            <!-- Add more slides as needed -->
+        </div>
+    </div>
+
+    <script>
+        let slideIndex = 1;
+
+function openLightbox() {
+    document.getElementById('lightbox').style.display = 'block';
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').style.display = 'none';
+}
+
+function changeSlide(n) {
+    showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+    showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+    let i;
+    let slides = document.getElementsByClassName('lightbox-slide');
+    if (n > slides.length) {slideIndex = 1}
+    if (n < 1) {slideIndex = slides.length}
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = 'none';
+    }
+    slides[slideIndex-1].style.display = 'block';
+}
+
+    </script>
+</body>
+</html>
