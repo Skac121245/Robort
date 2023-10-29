@@ -76,6 +76,20 @@
             font-size: 20px;
             color: white;
         }
+        .group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    @media (max-width: 768px) {
+        .group {
+            flex-direction: column;
+        }
+
+        .unit {
+            margin-right: 30px; 
+        }
+    }
     </style>
 </head>
 
@@ -84,6 +98,7 @@
     <h1>Countdown to the next FRC Kickoff</h1>
     <div id="lcd-container">
         <div id="countdown" class="countdown-container">
+          <div class="group">
             <div class="unit">
                 <div class="label" style="color: grey;">Months</div>
                 <div style="display: inline-flex;">
@@ -107,6 +122,7 @@
                 </div>
             </div>
         </div>
+    
             <div class="unit">
                 <div class="label" style="color: grey;">Days</div>
                 <div style="display: inline-flex;">
@@ -131,6 +147,8 @@
                 </div>
             </div>
             </div>
+        </div>
+        <div class="group">
             <div class="unit">
                 <div class="label" style="color: grey;">Hours</div>
                 <div style="display: inline-flex;">
@@ -177,6 +195,7 @@
                 </div>
             </div>
         </div>
+    </div>
             <div class="unit">
                 <div class="label" style="color: grey;">Seconds</div>
                 <div style="display: inline-flex;">
