@@ -1,254 +1,337 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>FRC Kickoff Countdown</title>
-  <style>
-    body {
-      text-align: center;
-      font-family: Arial, sans-serif;
-      background-color: rgb(255, 255, 255);
-      color: white;
-    }
+    <meta charset="UTF-8">
+    <title>FRC Kickoff Countdown</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: rgb(255, 255, 255);
+            color: white;
+        }
 
-    h1 {
-        color: grey;
-    }
+        h1 {
+            color: grey;
+        }
 
-    #lcd-container {
-      background-color: rgb(255, 255, 255);
-      padding: 0px;
-      border-radius: 10px;
-      width: 100%;
-      margin: auto;
-      overflow: auto;
-    }
+        #lcd-container {
+            background-color: rgb(255, 255, 255);
+            padding: 0px;
+            border-radius: 10px;
+            width: 100%;
+            margin: auto;
+            overflow: auto;
+        }
 
-    .digit {
-      display: inline-block;
-      width: 50px;
-      height: 100px;
-      position: relative;
-      margin: 5px;
-    }
+        .digit {
+            display: inline-block;
+            width: 50px;
+            height: 100px;
+            position: relative;
+            margin: 5px;
+        }
 
-    .segment {
-      position: absolute;
-      opacity: 0.075;
-      background-color: rgb(255, 0, 0);
-    }
+        .segment {
+            position: absolute;
+            opacity: 0.075;
+            background-color: rgb(255, 0, 0);
+        }
 
-    .lit {
-      opacity: 1;
-    }
+        .lit {
+            opacity: 1 !important;
+            background-color: red !important;
+        }
 
-    .horizontal {
-      width: 40px;
-      height: 10px;
-    }
+        .horizontal {
+            width: 40px;
+            height: 10px;
+        }
 
-    .vertical {
-      width: 10px;
-      height: 40px;
-    }
+        .vertical {
+            width: 10px;
+            height: 40px;
+        }
 
-    .countdown-unit {
-      display: inline-block;
-      margin: 0 15px;
-      text-align: center;
-    }
+        .countdown-unit {
+            display: inline-block;
+            margin: 0 15px;
+            text-align: center;
+        }
 
-    .countdown-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: row;
-    }
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+        }
 
-    .unit {
-      margin: 0 20px;
-    }
+        .unit {
+            margin: 0 20px;
+        }
 
-    .label {
-      margin-bottom: 10px;
-      font-size: 20px;
-      color: white;
+        .label {
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: white;
+        }
+        .group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
+    @media (max-width: 768px) {
+        .group {
+            flex-direction: column;
+        }
 
-  </style>
+        .unit {
+            margin-right: 30px; 
+        }
+    }
+    </style>
 </head>
+
 <body>
 
-  <h1>Countdown to the next FRC Kickoff</h1>
-  <div id="lcd-container">
-    <div id="countdown" class="countdown-container">
-    <div class="unit">
-        <div class="label" style="color: grey;">Months</div>
-      <div class="digit" id="months">
-        <div class="segment horizontal" id="months-a" style="top: 0; left: 5px;"></div>
-            <div class="segment vertical" id="months-b" style="top: 5px; right: 0;"></div>
-            <div class="segment vertical" id="months-c" style="bottom: 5px; right: 0;"></div>
-            <div class="segment horizontal" id="months-d" style="bottom: 0; left: 5px;"></div>
-            <div class="segment vertical" id="months-e" style="bottom: 5px; left: 0;"></div>
-            <div class="segment vertical" id="months-f" style="top: 5px; left: 0;"></div>
-            <div class="segment horizontal" id="months-g" style="top: 45px; left: 5px;"></div>
-    </div>
-</div>
-    <div class="unit">
-        <div class="label" style="color: grey;">Days</div>
-      <div class="digit" id="days">
-        <div class="segment horizontal" id="days-a" style="top: 0; left: 5px;"></div>
-            <div class="segment vertical" id="days-b" style="top: 5px; right: 0;"></div>
-            <div class="segment vertical" id="days-c" style="bottom: 5px; right: 0;"></div>
-            <div class="segment horizontal" id="days-d" style="bottom: 0; left: 5px;"></div>
-            <div class="segment vertical" id="days-e" style="bottom: 5px; left: 0;"></div>
-            <div class="segment vertical" id="days-f" style="top: 5px; left: 0;"></div>
-            <div class="segment horizontal" id="days-g" style="top: 45px; left: 5px;"></div>
-    </div>
-</div>
-      <div class="unit">
-        <div class="label" style="color: grey;">Hours</div>
-      <div class="digit" id="hours">
-        <div class="segment horizontal" id="hours-a" style="top: 0; left: 5px;"></div>
-            <div class="segment vertical" id="hours-b" style="top: 5px; right: 0;"></div>
-            <div class="segment vertical" id="hours-c" style="bottom: 5px; right: 0;"></div>
-            <div class="segment horizontal" id="hours-d" style="bottom: 0; left: 5px;"></div>
-            <div class="segment vertical" id="hours-e" style="bottom: 5px; left: 0;"></div>
-            <div class="segment vertical" id="hours-f" style="top: 5px; left: 0;"></div>
-            <div class="segment horizontal" id="hours-g" style="top: 45px; left: 5px;"></div>
+    <h1>Countdown to the next FRC Kickoff</h1>
+    <div id="lcd-container">
+        <div id="countdown" class="countdown-container">
+          <div class="group">
+            <div class="unit">
+                <div class="label" style="color: grey;">Months</div>
+                <div style="display: inline-flex;">
+                <div class="digit" id="months-tens">
+                    <div class="segment horizontal" id="months-tens-a" style="top: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="months-tens-b" style="top: 5px; right: 0;"></div>
+                    <div class="segment vertical" id="months-tens-c" style="bottom: 5px; right: 0;"></div>
+                    <div class="segment horizontal" id="months-tens-d" style="bottom: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="months-tens-e" style="bottom: 5px; left: 0;"></div>
+                    <div class="segment vertical" id="months-tens-f" style="top: 5px; left: 0;"></div>
+                    <div class="segment horizontal" id="months-tens-g" style="top: 45px; left: 5px;"></div>
+                </div>
+                <div class="digit" id="months">
+                    <div class="segment horizontal" id="months-a" style="top: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="months-b" style="top: 5px; right: 0;"></div>
+                    <div class="segment vertical" id="months-c" style="bottom: 5px; right: 0;"></div>
+                    <div class="segment horizontal" id="months-d" style="bottom: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="months-e" style="bottom: 5px; left: 0;"></div>
+                    <div class="segment vertical" id="months-f" style="top: 5px; left: 0;"></div>
+                    <div class="segment horizontal" id="months-g" style="top: 45px; left: 5px;"></div>
+                </div>
+            </div>
+        </div>
+    
+            <div class="unit">
+                <div class="label" style="color: grey;">Days</div>
+                <div style="display: inline-flex;">
+                <div class="digit" id="days-tens">
+                    <div class="segment horizontal" id="days-tens-a" style="top: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="days-tens-b" style="top: 5px; right: 0;"></div>
+                    <div class="segment vertical" id="days-tens-c" style="bottom: 5px; right: 0;"></div>
+                    <div class="segment horizontal" id="days-tens-d" style="bottom: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="days-tens-e" style="bottom: 5px; left: 0;"></div>
+                    <div class="segment vertical" id="days-tens-f" style="top: 5px; left: 0;"></div>
+                    <div class="segment horizontal" id="days-tens-g" style="top: 45px; left: 5px;"></div>
+                </div>
+                
+                <div class="digit" id="days">
+                    <div class="segment horizontal" id="days-a" style="top: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="days-b" style="top: 5px; right: 0;"></div>
+                    <div class="segment vertical" id="days-c" style="bottom: 5px; right: 0;"></div>
+                    <div class="segment horizontal" id="days-d" style="bottom: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="days-e" style="bottom: 5px; left: 0;"></div>
+                    <div class="segment vertical" id="days-f" style="top: 5px; left: 0;"></div>
+                    <div class="segment horizontal" id="days-g" style="top: 45px; left: 5px;"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="group">
+            <div class="unit">
+                <div class="label" style="color: grey;">Hours</div>
+                <div style="display: inline-flex;">
+                <div class="digit" id="hours-tens">
+                    <div class="segment horizontal" id="hours-tens-a" style="top: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="hours-tens-b" style="top: 5px; right: 0;"></div>
+                    <div class="segment vertical" id="hours-tens-c" style="bottom: 5px; right: 0;"></div>
+                    <div class="segment horizontal" id="hours-tens-d" style="bottom: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="hours-tens-e" style="bottom: 5px; left: 0;"></div>
+                    <div class="segment vertical" id="hours-tens-f" style="top: 5px; left: 0;"></div>
+                    <div class="segment horizontal" id="hours-tens-g" style="top: 45px; left: 5px;"></div>
+                </div>
+                <div class="digit" id="hours">
+                    <div class="segment horizontal" id="hours-a" style="top: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="hours-b" style="top: 5px; right: 0;"></div>
+                    <div class="segment vertical" id="hours-c" style="bottom: 5px; right: 0;"></div>
+                    <div class="segment horizontal" id="hours-d" style="bottom: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="hours-e" style="bottom: 5px; left: 0;"></div>
+                    <div class="segment vertical" id="hours-f" style="top: 5px; left: 0;"></div>
+                    <div class="segment horizontal" id="hours-g" style="top: 45px; left: 5px;"></div>
+                </div>
+            </div>
+        </div>
+            <div class="unit">
+                <div class="label" style="color: grey;">Minutes</div>
+                <div style="display: inline-flex;">
+                <div class="digit" id="minutes-tens">
+                    <div class="segment horizontal" id="minutes-tens-a" style="top: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="minutes-tens-b" style="top: 5px; right: 0;"></div>
+                    <div class="segment vertical" id="minutes-tens-c" style="bottom: 5px; right: 0;"></div>
+                    <div class="segment horizontal" id="minutes-tens-d" style="bottom: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="minutes-tens-e" style="bottom: 5px; left: 0;"></div>
+                    <div class="segment vertical" id="minutes-tens-f" style="top: 5px; left: 0;"></div>
+                    <div class="segment horizontal" id="minutes-tens-g" style="top: 45px; left: 5px;"></div>
+                </div>
+                <div class="digit" id="minutes">
+                    <div class="segment horizontal" id="minutes-a" style="top: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="minutes-b" style="top: 5px; right: 0;"></div>
+                    <div class="segment vertical" id="minutes-c" style="bottom: 5px; right: 0;"></div>
+                    <div class="segment horizontal" id="minutes-d" style="bottom: 0; left: 5px;"></div>
+                    <div class="segment vertical" id="minutes-e" style="bottom: 5px; left: 0;"></div>
+                    <div class="segment vertical" id="minutes-f" style="top: 5px; left: 0;"></div>
+                    <div class="segment horizontal" id="minutes-g" style="top: 45px; left: 5px;"></div>
+                </div>
+            </div>
         </div>
     </div>
-      <div class="unit">
-        <div class="label" style="color: grey;">Minutes</div>
-      <div class="digit" id="minutes">
-        <div class="segment horizontal" id="minutes-a" style="top: 0; left: 5px;"></div>
-            <div class="segment vertical" id="minutes-b" style="top: 5px; right: 0;"></div>
-            <div class="segment vertical" id="minutes-c" style="bottom: 5px; right: 0;"></div>
-            <div class="segment horizontal" id="minutes-d" style="bottom: 0; left: 5px;"></div>
-            <div class="segment vertical" id="minutes-e" style="bottom: 5px; left: 0;"></div>
-            <div class="segment vertical" id="minutes-f" style="top: 5px; left: 0;"></div>
-            <div class="segment horizontal" id="minutes-g" style="top: 45px; left: 5px;"></div>
+            <div class="unit">
+                <div class="label" style="color: grey;">Seconds</div>
+                <div style="display: inline-flex;">
+                    <div class="digit" id="seconds-tens">
+                        <div class="segment horizontal" id="seconds-tens-a" style="top: 0; left: 5px;"></div>
+                        <div class="segment vertical" id="seconds-tens-b" style="top: 5px; right: 0;"></div>
+                        <div class="segment vertical" id="seconds-tens-c" style="bottom: 5px; right: 0;"></div>
+                        <div class="segment horizontal" id="seconds-tens-d" style="bottom: 0; left: 5px;"></div>
+                        <div class="segment vertical" id="seconds-tens-e" style="bottom: 5px; left: 0;"></div>
+                        <div class="segment vertical" id="seconds-tens-f" style="top: 5px; left: 0;"></div>
+                        <div class="segment horizontal" id="seconds-tens-g" style="top: 45px; left: 5px;"></div>
+                    </div>
+
+                    <div class="digit" id="seconds">
+                        <div class="segment horizontal" id="seconds-a" style="top: 0; left: 5px;"></div>
+                        <div class="segment vertical" id="seconds-b" style="top: 5px; right: 0;"></div>
+                        <div class="segment vertical" id="seconds-c" style="bottom: 5px; right: 0;"></div>
+                        <div class="segment horizontal" id="seconds-d" style="bottom: 0; left: 5px;"></div>
+                        <div class="segment vertical" id="seconds-e" style="bottom: 5px; left: 0;"></div>
+                        <div class="segment vertical" id="seconds-f" style="top: 5px; left: 0;"></div>
+                        <div class="segment horizontal" id="seconds-g" style="top: 45px; left: 5px;"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-      <div class="unit">
-        <div class="label" style="color: grey;">Seconds</div>
-    <div style="display: inline-flex;">
-      <div class="digit" id="seconds-tens">
-        <div class="segment horizontal" id="seconds-tens-a" style="top: 0; left: 5px;"></div>
-        <div class="segment vertical" id="seconds-tens-b" style="top: 5px; right: 0;"></div>
-        <div class="segment vertical" id="seconds-tens-c" style="bottom: 5px; right: 0;"></div>
-        <div class="segment horizontal" id="seconds-tens-d" style="bottom: 0; left: 5px;"></div>
-        <div class="segment vertical" id="seconds-tens-e" style="bottom: 5px; left: 0;"></div>
-        <div class="segment vertical" id="seconds-tens-f" style="top: 5px; left: 0;"></div>
-        <div class="segment horizontal" id="seconds-tens-g" style="top: 45px; left: 5px;"></div>
-      </div>
 
-      <div class="digit" id="seconds">
-        <div class="segment horizontal" id="seconds-a" style="top: 0; left: 5px;"></div>
-            <div class="segment vertical" id="seconds-b" style="top: 5px; right: 0;"></div>
-            <div class="segment vertical" id="seconds-c" style="bottom: 5px; right: 0;"></div>
-            <div class="segment horizontal" id="seconds-d" style="bottom: 0; left: 5px;"></div>
-            <div class="segment vertical" id="seconds-e" style="bottom: 5px; left: 0;"></div>
-            <div class="segment vertical" id="seconds-f" style="top: 5px; left: 0;"></div>
-            <div class="segment horizontal" id="seconds-g" style="top: 45px; left: 5px;"></div>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <script>
+        const segmentMap = [
+            ['a', 'b', 'c', 'd', 'e', 'f'],  // 0
+            ['b', 'c'],  // 1
+            ['a', 'b', 'g', 'e', 'd'],  // 2
+            ['a', 'b', 'g', 'c', 'd'],  // 3
+            ['f', 'g', 'b', 'c'],  // 4
+            ['a', 'f', 'g', 'c', 'd'],  // 5
+            ['a', 'f', 'g', 'e', 'd', 'c'],  // 6
+            ['a', 'b', 'c'],  // 7
+            ['a', 'b', 'c', 'd', 'e', 'f', 'g'],  // 8
+            ['a', 'b', 'c', 'd', 'f', 'g']  // 9
+        ];
 
-  <script>
-     const segmentMap = [
-      ['a', 'b', 'c', 'd', 'e', 'f'],  // 0
-      ['b', 'c'],  // 1
-      ['a', 'b', 'g', 'e', 'd'],  // 2
-      ['a', 'b', 'g', 'c', 'd'],  // 3
-      ['f', 'g', 'b', 'c'],  // 4
-      ['a', 'f', 'g', 'c', 'd'],  // 5
-      ['a', 'f', 'g', 'e', 'd', 'c'],  // 6
-      ['a', 'b', 'c'],  // 7
-      ['a', 'b', 'c', 'd', 'e', 'f', 'g'],  // 8
-      ['a', 'b', 'c', 'd', 'f', 'g']  // 9
-    ];
-
-    function updateDigit(digit, value) {
-      const segments = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-      segments.forEach(segment => {
-        document.getElementById(`${digit}-${segment}`).classList.remove('lit');
-      });
-      segmentMap[value].forEach(segment => {
-        document.getElementById(`${digit}-${segment}`).classList.add('lit');
-      });
-    }
-
-    function daysInMonth(year, month) {
-      return new Date(year, month, 0).getDate();
-    }
-
-    function getTimeRemaining() {
-  const now = new Date();
-  const nextKickoffDate = new Date("2024-01-06T00:00:00");
-  let delta = Math.abs(nextKickoffDate - now) / 1000;
-
-  const days = Math.floor(delta / 86400);
-  delta -= days * 86400;
-
-  const hours = Math.floor(delta / 3600) % 24;
-  delta -= hours * 3600;
-
-  const minutes = Math.floor(delta / 60) % 60;
-  delta -= minutes * 60;
-
-  const seconds = Math.floor(delta % 60);
-
-  let months = 0;
-  let remainingDays = days;
-  let month = now.getMonth();
-  let yearCounter = now.getFullYear();
-
-  while (remainingDays > 0) {
-    let daysInCurrentMonth = new Date(yearCounter, month + 1, 0).getDate();
-    if (remainingDays >= daysInCurrentMonth) {
-      remainingDays -= daysInCurrentMonth;
-      months++;
-      month++;
-      if (month > 11) {
-        month = 0;
-        yearCounter++;
-      }
-    } else {
-      break;
-    }
-  }
-
-  return {
-    total: nextKickoffDate - now,
-    months,
-    days: remainingDays,
-    hours,
-    minutes,
-    seconds
-  };
+        function updateDigit(digit, value) {
+    const segments = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+    segments.forEach(segment => {
+        const element = document.getElementById(`${digit}-${segment}`);
+        if(element) {
+            element.classList.remove('lit');
+        }
+    });
+    segmentMap[value].forEach(segment => {
+        const element = document.getElementById(`${digit}-${segment}`);
+        if(element) {
+            element.classList.add('lit');
+        }
+    });
 }
 
-function updateCountdown() {
-  const t = getTimeRemaining();
-  updateDigit('months', t.months % 10);
-  updateDigit('days', t.days % 10);
-  updateDigit('hours', t.hours % 10);
-  updateDigit('minutes', t.minutes % 10);
-  updateDigit('seconds', t.seconds % 10);
-  updateDigit('seconds-tens', Math.floor(t.seconds / 10));
+        function daysInMonth(year, month) {
+            return new Date(year, month, 0).getDate();
+        }
 
-  if (t.total <= 0) {
-    clearInterval(timeinterval);
-    document.getElementById('countdown').innerHTML = "FRC Kickoff is here!";
-  }
-}
+        function getTimeRemaining() {
+            const now = new Date();
+            const nextKickoffDate = new Date("2024-01-06T12:00:00");
+            let delta = Math.abs(nextKickoffDate - now) / 1000;
 
-    updateCountdown();
-    const timeinterval = setInterval(updateCountdown, 1000);
-  </script>
+            const days = Math.floor(delta / 86400);
+            delta -= days * 86400;
+
+            const hours = Math.floor(delta / 3600) % 24;
+            delta -= hours * 3600;
+
+            const minutes = Math.floor(delta / 60) % 60;
+            delta -= minutes * 60;
+
+            const seconds = Math.floor(delta % 60);
+
+            let months = 0;
+            let remainingDays = days;
+            let month = now.getMonth();
+            let yearCounter = now.getFullYear();
+
+            while (remainingDays > 0) {
+                let daysInCurrentMonth = new Date(yearCounter, month + 1, 0).getDate();
+                if (remainingDays >= daysInCurrentMonth) {
+                    remainingDays -= daysInCurrentMonth;
+                    months++;
+                    month++;
+                    if (month > 11) {
+                        month = 0;
+                        yearCounter++;
+                    }
+                } else {
+                    break;
+                }
+            }
+
+            return {
+                total: nextKickoffDate - now,
+                months,
+                days: remainingDays,
+                hours,
+                minutes,
+                seconds
+            };
+        }
+
+        function updateCountdown() {
+            const t = getTimeRemaining();
+
+            // Update two-digit displays
+            updateDigit('months-tens', Math.floor(t.months / 10));
+            updateDigit('months', t.months % 10);
+
+            updateDigit('days-tens', Math.floor(t.days / 10));
+            updateDigit('days', t.days % 10);
+
+            updateDigit('hours-tens', Math.floor(t.hours / 10));
+            updateDigit('hours', t.hours % 10);
+
+            updateDigit('minutes-tens', Math.floor(t.minutes / 10));
+            updateDigit('minutes', t.minutes % 10);
+
+            updateDigit('seconds-tens', Math.floor(t.seconds / 10));
+            updateDigit('seconds', t.seconds % 10);
+
+            if (t.total <= 0) {
+                clearInterval(timeinterval);
+                document.getElementById('countdown').innerHTML = "FRC Kickoff is here!";
+            }
+        }
+
+        updateCountdown();
+        const timeinterval = setInterval(updateCountdown, 1000);
+    </script>
 
 </body>
+
 </html>
