@@ -91,11 +91,12 @@
         }
     }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
 </head>
 
 <body>
 
-    <h1>Countdown to the next FRC Kickoff</h1>
+    <h1 id="h1">Countdown to the next FRC Kickoff</h1>
     <div id="lcd-container">
         <div id="countdown" class="countdown-container">
           <div class="group">
@@ -259,14 +260,14 @@
 
         function getTimeRemaining() {
             const now = new Date();
-            const nextKickoffDate = new Date("2024-01-06T12:00:00");
+            const nextKickoffDate = new Date("2024-01-06T12:26:00");
             let delta = Math.abs(nextKickoffDate - now) / 1000;
 
             const days = Math.floor(delta / 86400);
             delta -= days * 86400;
 
             const hours = Math.floor(delta / 3600) % 24;
-            delta -= hours * 3600;
+            delta -= hours * 3600; 
 
             const minutes = Math.floor(delta / 60) % 60;
             delta -= minutes * 60;
@@ -324,11 +325,17 @@
 
             if (t.total <= 0) {
                 clearInterval(timeinterval);
-                document.getElementById('countdown').innerHTML = "FRC Kickoff is here!";
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+                document.getElementById('h1').innerHTML = "FRC Kickoff is here! Good luck teams!";
+                
             }
         }
 
-        updateCountdown();
+    updateCountdown();
         const timeinterval = setInterval(updateCountdown, 1000);
     </script>
 
