@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRC Team Rank Calculator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<style>
+ body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+#calculator {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#results {
+    margin-top: 20px;
+}
+
+.pickList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pickList li {
+    background-color: #e9ecef;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+</style>
+<body>
+<div id="calculator">
+    <h2>FRC Team Rank Calculator</h2>
+    <label for="bestAutos">Best Autos (space-separated team numbers):</label>
+    <input type="text" id="bestAutos" name="bestAutos">
+    <label for="bestTeleops">Best Teleops (space-separated team numbers):</label>
+    <input type="text" id="bestTeleops" name="bestTeleops">
+    <label for="bestEndGames">Best End Games (space-separated team numbers):</label>
+    <input type="text" id="bestEndGames" name="bestEndGames">
+    <label for="mostFouls">Most Fouls (space-separated team numbers):</label>
+    <input type="text" id="mostFouls" name="mostFouls">
+    <button onclick="calculateRanks()">Calculate Ranks</button>
+    <div id="results"></div>
+</div>
+<script>
+function calculateRanks() {
+    // Parse input values, splitting by spaces
+    const bestAutos = document.getElementById('bestAutos').value.split(' ').map(Number);
+    const bestTeleops = document.getElementById('bestTeleops').value.split(' ').map(Number);
+    const bestEndGames = document.getElementById('bestEndGames').value.split(' ').map(Number);
+    const mostFouls = document.getElementById('mostFouls').value.split(' ').map(Number);
+
+    // Combine all teams and remove duplicates
+    const allTeams = [...new Set([...bestAutos, ...bestTeleops, ...bestEndGames, ...mostFouls])];
+
+    // Calculate averages and final ranks
+    const teamRanks = allTeams.map(team => {
+        const autoRanks = calculateAveragePlacements(bestAutos, team);
+        const teleopRanks = calculateAveragePlacements(bestTeleops, team);
+        const endGameRanks = calculateAveragePlacements(bestEndGames, team);
+        const foulRanks = calculateAveragePlacements(mostFouls, team) / 10;
+
+        const masterRank = (autoRanks + teleopRanks + endGameRanks) / 3;
+        const finalRank = masterRank + foulRanks;
+        return { team, finalRank };
+    });
+
+    // Sort teams by final rank
+    teamRanks.sort((a, b) => a.finalRank - b.finalRank);
+
+    // Display results in a styled list
+    displayResults(teamRanks);
+}
+
+function calculateAveragePlacements(list, team) {
+    const placements = list.map((t, index) => t === team ? index + 1 : null).filter(t => t !== null);
+    if (placements.length === 0) return 0; // No placements found
+    const topPlacements = placements.sort((a, b) => a - b).slice(0, 3);
+    return topPlacements.reduce((acc, curr) => acc + curr, 0) / topPlacements.length;
+}
+
+function displayResults(teamRanks) {
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = "<ul class='pickList'>" + teamRanks.map(rank => `<li>Team ${rank.team} - Rank: ${rank.finalRank.toFixed(2)}</li>`).join('') + "</ul>";
+}
+
+
+</script>
+</body>
+</html>
