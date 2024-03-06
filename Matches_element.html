@@ -106,7 +106,7 @@
       landing.innerHTML = '';
       const dropdown = document.getElementById("teamHighlight");
       dropdown.innerHTML = '';
-      const eventCode = document.getElementById("eventCode").value || "WEEK0";
+      const eventCode = document.getElementById("eventCode").value || "2024mabri";
       setupWebhookSubscription(eventCode);
     }
 
@@ -249,7 +249,7 @@
 <div style="text-align: center;">
   <h1>Matches</h1>
   <label for="eventCode">Event Code: </label>
-  <input type="text" id="eventCode" value="WEEK0">
+  <input type="text" id="eventCode" value="2024mabri">
   <button onclick="onPageLoad()">Load Data</button><br><br>
   <label for="teamHighlight">Select a team to highlight: </label>
   <select id="teamHighlight" onchange="highlightCells()"></select>
