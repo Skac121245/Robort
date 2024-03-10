@@ -1,262 +1,110 @@
-
-
 <!DOCTYPE html>
 <html>
-
 <head>
+  <title>FRC Match Strategy Planner</title>
   <style>
-      table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 10px 5px;
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
     }
 
-    td, th {
+    #strategyCanvas {
+      background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png');
+      background-size: contain;
+      border: 1px solid #000;
+      width: 1536px; /* Adjust based on your actual need */
+      height: 664px; /* Adjust based on your actual need */
+    }
+
+    .controls {
+      margin-top: 20px;
+    }
+
+    select, button, input {
       padding: 10px;
-      text-align: center;
-      width: 10%;
-      font-weight: bold;
-    }
-
-    th {
-      border-bottom: 2px solid black;
-      border-top: 2px solid gray;
-    }
-
-    .blue-cell {
-      background-color: #0000FF;
-      color: white;
-    }
-
-    .red-cell {
-      background-color: #FF0000;
-      color: white;
-    }
-
-    .highlight {
-      background-color: rgb(72, 208, 65);
-    }
-
-    h1 {
-      text-align: center;
-      font-family: inherit;
-    }
-
-    #eventCode, #teamHighlight {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      margin-right: 5px;
       font-size: 16px;
-    }
-
-    button {
-      padding: 11px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-
-    label {
-      font-size: 18px;
-      margin-right: 10px;
-    }
-
-    .error-message {
-      text-align: center;
-      font-size: 18px;
-      color: red;
-    }
-
-    @media(max-width: 768px) {
-      table, td, th {
-        font-size: 12px;
-        padding: 0px;
-      }
-
-      #eventCode, #teamHighlight {
-        width: 100%;
-        padding: 8px;
-        font-size: 14px;
-        margin-bottom: 10px; /* Added margin for spacing */
-      }
-
-      button {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px; /* Added margin for spacing */
-      }
-
-      label {
-        display: block;
-        margin: 10px 0 5px 0;
-        font-size: 16px;
-      }
     }
   </style>
 </head>
-
 <body>
-  <script>
-      function onPageLoad() {
-      const landing = document.getElementById("google.blah");
-      landing.innerHTML = '';
-      const dropdown = document.getElementById("teamHighlight");
-      dropdown.innerHTML = '';
-      const eventCode = document.getElementById("eventCode").value || "2023necmp2";
-      setupWebhookSubscription(eventCode);
-    }
 
-    function setupWebhookSubscription(eventCode) {
-      const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
-      fetch(webhookEndpoint, {
-        method: "GET",
-        headers: {
-          "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
-        },
-      })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Invalid Event Code');
-        }
-        return response.json();
-      })
-      .then((responseData) => {
-        writeMatchResults(responseData);
-        highlightCells();
-      })
-      .catch((error) => {
-        const errorMsg = document.createElement("div");
-        errorMsg.textContent = "Invalid Event Code. Please try again.";
-        errorMsg.className = "error-message";
-        document.getElementById("google.blah").appendChild(errorMsg);
-      });
-    }
+<div class="controls">
+  <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri" />
+  <button onclick="fetchMatches()">Load Matches</button>
+</div>
+<select id="matchSelect"></select>
+<button onclick="clearCanvas()">Clear</button>
+<canvas id="strategyCanvas" width="7680" height="3320"></canvas>
 
-    function writeMatchResults(data) {
-  data.sort((a, b) => {
-    const order = ["qm", "qf", "sf", "f"];
-    if (order.indexOf(a.comp_level) !== order.indexOf(b.comp_level)) {
-      return order.indexOf(a.comp_level) - order.indexOf(b.comp_level);
-    }
-    return a.match_number - b.match_number;
-  });
+<script>
+  const canvas = document.getElementById('strategyCanvas');
+  const ctx = canvas.getContext('2d');
+  const matchSelect = document.getElementById('matchSelect');
+  let matches = [];
 
-  var element = document.createElement("table");
-  var landing = document.getElementById("google.blah");
-  landing.appendChild(element);
-  element.id = "google.yay";
-
-  var headerRow = document.createElement("tr");
-  var headers = ["Match", "Winning Alliance", "Score", "Blue 1", "Blue 2", "Blue 3", "Red 1", "Red 2", "Red 3"];
-  headers.forEach(headerText => {
-    var headerCell = document.createElement("th");
-    headerCell.appendChild(document.createTextNode(headerText));
-    headerRow.appendChild(headerCell);
-  });
-  element.appendChild(headerRow);
-
-  for (let i = 0; i < data.length; i++) {
-    const table_line = document.createElement("tr");
-    element.appendChild(table_line);
-
-    const blueScore = data[i].alliances.blue.score;
-    const redScore = data[i].alliances.red.score;
-    const winningAlliance = blueScore > redScore ? "blue" : "red";
-    const scoreText = `Blue: ${blueScore} - Red: ${redScore}`;
-
-    var columns = [
-      data[i].comp_level.toUpperCase() + " " + data[i].match_number,
-      winningAlliance,
-      scoreText, // Score column adjusted with dynamic score text
-      ...data[i].alliances.blue.team_keys.map(key => key.substring(3)),
-      ...data[i].alliances.red.team_keys.map(key => key.substring(3))
-    ];
-
-    columns.forEach((text, index) => {
-      const cell = document.createElement("td");
-      if (index === 2) { // Adjusting for the new Score column index
-        const scoreSpan = document.createElement("span");
-        const boldScore = winningAlliance === "blue" ? `<b>Blue: ${blueScore}</b> - Red: ${redScore}` : `Blue: ${blueScore} - <b>Red: ${redScore}</b>`;
-        scoreSpan.innerHTML = boldScore;
-        cell.appendChild(scoreSpan);
-      } else {
-        cell.appendChild(document.createTextNode(text));
-      }
-
-      if (index === 1) {
-        cell.className += winningAlliance === "blue" ? " blue-cell" : " red-cell";
-      } else if (index >= 3 && index <= 5) {
-        cell.classList.add("blue-cell");
-      } else if (index >= 6 && index <= 8) {
-        cell.classList.add("red-cell");
-      }
-
-      table_line.appendChild(cell);
+  function fetchMatches() {
+    const eventCode = document.getElementById('eventCodeInput').value;
+    const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
+    fetch(webhookEndpoint, {
+      method: "GET",
+      headers: {
+        "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
+      },
+    })
+    .then(response => response.json())
+    .then(data => {
+      matches = data;
+      populateMatchSelect(data);
+    })
+    .catch(error => {
+      console.error('Error fetching matches:', error);
+      matches = [];
+      populateMatchSelect([]);
     });
   }
-}
 
-function highlightCells() {
-  var table = document.getElementById("google.yay");
-  var rows = table.getElementsByTagName("tr"); // Get all rows in the table
-  var highlightTeam = document.getElementById("teamHighlight").value;
-
-  // Start from i = 1 to skip the header row
-  for (var i = 1; i < rows.length; i++) {
-    var cells = rows[i].getElementsByTagName("td");
-    var matchHighlighted = false; // Flag to track if the match involves the highlighted team
-
-    // Check each cell in the row to see if it matches the highlighted team
-    for (var j = 0; j < cells.length; j++) {
-      if (cells[j].innerText == highlightTeam) {
-        cells[j].classList.add("highlight");
-        matchHighlighted = true; // The highlighted team is in this match
-      } else {
-        cells[j].classList.remove("highlight");
-      }
-    }
-
-    // If the match involves the highlighted team, highlight the "Match" column
-    if (matchHighlighted) {
-      cells[0].classList.add("highlight"); // cells[0] is the "Match" column
-    } else {
-      cells[0].classList.remove("highlight");
-    }
+  function populateMatchSelect(matches) {
+    matchSelect.innerHTML = ''; // Clear previous options
+    matches.forEach(match => {
+      const option = document.createElement('option');
+      option.value = match.key;
+      option.textContent = `${match.comp_level.toUpperCase()} Match ${match.match_number}`;
+      matchSelect.appendChild(option);
+    });
   }
-}
 
+  function displayTeamsForSelectedMatch() {
+    const selectedMatchKey = matchSelect.value;
+    const match = matches.find(m => m.key === selectedMatchKey);
+    if (!match) return;
+    clearCanvas();
+    // Example positions, adjust according to your canvas layout
+    const bluePositions = [{x: 400, y: 700}, {x: 400, y: 1900}, {x: 400, y: 2500}];
+    const redPositions = [{x: 6800, y: 2500}, {x: 6800, y: 1900}, {x: 6800, y: 700}];
+    match.alliances.blue.team_keys.forEach((team, index) => {
+      drawText(team.replace('frc', ''), bluePositions[index].x, bluePositions[index].y, 'blue');
+    });
+    match.alliances.red.team_keys.forEach((team, index) => {
+      drawText(team.replace('frc', ''), redPositions[index].x, redPositions[index].y, 'red');
+    });
+  }
 
-    function cellClickHandler(team) {
-      var dropdown = document.getElementById("teamHighlight");
-      dropdown.value = team;
-      highlightCells();
-    }
+  function drawText(text, x, y, color) {
+    ctx.fillStyle = color;
+    ctx.font = 'bold 200px Arial'; // Increased font size and made it bold
+    ctx.fillText(text, x, y);
+  }
 
-    window.addEventListener("load", onPageLoad);
-  </script>
+  function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
 
-<div style="text-align: center;">
-  <h1>Matches</h1>
-  <label for="eventCode">Event Code: </label>
-  <input type="text" id="eventCode" value="2023necmp2">
-  <button onclick="onPageLoad()">Load Data</button><br><br>
-  <label for="teamHighlight">Select a team to highlight: </label>
-  <select id="teamHighlight" onchange="highlightCells()"></select>
-</div>
-
-<div>
-  <pre id="google.blah"></pre>
-</div>
-
-<footer style="text-align: center; margin-top: 20px; font-family: Arial;">
-  <i>Made with love in cooperation with <s>your future overlord 😈</s> GPT-4</i><br>
-  <span>&copy; <script>document.write(new Date().getFullYear());</script> Watertown High School Robotics</span>
-</footer>
+  matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
+</script>
 </body>
 </html>
