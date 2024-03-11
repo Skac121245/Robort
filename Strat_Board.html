@@ -73,6 +73,7 @@
 </div>
 <select id="matchSelect"></select>
 <button onclick="clearCanvas()">Clear</button>
+<button id="toggleEraser">Toggle Eraser</button>
   <canvas id="strategyCanvas" width="1536" height="664"></canvas>
 
 
@@ -233,13 +234,18 @@
 
   function checkTeamClick(x, y) {
   teamPositions.forEach(team => {
-    if (x >= team.x && x <= (team.x + team.width) && y >= team.y && y <= (team.y + team.height)) {
-      drawColor = team.color;
-      // You may want to add logic here to handle what happens when a team is clicked
-      console.log(`Team clicked: Color ${team.color}`);
+    // Convert canvas-relative coordinates to the scaled drawing coordinates
+    const scale = canvas.offsetWidth / canvas.width;
+    const scaledX = x / scale;
+    const scaledY = y / scale;
+
+    // Check if the click is within the bounds of a team's clickable area
+    if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
+      drawColor = team.color; // Set the drawing color to the team's color
     }
   });
 }
+
   
     function clearCanvas() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
