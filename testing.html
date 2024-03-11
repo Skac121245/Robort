@@ -4,107 +4,193 @@
   <title>FRC Match Strategy Planner</title>
   <style>
     body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #ffffff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 0;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-    }
-
-    #strategyCanvas {
-      background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png');
-      background-size: contain;
-      border: 1px solid #000;
-      width: 1536px; /* Adjust based on your actual need */
-      height: 664px; /* Adjust based on your actual need */
     }
 
     .controls {
-      margin-top: 20px;
+      margin-bottom: 20px;
+      background-color: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     select, button, input {
       padding: 10px;
       margin-right: 5px;
       font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+      transition: border-color 0.3s;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #canvasOverlayContainer {
+      position: relative;
+      width: 1152px; /* Match the canvas width */
+      height: 498px; /* Match the canvas height */
+    }
+
+    #strategyCanvas {
+      width: 1152px;
+      height: 498px;
+      background-size: contain;
+      border: 1px solid #000;
+    }
+
+    select:focus, button:focus, input:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+
+    .team-button {
+      position: absolute;
+      cursor: pointer;
+      color: white;
+      border: none;
+      padding: 4px 8px;
     }
   </style>
 </head>
 <body>
 
 <div class="controls">
-  <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri" />
+  <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri"/>
   <button onclick="fetchMatches()">Load Matches</button>
 </div>
 <select id="matchSelect"></select>
 <button onclick="clearCanvas()">Clear</button>
-<canvas id="strategyCanvas" width="7680" height="3320"></canvas>
+<div id="canvasOverlayContainer">
+  <canvas id="strategyCanvas"></canvas>
+</div>
 
 <script>
-  const canvas = document.getElementById('strategyCanvas');
-  const ctx = canvas.getContext('2d');
-  const matchSelect = document.getElementById('matchSelect');
-  let matches = [];
+    const canvas = document.getElementById('strategyCanvas');
+    const ctx = canvas.getContext('2d');
+    const matchSelect = document.getElementById('matchSelect');
+    let matches = [];
+    let drawing = false;
+    let drawColor = 'black';
 
-  function fetchMatches() {
-    const eventCode = document.getElementById('eventCodeInput').value;
-    const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
-    fetch(webhookEndpoint, {
-      method: "GET",
-      headers: {
-        "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
-      },
-    })
-    .then(response => response.json())
-    .then(data => {
-      matches = data;
-      populateMatchSelect(data);
-    })
-    .catch(error => {
-      console.error('Error fetching matches:', error);
-      matches = [];
-      populateMatchSelect([]);
-    });
-  }
+    const bluePositions = [{x: 70, y: 150}, {x: 70, y: 380}, {x: 70, y: 500}];
+    const redPositions = [{x: 1070, y: 150}, {x: 1070, y: 380}, {x: 1070, y: 500}]; // Adjusted for canvas size
+  
+    setupCanvas();
+  
+    function setupCanvas() {
+      canvas.width = 1152; // Set canvas size
+      canvas.height = 498;
+      canvas.style.backgroundImage = "url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png')";
+      
+      canvas.addEventListener('mousedown', (e) => {
+        drawing = true;
+      });
+      canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
+      canvas.addEventListener('mousemove', function(e) {
+        if (drawing) {
+          draw(e.offsetX, e.offsetY);
+        }
+      });
+    }
+  
+    function draw(x, y) {
+      if (!drawing) return;
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = drawColor;
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+    }
+  
+    function fetchMatches() {
+      const eventCode = document.getElementById('eventCodeInput').value;
+      const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
+      fetch(webhookEndpoint, {
+        method: "GET",
+        headers: {
+          "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        matches = data;
+        populateMatchSelect(data);
+      })
+      .catch(error => console.error('Error fetching matches:', error));
+    }
+  
+    function populateMatchSelect(matches) {
+      matchSelect.innerHTML = '<option>Select a match</option>';
+      matches.forEach(match => {
+        const option = document.createElement('option');
+        option.value = match.key;
+        option.textContent = `${match.comp_level.toUpperCase()} Match ${match.match_number}`;
+        matchSelect.appendChild(option);
+      });
+    }
 
-  function populateMatchSelect(matches) {
-    matchSelect.innerHTML = ''; // Clear previous options
-    matches.forEach(match => {
-      const option = document.createElement('option');
-      option.value = match.key;
-      option.textContent = `${match.comp_level.toUpperCase()} Match ${match.match_number}`;
-      matchSelect.appendChild(option);
-    });
-  }
+    function displayTeamsForSelectedMatch() {
+      const selectedMatchKey = matchSelect.value;
+      const match = matches.find(m => m.key === selectedMatchKey);
+      if (!match) return;
+      clearCanvas();
+  
+      const overlayContainer = document.getElementById('canvasOverlayContainer');
+      overlayContainer.innerHTML = ''; // Clear previous buttons
+      drawTeams(match.alliances.blue.team_keys, bluePositions, 'blue');
+      drawTeams(match.alliances.red.team_keys, redPositions, 'red');
+    }
 
-  function displayTeamsForSelectedMatch() {
-    const selectedMatchKey = matchSelect.value;
-    const match = matches.find(m => m.key === selectedMatchKey);
-    if (!match) return;
-    clearCanvas();
-    // Example positions, adjust according to your canvas layout
-    const bluePositions = [{x: 400, y: 700}, {x: 400, y: 1900}, {x: 400, y: 2500}];
-    const redPositions = [{x: 6800, y: 2500}, {x: 6800, y: 1900}, {x: 6800, y: 700}];
-    match.alliances.blue.team_keys.forEach((team, index) => {
-      drawText(team.replace('frc', ''), bluePositions[index].x, bluePositions[index].y, 'blue');
-    });
-    match.alliances.red.team_keys.forEach((team, index) => {
-      drawText(team.replace('frc', ''), redPositions[index].x, redPositions[index].y, 'red');
-    });
-  }
-
-  function drawText(text, x, y, color) {
-    ctx.fillStyle = color;
-    ctx.font = 'bold 200px Arial'; // Increased font size and made it bold
-    ctx.fillText(text, x, y);
-  }
-
-  function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-
-  matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
-</script>
+    function drawTeams(teamKeys, positions, alliance) {
+      teamKeys.forEach((teamKey, index) => {
+        const teamNumber = teamKey.replace('frc', '');
+        const position = positions[index];
+        const color = alliance === 'blue' ? '#0000FF' : '#FF0000';
+  
+        const button = document.createElement('button');
+        button.textContent = teamNumber;
+        button.className = 'team-button';
+        button.style.left = `${position.x}px`;
+        button.style.top = `${position.y}px`;
+        button.style.backgroundColor = color;
+        button.onclick = () => {
+          drawColor = color;
+          console.log(`Color for team ${teamNumber}: ${color}`);
+        };
+  
+        document.getElementById('canvasOverlayContainer').appendChild(button);
+      });
+    }
+  
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  
+    matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
+    fetchMatches(); // Automatically fetch matches on load
+</script>  
 </body>
 </html>
