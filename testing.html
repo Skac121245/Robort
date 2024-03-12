@@ -111,25 +111,68 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
     setupCanvas();
   
     function setupCanvas() {
-      canvas.addEventListener('mousedown', (e) => {
-        drawing = true;
-        checkTeamClick(e.offsetX, e.offsetY);
-      });
-      canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
-      canvas.addEventListener('mousemove', function(e) {
-        if (drawing) {
-          draw(e.offsetX, e.offsetY);
-        }
-      });
+      // Mouse Events
+      canvas.addEventListener('mousedown', startDrawing);
+      canvas.addEventListener('mouseup', stopDrawing);
+      canvas.addEventListener('mouseout', stopDrawing);
+      canvas.addEventListener('mousemove', drawMouse);
+
+      // Touch Events
+      canvas.addEventListener('touchstart', startDrawingTouch, false);
+      canvas.addEventListener('touchend', stopDrawingTouch, false);
+      canvas.addEventListener('touchcancel', stopDrawingTouch, false);
+      canvas.addEventListener('touchmove', drawTouch, false);
     }
   
-    function draw(x, y) {
-  // Adjust drawing logic to support erasing
-  ctx.lineWidth = eraserEnabled ? 50 : 4; // You might want a larger lineWidth for erasing
-  ctx.lineCap = 'round';
-  ctx.strokeStyle = eraserEnabled ? 'rgba(0,0,0,1)' : drawColor; // Use the background color or fully opaque color for erasing
+    function startDrawing(e) {
+      drawing = true;
+      var offsetX = e.offsetX || e.touches[0].clientX - canvas.getBoundingClientRect().left;
+      var offsetY = e.offsetY || e.touches[0].clientY - canvas.getBoundingClientRect().top;
+      checkTeamClick(offsetX, offsetY);
+      // Prevents the mouse down from having an additional side effect, such as starting a selection
+      e.preventDefault();
+    }
 
-  const scale = 1536 / canvas.clientWidth;
+    function stopDrawing() {
+      if (drawing) {
+        drawing = false;
+        ctx.beginPath();
+      }
+    }
+
+    function drawMouse(e) {
+      if (drawing) {
+        var offsetX = e.offsetX;
+        var offsetY = e.offsetY;
+        draw(offsetX, offsetY);
+      }
+    }
+
+     function startDrawingTouch(e) {
+      if (e.touches.length == 1) { // Only track one finger
+        startDrawing(e);
+      }
+    }
+
+    function drawTouch(e) {
+      if (drawing) {
+        var touch = e.touches[0];
+        var offsetX = touch.clientX - canvas.getBoundingClientRect().left;
+        var offsetY = touch.clientY - canvas.getBoundingClientRect().top;
+        draw(offsetX, offsetY);
+      }
+      e.preventDefault(); // Prevent scrolling when touching the canvas
+    }
+
+    function stopDrawingTouch() {
+      stopDrawing();
+    }
+
+    function draw(x, y) {
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = drawColor;
+      const scale = 1536 / canvas.clientWidth;
       const scaleX = scale * x;
       const scaleY = scale * y;
       ctx.lineTo(scaleX, scaleY);
@@ -139,6 +182,8 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
 
   
 }
+  
+  
   
   
     function fetchMatches() {
