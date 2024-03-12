@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sketch Pad with Eraser</title>
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+  }
+  #canvas {
+    border: 1px solid black;
+    background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/e/6/e65cfa62a97359f126f9120f2375efa6256e1a4e.png'); /* Replace with your image URL */
+    background-size: cover;
+  }
+  .toolbar {
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button onclick="toggleDrawEraser(true)">Draw</button>
+  <button onclick="toggleDrawEraser(false)">Eraser</button>
+  <button onclick="clearCanvas()">Clear Drawings</button>
+</div>
+<canvas id="canvas" width="800" height="600"></canvas>
+
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+  let erasing = false;
+
+  function startPosition(e) {
+    drawing = true;
+    draw(e);
+  }
+
+  function finishedPosition() {
+    drawing = false;
+    ctx.beginPath(); // This is necessary to start a new drawing path after finishing drawing/erasing
+  }
+
+  function draw(e) {
+    if (!drawing) return;
+    
+    ctx.lineWidth = erasing ? 10 : 5; // Eraser might be bigger
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = erasing ? 'white' : 'black'; // Change to match the background if erasing
+
+    ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+    ctx.stroke();
+    ctx.beginPath(); // Start a new path to prevent continuous stroke if mouse is moved quickly
+    ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+  }
+
+  function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function toggleDrawEraser(isDrawing) {
+    erasing = !isDrawing;
+  }
+
+  canvas.addEventListener('mousedown', startPosition);
+  canvas.addEventListener('mouseup', finishedPosition);
+  canvas.addEventListener('mousemove', draw);
+</script>
+
+</body>
+</html>
