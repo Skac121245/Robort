@@ -74,10 +74,25 @@
 <select id="matchSelect"></select>
 <button onclick="clearCanvas()">Clear</button>
 <button id="toggleEraser">Toggle Eraser</button>
+
   <canvas id="strategyCanvas" width="1536" height="664"></canvas>
 
 
 <script>
+  let eraserEnabled = false;
+
+document.getElementById('toggleEraser').addEventListener('click', function() {
+  eraserEnabled = !eraserEnabled;
+  if (eraserEnabled) {
+    // Activate eraser mode
+    ctx.globalCompositeOperation = 'destination-out';
+    this.textContent = 'Switch to Pen'; // Change the button text accordingly
+  } else {
+    // Back to drawing mode
+    ctx.globalCompositeOperation = 'source-over';
+    this.textContent = 'Toggle Eraser';
+  }
+});
     const canvas = document.getElementById('strategyCanvas');
     const ctx = canvas.getContext('2d');
     const matchSelect = document.getElementById('matchSelect');
@@ -109,18 +124,21 @@
     }
   
     function draw(x, y) {
-      ctx.lineWidth = 4;
-      ctx.lineCap = 'round';
-      ctx.strokeStyle = drawColor;
-      const scale = 1536 / canvas.clientWidth;
+  // Adjust drawing logic to support erasing
+  ctx.lineWidth = eraserEnabled ? 50 : 4; // You might want a larger lineWidth for erasing
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = eraserEnabled ? 'rgba(0,0,0,1)' : drawColor; // Use the background color or fully opaque color for erasing
+
+  const scale = 1536 / canvas.clientWidth;
       const scaleX = scale * x;
       const scaleY = scale * y;
       ctx.lineTo(scaleX, scaleY);
       ctx.stroke();
       ctx.beginPath();
       ctx.moveTo(scaleX, scaleY);
-    }
+
   
+}
   
   
     function fetchMatches() {
@@ -233,17 +251,19 @@
   }
 
   function checkTeamClick(x, y) {
-  teamPositions.forEach(team => {
-    // Convert canvas-relative coordinates to the scaled drawing coordinates
-    const scale = canvas.offsetWidth / canvas.width;
-    const scaledX = x / scale;
-    const scaledY = y / scale;
-
-    // Check if the click is within the bounds of a team's clickable area
-    if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
-      drawColor = team.color; // Set the drawing color to the team's color
+    if (!eraserEnabled) {
+      teamPositions.forEach(team => {
+        // Convert canvas-relative coordinates to the scaled drawing coordinates
+        const scale = canvas.offsetWidth / canvas.width;
+        const scaledX = x / scale;
+        const scaledY = y / scale;
+    
+        // Check if the click is within the bounds of a team's clickable area
+        if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
+          drawColor = team.color; // Set the drawing color to the team's color
+        }
+      });
     }
-  });
 }
 
   
