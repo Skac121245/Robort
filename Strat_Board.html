@@ -47,6 +47,7 @@
   }
 
   #strategyCanvas {
+      width: 100%;
       background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png');
       background-size: contain;
       border: 1px solid #000;
@@ -72,9 +73,26 @@
 </div>
 <select id="matchSelect"></select>
 <button onclick="clearCanvas()">Clear</button>
-<canvas id="strategyCanvas" width="1536" height="664"></canvas>
+<button id="toggleEraser">Toggle Eraser</button>
+
+  <canvas id="strategyCanvas" width="1536" height="664"></canvas>
+
 
 <script>
+  let eraserEnabled = false;
+
+document.getElementById('toggleEraser').addEventListener('click', function() {
+  eraserEnabled = !eraserEnabled;
+  if (eraserEnabled) {
+    // Activate eraser mode
+    ctx.globalCompositeOperation = 'destination-out';
+    this.textContent = 'Switch to Pen'; // Change the button text accordingly
+  } else {
+    // Back to drawing mode
+    ctx.globalCompositeOperation = 'source-over';
+    this.textContent = 'Toggle Eraser';
+  }
+});
     const canvas = document.getElementById('strategyCanvas');
     const ctx = canvas.getContext('2d');
     const matchSelect = document.getElementById('matchSelect');
@@ -93,37 +111,80 @@
     setupCanvas();
   
     function setupCanvas() {
-      canvas.addEventListener('mousedown', (e) => {
-        drawing = true;
-        checkTeamClick(e.offsetX, e.offsetY);
-      });
-      canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
-      canvas.addEventListener('mousemove', function(e) {
-        if (drawing) {
-          draw(e.offsetX, e.offsetY);
-        }
-      });
+      // Mouse Events
+      canvas.addEventListener('mousedown', startDrawing);
+      canvas.addEventListener('mouseup', stopDrawing);
+      canvas.addEventListener('mouseout', stopDrawing);
+      canvas.addEventListener('mousemove', drawMouse);
+
+      // Touch Events
+      canvas.addEventListener('touchstart', startDrawingTouch, false);
+      canvas.addEventListener('touchend', stopDrawingTouch, false);
+      canvas.addEventListener('touchcancel', stopDrawingTouch, false);
+      canvas.addEventListener('touchmove', drawTouch, false);
     }
   
-    function draw(x, y) {
-      ctx.lineWidth = 4;
-      ctx.lineCap = 'round';
-      ctx.strokeStyle = drawColor;
-      ctx.lineTo(x, y);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(x, y);
+    function startDrawing(e) {
+      drawing = true;
+      var offsetX = e.offsetX || e.touches[0].clientX - canvas.getBoundingClientRect().left;
+      var offsetY = e.offsetY || e.touches[0].clientY - canvas.getBoundingClientRect().top;
+      checkTeamClick(offsetX, offsetY);
+      // Prevents the mouse down from having an additional side effect, such as starting a selection
+      e.preventDefault();
     }
-  
-    function checkTeamClick(x, y) {
-    for (const team of teamPositions) {
-      // Adjust click detection area if necessary
-      if (x >= team.x && x <= (team.x + team.width) && y >= (team.y - team.height) && y <= team.y) {
-        drawColor = team.color;
-        break; // Stop the loop once the correct team is found
+
+    function stopDrawing() {
+      if (drawing) {
+        drawing = false;
+        ctx.beginPath();
       }
     }
-  }
+
+    function drawMouse(e) {
+      if (drawing) {
+        var offsetX = e.offsetX;
+        var offsetY = e.offsetY;
+        draw(offsetX, offsetY);
+      }
+    }
+
+     function startDrawingTouch(e) {
+      if (e.touches.length == 1) { // Only track one finger
+        startDrawing(e);
+      }
+    }
+
+    function drawTouch(e) {
+      if (drawing) {
+        var touch = e.touches[0];
+        var offsetX = touch.clientX - canvas.getBoundingClientRect().left;
+        var offsetY = touch.clientY - canvas.getBoundingClientRect().top;
+        draw(offsetX, offsetY);
+      }
+      e.preventDefault(); // Prevent scrolling when touching the canvas
+    }
+
+    function stopDrawingTouch() {
+      stopDrawing();
+    }
+
+    function draw(x, y) {
+  // Adjust drawing logic to support erasing
+  ctx.lineWidth = eraserEnabled ? 50 : 4; // You might want a larger lineWidth for erasing
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = eraserEnabled ? 'rgba(0,0,0,1)' : drawColor; // Use the background color or fully opaque color for erasing
+
+  const scale = 1536 / canvas.clientWidth;
+      const scaleX = scale * x;
+      const scaleY = scale * y;
+      ctx.lineTo(scaleX, scaleY);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(scaleX, scaleY);
+
+  
+}
+  
   
     function fetchMatches() {
       const eventCode = document.getElementById('eventCodeInput').value;
@@ -172,13 +233,36 @@
     }
   
     function drawTeams(teamKeys, positions, alliance) {
-      teamKeys.forEach((key, index) => {
-        const teamNumber = key.replace('frc', '');
-        const position = positions[index];
-        const color = teamColors[alliance][index];
-        drawText(teamNumber, position.x, position.y, color, index, alliance);
-      });
-    }
+  ctx.font = '40px Arial'; // Ensure font size is set before measuring text
+  const padding = 10; // Padding around the text for the outline box
+
+  teamKeys.forEach((key, index) => {
+    const teamNumber = key.replace('frc', '');
+    const position = positions[index];
+    const color = teamColors[alliance][index];
+
+    const textMetrics = ctx.measureText(teamNumber);
+    const textWidth = textMetrics.width;
+    const rectHeight = 50; // Example height of clickable area
+    const rectY = position.y - 40; // Adjust based on font size and desired box size
+
+    // Draw the team number and background
+    ctx.fillStyle = color;
+    ctx.fillRect(position.x - (padding / 2), rectY, textWidth + padding, rectHeight);
+    ctx.fillStyle = 'black';
+    ctx.fillText(teamNumber, position.x, position.y);
+
+    // Store positions for click detection
+    teamPositions.push({
+      x: position.x - (padding / 2),
+      y: rectY,
+      width: textWidth + padding,
+      height: rectHeight,
+      color: color
+    });
+  });
+}
+
   
     function drawText(text, x, y, color, index, alliance) {
     // Calculate text width for background and click detection area
@@ -210,13 +294,30 @@
       color: color // Assign the drawing color for when the area is clicked
     });
   }
+
+  function checkTeamClick(x, y) {
+    if (!eraserEnabled) {
+      teamPositions.forEach(team => {
+        // Convert canvas-relative coordinates to the scaled drawing coordinates
+        const scale = canvas.offsetWidth / canvas.width;
+        const scaledX = x / scale;
+        const scaledY = y / scale;
+    
+        // Check if the click is within the bounds of a team's clickable area
+        if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
+          drawColor = team.color; // Set the drawing color to the team's color
+        }
+      });
+    }
+}
+
   
     function clearCanvas() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
   
     matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
-    fetchMatches(); // Automatically fetch matches on load
+    fetchMatches();
   </script>  
 </body>
 </html>
