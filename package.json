@@ -1,0 +1,15 @@
+{
+  "name": "robort",
+  "version": "1.0.0",
+  "description": "This is cool",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "author": "Ben Skraly",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^29.1.4"
+  }
+}
