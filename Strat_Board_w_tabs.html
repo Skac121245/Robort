@@ -72,18 +72,39 @@
   #eventCodeInput {
     flex-grow: 1;
   }
+  
+  .button-container {
+    display: flex;
+  }
   </style>
 </head>
 <body>
 
+    <nav class="container" style="text-decoration:none;">
+        <a href="/index.html">Home</a>
+        <a href="/Matches_element.html">Match Schedule</a>
+        <a href="/Team_List_element.html">Teams</a>
+        <a href="/Strat_Board.html">Canvas</a>
+        <a href="/preMatchCheckList.html">Pre Match Checklist</a>
+    </nav>
+
 <div class="controls">
+
+  <!-- <select type="select" id="eventCodeInput">
+    <option value="2024mabri">2024 Week 2 BSU Event</option>
+    <option value="2024week0">2024 Week 0 Event</option>
+  </select> -->
+
   <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri"/>
   <button onclick="fetchMatches()">Load Matches</button>
 </div>
 <select id="matchSelect"></select>
-<button onclick="clearCanvas()">Clear</button>
-<button id="toggleEraser">Toggle Eraser</button>
-<button onclick="switchTabs()"id="switchTabs">Switch Tabs</button>
+<div id="button-container">
+  <button onclick="clearCanvas()">Clear</button>
+  <button id="toggleEraser">Toggle Eraser</button>
+  <button onclick="switchTabs()"id="switchTabs">Switch Tabs</button>
+</div>
+
 <h3 id="tabLabel">Auto</h3>
 
 
@@ -95,7 +116,7 @@
 
 
 <script>
-  let isAuto = true;
+  let isAuto = false;
   let eraserEnabled = false;
 
 document.getElementById('toggleEraser').addEventListener('click', function() {
