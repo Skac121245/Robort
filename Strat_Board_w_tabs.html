@@ -76,6 +76,13 @@
   .button-container {
     display: flex;
   }
+
+  .eventAndDirections {
+    display: flex;
+  }
+
+  
+
   </style>
 </head>
 <body>
@@ -90,20 +97,36 @@
 
 <div class="controls">
 
-  <!-- <select type="select" id="eventCodeInput">
+  <select id="eventCodeInput">
     <option value="2024mabri">2024 Week 2 BSU Event</option>
     <option value="2024week0">2024 Week 0 Event</option>
-  </select> -->
-
-  <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri"/>
+    <option value="2024mabos">2024 Greater Boston Event</option>
+  </select>
+  
   <button onclick="fetchMatches()">Load Matches</button>
 </div>
-<select id="matchSelect"></select>
-<div id="button-container">
-  <button onclick="clearCanvas()">Clear</button>
-  <button id="toggleEraser">Toggle Eraser</button>
-  <button onclick="switchTabs()"id="switchTabs">Switch Tabs</button>
-</div>
+  
+
+  <!-- <p style="font-size: 13px; text-align: center; width: 600px;">To use this tool, there are a couple steps. First, you need to know some of the bugs that 
+    exists within this code. The main bug that exists is when you first get 
+    onto this page, you should click the "switch tabs" button to initializes 
+    the tab feature. Other bugs are as followed. When switching tabs for the first time, after you
+    initialize it, you have to select a different match and then switch back to 
+    the one you want to discuss. Also, the eraser erases the team numbers so be careful about crazy
+    erasing. Finally, when you want to switch events, select one from the dropdown list 
+    and then hit "load matches" to load the new data.
+  </p>
+   -->
+  
+  <select id="matchSelect"></select>
+  <div id="button-container">
+    <button onclick="clearCanvas()">Clear</button>
+    <button id="toggleEraser">Toggle Eraser</button>
+    <button onclick="switchTabs()"id="switchTabs">Switch Tabs</button>
+  </div>
+
+
+  <!-- <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri"/> -->
 
 <h3 id="tabLabel">Auto</h3>
 
@@ -131,6 +154,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
     this.textContent = 'Toggle Eraser';
   }
 });
+  window.addEventListener("load", onPageLoad)
     const canvasAuto = document.getElementById('autoCanvas');
     const canvasTeleop = document.getElementById('teleopCanvas');
     const ctxAuto = canvasAuto.getContext('2d');
@@ -151,7 +175,14 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
   
     setupCanvas();
 
+
+    function onPageLoad() {
+        switchTabs();
+    }
+
     function switchTabs() {
+
+      window.addEventListener("load", onPageLoad)
 
       if (canvasAuto.style.display != "none") {
         console.log("autoCanvas is showing")
@@ -168,7 +199,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
       }
     }
 
-  
+
     function setupCanvas() {
       // Mouse Events
       canvasAuto.addEventListener('mousedown', startDrawing);
