@@ -35,7 +35,7 @@ module.exports = {
           owner: 'Skac121245',
           name: 'Robort'
         },
-        prerelease: true,
+        prerelease: false,
         draft: false
       }
     }

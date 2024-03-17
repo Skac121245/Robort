@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FRC Match Strategy Planner</title>
+  <style>
+    body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .controls {
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  select, button, input {
+    padding: 10px;
+    margin-right: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    transition: border-color 0.3s;
+  }
+
+  button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    border: none;
+  }
+
+  button:hover {
+    background-color: #45a049;
+  }
+
+  #autoCanvas {
+      width: 100%;
+      background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png');
+      background-size: contain;
+      border: 1px solid #000;
+      width: 1152; /* Adjust based on your actual need */
+      height: 498; /* Adjust based on your actual need */
+    }
+
+    #teleopCanvas {
+      width: 100%;
+      background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png');
+      background-size: contain;
+      border: 1px solid #000;
+      width: 1152; /* Adjust based on your actual need */
+      height: 498; /* Adjust based on your actual need */
+    }
+
+  select:focus, button:focus, input:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+
+  #eventCodeInput {
+    flex-grow: 1;
+  }
+  
+  .button-container {
+    display: flex;
+  }
+  </style>
+</head>
+<body>
+
+    <nav class="container" style="text-decoration:none;">
+        <a href="/index.html">Home</a>
+        <a href="/Matches_element.html">Match Schedule</a>
+        <a href="/Team_List_element.html">Teams</a>
+        <a href="/Strat_Board.html">Canvas</a>
+        <a href="/preMatchCheckList.html">Pre Match Checklist</a>
+    </nav>
+
+<div class="controls">
+
+  <!-- <select type="select" id="eventCodeInput">
+    <option value="2024mabri">2024 Week 2 BSU Event</option>
+    <option value="2024week0">2024 Week 0 Event</option>
+  </select> -->
+
+  <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri"/>
+  <button onclick="fetchMatches()">Load Matches</button>
+</div>
+<select id="matchSelect"></select>
+<div id="button-container">
+  <button onclick="clearCanvas()">Clear</button>
+  <button id="toggleEraser">Toggle Eraser</button>
+  <button onclick="switchTabs()"id="switchTabs">Switch Tabs</button>
+</div>
+
+<h3 id="tabLabel">Auto</h3>
+
+
+  <canvas id="autoCanvas" width="1536" height="664" style="display: show;"></canvas>
+  <canvas id="teleopCanvas" width="1536" height="664" style="display: none;"></canvas>
+
+
+
+
+
+<script>
+  let isAuto = false;
+  let eraserEnabled = false;
+
+document.getElementById('toggleEraser').addEventListener('click', function() {
+  eraserEnabled = !eraserEnabled;
+  if (eraserEnabled) {
+    // Activate eraser mode
+    ctxAuto.globalCompositeOperation = 'destination-out';
+    this.textContent = 'Switch to Pen'; // Change the button text accordingly
+  } else {
+    // Back to drawing mode
+    ctxAuto.globalCompositeOperation = 'source-over';
+    this.textContent = 'Toggle Eraser';
+  }
+});
+    const canvasAuto = document.getElementById('autoCanvas');
+    const canvasTeleop = document.getElementById('teleopCanvas');
+    const ctxAuto = canvasAuto.getContext('2d');
+    const ctxTeleop = canvasTeleop.getContext('2d');
+    const tabLabel = document.getElementById('tabLabel')
+    const matchSelect = document.getElementById('matchSelect');
+    let matches = [];
+    let drawing = false;
+    let drawColor = 'black';
+    let teamPositions = [];
+  
+    const bluePositions = [{x: 70, y: 150}, {x: 70, y: 380}, {x: 70, y: 500}];
+    const redPositions = [{x: 1400, y: 500}, {x: 1400, y: 380}, {x: 1400, y: 150}];
+    const teamColors = {
+      blue: ['#07f7df', '#075bf7', '#7307f7'],
+      red: ['#f70707', '#f76707', '#f7c707']
+    };
+  
+    setupCanvas();
+
+    function switchTabs() {
+
+      if (canvasAuto.style.display != "none") {
+        console.log("autoCanvas is showing")
+        canvasTeleop.style.display = "block"
+        canvasAuto.style.display = "none"
+        isAuto = false
+        tabLabel.textContent="Auto"
+      } else {
+        console.log("autoCanvas is not showing")
+        canvasTeleop.style.display = "none"
+        canvasAuto.style.display = "block"
+        isAuto = true
+        tabLabel.textContent="Teleop"
+      }
+    }
+
+  
+    function setupCanvas() {
+      // Mouse Events
+      canvasAuto.addEventListener('mousedown', startDrawing);
+      canvasAuto.addEventListener('mouseup', stopDrawing);
+      canvasAuto.addEventListener('mouseout', stopDrawing);
+      canvasAuto.addEventListener('mousemove', drawMouse);
+
+      // Touch Events
+      canvasAuto.addEventListener('touchstart', startDrawingTouch, false);
+      canvasAuto.addEventListener('touchend', stopDrawingTouch, false);
+      canvasAuto.addEventListener('touchcancel', stopDrawingTouch, false);
+      canvasAuto.addEventListener('touchmove', drawTouch, false);
+
+      canvasTeleop.addEventListener('mousedown', startDrawing);
+      canvasTeleop.addEventListener('mouseup', stopDrawing);
+      canvasTeleop.addEventListener('mouseout', stopDrawing);
+      canvasTeleop.addEventListener('mousemove', drawMouse);
+
+      // Touch Events
+      canvasTeleop.addEventListener('touchstart', startDrawingTouch, false);
+      canvasTeleop.addEventListener('touchend', stopDrawingTouch, false);
+      canvasTeleop.addEventListener('touchcancel', stopDrawingTouch, false);
+      canvasTeleop.addEventListener('touchmove', drawTouch, false);
+    }
+  
+    function startDrawing(e) {
+      if (isAuto){
+        canvas = canvasAuto;
+      } else {
+        canvs = canvasTeleop;
+      }
+      drawing = true;
+      var offsetX = e.offsetX || e.touches[0].clientX - canvas.getBoundingClientRect().left;
+      var offsetY = e.offsetY || e.touches[0].clientY - canvas.getBoundingClientRect().top;
+      checkTeamClick(offsetX, offsetY);
+      // Prevents the mouse down from having an additional side effect, such as starting a selection
+      e.preventDefault();
+    }
+
+    function stopDrawing() {
+      if (drawing) {
+        drawing = false;
+      }
+      if (isAuto) {
+        ctxAuto.beginPath();
+      } else {
+        ctxTeleop.beginPath();
+      }
+    }
+
+    function drawMouse(e) {
+      if (drawing) {
+        var offsetX = e.offsetX;
+        var offsetY = e.offsetY;
+        draw(offsetX, offsetY);
+      }
+    }
+
+     function startDrawingTouch(e) {
+      if (e.touches.length == 1) { // Only track one finger
+        startDrawing(e);
+      }
+    }
+
+    function drawTouch(e) {
+      if (isAuto) {
+        if (drawing) {
+        var touch = e.touches[0];
+        var offsetX = touch.clientX - canvasAuto.getBoundingClientRect().left;
+        var offsetY = touch.clientY - canvasAuto.getBoundingClientRect().top;
+        draw(offsetX, offsetY);
+      }
+      } else {
+        if (drawing) {
+          var touch = e.touches[0];
+          var offsetX = touch.clientX - canvasTeleop.getBoundingClientRect().left;
+          var offsetY = touch.clientY - canvasTeleop.getBoundingClientRect().top;
+          draw(offsetX, offsetY);
+        }
+      }
+      e.preventDefault(); // Prevent scrolling when touching the canvas
+    }
+
+    function stopDrawingTouch() {
+      stopDrawing();
+    }
+
+    function draw(x, y) {
+      if (isAuto) {
+        ctx = ctxAuto;
+        canvas = canvasAuto
+      } else {
+        ctx = ctxTeleop
+        canvas = canvasTeleop
+      }
+  // Adjust drawing logic to support erasing
+  ctx.lineWidth = eraserEnabled ? 50 : 4; // You might want a larger lineWidth for erasing
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = eraserEnabled ? 'rgba(0,0,0,1)' : drawColor; // Use the background color or fully opaque color for erasing
+
+  const scale = 1536 / canvas.clientWidth;
+      const scaleX = scale * x;
+      const scaleY = scale * y;
+      ctx.lineTo(scaleX, scaleY);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(scaleX, scaleY);
+
+  
+}
+  
+  
+    function fetchMatches() {
+      const eventCode = document.getElementById('eventCodeInput').value;
+      const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
+      fetch(webhookEndpoint, {
+        method: "GET",
+        headers: {
+          "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        matches = data;
+        populateMatchSelect(data);
+      })
+      .catch(error => console.error('Error fetching matches:', error));
+    }
+  
+    function populateMatchSelect(matches) {
+      matchSelect.innerHTML = '';
+      
+      // Sort matches by their match number
+      matches.sort((a, b) => {
+        let compLevelA = a.comp_level + a.set_number.toString().padStart(3, '0') + a.match_number.toString().padStart(3, '0');
+        let compLevelB = b.comp_level + b.set_number.toString().padStart(3, '0') + b.match_number.toString().padStart(3, '0');
+        return compLevelA.localeCompare(compLevelB);
+      });
+
+      matches.forEach(match => {
+        const option = document.createElement('option');
+        option.value = match.key;
+        option.textContent = `${match.comp_level.toUpperCase()} Match ${match.match_number}`;
+        matchSelect.appendChild(option);
+      });
+    }
+  
+    function displayTeamsForSelectedMatch() {
+      const selectedMatchKey = matchSelect.value;
+      const match = matches.find(m => m.key === selectedMatchKey);
+      if (!match) return;
+      clearCanvas();
+      teamPositions = []; // Reset team positions
+  
+      drawTeams(match.alliances.blue.team_keys, bluePositions, 'blue');
+      drawTeams(match.alliances.red.team_keys, redPositions, 'red');
+    }
+  
+    function drawTeams(teamKeys, positions, alliance) {
+      if (isAuto) {
+        ctx = ctxAuto
+      } else {
+        ctx = ctxTeleop
+      }
+  ctx.font = '40px Arial'; // Ensure font size is set before measuring text
+  const padding = 10; // Padding around the text for the outline box
+
+  teamKeys.forEach((key, index) => {
+    const teamNumber = key.replace('frc', '');
+    const position = positions[index];
+    const color = teamColors[alliance][index];
+
+    const textMetrics = ctx.measureText(teamNumber);
+    const textWidth = textMetrics.width;
+    const rectHeight = 50; // Example height of clickable area
+    const rectY = position.y - 40; // Adjust based on font size and desired box size
+
+    // Draw the team number and background
+    ctx.fillStyle = color;
+    ctx.fillRect(position.x - (padding / 2), rectY, textWidth + padding, rectHeight);
+    ctx.fillStyle = 'black';
+    ctx.fillText(teamNumber, position.x, position.y);
+
+    // Store positions for click detection
+    teamPositions.push({
+      x: position.x - (padding / 2),
+      y: rectY,
+      width: textWidth + padding,
+      height: rectHeight,
+      color: color
+    });
+  });
+}
+
+  
+    function drawText(text, x, y, color, index, alliance) {
+      if (isAuto) {
+        ctx = ctxAuto
+      } else {
+        ctx = ctxTeleop
+      }
+    // Calculate text width for background and click detection area
+    ctx.font = '40px Arial'; // Ensure font size is set before measuring text
+    const textMetrics = ctx.measureText(text);
+    const textWidth = textMetrics.width;
+    const padding = 10; // Padding around the text for the outline box
+
+    // Adjust position for the rectangle to be centered on the text if necessary
+    const rectX = x - padding / 2;
+    const rectY = y - 40; // Adjust based on font size and desired box size
+    const rectWidth = textWidth + padding;
+    const rectHeight = 50;
+
+    // Draw the colored background rectangle
+    ctx.fillStyle = color;
+    ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
+
+    // Draw the team number text on top
+    ctx.fillStyle = 'black'; // Contrast color for text
+    ctx.fillText(text, x, y);
+
+    // Update the teamPositions array for click detection
+    teamPositions.push({
+      x: rectX,
+      y: rectY,
+      width: rectWidth,
+      height: rectHeight,
+      color: color // Assign the drawing color for when the area is clicked
+    });
+  }
+
+  function checkTeamClick(x, y) {
+    if (isAuto) {
+        ctx = ctxAuto
+        canvas = canvasAuto
+      } else {
+        ctx = ctxTeleop
+        canvas = canvasTeleop
+      }
+    if (!eraserEnabled) {
+      teamPositions.forEach(team => {
+        // Convert canvas-relative coordinates to the scaled drawing coordinates
+        const scale = canvas.offsetWidth / canvas.width;
+        const scaledX = x / scale;
+        const scaledY = y / scale;
+    
+        // Check if the click is within the bounds of a team's clickable area
+        if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
+          drawColor = team.color; // Set the drawing color to the team's color
+        }
+      });
+    }
+}
+
+  
+    function clearCanvas() {
+      if (isAuto) {
+        ctx = ctxAuto
+        canvas = canvasAuto
+      } else {
+        ctx = ctxTeleop
+        canvas = canvasTeleop
+      }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  
+    matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
+    fetchMatches();
+  </script>  
+</body>
+</html>
