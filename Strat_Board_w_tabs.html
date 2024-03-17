@@ -81,18 +81,17 @@
     display: flex;
   }
 
-  
+ 
 
   </style>
 </head>
 <body>
 
-    <nav class="container" style="text-decoration:none;">
-        <a href="./index.html">Home</a>
-        <a href="./Matches_element.html">Match Schedule</a>
-        <a href="./Team_List_element.html">Teams</a>
-        <a href="./Strat_Board.html">Canvas</a>
-    </nav>
+  <nav>
+      <a href="./index.html">Home</a>
+      <a href="./Team_List_element.html">Teams</a>
+      <a href="./Strat_Board.html">Canvas</a>
+  </nav>
 
 <div class="controls">
 
@@ -100,7 +99,9 @@
     <option value="2024mabri">2024 Week 2 BSU Event</option>
     <option value="2024week0">2024 Week 0 Event</option>
     <option value="2024mabos">2024 Greater Boston Event</option>
-  </select>
+</select>
+<input type="text" id="customEventCode" style="display: none;" placeholder="Enter Event Code" />
+
   
   <button onclick="fetchMatches()">Load Matches</button>
 </div>

@@ -8,15 +8,18 @@
       margin: 20px;
     }
 
-    #teamsTable, #rankingsTable {
+    #teamsTable,
+    #rankingsTable {
       width: 60%;
       margin: 20px auto;
       border-collapse: collapse;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     }
 
-    #teamsTable th, #teamsTable td,
-    #rankingsTable th, #rankingsTable td {
+    #teamsTable th,
+    #teamsTable td,
+    #rankingsTable th,
+    #rankingsTable td {
       border: 1px solid #ccc;
       padding: 15px;
       text-align: center;
@@ -32,11 +35,13 @@
       background-color: #f2f2f2;
     }
 
-    #eventCode, #showRankings {
+    #eventCode,
+    #showRankings {
       margin: 10px;
     }
 
-    label, button {
+    label,
+    button {
       font-size: 18px;
     }
 
@@ -62,12 +67,13 @@
       margin-left: 20px;
       align-self: center;
     }
+
     #mainContainer {
       position: relative;
     }
 
     #teamInfo {
-        display: none;
+      display: none;
       position: absolute;
       top: 17%;
       left: 50%;
@@ -84,67 +90,98 @@
     #teamInfo h2 {
       margin-bottom: 20px;
     }
+
+    body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0; 
+    background-color: #f4f4f4; 
+    text-align: center; 
+}
+
+nav {
+    background-color: #1df700; 
+    margin: 20px auto; 
+    text-align: center; 
+    padding: 10px 0; 
+    border-radius: 10px; 
+    width: 200px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #000000;
+    margin: 0 10px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+nav a:hover {
+    color: #0056b3; 
+}
+
+
+
   </style>
 </head>
 
 <body onload="fetchTeams()">
 
-    <h1 style="text-align: center;">Teams and Rankings</h1>
-    <h5 style="text-align: center;">Click on a team for more info!</h5>
-    <nav class="container">
-      <a href="./Matches_element.html">Match Schedule</a>
-      <a href="./index.html">Home</a>
-      <a href="./Strat_Board.html">Canvas</a>
+  <h1 style="text-align: center;">Teams and Rankings</h1>
+  <h5 style="text-align: center;">Click on a team for more info!</h5>
+  <nav id="nav" class="container">
+    <a href="./index.html">Home</a>
+    <a href="./Strat_Board.html">Canvas</a>
   </nav>
-  
-    <div style="text-align: center;">
-      <input type="checkbox" id="showRankings" onchange="fetchTeams()">
-      <label for="showRankings">Show Rankings</label><br>
-      <label for="eventCode">Enter Event Code:</label>
-      <input type="text" id="eventCode" value="2023necmp2">
-      <button onclick="fetchTeams()">Load</button>
-    </div>
-  
-    <table id="teamsTable">
-      <thead>
-        <tr>
-          <th>Team Number</th>
-        </tr>
-      </thead>
-      <tbody onclick="cellClickHandler(event.target.textContent)">
-      </tbody>
-    </table>
-  
-    <!-- New Rankings Table -->
-    <table id="rankingsTable">
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Team Number</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-  
 
-    <div id="teamInfo">
-        <h2 id="teamTitle"></h2>
-        <p id="teamLocation"></p>
-        <p id="teamSchoolName"></p>
-        <p id="teamCity"></p>
-        <p id="teamCountry"></p>
-        <p id="teamMotto"></p>
-        <p id="teamRookieYear"></p>
-        <p id="teamHomeChampionship"></p>
-        <p id="teamWebsite"></p>
-        <button id="backButton" onclick="goBack()">Back</button>
-      </div>
+  <div style="text-align: center;">
+    <input type="checkbox" id="showRankings" onchange="fetchTeams()">
+    <label for="showRankings">Show Rankings</label><br>
+    <label for="eventCode">Enter Event Code:</label>
+    <input type="text" id="eventCode" value="2023necmp2">
+    <button onclick="fetchTeams()">Load</button>
+  </div>
 
-  
+  <table id="teamsTable">
+    <thead>
+      <tr>
+        <th>Team Number</th>
+      </tr>
+    </thead>
+    <tbody onclick="cellClickHandler(event.target.textContent)">
+    </tbody>
+  </table>
+
+  <!-- New Rankings Table -->
+  <table id="rankingsTable">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Team Number</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+
+  <div id="teamInfo">
+    <h2 id="teamTitle"></h2>
+    <p id="teamLocation"></p>
+    <p id="teamSchoolName"></p>
+    <p id="teamCity"></p>
+    <p id="teamCountry"></p>
+    <p id="teamMotto"></p>
+    <p id="teamRookieYear"></p>
+    <p id="teamHomeChampionship"></p>
+    <p id="teamWebsite"></p>
+    <button id="backButton" onclick="goBack()">Back</button>
+  </div>
+
+
 
   <script>
-        async function fetchTeams() {
+    async function fetchTeams() {
       const eventCode = document.getElementById('eventCode').value;
       const showRankings = document.getElementById('showRankings').checked;
       let url;
@@ -195,32 +232,32 @@
         const sortedTeams = Array.from(teamsSet).sort((a, b) => a.substring(3) - b.substring(3));
 
         for (const teamKey of sortedTeams) {
-            const teamUrl = `https://www.thebluealliance.com/api/v3/team/${teamKey}`;
-            const headers = new Headers({
-                'X-TBA-Auth-Key': 'J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV'
-            });
+          const teamUrl = `https://www.thebluealliance.com/api/v3/team/${teamKey}`;
+          const headers = new Headers({
+            'X-TBA-Auth-Key': 'J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV'
+          });
 
-            let teamData;
-            try {
-                const teamResponse = await fetch(teamUrl, { method: 'GET', headers: headers });
-                teamData = await teamResponse.json();
-            } catch (error) {
-                console.error(`Error fetching data for team ${teamKey}:`, error);
-            }
+          let teamData;
+          try {
+            const teamResponse = await fetch(teamUrl, { method: 'GET', headers: headers });
+            teamData = await teamResponse.json();
+          } catch (error) {
+            console.error(`Error fetching data for team ${teamKey}:`, error);
+          }
 
-            const row = document.createElement('tr');
-            const cell = document.createElement('td');
-            cell.style.cursor = 'pointer';
+          const row = document.createElement('tr');
+          const cell = document.createElement('td');
+          cell.style.cursor = 'pointer';
 
-            if (teamData) {
-                cell.textContent = `${teamData.team_number} - ${teamData.nickname}`;
-                cell.onclick = function() { displayTeamData(teamData); };
-            } else {
-                cell.textContent = teamKey.replace('frc', '');
-            }
+          if (teamData) {
+            cell.textContent = `${teamData.team_number} - ${teamData.nickname}`;
+            cell.onclick = function () { displayTeamData(teamData); };
+          } else {
+            cell.textContent = teamKey.replace('frc', '');
+          }
 
-            row.appendChild(cell);
-            table.appendChild(row);
+          row.appendChild(cell);
+          table.appendChild(row);
         }
       }
     }
@@ -228,49 +265,49 @@
 
 
     function fetchTeamData(teamNumber) {
-        const teamKey = "frc" + teamNumber;
-        const teamEndpoint = `https://www.thebluealliance.com/api/v3/team/${teamKey}`;
+      const teamKey = "frc" + teamNumber;
+      const teamEndpoint = `https://www.thebluealliance.com/api/v3/team/${teamKey}`;
 
-        fetch(teamEndpoint, {
-            method: "GET",
-            headers: {
-                "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
-            },
-        })
+      fetch(teamEndpoint, {
+        method: "GET",
+        headers: {
+          "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
+        },
+      })
         .then((response) => response.json())
         .then((teamData) => {
-            displayTeamData(teamData);
+          displayTeamData(teamData);
         })
         .catch((error) => {
-            console.error("Error fetching the team data:", error);
+          console.error("Error fetching the team data:", error);
         });
     }
 
     function displayTeamData(teamData) {
-  const teamsTable = document.getElementById('teamsTable');
-  const teamInfo = document.getElementById('teamInfo');
-  
-  document.getElementById('teamTitle').innerText = `Team ${teamData.team_number} - ${teamData.nickname}`;
-  document.getElementById('teamLocation').innerText = `Location: ${teamData.city}, ${teamData.state_prov}, ${teamData.country}`;
-  
-  // Display the website as a clickable link if it exists
-  const teamWebsiteElement = document.getElementById('teamWebsite');
-  if (teamData.website) {
-    teamWebsiteElement.innerHTML = `Website: <a href="${teamData.website}" target="_blank">${teamData.website}</a>`;
-  } else {
-    teamWebsiteElement.innerText = 'Website: N/A';
-  }
-  
-  teamsTable.style.display = 'none';
-  teamInfo.style.display = 'block';
+      const teamsTable = document.getElementById('teamsTable');
+      const teamInfo = document.getElementById('teamInfo');
 
-  document.getElementById('teamMotto').innerText = `Motto: ${teamData.motto ? teamData.motto : 'N/A'}`;
+      document.getElementById('teamTitle').innerText = `Team ${teamData.team_number} - ${teamData.nickname}`;
+      document.getElementById('teamLocation').innerText = `Location: ${teamData.city}, ${teamData.state_prov}, ${teamData.country}`;
+
+      // Display the website as a clickable link if it exists
+      const teamWebsiteElement = document.getElementById('teamWebsite');
+      if (teamData.website) {
+        teamWebsiteElement.innerHTML = `Website: <a href="${teamData.website}" target="_blank">${teamData.website}</a>`;
+      } else {
+        teamWebsiteElement.innerText = 'Website: N/A';
+      }
+
+      teamsTable.style.display = 'none';
+      teamInfo.style.display = 'block';
+
+      document.getElementById('teamMotto').innerText = `Motto: ${teamData.motto ? teamData.motto : 'N/A'}`;
       document.getElementById('teamRookieYear').innerText = `Rookie Year: ${teamData.rookie_year ? teamData.rookie_year : 'N/A'}`;
       document.getElementById('teamHomeChampionship').innerText = `Home Championship: ${teamData.home_championship ? JSON.stringify(teamData.home_championship) : 'N/A'}`;
       document.getElementById('teamSchoolName').innerText = `School: ${teamData.school_name ? teamData.school_name : 'N/A'}`;
       document.getElementById('teamCity').innerText = `City: ${teamData.city ? teamData.city : 'N/A'}`;
       document.getElementById('teamCountry').innerText = `Country: ${teamData.country ? teamData.country : 'N/A'}`;
-      
+
 
       document.getElementById('teamTitle').innerText = `Team ${teamNumber} - ${teamData.name}`;
       document.getElementById('teamInfoText').innerText = teamData.description;
@@ -282,19 +319,19 @@
     }
 
 
-     function cellClickHandler(teamNumber) {
+    function cellClickHandler(teamNumber) {
       // Your logic to fetch team info
       // Display it inside the infoContainer
       document.getElementById('infoContainer').innerHTML = `<h3>Team ${teamNumber}</h3><p>More info about this team.</p>`;
     }
 
-   
-    
+
+
 
     function goBack() {
       const teamsTable = document.getElementById('teamsTable');
       const teamInfo = document.getElementById('teamInfo');
-      
+
       teamsTable.style.display = 'table';
       teamInfo.style.display = 'none';
     }
@@ -302,4 +339,5 @@
   </script>
 
 </body>
+
 </html>
