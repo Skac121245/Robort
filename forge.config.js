@@ -36,7 +36,7 @@ module.exports = {
           name: 'Robort'
         },
         prerelease: true,
-        draft: true
+        draft: false
       }
     }
   ],

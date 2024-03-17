@@ -10,6 +10,10 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Skac121245/Robort.git"
+  },
   "author": "Ben Skraly",
   "license": "MIT",
   "devDependencies": {
