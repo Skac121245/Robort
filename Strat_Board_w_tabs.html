@@ -81,7 +81,27 @@
     display: flex;
   }
 
- 
+  nav {
+    background-color: #1df700;
+    width: 500px;
+    text-align: center;
+    height: 20px;
+    border-radius: 10px;
+    padding: 10px 0;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: #000000;
+    margin: 0 10px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+
+nav a:hover {
+    color: #0056b3; 
+}
 
   </style>
 </head>
@@ -90,7 +110,8 @@
   <nav>
       <a href="./index.html">Home</a>
       <a href="./Team_List_element.html">Teams</a>
-      <a href="./Strat_Board.html">Canvas</a>
+      <a href="./Strat_Board_w_tabs.html">Canvas</a>
+      <a href="./preMatchChecklist.html">Pre Match Checklist</a>
   </nav>
 
 <div class="controls">
@@ -128,7 +149,7 @@
 
   <!-- <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri"/> -->
 
-<h3 id="tabLabel">Auto</h3>
+<h1 id="tabLabel">Autonomous</h1>
 
 
   <canvas id="autoCanvas" width="1536" height="664" style="display: show;"></canvas>
@@ -142,15 +163,24 @@
   let isAuto = false;
   let eraserEnabled = false;
 
+
+
 document.getElementById('toggleEraser').addEventListener('click', function() {
   eraserEnabled = !eraserEnabled;
+  if (isAuto) {
+        ctx = ctxAuto;
+        canvas = canvasAuto
+      } else {
+        ctx = ctxTeleop
+        canvas = canvasTeleop
+      }
   if (eraserEnabled) {
     // Activate eraser mode
-    ctxAuto.globalCompositeOperation = 'destination-out';
+    ctx.globalCompositeOperation = 'destination-out';
     this.textContent = 'Switch to Pen'; // Change the button text accordingly
   } else {
     // Back to drawing mode
-    ctxAuto.globalCompositeOperation = 'source-over';
+    ctx.globalCompositeOperation = 'source-over';
     this.textContent = 'Toggle Eraser';
   }
 });
@@ -189,7 +219,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
         canvasTeleop.style.display = "block"
         canvasAuto.style.display = "none"
         isAuto = false
-        tabLabel.textContent="Auto"
+        tabLabel.textContent="Autonomous"
       } else {
         console.log("autoCanvas is not showing")
         canvasTeleop.style.display = "none"
@@ -387,7 +417,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
     teamPositions.push({
       x: position.x - (padding / 2),
       y: rectY,
-      width: textWidth + padding,
+      width: textWidth + padding, 
       height: rectHeight,
       color: color
     });
@@ -464,6 +494,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
         canvas = canvasTeleop
       }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
     }
   
     matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
