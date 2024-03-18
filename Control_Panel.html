@@ -56,6 +56,7 @@
 
         .edit-mode iframe {
             pointer-events: none;
+            user-select: none; 
         }
     </style>
 </head>
@@ -71,9 +72,11 @@
 
 <script>
     let editMode = false;
-
+    let dropped = false;
+    let dropped1 = false;
     document.getElementById('editModeToggle').addEventListener('click', () => {
         editMode = !editMode;
+        console.log("blah");
         document.body.classList.toggle('edit-mode', editMode);
     });
 
@@ -90,8 +93,27 @@
         e.preventDefault();
     });
 
+    const toggleText = document.querySelector("#editModeToggle"); // Correct variable name
+toggleText.addEventListener("click", function() {
+    if (editMode) {
+        console.log("blurg")
+        this.textContent = "Edit Mode Toggled On"; // Correct way to set text content
+    } else
+    {
+        this.textContent = "Edit Mode Toggled Off"
+    }
+    if (!dropped && !dropped1) {
+        this.textContent = "Edit Mode Toggled On";
+        dropped1 = true; 
+    } else if (!editMode)
+    {
+        this.textContent = "Edit Mode Toggled Off";
+    }
+});
+    
     workspace.addEventListener('drop', function(e) {
         e.preventDefault();
+        dropped = true;
         const src = e.dataTransfer.getData('text/plain');
         const iframeContainer = document.createElement('div');
         iframeContainer.classList.add('iframe-container');
@@ -108,7 +130,7 @@
         // })
 
         let isDragging = false;
-        
+
 
         iframeContainer.addEventListener('mousedown', e => {
             console.log("MOUSE DOWN")
