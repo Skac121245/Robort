@@ -68,7 +68,7 @@
     <!-- Add more iframe options here -->
 </div>
 <div id="workspace"></div>
-<button id="editModeToggle">Toggle Edit Mode</button>
+<button id="editModeToggle">Toggle Move Mode</button>
 
 <script>
     let editMode = false;
@@ -97,17 +97,17 @@
 toggleText.addEventListener("click", function() {
     if (editMode) {
         console.log("blurg")
-        this.textContent = "Edit Mode Toggled On"; // Correct way to set text content
+        this.textContent = "Move Mode Toggled On"; // Correct way to set text content
     } else
     {
-        this.textContent = "Edit Mode Toggled Off"
+        this.textContent = "Move Mode Toggled Off"
     }
     if (!dropped && !dropped1) {
-        this.textContent = "Edit Mode Toggled On";
+        this.textContent = "Move Mode Toggled On";
         dropped1 = true; 
     } else if (!editMode)
     {
-        this.textContent = "Edit Mode Toggled Off";
+        this.textContent = "Move Mode Toggled Off";
     }
 });
     
