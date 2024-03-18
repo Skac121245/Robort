@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Workspace</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        #sidebar {
+            width: 200px;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #f0f0f0;
+            padding: 10px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        }
+
+        .iframe-option {
+            cursor: grab;
+            padding: 10px;
+            margin-bottom: 5px;
+            background: #ddd;
+            user-select: none;
+        }
+
+        .iframe-option:hover {
+            background: #ccc;
+        }
+
+        #workspace {
+            margin-left: 200px;
+            height: 100%;
+            position: relative;
+        }
+
+        .iframe-container {
+            position: absolute;
+            border: 2px solid #ccc;
+            resize: both;
+            overflow: auto;
+        }
+
+        #editModeToggle {
+            position: fixed;
+            top: 20px;
+            right: 220px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<div id="sidebar">
+    <div class="iframe-option" draggable="true" data-src="Matches_element.html">Matches_element</div>
+    <div class="iframe-option" draggable="true" data-src="preMatchChecklist.html">Pre Match Check</div>
+    <!-- Add more iframe options here -->
+</div>
+<div id="workspace"></div>
+<button id="editModeToggle">Toggle Edit Mode</button>
+
+<script>
+    let editMode = false;
+
+    document.getElementById('editModeToggle').addEventListener('click', () => {
+        editMode = !editMode;
+        document.body.classList.toggle('edit-mode', editMode);
+    });
+
+    document.querySelectorAll('.iframe-option').forEach(option => {
+        option.addEventListener('dragstart', function(e) {
+            const src = option.getAttribute('data-src');
+            e.dataTransfer.setData('text/plain', src);
+        });
+    });
+
+    const workspace = document.getElementById('workspace');
+
+    workspace.addEventListener('dragover', function(e) {
+        e.preventDefault();
+    });
+
+    workspace.addEventListener('drop', function(e) {
+        e.preventDefault();
+        const src = e.dataTransfer.getData('text/plain');
+        const iframeContainer = document.createElement('div');
+        iframeContainer.classList.add('iframe-container');
+        iframeContainer.style.left = (e.clientX - 250) + 'px'; // Adjusting to workspace offset
+        iframeContainer.style.top = e.clientY + 'px';
+        iframeContainer.innerHTML = `<iframe src="${src}" frameborder="0" style="width:100%; height:100%;"></iframe>`;
+
+        if (editMode) {
+            // Enable moving and resizing
+            iframeContainer.style.resize = 'both';
+            iframeContainer.style.overflow = 'auto';
+
+            let isDragging = false;
+
+            iframeContainer.addEventListener('mousedown', e => {
+                if (!editMode) return;
+                isDragging = true;
+                let startX = e.pageX - iframeContainer.offsetLeft;
+                let startY = e.pageY - iframeContainer.offsetTop;
+
+                function onMove(e) {
+                    if (!isDragging) return;
+                    iframeContainer.style.left = (e.pageX - startX) + 'px';
+                    iframeContainer.style.top = (e.pageY - startY) + 'px';
+                }
+
+                function onUp() {
+                    isDragging = false;
+                    window.removeEventListener('mousemove', onMove);
+                    window.removeEventListener('mouseup', onUp);
+                }
+
+                window.addEventListener('mousemove', onMove);
+                window.addEventListener('mouseup', onUp);
+            });
+        }
+
+        workspace.appendChild(iframeContainer);
+    });
+</script>
+</body>
+</html>
