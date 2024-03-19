@@ -9,6 +9,7 @@
             padding: 0;
             height: 100%;
             box-sizing: border-box;
+            overflow: hidden;
         }
 
         #sidebar {
@@ -20,6 +21,15 @@
             background: #f0f0f0;
             padding: 10px;
             box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+            transition: left 0.5s;
+        }
+
+        #sidebarToggle {
+            right: 20px; /* Adjusted to not overlap edit mode button */
+            position: fixed;
+    top: 20px; /* Adjust so it's below the edit mode button */
+
+  
         }
 
         .iframe-option {
@@ -38,6 +48,7 @@
             margin-left: 200px;
             height: 100%;
             position: relative;
+            transition: margin-left 0.5s;
         }
 
         .iframe-container {
@@ -58,6 +69,7 @@
             pointer-events: none;
             user-select: none; 
         }
+        
     </style>
 </head>
 <body>
@@ -69,7 +81,7 @@
 </div>
 <div id="workspace"></div>
 <button id="editModeToggle">Toggle Move Mode</button>
-
+<button id="sidebarToggle">Toggle Sidebar</button> <!-- Toggle button for sidebar -->
 <script>
     let editMode = false;
     let dropped = false;
@@ -158,6 +170,22 @@ toggleText.addEventListener("click", function() {
 
         workspace.appendChild(iframeContainer);
     });
+    let sidebarVisible = true; // New variable to track the visibility of the sidebar
+
+// Sidebar toggle functionality
+document.getElementById('sidebarToggle').addEventListener('click', () => {
+    sidebarVisible = !sidebarVisible;
+    const sidebar = document.getElementById('sidebar');
+    const workspace = document.getElementById('workspace');
+    if (sidebarVisible) {
+        sidebar.style.left = '0';
+        workspace.style.marginLeft = '200px';
+    } else {
+        sidebar.style.left = '-200px';
+        workspace.style.marginLeft = '0';
+    }
+});
+
 </script>
 </body>
 </html>
