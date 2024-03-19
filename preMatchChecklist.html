@@ -114,4 +114,15 @@
     <input type=checkbox>Battery connector on the side not on top<br> 
 </p>
 </body>
+<script>
+    window.onload = function() {
+        if (window.self !== window.top) {
+            // The page is in an iframe
+            var nav = document.querySelector('nav.container');
+            if (nav) {
+                nav.style.display = 'none';
+            }
+        }
+    };
+</script>
 </html>
