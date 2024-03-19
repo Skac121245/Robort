@@ -9,6 +9,7 @@
             padding: 0;
             height: 100%;
             box-sizing: border-box;
+            overflow: hidden;
         }
 
         #sidebar {
@@ -20,6 +21,15 @@
             background: #f0f0f0;
             padding: 10px;
             box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+            transition: left 0.5s;
+        }
+
+        #sidebarToggle {
+            right: 20px; /* Adjusted to not overlap edit mode button */
+            position: fixed;
+    top: 20px; /* Adjust so it's below the edit mode button */
+
+  
         }
 
         .iframe-option {
@@ -38,6 +48,7 @@
             margin-left: 200px;
             height: 100%;
             position: relative;
+            transition: margin-left 0.5s;
         }
 
         .iframe-container {
@@ -56,7 +67,9 @@
 
         .edit-mode iframe {
             pointer-events: none;
+            user-select: none; 
         }
+        
     </style>
 </head>
 <body>
@@ -67,13 +80,15 @@
     <!-- Add more iframe options here -->
 </div>
 <div id="workspace"></div>
-<button id="editModeToggle">Toggle Edit Mode</button>
-
+<button id="editModeToggle">Toggle Move Mode</button>
+<button id="sidebarToggle">Toggle Sidebar</button> <!-- Toggle button for sidebar -->
 <script>
     let editMode = false;
-
+    let dropped = false;
+    let dropped1 = false;
     document.getElementById('editModeToggle').addEventListener('click', () => {
         editMode = !editMode;
+        console.log("blah");
         document.body.classList.toggle('edit-mode', editMode);
     });
 
@@ -90,8 +105,27 @@
         e.preventDefault();
     });
 
+    const toggleText = document.querySelector("#editModeToggle"); // Correct variable name
+toggleText.addEventListener("click", function() {
+    if (editMode) {
+        console.log("blurg")
+        this.textContent = "Move Mode Toggled On"; // Correct way to set text content
+    } else
+    {
+        this.textContent = "Move Mode Toggled Off"
+    }
+    if (!dropped && !dropped1) {
+        this.textContent = "Move Mode Toggled On";
+        dropped1 = true; 
+    } else if (!editMode)
+    {
+        this.textContent = "Move Mode Toggled Off";
+    }
+});
+    
     workspace.addEventListener('drop', function(e) {
         e.preventDefault();
+        dropped = true;
         const src = e.dataTransfer.getData('text/plain');
         const iframeContainer = document.createElement('div');
         iframeContainer.classList.add('iframe-container');
@@ -108,7 +142,7 @@
         // })
 
         let isDragging = false;
-        
+
 
         iframeContainer.addEventListener('mousedown', e => {
             console.log("MOUSE DOWN")
@@ -136,6 +170,22 @@
 
         workspace.appendChild(iframeContainer);
     });
+    let sidebarVisible = true; // New variable to track the visibility of the sidebar
+
+// Sidebar toggle functionality
+document.getElementById('sidebarToggle').addEventListener('click', () => {
+    sidebarVisible = !sidebarVisible;
+    const sidebar = document.getElementById('sidebar');
+    const workspace = document.getElementById('workspace');
+    if (sidebarVisible) {
+        sidebar.style.left = '0';
+        workspace.style.marginLeft = '200px';
+    } else {
+        sidebar.style.left = '-200px';
+        workspace.style.marginLeft = '0';
+    }
+});
+
 </script>
 </body>
 </html>
