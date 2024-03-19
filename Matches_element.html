@@ -260,7 +260,22 @@ function highlightCells() {
       highlightCells();
     }
 
-    window.addEventListener("load", onPageLoad);
+    function adjustStylesForIframe() {
+  // Check if the current page is loaded inside an iframe
+  if (window.location !== window.parent.location) {
+    // It's loaded within an iframe
+    // Apply CSS styles or classes here as needed
+    // For example, increase the font size for td elements
+    var styleSheet = document.createElement("style")
+    styleSheet.type = "text/css"
+    styleSheet.innerText = 'td { font-size: 20px; }'; // Adjust the font size as needed
+    document.head.appendChild(styleSheet);
+  }
+}
+
+// Call the function when the page loads
+window.addEventListener("load", adjustStylesForIframe);
+window.addEventListener("load", onPageLoad);
   </script>
 
 <div style="text-align: center;">
