@@ -72,6 +72,18 @@
   #eventCodeInput {
     flex-grow: 1;
   }
+
+  #newOptionContainer {
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
   
   .button-container {
     display: flex;
@@ -121,11 +133,17 @@ nav a:hover {
     <option value="2024week0">2024 Week 0 Event</option>
     <option value="2024mabos">2024 Greater Boston Event</option>
 </select>
-<input type="text" id="customEventCode" style="display: none;" placeholder="Enter Event Code" />
+<button onclick="fetchMatches()">Load Matches</button>
+</div>
+
+<div id="newOptionContainer">
+  <input type="text" id="newOptionText" placeholder="Type new option here"/>
+      <button id="addOptionButton">Add Option</button>
+</div>
+
+<button id="saveAutoCanvas">Save Autonomous Canvas as PNG</button>
 
   
-  <button onclick="fetchMatches()">Load Matches</button>
-</div>
   
 
   <!-- <p style="font-size: 13px; text-align: center; width: 600px;">To use this tool, there are a couple steps. First, you need to know some of the bugs that 
@@ -160,8 +178,34 @@ nav a:hover {
 
 
 <script>
-  let isAuto = false;
+
+  // import saveCanvas from "save-canvas-to-image";
+
+
+
+  
   let eraserEnabled = false;
+
+  let selectedMatchKey = "";
+
+  document.getElementById('saveAutoCanvas').addEventListener('click', function() {
+    const canvas = document.getElementById('teleopCanvas');
+    const dataURL = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = `autonomous-${selectedMatchKey}-canvas.png`;
+    link.href = dataURL;
+    link.click();
+});
+
+  document.getElementById('addOptionButton').addEventListener('click', function() {
+        const selectElement = document.getElementById('eventCodeInput');
+        const newOptionText = document.getElementById('newOptionText').value;
+        if (newOptionText.trim() !== '') { // Ensure the input is not empty or just whitespace
+            const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
+            selectElement.add(newOptionElement);
+            document.getElementById('newOptionText').value = ''; // Clear the input field after adding
+        }
+    });
 
 
 
@@ -208,6 +252,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
 
     function onPageLoad() {
         switchTabs();
+        let isAuto = true;
     }
 
     function switchTabs() {
@@ -215,13 +260,13 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
       window.addEventListener("load", onPageLoad)
 
       if (canvasAuto.style.display != "none") {
-        console.log("autoCanvas is showing")
+        console.log("autoCanvas is not showing")
         canvasTeleop.style.display = "block"
         canvasAuto.style.display = "none"
         isAuto = false
-        tabLabel.textContent="Autonomous"
+        tabLabel.textContent="Auto"
       } else {
-        console.log("autoCanvas is not showing")
+        console.log("autoCanvas is showing")
         canvasTeleop.style.display = "none"
         canvasAuto.style.display = "block"
         isAuto = true
@@ -378,7 +423,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
     }
   
     function displayTeamsForSelectedMatch() {
-      const selectedMatchKey = matchSelect.value;
+      selectedMatchKey = matchSelect.value;
       const match = matches.find(m => m.key === selectedMatchKey);
       if (!match) return;
       clearCanvas();
