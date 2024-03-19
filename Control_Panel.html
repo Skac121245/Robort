@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Interactive Workspace</title>
     <style>
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             height: 100%;
@@ -20,16 +22,18 @@
             top: 0;
             background: #f0f0f0;
             padding: 10px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
             transition: left 0.5s;
         }
 
         #sidebarToggle {
-            right: 20px; /* Adjusted to not overlap edit mode button */
+            right: 20px;
+            /* Adjusted to not overlap edit mode button */
             position: fixed;
-    top: 20px; /* Adjust so it's below the edit mode button */
+            top: 5px;
+            /* Adjust so it's below the edit mode button */
 
-  
+
         }
 
         .iframe-option {
@@ -42,6 +46,28 @@
 
         .iframe-option:hover {
             background: #ccc;
+        }
+
+        nav {
+            background-color: #1df700;
+            margin: 20px auto;
+            text-align: center;
+            padding: 10px 0;
+            border-radius: 10px;
+            width: 700px;
+            display:block;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #000000;
+            margin: 0 10px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        nav a:hover {
+            color: #0056b3;
         }
 
         #workspace {
@@ -60,183 +86,229 @@
 
         #editModeToggle {
             position: fixed;
-            top: 20px;
-            right: 220px;
+            top: 5px;
+            right: 130px;
             z-index: 1000;
         }
 
         .edit-mode iframe {
             pointer-events: none;
-            user-select: none; 
+            user-select: none;
+        }
+
+        #hideNavButton{
+            position: absolute;
+            top: 30px;
+            right: 100px;
+            z-index:100;
         }
 
         .highlight {
-    animation: outlineFadeInOut 3s; /* Adjust duration as needed */
-}
+            animation: outlineFadeInOut 3s;
+            /* Adjust duration as needed */
+        }
 
-@keyframes outlineFadeInOut {
-    0%, 100% { outline: none; }
-    50% { outline: 4px solid yellow; } /* Change color and size as needed */
-}
+        @keyframes outlineFadeInOut {
 
+            0%,
+            100% {
+                outline: none;
+            }
 
+            50% {
+                outline: 4px solid yellow;
+            }
+
+            /* Change color and size as needed */
+        }
     </style>
 </head>
+
 <body>
 
-<div id="sidebar">
-    <div class="iframe-option" draggable="true" data-src="Matches_element.html">Matches_element</div>
-    <div class="iframe-option" draggable="true" data-src="preMatchChecklist.html">Pre Match Check</div>
-    <!-- Add more iframe options here -->
-</div>
-<div id="workspace"></div>
-<button id="editModeToggle">Toggle Move Mode</button>
-<button id="sidebarToggle">Toggle Sidebar</button> <!-- Toggle button for sidebar -->
-<div id="iframeList" style="position:fixed; top:60px; right:20px; width:180px;"></div>
-<script>
-    let editMode = false;
-    let dropped = false;
-    let dropped1 = false;
-    document.getElementById('editModeToggle').addEventListener('click', () => {
-        editMode = !editMode;
-        console.log("blah");
-        document.body.classList.toggle('edit-mode', editMode);
-    });
-
-    document.querySelectorAll('.iframe-option').forEach(option => {
-        option.addEventListener('dragstart', function(e) {
-            const src = option.getAttribute('data-src');
-            e.dataTransfer.setData('text/plain', src);
-        });
-    });
-
-    const workspace = document.getElementById('workspace');
-
-    workspace.addEventListener('dragover', function(e) {
-        e.preventDefault();
-    });
-
-    const toggleText = document.querySelector("#editModeToggle"); // Correct variable name
-toggleText.addEventListener("click", function() {
-    if (editMode) {
-        console.log("blurg")
-        this.textContent = "Move Mode Toggled On"; // Correct way to set text content
-    } else
-    {
-        this.textContent = "Move Mode Toggled Off"
-    }
-    if (!dropped && !dropped1) {
-        this.textContent = "Move Mode Toggled On";
-        dropped1 = true; 
-    } else if (!editMode)
-    {
-        this.textContent = "Move Mode Toggled Off";
-    }
-});
     
-    workspace.addEventListener('drop', function(e) {
-        e.preventDefault();
-        dropped = true;
-        const src = e.dataTransfer.getData('text/plain');
-        const iframeContainer = document.createElement('div');
-        iframeContainer.classList.add('iframe-container');
-        iframeContainer.style.left = (e.clientX - 250) + 'px'; // Adjusting to workspace offset
-        iframeContainer.style.top = e.clientY + 'px';
-        iframeContainer.innerHTML = `<iframe src="${src}" frameborder="0" style="width:100%; height:100%;"></iframe>`;
-        const uniqueId = `iframe-${Date.now()}`; // Generates a unique ID using current timestamp
-iframeContainer.id = uniqueId;
-// Create list item for iframe
-const listItem = document.createElement('div');
-listItem.style.padding = '10px';
-listItem.style.marginBottom = '5px';
-listItem.style.background = '#ddd';
-listItem.style.cursor = 'pointer';
-listItem.textContent = src.split('/').pop().split('.')[0]; // Display filename without extension as name
+    <nav id="nav" class="container">
+        <a href="./index.html">Home</a>
+        <a href="./Team_List_element.html">Teams</a>
+        <a href="./Strat_Board_w_tabs.html">Canvas</a>
+        <a href="./preMatchChecklist.html">Pre Match Checklist</a>
+        <a href="./Control_Panel.html">Control Panel</a>
 
-// Add delete icon
-const deleteIcon = document.createElement('span');
-deleteIcon.textContent = 'x';
-deleteIcon.style.float = 'right';
-deleteIcon.style.cursor = 'pointer';
-listItem.appendChild(deleteIcon);
+    </nav>
+    
+    <button id="hideNavButton">Hide Nav</button>
+    <div id="sidebar">
+        <div class="iframe-option" draggable="true" data-src="Matches_element.html">Matches_element</div>
+        <div class="iframe-option" draggable="true" data-src="preMatchChecklist.html">Pre Match Check</div>
+        <div class="iframe-option" draggable="true" data-src="DriverStationPopulate.html">Canvas
+        </div>
 
-// Append the list item to the iframe list
-document.getElementById('iframeList').appendChild(listItem);
-listItem.setAttribute('data-iframe-id', iframeContainer.id);
-listItem.addEventListener('click', function() {
-    const iframeId = this.getAttribute('data-iframe-id');
-    const targetIframeContainer = document.getElementById(iframeId);
-    targetIframeContainer.classList.add('highlight');
-    setTimeout(() => {
-        targetIframeContainer.classList.remove('highlight');
-    }, 3000); // Adjust to match the duration of the animation
-});
-
-
-// Delete functionality
-deleteIcon.addEventListener('click', function(event) {
-    event.stopPropagation(); // Prevent triggering listItem click event
-    const confirmDelete = confirm('Are you sure you want to delete this iframe?');
-    if (confirmDelete) {
-        iframeContainer.remove(); // Remove iframe from workspace
-        listItem.remove(); // Remove list item
-    }
-});
-
-        console.log("HI:", iframeContainer, editMode)
-        // if (editMode || true) {
-        // Enable moving and resizing
-        iframeContainer.style.resize = 'both';
-        iframeContainer.style.overflow = 'auto';
-        // iframeContainer.children.forEach(child => {
-        //     child.styles.
-        // })
-
-        let isDragging = false;
-
-
-        iframeContainer.addEventListener('mousedown', e => {
-            console.log("MOUSE DOWN")
-            if (!editMode) return;
-            isDragging = true;
-            let startX = e.pageX - iframeContainer.offsetLeft;
-            let startY = e.pageY - iframeContainer.offsetTop;
-
-            function onMove(e) {
-                if (!isDragging) return;
-                iframeContainer.style.left = (e.pageX - startX) + 'px';
-                iframeContainer.style.top = (e.pageY - startY) + 'px';
-            }
-
-            function onUp() {
-                isDragging = false;
-                window.removeEventListener('mousemove', onMove);
-                window.removeEventListener('mouseup', onUp);
-            }
-
-            window.addEventListener('mousemove', onMove);
-            window.addEventListener('mouseup', onUp);
+        <!-- Add more iframe options here -->
+    </div>
+    <div id="workspace"></div>
+    <button id="editModeToggle">Toggle Move Mode</button>
+    <button id="sidebarToggle">Toggle Sidebar</button> <!-- Toggle button for sidebar -->
+    <div id="iframeList" style="position:fixed; top:60px; right:20px; width:180px;"></div>
+    <script>
+        let editMode = false;
+        let dropped = false;
+        let dropped1 = false;
+        let ishideNav = false;
+        let navButton = document.getElementById('hideNavButton')
+        let nav = document.getElementById("nav")
+        document.getElementById('editModeToggle').addEventListener('click', () => {
+            editMode = !editMode;
+            console.log("blah");
+            document.body.classList.toggle('edit-mode', editMode);
         });
-        // }
 
-        workspace.appendChild(iframeContainer);
-    });
-    let sidebarVisible = true; // New variable to track the visibility of the sidebar
+        document.querySelectorAll('.iframe-option').forEach(option => {
+            option.addEventListener('dragstart', function (e) {
+                const src = option.getAttribute('data-src');
+                e.dataTransfer.setData('text/plain', src);
+            });
+        });
 
-// Sidebar toggle functionality
-document.getElementById('sidebarToggle').addEventListener('click', () => {
-    sidebarVisible = !sidebarVisible;
-    const sidebar = document.getElementById('sidebar');
-    const workspace = document.getElementById('workspace');
-    if (sidebarVisible) {
-        sidebar.style.left = '0';
-        workspace.style.marginLeft = '200px';
-    } else {
-        sidebar.style.left = '-200px';
-        workspace.style.marginLeft = '0';
-    }
-});
+        const workspace = document.getElementById('workspace');
 
-</script>
+        workspace.addEventListener('dragover', function (e) {
+            e.preventDefault();
+        });
+
+        const toggleText = document.querySelector("#editModeToggle"); // Correct variable name
+        toggleText.addEventListener("click", function () {
+            if (editMode) {
+                console.log("blurg")
+                this.textContent = "Move Mode Toggled On"; // Correct way to set text content
+            } else {
+                this.textContent = "Move Mode Toggled Off"
+            }
+            if (!dropped && !dropped1) {
+                this.textContent = "Move Mode Toggled On";
+                dropped1 = true;
+            } else if (!editMode) {
+                this.textContent = "Move Mode Toggled Off";
+            }
+        });
+
+        workspace.addEventListener('drop', function (e) {
+            e.preventDefault();
+            dropped = true;
+            const src = e.dataTransfer.getData('text/plain');
+            const iframeContainer = document.createElement('div');
+            iframeContainer.classList.add('iframe-container');
+            iframeContainer.style.left = (e.clientX - 250) + 'px'; // Adjusting to workspace offset
+            iframeContainer.style.top = e.clientY + 'px';
+            iframeContainer.innerHTML = `<iframe src="${src}" frameborder="0" style="width:100%; height:100%;"></iframe>`;
+            iframeContainer.id = `iframe-${src.replace(/[^a-zA-Z0-9]/g, '')}`; // Creates a unique ID by removing non-alphanumerics from the src
+            // Create list item for iframe
+            const listItem = document.createElement('div');
+            listItem.style.padding = '10px';
+            listItem.style.marginBottom = '5px';
+            listItem.style.background = '#ddd';
+            listItem.style.cursor = 'pointer';
+            listItem.textContent = src.split('/').pop().split('.')[0]; // Display filename without extension as name
+
+            // Add delete icon
+            const deleteIcon = document.createElement('span');
+            deleteIcon.textContent = 'x';
+            deleteIcon.style.float = 'right';
+            deleteIcon.style.cursor = 'pointer';
+            listItem.appendChild(deleteIcon);
+
+            // Append the list item to the iframe list
+            document.getElementById('iframeList').appendChild(listItem);
+            listItem.setAttribute('data-iframe-id', iframeContainer.id);
+            listItem.addEventListener('click', function () {
+                const iframeId = this.getAttribute('data-iframe-id');
+                const targetIframeContainer = document.getElementById(iframeId);
+                targetIframeContainer.classList.add('highlight');
+                setTimeout(() => {
+                    targetIframeContainer.classList.remove('highlight');
+                }, 3000); // Adjust to match the duration of the animation
+            });
+
+
+            // Delete functionality
+            deleteIcon.addEventListener('click', function (event) {
+                event.stopPropagation(); // Prevent triggering listItem click event
+                const confirmDelete = confirm('Are you sure you want to delete this iframe?');
+                if (confirmDelete) {
+                    iframeContainer.remove(); // Remove iframe from workspace
+                    listItem.remove(); // Remove list item
+                }
+            });
+
+            console.log("HI:", iframeContainer, editMode)
+            // if (editMode || true) {
+            // Enable moving and resizing
+            iframeContainer.style.resize = 'both';
+            iframeContainer.style.overflow = 'auto';
+            // iframeContainer.children.forEach(child => {
+            //     child.styles.
+            // })
+
+            let isDragging = false;
+
+
+            iframeContainer.addEventListener('mousedown', e => {
+                console.log("MOUSE DOWN")
+                if (!editMode) return;
+                isDragging = true;
+                let startX = e.pageX - iframeContainer.offsetLeft;
+                let startY = e.pageY - iframeContainer.offsetTop;
+
+                function onMove(e) {
+                    if (!isDragging) return;
+                    iframeContainer.style.left = (e.pageX - startX) + 'px';
+                    iframeContainer.style.top = (e.pageY - startY) + 'px';
+                }
+
+                function onUp() {
+                    isDragging = false;
+                    window.removeEventListener('mousemove', onMove);
+                    window.removeEventListener('mouseup', onUp);
+                }
+
+                window.addEventListener('mousemove', onMove);
+                window.addEventListener('mouseup', onUp);
+            });
+            // }
+
+            workspace.appendChild(iframeContainer);
+        });
+        let sidebarVisible = true; // New variable to track the visibility of the sidebar
+
+        // Sidebar toggle functionality
+        document.getElementById('sidebarToggle').addEventListener('click', () => {
+            sidebarVisible = !sidebarVisible;
+            const sidebar = document.getElementById('sidebar');
+            const workspace = document.getElementById('workspace');
+            if (sidebarVisible) {
+                sidebar.style.left = '0';
+                workspace.style.marginLeft = '200px';
+            } else {
+                sidebar.style.left = '-200px';
+                workspace.style.marginLeft = '0';
+            }
+        });
+
+        navButton.addEventListener("click", () => {
+            if (!ishideNav) {
+                console.log("Nav going bye bye")
+                ishideNav = true
+                nav.style.display = "none";
+            }
+            else if (ishideNav) {
+                console.log("nav is coming here!!!!")
+                ishideNav = false
+                nav.style.display = "block";
+            }
+
+
+        })
+            
+    </script>
 </body>
+
 </html>

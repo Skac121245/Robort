@@ -1,6 +1,6 @@
 {
   "name": "robort",
-  "version": "1.0.4",
+  "version": "1.0.7.alpha1",
   "description": "This is cool",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,8 @@
   "dependencies": {
     "electron-icon-maker": "^0.0.5",
     "electron-squirrel-startup": "^1.0.0",
+    "jspdf": "^2.5.1",
+    "save-canvas-to-image": "^0.1.1",
     "update-electron-app": "^3.0.0"
   }
 }

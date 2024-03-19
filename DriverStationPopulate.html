@@ -13,18 +13,6 @@
     align-items: center;
   }
 
-  .controls {
-    margin-bottom: 20px;
-    background-color: #ffffff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
   select, button, input {
     padding: 10px;
     margin-right: 5px;
@@ -95,7 +83,7 @@
 
   nav {
     background-color: #1df700;
-    width: 700px;
+    width: 500px;
     text-align: center;
     height: 20px;
     border-radius: 10px;
@@ -119,13 +107,6 @@ nav a:hover {
 </head>
 <body>
 
-  <nav>
-    <a href="./index.html">Home</a>
-    <a href="./Team_List_element.html">Teams</a>
-    <a href="./Strat_Board_w_tabs.html">Canvas</a>
-    <a href="./preMatchChecklist.html">Pre Match Checklist</a>
-    <a href="./Control_Panel.html">Control Panel</a>
-  </nav>
 
 <div class="controls">
 
@@ -142,33 +123,16 @@ nav a:hover {
       <button id="addOptionButton">Add Option</button>
 </div>
 
-<button id="saveAutoCanvas">Save Autonomous Canvas as PNG</button>
 
-  
-  
 
-  <!-- <p style="font-size: 13px; text-align: center; width: 600px;">To use this tool, there are a couple steps. First, you need to know some of the bugs that 
-    exists within this code. The main bug that exists is when you first get 
-    onto this page, you should click the "switch tabs" button to initializes 
-    the tab feature. Other bugs are as followed. When switching tabs for the first time, after you
-    initialize it, you have to select a different match and then switch back to 
-    the one you want to discuss. Also, the eraser erases the team numbers so be careful about crazy
-    erasing. Finally, when you want to switch events, select one from the dropdown list 
-    and then hit "load matches" to load the new data.
-  </p>
-   -->
-  
   <select id="matchSelect"></select>
   <div id="button-container">
     <button onclick="clearCanvas()">Clear</button>
     <button id="toggleEraser">Toggle Eraser</button>
-    <button onclick="switchTabs()"id="switchTabs">Switch Tabs</button>
   </div>
 
 
   <!-- <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri"/> -->
-
-<h1 id="tabLabel">Autonomous</h1>
 
 
   <canvas id="autoCanvas" width="1536" height="664" style="display: show;"></canvas>
@@ -188,15 +152,6 @@ nav a:hover {
   let eraserEnabled = false;
 
   let selectedMatchKey = "";
-
-  document.getElementById('saveAutoCanvas').addEventListener('click', function() {
-    const canvas = document.getElementById('teleopCanvas');
-    const dataURL = canvas.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.download = `autonomous-${selectedMatchKey}-canvas.png`;
-    link.href = dataURL;
-    link.click();
-});
 
   document.getElementById('addOptionButton').addEventListener('click', function() {
         const selectElement = document.getElementById('eventCodeInput');
