@@ -128,18 +128,18 @@
 
     
     <nav id="nav" class="container">
-        <a href="./index.html">Home</a>
-        <a href="./Team_List_element.html">Teams</a>
-        <a href="./Strat_Board_w_tabs.html">Canvas</a>
-        <a href="./preMatchChecklist.html">Pre Match Checklist</a>
-        <a href="./Control_Panel.html">Control Panel</a>
+        <a draggable="false" href="./index.html">Home</a>
+        <a draggable="false" href="./Team_List_element.html">Teams</a>
+        <a draggable="false" href="./Strat_Board_w_tabs.html">Canvas</a>
+        <a draggable="false" href="./preMatchChecklist.html">Pre Match Checklist</a>
+        <a draggable="false" href="./Control_Panel.html">Control Panel</a>
 
     </nav>
     
     <button id="hideNavButton">Hide Nav</button>
     <div id="sidebar">
-        <div class="iframe-option" draggable="true" data-src="Matches_element.html">Matches_element</div>
-        <div class="iframe-option" draggable="true" data-src="preMatchChecklist.html">Pre Match Check</div>
+        <div class="iframe-option" draggable="true" data-src="Matches_element.html">Matches</div>
+        <div class="iframe-option" draggable="true" data-src="preMatchChecklist.html">Pre-Match Checklist</div>
         <div class="iframe-option" draggable="true" data-src="DriverStationPopulate.html">Canvas
         </div>
 
@@ -198,7 +198,7 @@
             const iframeContainer = document.createElement('div');
             iframeContainer.classList.add('iframe-container');
             iframeContainer.style.left = (e.clientX - 250) + 'px'; // Adjusting to workspace offset
-            iframeContainer.style.top = e.clientY + 'px';
+            iframeContainer.style.top = (e.clientY - 150) + 'px';
             iframeContainer.innerHTML = `<iframe src="${src}" frameborder="0" style="width:100%; height:100%;"></iframe>`;
             const uniqueId = `iframe-${Date.now()}`; // Generates a unique ID using current timestamp
 iframeContainer.id = uniqueId;
@@ -233,11 +233,8 @@ iframeContainer.id = uniqueId;
             // Delete functionality
             deleteIcon.addEventListener('click', function (event) {
                 event.stopPropagation(); // Prevent triggering listItem click event
-                const confirmDelete = confirm('Are you sure you want to delete this iframe?');
-                if (confirmDelete) {
                     iframeContainer.remove(); // Remove iframe from workspace
                     listItem.remove(); // Remove list item
-                }
             });
 
             console.log("HI:", iframeContainer, editMode)
