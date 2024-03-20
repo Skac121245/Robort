@@ -108,6 +108,10 @@
             /* Adjust duration as needed */
         }
 
+        #cheatSheet {
+            display: flex;
+        }
+
         @keyframes outlineFadeInOut {
 
             0%,
@@ -140,8 +144,9 @@
     <div id="sidebar">
         <div class="iframe-option" draggable="true" data-src="Matches_element.html">Matches</div>
         <div class="iframe-option" draggable="true" data-src="preMatchChecklist.html">Pre-Match Checklist</div>
-        <div class="iframe-option" draggable="true" data-src="DriverStationPopulate.html">Canvas
-        </div>
+        <div class="iframe-option" draggable="true" data-src="DriverStationPopulate.html">Canvas</div>
+        <div id="cheatSheet" class="iframe-option" draggable="true" data-src="crescendo-cheat-sheet.png">Crescendo Cheat Sheet</div>
+
 
         <!-- Add more iframe options here -->
     </div>
@@ -154,6 +159,7 @@
         let dropped = false;
         let dropped1 = false;
         let ishideNav = false;
+        let currentlyDragging = null;
         let navButton = document.getElementById('hideNavButton')
         let nav = document.getElementById("nav")
         document.getElementById('editModeToggle').addEventListener('click', () => {
@@ -199,7 +205,16 @@
             iframeContainer.classList.add('iframe-container');
             iframeContainer.style.left = (e.clientX - 250) + 'px'; // Adjusting to workspace offset
             iframeContainer.style.top = (e.clientY - 150) + 'px';
-            iframeContainer.innerHTML = `<iframe src="${src}" frameborder="0" style="width:100%; height:100%;"></iframe>`;
+
+            if (src === "crescendo-cheat-sheet.png") {
+        // For the cheat sheet, use an img tag inside the container
+        iframeContainer.innerHTML = `<img src="${src}" style="max-width:600px; height:auto;">`;
+    } else {
+        // For all other types, use an iframe
+        iframeContainer.innerHTML = `<iframe src="${src}" frameborder="0" style="width:100%; height:100%;"></iframe>`;
+    }
+
+            // iframeContainer.innerHTML = `<iframe src="${src}" frameborder="0" style="width:100%; height:100%;"></iframe>`;
             const uniqueId = `iframe-${Date.now()}`; // Generates a unique ID using current timestamp
 iframeContainer.id = uniqueId;
 // Create list item for iframe
