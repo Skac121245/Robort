@@ -75,9 +75,11 @@
     #teamInfo {
       display: none;
       position: absolute;
-      top: 17%;
+      top: 32vh;
+      /* Adjusted to use vh instead of % */
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translateX(-50%);
+      /* Adjusted to only affect the horizontal position */
       width: 50%;
       text-align: center;
       border-radius: 10px;
@@ -92,36 +94,33 @@
     }
 
     body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 0; 
-    background-color: #f4f4f4; 
-    text-align: center; 
-}
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+      background-color: #f4f4f4;
+      text-align: center;
+    }
 
-nav {
-    background-color: #1df700; 
-    margin: 20px auto; 
-    text-align: center; 
-    padding: 10px 0; 
-    border-radius: 10px; 
-    width: 700px;
-}
+    nav {
+      background-color: #1df700;
+      margin: 20px auto;
+      text-align: center;
+      padding: 10px 0;
+      border-radius: 10px;
+      width: 700px;
+    }
 
-nav a {
-    text-decoration: none;
-    color: #000000;
-    margin: 0 10px;
-    font-weight: bold;
-    font-size: 20px;
-}
+    nav a {
+      text-decoration: none;
+      color: #000000;
+      margin: 0 10px;
+      font-weight: bold;
+      font-size: 20px;
+    }
 
-nav a:hover {
-    color: #0056b3; 
-}
-
-
-
+    nav a:hover {
+      color: #0056b3;
+    }
   </style>
 </head>
 
@@ -133,10 +132,10 @@ nav a:hover {
   <h5 style="text-align: center;">Click on a team for more info!</h5>
   <nav id="nav" class="container">
     <a href="./index.html">Home</a>
-        <a href="./Team_List_element.html">Teams</a>
-        <a href="./Strat_Board_w_tabs.html">Canvas</a>
-        <a href="./preMatchChecklist.html">Pre Match Checklist</a>
-        <a href="./Control_Panel.html">Control Panel</a>
+    <a href="./Team_List_element.html">Teams</a>
+    <a href="./Strat_Board_w_tabs.html">Canvas</a>
+    <a href="./preMatchChecklist.html">Pre Match Checklist</a>
+    <a href="./Control_Panel.html">Control Panel</a>
   </nav>
 
   <div style="text-align: center;">
