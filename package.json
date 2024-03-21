@@ -1,6 +1,6 @@
 {
   "name": "robort",
-  "version": "1.0.7.alpha1",
+  "version": "1.0.9",
   "description": "This is cool",
   "main": "index.js",
   "scripts": {
