@@ -57,65 +57,69 @@
         <a href="./preMatchChecklist.html">Pre Match Checklist</a>
         <a href="./Control_Panel.html">Control Panel</a>
     </nav>
-<h2>1. Shooter</h2>
-<p>
-<input type=checkbox>Wheel bolts secure<br>
-<input type=checkbox>Wheels move by hand<br>
-<input type=checkbox>Chain tensioned<br>
-<input type=checkbox>Climber secure<br>
-<input type=checkbox>Shooter angles by hand<br>
-<input type=checkbox>Guiding walls secure<br>
-</p>
-<h2>2. Intake</h2>
-<p>
-    <input type=checkbox>Shaft end bolts secure<br>
-    <input type=checkbox>Intake moves by hand<br>
-    <input type=checkbox>Intake wheels spin<br>
-    <input type=checkbox>Belts crossed/attached<br>
-    <input type=checkbox>Bearings on arm secure<br>
-    <input type=checkbox>Wires zip tied and secure<br>
-    </p>
-<h2>3. Swerve</h2>
-<p>
-    <input type=checkbox>Swerve modules drive by hand<br>
-    <input type=checkbox>Swerve modules steer by hand<br>
-    <input type=checkbox>Swerve wheel screws are tight<br>
-    <input type=checkbox>Swerve bolts to chassis are tight<br>
-    <input type=checkbox>Wheels aren't shredded<br>
-    <input type=checkbox>Encoder wires are secure<br>
-    </p>
-<h2>4. Electronics</h2>
-<p>
-    <input type=checkbox>Radio is secure<br>
-    <input type=checkbox>RoboRio is secure<br>
-    <input type=checkbox>PDH is secure<br>
-    <input type=checkbox>Camera is positioned correctly<br>
-    <input type=checkbox>Wires are clear of the shooter/intake<br>
-    <input type=checkbox>Robot Powers On<br> 
-</p>
-<h2>5. Software</h2>
-<p>
-    <input type=checkbox>No CAN errors<br>
-    <input type=checkbox>Swerve steer and drive<br>
-    <input type=checkbox>Check intake setpoints<br>
-    <input type=checkbox>Check shooter setpoints<br>
-    <input type=checkbox>Can intake note<br>
-    <input type=checkbox>Hand off works<br> 
-    <input type=checkbox>Robots shoots note<br> 
-    <input type=checkbox>Can source<br> 
-    <input type=checkbox>Can amp<br> 
-    <input type=checkbox>Can climb<br> 
-    <input type=checkbox>Power Off<br> 
-</p>
-<h2>6. Prematch</h2>
-<p>
-    <input type=checkbox>Change battery<br>
-    <input type=checkbox>Change bumpers<br>
-    <input type=checkbox>Lint roll and dryer sheet<br>
-    <input type=checkbox>No tools in the robot<br>
-    <input type=checkbox>Floorboards installed<br>
-    <input type=checkbox>Battery connector on the side not on top<br> 
-</p>
+    <div id="all" class="all">
+
+        <h2>1. Shooter</h2>
+        <p id="shooter">
+        <input type=checkbox>Wheel bolts secure<br>
+        <input type=checkbox>Wheels move by hand<br>
+        <input type=checkbox>Chain tensioned<br>
+        <input type=checkbox>Climber secure<br>
+        <input type=checkbox>Shooter angles by hand<br>
+        <input type=checkbox>Guiding walls secure<br>
+        </p>
+        <h2>2. Intake</h2>
+        <p id="intake">
+            <input type=checkbox>Shaft end bolts secure<br>
+            <input type=checkbox>Intake moves by hand<br>
+            <input type=checkbox>Intake wheels spin<br>
+            <input type=checkbox>Belts crossed/attached<br>
+            <input type=checkbox>Bearings on arm secure<br>
+            <input type=checkbox>Wires zip tied and secure<br>
+            </p>
+        <h2>3. Swerve</h2>
+        <p id="swerve">
+            <input type=checkbox>Swerve modules drive by hand<br>
+            <input type=checkbox>Swerve modules steer by hand<br>
+            <input type=checkbox>Swerve wheel screws are tight<br>
+            <input type=checkbox>Swerve bolts to chassis are tight<br>
+            <input type=checkbox>Wheels aren't shredded<br>
+            <input type=checkbox>Encoder wires are secure<br>
+            </p>
+        <h2>4. Electronics</h2>
+        <p id="">
+            <input type=checkbox>Radio is secure<br>
+            <input type=checkbox>RoboRio is secure<br>
+            <input type=checkbox>PDH is secure<br>
+            <input type=checkbox>Camera is positioned correctly<br>
+            <input type=checkbox>Wires are clear of the shooter/intake<br>
+            <input type=checkbox>Robot Powers On<br> 
+        </p>
+        <h2>5. Software</h2>
+        <p id="software">
+            <input type=checkbox>No CAN errors<br>
+            <input type=checkbox>Swerve steer and drive<br>
+            <input type=checkbox>Check intake setpoints<br>
+            <input type=checkbox>Check shooter setpoints<br>
+            <input type=checkbox>Can intake note<br>
+            <input type=checkbox>Hand off works<br> 
+            <input type=checkbox>Robots shoots note<br> 
+            <input type=checkbox>Can source<br> 
+            <input type=checkbox>Can amp<br> 
+            <input type=checkbox>Can climb<br> 
+            <input type=checkbox>Power Off<br> 
+        </p>
+        <h2>6. Prematch</h2>
+        <p id="prematch">
+            <input id="smt" type=checkbox>Change battery<br>
+            <input id="smt1" type=checkbox>Change bumpers<br>
+            <input id="smt2" type=checkbox>Lint roll and dryer sheet<br>
+            <input id="smt3" type=checkbox>No tools in the robot<br>
+            <input id="smt4" type=checkbox>Floorboards installed<br>
+            <input id="smt5" type=checkbox>Battery connector on the side not on top<br> 
+        </p>
+    </div>
+<button id="clear">Clear All</button>
 </body>
 <script>
     window.onload = function() {
@@ -127,5 +131,19 @@
             }
         }
     };
+
+    document.getElementById('clear').addEventListener('click', () => {
+        console.log("going")
+        document.getElementById("smt").checked = false;
+        document.getElementById("smt1").checked = false;
+        document.getElementById("smt2").checked = false;
+        document.getElementById("smt3").checked = false;
+        document.getElementById("smt4").checked = false;
+        document.getElementById("smt5").checked = false;
+
+
+
+
+    })
 </script>
 </html>

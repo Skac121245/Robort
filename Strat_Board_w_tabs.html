@@ -45,6 +45,9 @@
   button:hover {
     background-color: #45a049;
   }
+  #backgroundImage {
+    /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
+  }
 
   #autoCanvas {
       width: 100%;
@@ -144,20 +147,6 @@ nav a:hover {
 
 <button id="saveAutoCanvas">Save Autonomous Canvas as PNG</button>
 
-  
-  
-
-  <!-- <p style="font-size: 13px; text-align: center; width: 600px;">To use this tool, there are a couple steps. First, you need to know some of the bugs that 
-    exists within this code. The main bug that exists is when you first get 
-    onto this page, you should click the "switch tabs" button to initializes 
-    the tab feature. Other bugs are as followed. When switching tabs for the first time, after you
-    initialize it, you have to select a different match and then switch back to 
-    the one you want to discuss. Also, the eraser erases the team numbers so be careful about crazy
-    erasing. Finally, when you want to switch events, select one from the dropdown list 
-    and then hit "load matches" to load the new data.
-  </p>
-   -->
-  
   <select id="matchSelect"></select>
   <div id="button-container">
     <button onclick="clearCanvas()">Clear</button>
@@ -170,9 +159,10 @@ nav a:hover {
 
 <h1 id="tabLabel">Autonomous</h1>
 
-
+<div id="backgroundImage">
   <canvas id="autoCanvas" width="1536" height="664" style="display: show;"></canvas>
   <canvas id="teleopCanvas" width="1536" height="664" style="display: none;"></canvas>
+</div>
 
 
 
