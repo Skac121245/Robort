@@ -1,6 +1,6 @@
 {
   "name": "robort",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "This is cool",
   "main": "index.js",
   "scripts": {
@@ -17,14 +17,14 @@
   "author": "Ben Skraly",
   "license": "MIT",
   "devDependencies": {
-    "@electron-forge/cli": "^7.3.0",
+    "@electron-forge/cli": "^7.3.1",
     "@electron-forge/maker-deb": "^7.3.0",
     "@electron-forge/maker-rpm": "^7.3.0",
     "@electron-forge/maker-squirrel": "^7.3.0",
     "@electron-forge/maker-zip": "^7.3.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.3.0",
     "@electron-forge/plugin-fuses": "^7.3.0",
-    "@electron-forge/publisher-github": "^7.3.0",
+    "@electron-forge/publisher-github": "^7.3.1",
     "electron": "^29.1.4"
   },
   "dependencies": {

@@ -10,21 +10,30 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        certificateFile: './cert.pfx',
-        certificatePassword: process.env.KWARQS2423DUCK
+       bin: 'Robort'
+      },
+    },
+    // {
+    //   name: '@electron-forge/maker-zip',
+    //   // platforms: ['darwin', 'win64'],
+    // },
+    {
+      name: '@electron-forge/maker-deb',
+      config: {
+        bin: 'Robort'
       },
     },
     {
-      name: '@electron-forge/maker-zip',
-      platforms: ['darwin', 'win64'],
-    },
-    {
-      name: '@electron-forge/maker-deb',
-      config: {},
+      name: '@electron-forge/maker-dmg',
+      config: {
+        bin: 'Robort'
+      },
     },
     {
       name: '@electron-forge/maker-rpm',
-      config: {},
+      config: {
+        bin: 'Robort'
+      },
     },
   ],
   publishers: [
@@ -47,14 +56,14 @@ module.exports = {
     },
     // Fuses are used to enable/disable various Electron functionality
     // at package time, before code signing the application
-    new FusesPlugin({
-      version: FuseVersion.V1,
-      [FuseV1Options.RunAsNode]: false,
-      [FuseV1Options.EnableCookieEncryption]: true,
-      [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
-      [FuseV1Options.EnableNodeCliInspectArguments]: false,
-      [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
-      [FuseV1Options.OnlyLoadAppFromAsar]: true,
-    }),
+    // new FusesPlugin({
+    //   version: FuseVersion.V1,
+    //   [FuseV1Options.RunAsNode]: false,
+    //   [FuseV1Options.EnableCookieEncryption]: true,
+    //   [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
+    //   [FuseV1Options.EnableNodeCliInspectArguments]: false,
+    //   [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
+    //   [FuseV1Options.OnlyLoadAppFromAsar]: true,
+    // }),
   ],
 };

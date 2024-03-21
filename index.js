@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron')
+// if (require('electron-squirrel-startup') === true) app.quit();
 
 
 const createWindow = () => {
@@ -13,6 +14,7 @@ const createWindow = () => {
   app.whenReady().then(() => {
     createWindow()
   })
+
 
 console.log("what up dawg")
 
