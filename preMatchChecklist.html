@@ -48,6 +48,18 @@
             width: 30px;
             height: 30px;
         }
+
+        #clearCheckboxesButton{
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            background-color: #a2c4f8;
+            margin-bottom: 20px;
+            font-size: 20px;
+            justify-content: center;
+            
+
+        }
 </style>
 <body>
     <nav class="container" style="text-decoration:none;">
@@ -57,6 +69,9 @@
         <a href="./preMatchChecklist.html">Pre Match Checklist</a>
         <a href="./Control_Panel.html">Control Panel</a>
     </nav>
+
+    <button id="clearCheckboxesButton" style="margin: 20px;">Clear All Checkboxes</button>
+
     <div id="all" class="all">
 
         <h2>1. Shooter</h2>
@@ -119,9 +134,12 @@
             <input id="smt5" type=checkbox>Battery connector on the side not on top<br> 
         </p>
     </div>
-<button id="clear">Clear All</button>
+
 </body>
 <script>
+
+
+
     window.onload = function() {
         if (window.self !== window.top) {
             // The page is in an iframe
@@ -130,20 +148,16 @@
                 nav.style.display = 'none';
             }
         }
+        document.getElementById('clearCheckboxesButton').onclick = clearCheckboxes;
     };
 
-    document.getElementById('clear').addEventListener('click', () => {
-        console.log("going")
-        document.getElementById("smt").checked = false;
-        document.getElementById("smt1").checked = false;
-        document.getElementById("smt2").checked = false;
-        document.getElementById("smt3").checked = false;
-        document.getElementById("smt4").checked = false;
-        document.getElementById("smt5").checked = false;
+    function clearCheckboxes() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
+}
 
 
-
-
-    })
 </script>
 </html>
