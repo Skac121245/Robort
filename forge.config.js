@@ -14,10 +14,12 @@ module.exports = {
        bin: 'Robort'
       },
     },
-    // {
-    //   name: '@electron-forge/maker-zip',
-    //   // platforms: ['darwin', 'win64'],
-    // },
+    {
+      name: '@electron-forge/maker-zip',
+      config: {
+        bin: 'Robort'
+      },
+    },
     {
       name: '@electron-forge/maker-deb',
       config: {
