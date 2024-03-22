@@ -85,6 +85,7 @@
         nav a:hover {
             color: #0056b3;
         }
+
         .container {
             border-radius: 10px;
             max-width: 800px;
@@ -92,11 +93,52 @@
             padding: 20px;
             text-align: center;
         }
+
+        select#autoSelector {
+            padding: 8px 12px;
+            border: 2px solid #007bff;
+            /* Blue border to match your header color */
+            border-radius: 5px;
+            /* Rounded corners */
+            background-color: #f4f4f4;
+            /* Light grey background to match the page */
+            font-family: Arial, sans-serif;
+            /* Font family matching the rest of the page */
+            color: #333;
+            /* Text color */
+            cursor: pointer;
+            /* Change cursor to pointer to indicate it's clickable */
+            outline: none;
+            /* Remove the default focus outline */
+            margin-top: 10px;
+            /* Add some space above the dropdown */
+            margin-bottom: 20px;
+            /* Add some space below the dropdown */
+        }
+
+        select#autoSelector:hover {
+            background-color: #e2e6ea;
+            /* Slightly darker grey on hover */
+        }
+
+        select#autoSelector:focus {
+            border-color: #0056b3;
+            /* Darker blue when focused */
+            background-color: #e2e6ea;
+            /* Slightly darker grey to indicate focus */
+        }
+
+        /* You might want to add styles for the option elements as well, although
+   customization options are limited due to browser default styling. */
+        select#autoSelector option {
+            padding: 6px;
+            /* Add padding for options for better readability */
+        }
     </style>
 </head>
 
 <body>
-    
+
     <header>
         <link rel="manifest" href="/manifest.json">
         <div class="container">
@@ -118,12 +160,17 @@
     <div class="sections-container">
         <div class="section" id="auto">
             <h2>Auto</h2>
-            <p>-(2 Peice) Amp side to amp side note</p>
-            <p>-(2 Peice) Middle to middle note</p>
-            <p>-(2 Peice) Feederside to feederside note</p>
-            <p>-(2 Peice) Amp side to center line (first note from the amp side)</p>
-            <p>-(2 Peice) Amp side to center line (second note from the amp side)</p>
-            <p>-(3 Peice) Start Middle - Middle Note - Amp Side Note</p>
+            <!-- Dropdown for selecting an auto -->
+            <select id="autoSelector" onchange="updateAutoDisplay()">
+                <option value="amp2">Start Amp - Amp Note</option>
+                <option value="middle-middle">Start Middle - Middle Note</option>
+                <option value="feeder2">Start Feederside - Feederside Note</option>
+                <option value="amp to center1">Start Amp - Center Line (first note)</option>
+                <option value="amp to center2">Start Amp - Center Line (second note)</option>
+                <option value="3peiceAuto">Start Middle - Middle Note - Amp Side Note</option>
+            </select>
+            <p id="autoName">Select an auto...</p>
+            <img id="autoImage" src="" alt="Auto Description Image" style="width:400px; height:auto; display: none;">
         </div>
 
 
@@ -148,6 +195,52 @@
             <p>No harmonies, sorry... unless you talk us into it</p>
         </div>
     </div>
+
+    <script>
+        const autos = {
+            "amp2": {
+                name: "Amp side to amp side note",
+                img: "./images/amp2.png"
+            },
+            "middle-middle": {
+                name: "Middle to middle note",
+                img: "./images/middle-middle.jpeg"
+            },
+            "feeder2": {
+                name: "Feederside to feederside note",
+                img: "./images/feeder2.jpeg"
+            },
+            "amp to center1": {
+                name: "Amp side to center line (first note from the amp side)",
+                img: "./images/amp to center1.png"
+            },
+            "amp to center2": {
+                name: "Amp side to center line (second note from the amp side)",
+                img: "./images/amp to center2.png"
+            },
+            "3peiceAuto": {
+                name: "Start Middle - Middle Note - Amp Side Note",
+                img: "./images/3peiceAuto.png"
+            }
+        };
+
+        function updateAutoDisplay() {
+            const selector = document.getElementById('autoSelector');
+            const selectedValue = selector.value;
+            const autoName = document.getElementById('autoName');
+            const autoImage = document.getElementById('autoImage');
+
+            if (autos[selectedValue]) {
+                autoName.innerText = autos[selectedValue].name;
+                autoImage.src = autos[selectedValue].img;
+                autoImage.style.display = 'block';
+            } else {
+                autoName.innerText = 'Select an auto...';
+                autoImage.style.display = 'none';
+            }
+        }
+    </script>
+
 </body>
 
 </html>
