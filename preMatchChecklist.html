@@ -143,8 +143,8 @@
             <input id="smt5" type=checkbox>Battery connector on the side not on top<br> 
         </p>
     </div>
-
 </body>
+<footer><div id="saveIndicator" style="display: none; text-align: center; font-size: 12px; margin-top: 20px;">Last saved on: Never</div></footer>
 <script>
 
 
@@ -168,5 +168,55 @@
 }
 
 
+</script>
+<script src="electron.js"></script>
+<script> //localstorage
+document.addEventListener('DOMContentLoaded', (event) => {
+    if (typeof window !== 'undefined' && window.process && window.process.type === 'renderer') {
+        const clearButton = document.getElementById('clearCheckboxesButton');
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const saveIndicator = document.getElementById('saveIndicator');
+        
+        // Make the indicator visible only in Electron
+        saveIndicator.style.display = 'block';
+
+        // Function to update the last saved timestamp
+        function updateLastSavedTimestamp() {
+            const now = new Date();
+            saveIndicator.textContent = `Last saved on: ${now.toLocaleString()}`;
+        }
+
+        // Function to save the state of a single checkbox and update the timestamp
+        function saveCheckboxState(checkbox) {
+            const checkboxId = checkbox.id || `checkbox-${checkbox.dataset.index}`;
+            localStorage.setItem(checkboxId, checkbox.checked);
+            updateLastSavedTimestamp();
+        }
+
+        // Load and apply saved states
+        checkboxes.forEach((checkbox, index) => {
+            const checkboxId = checkbox.id || `checkbox-${index}`;
+            checkbox.dataset.index = index;
+            const savedState = localStorage.getItem(checkboxId);
+            if (savedState !== null) {
+                checkbox.checked = savedState === 'true';
+            }
+
+            // Save state upon change and update the timestamp
+            checkbox.addEventListener('change', () => saveCheckboxState(checkbox));
+        });
+
+        // Clear all checkboxes, save their states, and update the timestamp
+        clearButton.addEventListener('click', () => {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+                saveCheckboxState(checkbox); // Also updates the timestamp
+            });
+        });
+
+        // Initial update to the timestamp when the page loads
+        updateLastSavedTimestamp();
+    }
+});
 </script>
 </html>
