@@ -73,22 +73,25 @@
     }
 
     #teamInfo {
-      display: none;
-      position: absolute;
-      top: 32vh;
-      /* Adjusted to use vh instead of % */
-      left: 50%;
-      transform: translateX(-50%);
-      /* Adjusted to only affect the horizontal position */
-      width: 50%;
-      text-align: center;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-      background-color: #f2f2f2;
-      z-index: 1;
-    }
-
+  display: none;
+  position: fixed; /* Use fixed to keep it in view even on scroll */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%; /* or any specific width */
+  text-align: center;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  background-color: #f2f2f2;
+  z-index: 20; /* Ensure it's above the backdrop */
+}
+@media (max-width: 600px) {
+  #teamInfo {
+    width: 80%;
+    padding: 10px;
+  }
+}
     #teamInfo h2 {
       margin-bottom: 20px;
     }
@@ -121,6 +124,33 @@
     nav a:hover {
       color: #0056b3;
     }
+
+    .modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 10;
+  display: none;
+}
+
+.modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  /* Ensure your modal content stands out */
+}
+
+.blur-effect {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+}
+
   </style>
 </head>
 
@@ -143,7 +173,7 @@
     <input type="checkbox" id="showRankings" onchange="fetchTeams()">
     <label for="showRankings">Show Rankings</label><br>
     <label for="eventCode">Enter Event Code:</label>
-    <input type="text" id="eventCode" value="2023necmp2">
+    <input type="text" id="eventCode" value="2024mabos">
     <button onclick="fetchTeams()">Load</button>
   </div>
 
@@ -290,7 +320,18 @@
 
     function displayTeamData(teamData) {
       const teamsTable = document.getElementById('teamsTable');
-      const teamInfo = document.getElementById('teamInfo');
+  const rankingsTable = document.getElementById('rankingsTable');
+  const teamInfo = document.getElementById('teamInfo');
+  const modalBackdrop = document.createElement('div');
+  modalBackdrop.className = 'modal-backdrop';
+  document.body.appendChild(modalBackdrop);
+  
+  modalBackdrop.style.display = 'block';
+  teamsTable.classList.add('blur-effect');
+  rankingsTable.classList.add('blur-effect');
+  
+  teamInfo.style.display = 'block';
+  document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
 
       document.getElementById('teamTitle').innerText = `Team ${teamData.team_number} - ${teamData.nickname}`;
       document.getElementById('teamLocation').innerText = `Location: ${teamData.city}, ${teamData.state_prov}, ${teamData.country}`;
@@ -317,6 +358,8 @@
       document.getElementById('teamTitle').innerText = `Team ${teamNumber} - ${teamData.name}`;
       document.getElementById('teamInfoText').innerText = teamData.description;
       document.getElementById('teamInfo').style.display = 'block';
+
+      
     }
 
     function closeInfo() {
@@ -334,15 +377,24 @@
 
 
     function goBack() {
-      const teamsTable = document.getElementById('teamsTable');
-      const teamInfo = document.getElementById('teamInfo');
+  const teamsTable = document.getElementById('teamsTable');
+  const rankingsTable = document.getElementById('rankingsTable');
+  const teamInfo = document.getElementById('teamInfo');
+  const modalBackdrop = document.querySelector('.modal-backdrop');
 
-      teamsTable.style.display = 'table';
-      teamInfo.style.display = 'none';
-    }
+  teamsTable.style.display = 'table';
+  teamsTable.classList.remove('blur-effect');
+  rankingsTable.classList.remove('blur-effect');
+  
+  teamInfo.style.display = 'none';
+  document.body.style.overflow = ''; // Re-enable scrolling
+  
+  modalBackdrop.remove(); // Remove the backdrop
+}
+
 
   </script>
-
+<script src="electron.js"></script>
 </body>
 
 </html>
