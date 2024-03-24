@@ -457,7 +457,8 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
       y: rectY,
       width: textWidth + padding, 
       height: rectHeight,
-      color: color
+      color: color,
+      text: teamNumber
     });
   });
 }
@@ -523,17 +524,34 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
 }
 
   
-    function clearCanvas() {
-      if (isAuto) {
-        ctx = ctxAuto
-        canvas = canvasAuto
-      } else {
-        ctx = ctxTeleop
-        canvas = canvasTeleop
-      }
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-    }
+function clearCanvas() {
+  if (isAuto) {
+    ctx = ctxAuto
+    canvas = canvasAuto
+  } else {
+    ctx = ctxTeleop
+    canvas = canvasTeleop
+  }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // After clearing, redraw the team number boxes
+  teamPositions.forEach(team => {
+    drawTeamNumberBox(team.x, team.y, team.width, team.height, team.color, team.text);
+  });
+}
+
+function drawTeamNumberBox(x, y, width, height, color, text) {
+  ctx.fillStyle = color;
+  // Draw rectangle for team number background
+  ctx.fillRect(x, y, width, height);
+  ctx.fillStyle = 'black'; // Assuming text color is always black
+  // Adjustments for text positioning within the rectangle if needed
+  ctx.font = '40px Arial'; // Ensure this matches the initial drawing's font
+  // Calculate the y position to vertically center the text in the rectangle
+  const textY = y + height / 2 + ctx.measureText(text).actualBoundingBoxAscent / 2;
+  ctx.fillText(text, x + (width / 2) - (ctx.measureText(text).width / 2), textY); // Center the text inside the rectangle
+}
+
   
     matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
     fetchMatches();
