@@ -3,7 +3,7 @@
 <head>
   <title>FRC Match Strategy Planner</title>
   <style>
-    body {
+   body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 20px;
@@ -98,11 +98,14 @@
 
   nav {
     background-color: #1df700;
-    width: 900px;
+    width: 100%;
     text-align: center;
-    height: 20px;
-    border-radius: 10px;
     padding: 10px 0;
+    border-radius: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Ensures nav items wrap in smaller screens */
   }
 
   nav a {
@@ -111,13 +114,31 @@
     margin: 0 10px;
     font-weight: bold;
     font-size: 20px;
-}
+    padding: 10px;
+    background-color: #1df700; /* Makes sure each link has a green background */
+  }
 
+  nav a:hover {
+    color: #0056b3;
+  }
+/* Media Query for screens with a max-width of 600px */
+@media (max-width: 600px) {
+    nav {
+      flex-direction: column;
+    }
 
-nav a:hover {
-    color: #0056b3; 
-}
+    nav a {
+      width: 100%; /* Ensures each link uses the full width of nav */
+      margin: 5px 0; /* Adjusts spacing between links in the vertical layout */
+      padding: 0;
+    }
+  }
 
+    /* Adjust the .controls container to stack its children vertically */
+    .controls {
+      flex-direction: column;
+      align-items: center; /* Align items for a centered layout */
+    }
   </style>
 </head>
 <body>
