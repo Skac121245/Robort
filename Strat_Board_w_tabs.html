@@ -525,6 +525,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
 
   
 function clearCanvas() {
+  
   if (isAuto) {
     ctx = ctxAuto
     canvas = canvasAuto
@@ -533,7 +534,7 @@ function clearCanvas() {
     canvas = canvasTeleop
   }
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+   ctx.globalCompositeOperation = 'source-over';
   // After clearing, redraw the team number boxes
   teamPositions.forEach(team => {
     drawTeamNumberBox(team.x, team.y, team.width, team.height, team.color, team.text);
