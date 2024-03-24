@@ -72,6 +72,7 @@
             height: 20px;
             border-radius: 10px;
             padding: 10px 0;
+            transition: transform 0.3s ease-in-out;
         }
 
         nav a {
@@ -144,11 +145,79 @@
     display: block; /* Display block to allow for margin auto to work */
     margin: auto; /* Center the image within its container */
 }
+
+.hamburger-menu {
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+}
+
+.hamburger-menu .bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    background-color: #333;
+}
+
+@media screen and (max-width: 768px) {
+    .hamburger-menu {
+        display: block;  }
+
+     nav {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 100%; /* Positioned off-screen to the right */
+        width: 100%; /* Takes full width */
+        height: 100vh; /* Takes full height */
+        background-color: #1df700; /* The green background */
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-top: 60px;
+        box-sizing: border-box;
+        z-index: 1; /* Ensure it's below the hamburger menu */
+        overflow-y: auto; /* Allows scrolling if content is too long */
+        transform: translateX(-100%); /* Hidden by default */
+    }
+
+    nav a {
+        display: block;
+        margin: 10px 0; /* Adjusted margins for better spacing */
+        font-size: 18px; /* Adjusted font size for readability */
+        color: #000000; /* Text color for the links */
+        text-decoration: none;
+        transition: color 0.3s; /* Smooth color transition for hover */
+    }
+
+    nav a:hover {
+        color: #0056b3; /* Hover color for links */
+    }
+
+    .nav-inactive {
+        transform: translateX(0%); /* Keep nav off-screen */
+    }
+
+    .nav-active {
+        transform: translateX(-100%);
+    }
+}
+
+
     </style>
 </head>
 
 <body>
-
+    <div class="hamburger-menu">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
     <header>
         <link rel="manifest" href="/manifest.json">
         <div class="container">
@@ -279,6 +348,28 @@
                 autoImage.style.display = 'none';
             }
         }
+    </script>
+    <script>
+     document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.querySelector('.hamburger-menu');
+    const nav = document.querySelector('nav');
+
+    // Initialize the nav as inactive (hidden)
+    nav.classList.add('nav-inactive');
+
+    hamburger.addEventListener('click', function() {
+        // Toggle between active and inactive states
+        if (nav.classList.contains('nav-inactive')) {
+            nav.classList.remove('nav-inactive');
+            nav.classList.add('nav-active');
+        } else {
+            nav.classList.remove('nav-active');
+            nav.classList.add('nav-inactive');
+        }
+    });
+});
+
+
     </script>
 <script src="electron.js"></script>
 </body>
