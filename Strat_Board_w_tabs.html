@@ -436,6 +436,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
   const padding = 10; // Padding around the text for the outline box
 
   teamKeys.forEach((key, index) => {
+    clearCanvas()
     const teamNumber = key.replace('frc', '');
     const position = positions[index];
     const color = teamColors[alliance][index];
