@@ -135,9 +135,9 @@ nav a:hover {
 <div class="controls">
 
   <select id="eventCodeInput">
+    <option value="2024mabos">2024 Greater Boston Event</option>
     <option value="2024mabri">2024 Week 2 BSU Event</option>
     <option value="2024week0">2024 Week 0 Event</option>
-    <option value="2024mabos">2024 Greater Boston Event</option>
 </select>
 <button onclick="fetchMatches()">Load Matches</button>
 </div>
@@ -538,6 +538,5 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
     matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
     fetchMatches();
   </script>  
-  <script src="electron.js"></script>
 </body>
 </html>

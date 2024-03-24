@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
       landing.innerHTML = '';
       const dropdown = document.getElementById("teamHighlight");
       dropdown.innerHTML = '';
-      const eventCode = document.getElementById("eventCode").value || "2024mabri";
+      const eventCode = document.getElementById("eventCode").value || "2024mabos";
       setupWebhookSubscription(eventCode);
     }
 
@@ -328,9 +328,9 @@ window.addEventListener("load", onPageLoad);
 
   <div class="controls">
     <select id="eventCode">
+      <option value="2024mabos">2024 Greater Boston Event</option>
       <option value="2024mabri">2024 Week 2 BSU Event</option>
       <option value="2024week0">2024 Week 0 Event</option>
-      <option value="2024mabos">2024 Greater Boston Event</option>
     </select>
     <button onclick="onPageLoad()">Load Data</button><br><br>
   </div>
