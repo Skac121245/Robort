@@ -12,7 +12,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4; 
+            background-color: gray; 
             text-align: center;
         }
         header {
@@ -134,6 +134,7 @@
         <a href="./preMatchChecklist.html">Pre Match Checklist</a>
         <a href="./Control_Panel.html">Control Panel</a>
         <a href="./2423_Features.html">Features</a>
+        <a href="./Config_tab.html">Configure</a>
     </nav>
     <!--Countdown Clock-->
     <!DOCTYPE html>
@@ -144,7 +145,7 @@
     <title>FRC Kickoff Countdown</title>
     <style>
         #lcd-container {
-            background-color: rgb(255, 255, 255);
+            background-color: #f5f5f5;
             padding: 0px;
             border-radius: 10px;
             width: 100%;
@@ -606,24 +607,26 @@
 <body>
   <script>
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('addOptionButton').addEventListener('click', function() {
-        const selectElement = document.getElementById('eventCode');
-        const newOptionText = document.getElementById('newOptionText').value;
-        if (newOptionText.trim() !== '') {
-            const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
-            selectElement.add(newOptionElement);
-            document.getElementById('newOptionText').value = '';
-        }
-    });
-});
+// document.addEventListener('DOMContentLoaded', function() {
+//     document.getElementById('addOptionButton').addEventListener('click', function() {
+//         const selectElement = document.getElementById('eventCode');
+//         const newOptionText = document.getElementById('newOptionText').value;
+//         if (newOptionText.trim() !== '') {
+//             const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
+//             selectElement.add(newOptionElement);
+//             document.getElementById('newOptionText').value = '';
+//         }
+//     });
+// });
     
       function onPageLoad() {
       const landing = document.getElementById("google.blah");
       landing.innerHTML = '';
       const dropdown = document.getElementById("teamHighlight");
       dropdown.innerHTML = '';
-      const eventCode = document.getElementById("eventCode").value || "2024mabos";
+      const eventCode = localStorage.getItem('eventCode')
+    document.getElementById('eventCode').textContent = eventCode;
+    //   const eventCode = document.getElementById("eventCode").value || "2024mabos";
       setupWebhookSubscription(eventCode);
     }
 
@@ -797,21 +800,22 @@ window.addEventListener("load", onPageLoad);
 
 <div style="text-align: center;">
   <h1>Matches</h1>
-  <label for="eventCode">Event Code Select: </label>
+  <h2>Current Event Code: <span id="eventCode"></span></h2>
+  <!-- <label for="eventCode">Event Code Select: </label> -->
 
-  <div class="controls">
+  <!-- <div class="controls">
     <select id="eventCode">
       <option value="2024mabos">2024 Greater Boston Event</option>
       <option value="2024mabri">2024 Week 2 BSU Event</option>
       <option value="2024week0">2024 Week 0 Event</option>
     </select>
     <button onclick="onPageLoad()">Load Data</button><br><br>
-  </div>
+  </div> -->
   
-  <div id="newOptionContainer">
+  <!-- <div id="newOptionContainer">
     <input type="text" id="newOptionText" placeholder="Type new event code..."/>
         <button id="addOptionButton">Add Option</button>
-  </div>
+  </div> -->
 
 
 

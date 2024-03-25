@@ -221,7 +221,7 @@
     <header>
         <link rel="manifest" href="/manifest.json">
         <div class="container">
-            <h1>The Features of team 2423's "Con-duck-tor"</h1>
+            <h1>The Features of team <span id="displayTeamNumber"></span></h1>
             <h2>Hello alliance partners! This is what we do!</h2>
         </div>
     </header>
@@ -264,13 +264,14 @@
             <h2>Teleop</h2>
             <div id="pickup">
                 <h4>Pickup!</h4>
-                <h5>We Do It ALL!</h5>
-                <p>Ground + Source</p>
+                <h5><span id="display_ground"></span></h5>
+                <h5><span id="display_source"></span></h5>
             </div>
             <div id="scoring">
                 <h4>Scoring!</h4>
-                <p>-Speaker (Any Distance!)</p>
-                <p>-Amp (Suppa speedy!)</p>
+                <h5><span id="speaker"></span></h5>
+                <h5><span id="distance_shoot"></span></h5>
+                <h5><span id="amp"></span></h5>
             </div>
         </div>
 
@@ -280,12 +281,12 @@
             <p>No harmonies, sorry... unless you talk us into it</p>
             <h2>General Pit Scouting Questions</h2>
             <h3>Dimensions</h3>
-            <p>26 inches square (no bumpers)</p>
-            <p>32 inches square (yes bumpers)</p>
+            <p><span id="dim_w_bump"></span> inches square (yes bumpers)</p>
+            <p><span id="dim_wout_bump"></span> inches square (no bumpers)</p>
             <h3>Drivetrain</h3>
-            <p>REV Swerve</p>
+            <p><span id="drive_train"></span></p>
             <h3>Weight</h3>
-            <p>96 lbs</p>
+            <p><span id="weight"></span> lbs</p>
         </div>
     </div>
 
@@ -353,6 +354,29 @@
      document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger-menu');
     const nav = document.querySelector('nav');
+    const teamNumber = localStorage.getItem('teamNumber'); // Retrieve the team number from local storage
+    const dim_w_bump = localStorage.getItem('dim_w_bump'); // Retrieve the team number from local storage
+    const dim_wout_bump = localStorage.getItem('dim_wout_bump'); // Retrieve the team number from local storage
+    const drive_train = localStorage.getItem('drive_train'); // Retrieve the team number from local storage
+    const weight = localStorage.getItem('weight'); // Retrieve the team number from local storage
+    const ground = JSON.stringify(localStorage.getItem('ground')); // Convert to boolean
+    const source = JSON.stringify(localStorage.getItem('source')); // Convert to boolean
+    const speaker = JSON.stringify(localStorage.getItem('speaker')); // Convert to boolean
+    const distance_shoot = JSON.stringify(localStorage.getItem('distance_shoot')); // Convert to boolean
+    const amp = JSON.stringify(localStorage.getItem('amp')); // Convert to boolean
+
+
+    document.getElementById('displayTeamNumber').textContent = teamNumber;
+    document.getElementById('dim_w_bump').textContent = dim_w_bump;
+    document.getElementById('dim_wout_bump').textContent = dim_wout_bump;
+    document.getElementById('drive_train').textContent = drive_train;
+    document.getElementById('weight').textContent = weight;
+    document.getElementById('display_ground').textContent = `Ground: ${ground}`;
+    document.getElementById('display_source').textContent = `Source Pickup: ${source}`;
+    document.getElementById('speaker').textContent = `Speaker: ${speaker}`;
+    document.getElementById('distance_shoot').textContent = `Shoot from distance: ${distance_shoot}`;
+    document.getElementById('amp').textContent = `Amp: ${amp}`;
+
 
     // Initialize the nav as inactive (hidden)
     nav.classList.add('nav-inactive');
