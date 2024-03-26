@@ -131,11 +131,16 @@
         <a href="./index.html">Home</a>
         <a href="./Team_List_element.html">Teams</a>
         <a href="./Strat_Board_w_tabs.html">Canvas</a>
-        <a href="./preMatchChecklist.html">Pre Match Checklist</a>
+        <a href="./Checklist.html">Pre Match Checklist</a>
         <a href="./Control_Panel.html">Control Panel</a>
         <a href="./2423_Features.html">Features</a>
         <a href="./Config_tab.html">Configure</a>
     </nav>
+
+
+
+
+
     <!--Countdown Clock-->
     <!DOCTYPE html>
 <html lang="en">
@@ -471,165 +476,201 @@
 
 </html>
 
+
+
+
+
+
+
+
     <!--Matches Element-->
     <!DOCTYPE html>
-<html>
-
-<head>
-  <style>
-    body{
-      background-color: #f4f4f4;
-    }
-      table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 10px 5px;
-    }
-
-    td, th {
-      padding: 10px;
-      text-align: center;
-      width: 10%;
-      font-weight: bold;
-    }
-
-    th {
-      border-bottom: 2px solid black;
-      border-top: 2px solid gray;
-    }
-
-    .blue-cell {
-      background-color: #0000FF;
-      color: white;
-    }
-
-    .red-cell {
-      background-color: #FF0000;
-      color: white;
-    }
-
-    .highlight {
-      background-color: rgb(72, 208, 65);
-    }
-
-    h1 {
-      text-align: center;
-      font-family: inherit;
-    }
-
-    #eventCode, #teamHighlight {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-    }
-
-    button {
-      padding: 11px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-
-    label {
-      font-size: 18px;
-      margin-right: 10px;
-    }
-
-    .error-message {
-      text-align: center;
-      font-size: 18px;
-      color: red;
-    }
-
-    @media(max-width: 768px) {
-      table, td, th {
-        font-size: 12px;
-        padding: 0px;
-      }
-
-      #eventCode, #teamHighlight {
-        width: 100%;
-        padding: 8px;
-        font-size: 14px;
-        margin-bottom: 10px; /* Added margin for spacing */
-      }
-
-      button {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px; /* Added margin for spacing */
-      }
-
-      label {
-        display: block;
-        margin: 10px 0 5px 0;
-        font-size: 16px;
-      }
-    }
-
-    .controls {
-    margin-bottom: 10px;
-    /* background-color: #ffffff; */
-    padding: 15px;
-    border-radius: 8px;
-    /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  #eventCodeInput {
-    flex-grow: 1;
-  }
-
-  #newOptionContainer {
-    margin-bottom: 20px;
-    /* background-color: #ffffff; */
-    padding: 1px;
-    border-radius: 8px;
-    /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  </style>
-</head>
-
-<body>
-  <script>
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     document.getElementById('addOptionButton').addEventListener('click', function() {
-//         const selectElement = document.getElementById('eventCode');
-//         const newOptionText = document.getElementById('newOptionText').value;
-//         if (newOptionText.trim() !== '') {
-//             const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
-//             selectElement.add(newOptionElement);
-//             document.getElementById('newOptionText').value = '';
-//         }
-//     });
-// });
+    <html>
     
-      function onPageLoad() {
+    <head>
+      <style>
+        body{
+          background-color: #f4f4f4;
+        }
+          table {
+          width: 100%;
+          border-collapse: separate;
+          border-spacing: 10px 5px;
+        }
+    
+        td, th {
+          padding: 10px;
+          text-align: center;
+          width: 10%;
+          font-weight: bold;
+        }
+    
+        th {
+          border-bottom: 2px solid black;
+          border-top: 2px solid gray;
+        }
+    
+        .blue-cell {
+          background-color: #0000FF;
+          color: white;
+        }
+    
+        .red-cell {
+          background-color: #FF0000;
+          color: white;
+        }
+    
+        .highlight {
+          background-color: rgb(72, 208, 65);
+        }
+    
+        h1 {
+          text-align: center;
+          font-family: inherit;
+        }
+    
+        #eventCode, #teamHighlight {
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 16px;
+        }
+    
+        button {
+          padding: 11px 20px;
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+    
+        button:hover {
+          background-color: #45a049;
+        }
+    
+        label {
+          font-size: 18px;
+          margin-right: 10px;
+        }
+    
+        .error-message {
+          text-align: center;
+          font-size: 18px;
+          color: red;
+        }
+    
+        @media(max-width: 768px) {
+          table, td, th {
+            font-size: 12px;
+            padding: 0px;
+          }
+    
+          #eventCode, #teamHighlight {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            margin-bottom: 10px; /* Added margin for spacing */
+          }
+    
+          button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px; /* Added margin for spacing */
+          }
+    
+          label {
+            display: block;
+            margin: 10px 0 5px 0;
+            font-size: 16px;
+          }
+        }
+    
+        .controls {
+        margin-bottom: 10px;
+        /* background-color: #ffffff; */
+        padding: 15px;
+        border-radius: 8px;
+        /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    
+      #eventCodeInput {
+        flex-grow: 1;
+      }
+    
+      #newOptionContainer {
+        margin-bottom: 20px;
+        /* background-color: #ffffff; */
+        padding: 1px;
+        border-radius: 8px;
+        /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    
+      button, label[for='uploadMatchData'] { /* Apply similar styles to button and label */
+          display: inline-block; /* Required for proper spacing and alignment */
+          padding: 11px 20px;
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 16px; /* Match your button font size */
+          text-align: center; /* Center text for aesthetic reasons */
+          margin: 5px; /* Optional: to provide spacing around buttons */
+          transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+        }
+    
+        label[for='uploadMatchData']:hover {
+          background-color: #45a049;
+        }
+    
+        #uploadMatchData {
+          display: none; /* Hide the actual file input */
+        }
+      </style>
+    </head>
+    
+    <body>
+      <script>
+    
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     document.getElementById('addOptionButton').addEventListener('click', function() {
+    //         const selectElement = document.getElementById('eventCode');
+    //         const newOptionText = document.getElementById('newOptionText').value;
+    //         if (newOptionText.trim() !== '') {
+    //             const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
+    //             selectElement.add(newOptionElement);
+    //             document.getElementById('newOptionText').value = '';
+    //         }
+    //     });
+    // });
+    
+        let apiData = [];
+        let eventCode = "";
+
+        
+        
+        function onPageLoad() {
       const landing = document.getElementById("google.blah");
       landing.innerHTML = '';
       const dropdown = document.getElementById("teamHighlight");
       dropdown.innerHTML = '';
-      const eventCode = localStorage.getItem('eventCode')
-    document.getElementById('eventCode').textContent = eventCode;
-    //   const eventCode = document.getElementById("eventCode").value || "2024mabos";
+      eventCode = localStorage.getItem('eventCode');
+      document.getElementById('eventCode').textContent = eventCode;
       setupWebhookSubscription(eventCode);
+      console.log(eventCode)
     }
 
+
+    
     function setupWebhookSubscription(eventCode) {
       const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
       fetch(webhookEndpoint, {
@@ -638,245 +679,314 @@
           "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
         },
       })
-      .then((response) => {
+      .then(response => {
         if (!response.ok) {
           throw new Error('Invalid Event Code');
         }
         return response.json();
       })
-      .then((responseData) => {
-        writeMatchResults(responseData);
+      .then(responseData => {
+        apiData = responseData;
+        writeMatchResults(apiData);
         highlightCells();
       })
-      .catch((error) => {
-        const errorMsg = document.createElement("div");
-        errorMsg.textContent = "Invalid Event Code. Please try again.";
-        errorMsg.className = "error-message";
-        document.getElementById("google.blah").appendChild(errorMsg);
+      .catch(error => {
+        console.error("Fetch error: ", error);
+        displayUploadOption(); // Display upload option if API fetch fails
+        document.getElementById('uploadSection').style.display = 'block';
+        document.getElementById('eventCode').textContent = ""
       });
     }
+    
+        function writeMatchResults(data) {
 
-    function writeMatchResults(data) {
-    data.sort((a, b) => {
-        const order = ["qm", "qf", "sf", "f"];
-        if (order.indexOf(a.comp_level) !== order.indexOf(b.comp_level)) {
-            return order.indexOf(a.comp_level) - order.indexOf(b.comp_level);
-        }
-        return a.match_number - b.match_number;
-    });
 
-    var element = document.createElement("table");
-    var landing = document.getElementById("google.blah");
-    landing.appendChild(element);
-    element.id = "google.yay";
+            const landing = document.getElementById("google.blah");
+    landing.innerHTML = '';  // This ensures any previous data is removed
 
-    var headerRow = document.createElement("tr");
-    var headers = ["Match","Winning Alliance", "Blue 1", "Blue 2", "Blue 3", "Red 1", "Red 2", "Red 3"];
-    headers.forEach(headerText => {
-        var headerCell = document.createElement("th");
-        headerCell.appendChild(document.createTextNode(headerText));
-        headerRow.appendChild(headerCell);
-    });
-    element.appendChild(headerRow);
-
-    const addedTeams = new Set();
-
-    for (let i = 0; i < data.length; i++) {
-        const table_line = document.createElement("tr");
-        element.appendChild(table_line);
-
-        var columns = [
-            data[i].comp_level.toUpperCase() + " " + data[i].match_number,
-            data[i].winning_alliance,
-            data[i].alliances.blue.team_keys[0].substring(3, 7),
-            data[i].alliances.blue.team_keys[1].substring(3, 7),
-            data[i].alliances.blue.team_keys[2].substring(3, 7),
-            data[i].alliances.red.team_keys[0].substring(3, 7),
-            data[i].alliances.red.team_keys[1].substring(3, 7),
-            data[i].alliances.red.team_keys[2].substring(3, 7)
-        ];
-
-        columns.forEach((text, index) => {
-            const cell = document.createElement("td");
-            cell.appendChild(document.createTextNode(text));
-
-            if (index === 1) {
-                if (text === "blue") {
-                    cell.classList.add("blue-cell");
-                } else if (text === "red") {
-                    cell.classList.add("red-cell");
-                }
-            } else if (index >= 2 && index <= 4) {
-                cell.classList.add("blue-cell");
-                cell.addEventListener("click", () => cellClickHandler(text));
-            } else if (index >= 5 && index <= 7) {
-                cell.classList.add("red-cell");
-                cell.addEventListener("click", () => cellClickHandler(text));
+        data.sort((a, b) => {
+            const order = ["qm", "qf", "sf", "f"];
+            if (order.indexOf(a.comp_level) !== order.indexOf(b.comp_level)) {
+                return order.indexOf(a.comp_level) - order.indexOf(b.comp_level);
             }
-
-            table_line.appendChild(cell);
+            return a.match_number - b.match_number;
         });
-
-        const teams = [
-            data[i].alliances.blue.team_keys[0].substring(3, 7),
-            data[i].alliances.blue.team_keys[1].substring(3, 7),
-            data[i].alliances.blue.team_keys[2].substring(3, 7),
-            data[i].alliances.red.team_keys[0].substring(3, 7),
-            data[i].alliances.red.team_keys[1].substring(3, 7),
-            data[i].alliances.red.team_keys[2].substring(3, 7)
-        ];
-
-        for (let team of teams) {
-            addedTeams.add(team);
+    
+        var element = document.createElement("table");
+        // var landing = document.getElementById("google.blah");
+        element.id = "google.yay";
+        landing.appendChild(element);
+    
+        var headerRow = document.createElement("tr");
+        var headers = ["Match","Winning Alliance", "Blue 1", "Blue 2", "Blue 3", "Red 1", "Red 2", "Red 3"];
+        headers.forEach(headerText => {
+            var headerCell = document.createElement("th");
+            headerCell.appendChild(document.createTextNode(headerText));
+            headerRow.appendChild(headerCell);
+        });
+        element.appendChild(headerRow);
+    
+        const addedTeams = new Set();
+    
+        for (let i = 0; i < data.length; i++) {
+            const table_line = document.createElement("tr");
+            element.appendChild(table_line);
+    
+            var columns = [
+                data[i].comp_level.toUpperCase() + " " + data[i].match_number,
+                data[i].winning_alliance,
+                data[i].alliances.blue.team_keys[0].substring(3, 7),
+                data[i].alliances.blue.team_keys[1].substring(3, 7),
+                data[i].alliances.blue.team_keys[2].substring(3, 7),
+                data[i].alliances.red.team_keys[0].substring(3, 7),
+                data[i].alliances.red.team_keys[1].substring(3, 7),
+                data[i].alliances.red.team_keys[2].substring(3, 7)
+            ];
+    
+            columns.forEach((text, index) => {
+                const cell = document.createElement("td");
+                cell.appendChild(document.createTextNode(text));
+    
+                if (index === 1) {
+                    if (text === "blue") {
+                        cell.classList.add("blue-cell");
+                    } else if (text === "red") {
+                        cell.classList.add("red-cell");
+                    }
+                } else if (index >= 2 && index <= 4) {
+                    cell.classList.add("blue-cell");
+                    cell.addEventListener("click", () => cellClickHandler(text));
+                } else if (index >= 5 && index <= 7) {
+                    cell.classList.add("red-cell");
+                    cell.addEventListener("click", () => cellClickHandler(text));
+                }
+    
+                table_line.appendChild(cell);
+            });
+    
+            const teams = [
+                data[i].alliances.blue.team_keys[0].substring(3, 7),
+                data[i].alliances.blue.team_keys[1].substring(3, 7),
+                data[i].alliances.blue.team_keys[2].substring(3, 7),
+                data[i].alliances.red.team_keys[0].substring(3, 7),
+                data[i].alliances.red.team_keys[1].substring(3, 7),
+                data[i].alliances.red.team_keys[2].substring(3, 7)
+            ];
+    
+            for (let team of teams) {
+                addedTeams.add(team);
+            }
+        }
+    
+        const sortedTeams = Array.from(addedTeams).sort((a, b) => a - b);
+        const dropdown = document.getElementById("teamHighlight");
+        dropdown.innerHTML = '';
+    
+        for (let team of sortedTeams) {
+            const option = document.createElement("option");
+            option.value = team;
+            option.textContent = team;
+            dropdown.appendChild(option);
         }
     }
-
-    const sortedTeams = Array.from(addedTeams).sort((a, b) => a - b);
-    const dropdown = document.getElementById("teamHighlight");
-    dropdown.innerHTML = '';
-
-    for (let team of sortedTeams) {
-        const option = document.createElement("option");
-        option.value = team;
-        option.textContent = team;
-        dropdown.appendChild(option);
-    }
-}
-
-
-function highlightCells() {
-  var table = document.getElementById("google.yay");
-  var rows = table.getElementsByTagName("tr"); // Get all rows in the table
-  var highlightTeam = document.getElementById("teamHighlight").value;
-
-  // Start from i = 1 to skip the header row
-  for (var i = 1; i < rows.length; i++) {
-    var cells = rows[i].getElementsByTagName("td");
-    var matchHighlighted = false; // Flag to track if the match involves the highlighted team
-
-    // Check each cell in the row to see if it matches the highlighted team
-    for (var j = 0; j < cells.length; j++) {
-      if (cells[j].innerText == highlightTeam) {
-        cells[j].classList.add("highlight");
-        matchHighlighted = true; // The highlighted team is in this match
-      } else {
-        cells[j].classList.remove("highlight");
+    
+    
+    function highlightCells() {
+      var table = document.getElementById("google.yay");
+      var rows = table.getElementsByTagName("tr"); // Get all rows in the table
+      var highlightTeam = document.getElementById("teamHighlight").value;
+    
+      // Start from i = 1 to skip the header row
+      for (var i = 1; i < rows.length; i++) {
+        var cells = rows[i].getElementsByTagName("td");
+        var matchHighlighted = false; // Flag to track if the match involves the highlighted team
+    
+        // Check each cell in the row to see if it matches the highlighted team
+        for (var j = 0; j < cells.length; j++) {
+          if (cells[j].innerText == highlightTeam) {
+            cells[j].classList.add("highlight");
+            matchHighlighted = true; // The highlighted team is in this match
+          } else {
+            cells[j].classList.remove("highlight");
+          }
+        }
+    
+        // If the match involves the highlighted team, highlight the "Match" column
+        if (matchHighlighted) {
+          cells[0].classList.add("highlight"); // cells[0] is the "Match" column
+        } else {
+          cells[0].classList.remove("highlight");
+        }
       }
     }
-
-    // If the match involves the highlighted team, highlight the "Match" column
-    if (matchHighlighted) {
-      cells[0].classList.add("highlight"); // cells[0] is the "Match" column
-    } else {
-      cells[0].classList.remove("highlight");
+    
+    function downloadData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(apiData));
+      const downloadAnchorNode = document.createElement('a');
+      downloadAnchorNode.setAttribute("href", dataStr);
+      downloadAnchorNode.setAttribute("download", `apiData_for_code_${eventCode}.json`);
+      document.body.appendChild(downloadAnchorNode); // Required for Firefox
+      downloadAnchorNode.click();
+      downloadAnchorNode.remove();
     }
-  }
-}
-
-
-    function cellClickHandler(team) {
-      var dropdown = document.getElementById("teamHighlight");
-      dropdown.value = team;
-      highlightCells();
+    
+    function uploadData(event) {
+      const file = event.target.files[0];
+      if (!file) {
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        clearPreviousData()
+        const content = e.target.result;
+        apiData = JSON.parse(content);
+        writeMatchResults(apiData); // Re-render the page with the uploaded data
+      };
+      reader.readAsText(file);
     }
 
-    function adjustStylesForIframe() {
-  // Check if the current page is loaded inside an iframe
-  if (window.location !== window.parent.location) {
-    // It's loaded within an iframe
-    // Apply CSS styles or classes here as needed
-    // For example, increase the font size for td elements
-    var styleSheet = document.createElement("style")
-    styleSheet.type = "text/css"
-    styleSheet.innerText = 'td { font-size: 20px; }'; // Adjust the font size as needed
-    document.head.appendChild(styleSheet);
-  }
+    function clearPreviousData() {
+    // Clear the global data variable
+    apiData = [];
+    
+    // Clear the table UI
+    const landing = document.getElementById("google.blah");
+    if (landing) {
+        landing.innerHTML = ''; // This removes all child elements, including the table
+    }
+    
+    // Optionally, clear other UI elements or selections
+    const dropdown = document.getElementById("teamHighlight");
+    if (dropdown) {
+        dropdown.innerHTML = ''; // Clear dropdown options if necessary
+    }
 }
-
-// Call the function when the page loads
-window.addEventListener("load", adjustStylesForIframe);
-window.addEventListener("load", onPageLoad);
-  </script>
-
-<div style="text-align: center;">
-  <h1>Matches</h1>
-  <h2>Current Event Code: <span id="eventCode"></span></h2>
-  <!-- <label for="eventCode">Event Code Select: </label> -->
-
-  <!-- <div class="controls">
-    <select id="eventCode">
-      <option value="2024mabos">2024 Greater Boston Event</option>
-      <option value="2024mabri">2024 Week 2 BSU Event</option>
-      <option value="2024week0">2024 Week 0 Event</option>
-    </select>
-    <button onclick="onPageLoad()">Load Data</button><br><br>
-  </div> -->
-  
-  <!-- <div id="newOptionContainer">
-    <input type="text" id="newOptionText" placeholder="Type new event code..."/>
-        <button id="addOptionButton">Add Option</button>
-  </div> -->
-
-
-
-  <!-- <input type="text" id="eventCode" value="2024mabri"> -->
-  <label for="teamHighlight">Select a team to highlight: </label>
-  <select id="teamHighlight" onchange="highlightCells()"></select>
-</div>
-
-<div>
-  <pre id="google.blah"></pre>
-</div>
-
-<footer style="text-align: center; margin-top: 20px; font-family: Arial;">
-  <i>Made with love in cooperation with <s>your future overlord 😈</s> GPT-4</i><br>
-  <span>&copy; <script>document.write(new Date().getFullYear());</script> Watertown High School Robotics</span>
-</footer>
-</body>
-</html>
-    <script>
-
-const secretCode = ['KeyE', 'KeyM', 'KeyI', 'KeyL', 'KeyY'];
-let currentPosition = 0; 
-
-function activateEasterEgg() {
-    alert('Emily is AWESOME!!!!!!');
-}
-
-document.addEventListener('keydown', (e) => {
-    if (e.code === secretCode[currentPosition]) {
-        currentPosition++;
-
-        if (currentPosition === secretCode.length) {
-            activateEasterEgg();
+    
+    function displayUploadOption() {
+      // You can either display the upload option directly or show a message with a button to reveal the upload option
+      const uploadLabel = document.querySelector('label[for="uploadMatchData"]');
+      uploadLabel.style.display = 'block'; // Make the upload option visible
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const downloadBtn = document.getElementById('downloadMatchData');
+      downloadBtn.addEventListener('click', downloadData);
+    
+      const uploadInput = document.getElementById('uploadMatchData');
+      uploadInput.addEventListener('change', uploadData);
+      onPageLoad()
+    });
+    
+    
+        function cellClickHandler(team) {
+          var dropdown = document.getElementById("teamHighlight");
+          dropdown.value = team;
+          highlightCells();
+        }
+    
+        function adjustStylesForIframe() {
+      // Check if the current page is loaded inside an iframe
+      if (window.location !== window.parent.location) {
+        // It's loaded within an iframe
+        // Apply CSS styles or classes here as needed
+        // For example, increase the font size for td elements
+        var styleSheet = document.createElement("style")
+        styleSheet.type = "text/css"
+        styleSheet.innerText = 'td { font-size: 20px; }'; // Adjust the font size as needed
+        document.head.appendChild(styleSheet);
+      }
+    }
+    
+    // Call the function when the page loads
+    window.addEventListener("load", adjustStylesForIframe);
+    window.addEventListener("load", onPageLoad);
+    
+    const secretCode = ['KeyE', 'KeyM', 'KeyI', 'KeyL', 'KeyY'];
+    let currentPosition = 0; 
+    
+    function activateEasterEgg() {
+        alert('Emily is AWESOME!!!!!!');
+    }
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.code === secretCode[currentPosition]) {
+            currentPosition++;
+    
+            if (currentPosition === secretCode.length) {
+                activateEasterEgg();
+                currentPosition = 0; 
+            }
+        } else {
             currentPosition = 0; 
         }
-    } else {
-        currentPosition = 0; 
-    }
-});
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger-menu');
-    const nav = document.querySelector('nav');
-
-    // Initialize the nav as inactive (hidden)
-    nav.classList.add('nav-inactive');
-
-    hamburger.addEventListener('click', function() {
-        // Toggle between active and inactive states
-        if (nav.classList.contains('nav-inactive')) {
-            nav.classList.remove('nav-inactive');
-            nav.classList.add('nav-active');
-        } else {
-            nav.classList.remove('nav-active');
-            nav.classList.add('nav-inactive');
-        }
     });
-});
+            document.addEventListener('DOMContentLoaded', function() {
+        const hamburger = document.querySelector('.hamburger-menu');
+        const nav = document.querySelector('nav');
+    
+        // Initialize the nav as inactive (hidden)
+        nav.classList.add('nav-inactive');
+    
+        hamburger.addEventListener('click', function() {
+            // Toggle between active and inactive states
+            if (nav.classList.contains('nav-inactive')) {
+                nav.classList.remove('nav-inactive');
+                nav.classList.add('nav-active');
+            } else {
+                nav.classList.remove('nav-active');
+                nav.classList.add('nav-inactive');
+            }
+        });
+    });
+      </script>
+    
+    <div style="text-align: center;">
+      <h1>Matches</h1>
+      <h2>Current Event Code From Config: <span id="eventCode"></span></h2>
+    
+      <div id="matchDataContainer"></div> <!-- Placeholder for match data -->
+        
+      <!-- Download button for the match data -->
+      <button id="downloadMatchData">Download Match Data</button>
+      
+      <!-- Upload button disguised as a label for style, linked to a hidden file input for uploading match data -->
+      <input type="file" id="uploadMatchData" style="display: none;" />
+      <label for="uploadMatchData" class="button">Upload Match Data</label>
 
-    </script>
-<script src="electron.js"></script>
+      <!-- <button id="clear" onclick=clearPreviousData()>Clear</button> -->
+      <div id="upload_status"></div>
+      <!-- <label for="eventCode">Event Code Select: </label> -->
+    
+      <!-- <div class="controls">
+        <select id="eventCode">
+          <option value="2024mabos">2024 Greater Boston Event</option>
+          <option value="2024mabri">2024 Week 2 BSU Event</option>
+          <option value="2024week0">2024 Week 0 Event</option>
+        </select>
+        <button onclick="onPageLoad()">Load Data</button><br><br>
+      </div> -->
+      
+      <!-- <div id="newOptionContainer">
+        <input type="text" id="newOptionText" placeholder="Type new event code..."/>
+            <button id="addOptionButton">Add Option</button>
+      </div> -->
+    
+    
+    
+      <!-- <input type="text" id="eventCode" value="2024mabri"> -->
+      <label for="teamHighlight">Select a team to highlight: </label>
+      <select id="teamHighlight" onchange="highlightCells()"></select>
+    </div>
+    
+    <div>
+      <pre id="google.blah"></pre>
+    </div>
+    
+    <footer style="text-align: center; margin-top: 20px; font-family: Arial;">
+      <i>Made with love in cooperation with <s>your future overlord 😈</s> GPT-4</i><br>
+      <span>&copy; <script>document.write(new Date().getFullYear());</script> Watertown High School Robotics</span>
+    </footer>
+    </body>
+    </html>
 </body>
 </html>

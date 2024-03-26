@@ -29,4 +29,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         
     });
+
+    eventCodeForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const first = document.getElementById('first').value;
+        localStorage.setItem('first', first);
+});
 });
