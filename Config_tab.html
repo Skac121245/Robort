@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Configuration</title>
+</head>
+<body>
+    <h1>Team Configuration</h1>
+
+
+    <nav>
+        <a href="./index.html">Home</a>
+        <a href="./Team_List_element.html">Teams</a>
+        <a href="./Strat_Board_w_tabs.html">Canvas</a>
+        <a href="./preMatchChecklist.html">Pre Match Checklist</a>
+        <a href="./Control_Panel.html">Control Panel</a>
+        <a href="./2423_Features.html">Features</a>
+    </nav>
+
+<form id="eventCodeForm">
+    <label for="eventCode">What is the code for the event you are at?</label>
+    <input type="text" id="eventCode" name="eventCode" required>
+
+    <button type="submit">Save Just Event Code</button>
+</form>
+    
+    <form id="teamForm">
+        <label for="teamNumber">What is your team number?</label>
+        <input type="number" id="teamNumber" name="teamNumber">
+
+        <label for="dim_w_bump">What are your dimensions WITH bumpers? (inches)</label>
+        <input type="number" id="dim_w_bump" name="dim_w_bump">
+
+        <label for="dim_wout_bump">What are your dimensions WITHOUT bumpers? (inches)</label>
+        <input type="number" id="dim_wout_bump" name="dim_wout_bump">
+
+        <label for="drive_train">What is your type of Drivetrain?</label>
+        <input type="text" id="drive_train" name="drive_train">
+
+        <label for="weight">What is your robot weight? (LBS)</label>
+        <input type="number" id="weight" name="weight">
+
+       <!-- <div class="checkbox">
+           <h2>Where do you pick up from?</h2>
+           <input type="checkbox" id="ground" name="ground">Ground<br>
+           <input type="checkbox" name="source">Source<br>
+      
+
+           <h2>Where do you score?</h2>
+           <input type="checkbox" name="speaker">Speaker<br>
+           <input type="checkbox" name="distance_shoot">Can you shoot from distance?<br>
+           <input type="checkbox" name="amp">Amp<br>
+       </div> -->
+        
+
+        <button type="submit">Save</button>
+    </form>
+
+    <!-- <form id="checklistForm">
+        
+        <input type="text" id="newItems" placeholder="Enter items separated by spaces">
+        <button type="submit">Add Items</button>
+
+        <button type="submit">Save</button>
+    </form> -->
+
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+        color: #000000;
+    }
+
+    h1 {
+        color: #000000;
+    }
+
+    nav {
+        background-color: #00f729;
+        padding: 10px 0;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    nav a {
+        color: rgb(0, 0, 0);
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px 20px;
+        display: inline-block;
+    }
+
+    nav a:hover {
+        background-color: #3295ff;
+    }
+
+    form {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        display: block;
+        margin: 10px 0 5px;
+    }
+
+    input[type="number"],
+    input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        display: flex;
+        margin-top: 10px;
+        margin-bottom: 0px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+    </style>
+    <script src="Control_tab/Config_tab.js"></script>
+</body>
+</html>

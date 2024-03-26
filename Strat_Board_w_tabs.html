@@ -3,7 +3,7 @@
 <head>
   <title>FRC Match Strategy Planner</title>
   <style>
-    body {
+   body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 20px;
@@ -98,11 +98,14 @@
 
   nav {
     background-color: #1df700;
-    width: 900px;
+    width: 100%;
     text-align: center;
-    height: 20px;
-    border-radius: 10px;
     padding: 10px 0;
+    border-radius: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Ensures nav items wrap in smaller screens */
   }
 
   nav a {
@@ -111,24 +114,43 @@
     margin: 0 10px;
     font-weight: bold;
     font-size: 20px;
-}
+    padding: 10px;
+    background-color: #1df700; /* Makes sure each link has a green background */
+  }
 
+  nav a:hover {
+    color: #0056b3;
+  }
+/* Media Query for screens with a max-width of 600px */
+@media (max-width: 600px) {
+    nav {
+      flex-direction: column;
+    }
 
-nav a:hover {
-    color: #0056b3; 
-}
+    nav a {
+      width: 100%; /* Ensures each link uses the full width of nav */
+      margin: 5px 0; /* Adjusts spacing between links in the vertical layout */
+      padding: 0;
+    }
+  }
 
+    /* Adjust the .controls container to stack its children vertically */
+    .controls {
+      flex-direction: column;
+      align-items: center; /* Align items for a centered layout */
+    }
   </style>
 </head>
 <body>
 
   <nav>
     <a href="./index.html">Home</a>
-    <a href="./Team_List_element.html">Teams</a>
-    <a href="./Strat_Board_w_tabs.html">Canvas</a>
-    <a href="./preMatchChecklist.html">Pre Match Checklist</a>
-    <a href="./Control_Panel.html">Control Panel</a>
-    <a href="./2423_Features.html">Features</a>
+        <a href="./Team_List_element.html">Teams</a>
+        <a href="./Strat_Board_w_tabs.html">Canvas</a>
+        <a href="./Checklist.html">Pre Match Checklist</a>
+        <a href="./Control_Panel.html">Control Panel</a>
+        <a href="./2423_Features.html">Features</a>
+        <a href="./Config_tab.html">Configure</a>
   </nav>
 
 
@@ -436,6 +458,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
   const padding = 10; // Padding around the text for the outline box
 
   teamKeys.forEach((key, index) => {
+    clearCanvas()
     const teamNumber = key.replace('frc', '');
     const position = positions[index];
     const color = teamColors[alliance][index];
@@ -457,7 +480,8 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
       y: rectY,
       width: textWidth + padding, 
       height: rectHeight,
-      color: color
+      color: color,
+      text: teamNumber
     });
   });
 }
@@ -523,17 +547,35 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
 }
 
   
-    function clearCanvas() {
-      if (isAuto) {
-        ctx = ctxAuto
-        canvas = canvasAuto
-      } else {
-        ctx = ctxTeleop
-        canvas = canvasTeleop
-      }
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-    }
+function clearCanvas() {
+  
+  if (isAuto) {
+    ctx = ctxAuto
+    canvas = canvasAuto
+  } else {
+    ctx = ctxTeleop
+    canvas = canvasTeleop
+  }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+   ctx.globalCompositeOperation = 'source-over';
+  // After clearing, redraw the team number boxes
+  teamPositions.forEach(team => {
+    drawTeamNumberBox(team.x, team.y, team.width, team.height, team.color, team.text);
+  });
+}
+
+function drawTeamNumberBox(x, y, width, height, color, text) {
+  ctx.fillStyle = color;
+  // Draw rectangle for team number background
+  ctx.fillRect(x, y, width, height);
+  ctx.fillStyle = 'black'; // Assuming text color is always black
+  // Adjustments for text positioning within the rectangle if needed
+  ctx.font = '40px Arial'; // Ensure this matches the initial drawing's font
+  // Calculate the y position to vertically center the text in the rectangle
+  const textY = y + height / 2 + ctx.measureText(text).actualBoundingBoxAscent / 2;
+  ctx.fillText(text, x + (width / 2) - (ctx.measureText(text).width / 2), textY); // Center the text inside the rectangle
+}
+
   
     matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
     fetchMatches();
