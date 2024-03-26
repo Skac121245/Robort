@@ -38,6 +38,18 @@
     #eventCode,
     #showRankings {
       margin: 10px;
+      border-width: 4px;
+      border-radius: 8px;
+      border-color: #000000;
+    }
+
+    #eventCode {
+      background-color: #63bef3;
+      padding: 10px;
+      border-width: 4px;
+      border-color: #000000;
+      font-size: 30px;
+      font-weight: bold;
     }
 
     label,
@@ -110,7 +122,7 @@
       text-align: center;
       padding: 10px 0;
       border-radius: 10px;
-      width: 800px;
+      width: 900px;
     }
 
     nav a {
@@ -187,9 +199,11 @@
   <div style="text-align: center;">
     <input type="checkbox" id="showRankings" onchange="fetchTeams()">
     <label for="showRankings">Show Rankings</label><br>
-    <label for="eventCode">Enter Event Code:</label>
-    <input type="text" id="eventCode" value="2024mabos">
-    <button onclick="fetchTeams()">Load</button>
+    <!-- <label for="eventCode">Enter Event Code:</label> -->
+    <h2>Event Code From Config: </h2>
+    <span id="eventCode"></span>
+    <!-- <input type="text" id="eventCode" value="2024mabos"> -->
+    <!-- <button onclick="fetchTeams()">Load</button> -->
   </div>
 
   <table id="teamsTable">
@@ -232,7 +246,8 @@
 
   <script>
     async function fetchTeams() {
-      const eventCode = document.getElementById('eventCode').value;
+      const eventCode = localStorage.getItem('eventCode');
+      document.getElementById('eventCode').textContent = eventCode;
       const showRankings = document.getElementById('showRankings').checked;
       let url;
 

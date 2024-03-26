@@ -359,11 +359,11 @@
     const dim_wout_bump = localStorage.getItem('dim_wout_bump'); // Retrieve the team number from local storage
     const drive_train = localStorage.getItem('drive_train'); // Retrieve the team number from local storage
     const weight = localStorage.getItem('weight'); // Retrieve the team number from local storage
-    const ground = JSON.stringify(localStorage.getItem('ground')); // Convert to boolean
-    const source = JSON.stringify(localStorage.getItem('source')); // Convert to boolean
-    const speaker = JSON.stringify(localStorage.getItem('speaker')); // Convert to boolean
-    const distance_shoot = JSON.stringify(localStorage.getItem('distance_shoot')); // Convert to boolean
-    const amp = JSON.stringify(localStorage.getItem('amp')); // Convert to boolean
+    const ground = localStorage.getItem('ground'); // Convert to boolean
+    const source = localStorage.getItem('source'); // Convert to boolean
+    const speaker = localStorage.getItem('speaker'); // Convert to boolean
+    const distance_shoot = localStorage.getItem('distance_shoot'); // Convert to boolean
+    const amp = localStorage.getItem('amp'); // Convert to boolean
 
 
     document.getElementById('displayTeamNumber').textContent = teamNumber;

@@ -30,9 +30,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
         
     });
 
-    eventCodeForm.addEventListener('submit', function(e) {
+    teleopForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        const first = document.getElementById('first').value;
-        localStorage.setItem('first', first);
+        const ground = document.getElementById('ground').value;
+        localStorage.setItem('ground', ground);
+        const source = document.getElementById('source').value;
+        localStorage.setItem('source', source);
+        const speaker = document.getElementById('speaker').value;
+        localStorage.setItem('speaker', speaker);
+        const distance_shoot = document.getElementById('distance_shoot').value;
+        localStorage.setItem('distance_shoot', distance_shoot);
+        const amp = document.getElementById('amp').value;
+        localStorage.setItem('amp', amp);
 });
 });

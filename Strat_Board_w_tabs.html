@@ -156,7 +156,9 @@
 
 <div class="controls">
 
-  <select id="eventCodeInput">
+  <h2>Current Event Code From Config: <span id="eventCodeInput"></span></h2>
+
+  <!-- <select id="eventCodeInput">
     <option value="2024mabos">2024 Greater Boston Event</option>
     <option value="2024mabri">2024 Week 2 BSU Event</option>
     <option value="2024week0">2024 Week 0 Event</option>
@@ -167,7 +169,7 @@
 <div id="newOptionContainer">
   <input type="text" id="newOptionText" placeholder="Type new option here"/>
       <button id="addOptionButton">Add Option</button>
-</div>
+</div> -->
 
 <button id="saveAutoCanvas">Save Autonomous Canvas as PNG</button>
 
@@ -202,6 +204,7 @@
   let eraserEnabled = false;
 
   let selectedMatchKey = "";
+  let eventCode = '';
 
   document.getElementById('saveAutoCanvas').addEventListener('click', function() {
     const canvas = document.getElementById('teleopCanvas');
@@ -212,15 +215,15 @@
     link.click();
 });
 
-  document.getElementById('addOptionButton').addEventListener('click', function() {
-        const selectElement = document.getElementById('eventCodeInput');
-        const newOptionText = document.getElementById('newOptionText').value;
-        if (newOptionText.trim() !== '') { // Ensure the input is not empty or just whitespace
-            const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
-            selectElement.add(newOptionElement);
-            document.getElementById('newOptionText').value = ''; // Clear the input field after adding
-        }
-    });
+  // document.getElementById('addOptionButton').addEventListener('click', function() {
+  //       const selectElement = document.getElementById('eventCodeInput');
+  //       const newOptionText = document.getElementById('newOptionText').value;
+  //       if (newOptionText.trim() !== '') { // Ensure the input is not empty or just whitespace
+  //           const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
+  //           selectElement.add(newOptionElement);
+  //           document.getElementById('newOptionText').value = ''; // Clear the input field after adding
+  //       }
+  //   });
 
 
 
@@ -403,7 +406,9 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
   
   
     function fetchMatches() {
-      const eventCode = document.getElementById('eventCodeInput').value;
+      const eventCode = localStorage.getItem('eventCode');
+      document.getElementById('eventCodeInput').textContent = eventCode;
+      console.log(eventCode)
       const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
       fetch(webhookEndpoint, {
         method: "GET",
