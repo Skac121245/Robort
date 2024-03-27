@@ -409,6 +409,33 @@
 
   </script>
 <script src="electron.js"></script>
+<!--Debug function-->
+<!-- <script>
+(function() {
+  function wrapWithLogging(originalFunction, name) {
+    return function(...args) {
+      console.log(`Function called: ${name}`, 'Arguments:', args);
+      return originalFunction.apply(this, args);
+    };
+  }
+
+  // Specify the target for wrapping functions with logging (e.g., window)
+  const target = window;
+
+  // Iterate over the properties of the target
+  Object.keys(target).forEach(key => {
+    const value = target[key];
+    // Check if the property is a function
+    if (typeof value === 'function') {
+      // Wrap the function with the logging wrapper
+      target[key] = wrapWithLogging(value, key);
+    }
+  });
+
+  // Now you can add specific handling for objects like document or others if needed
+})();
+</script> -->
+
 </body>
 
 </html>
