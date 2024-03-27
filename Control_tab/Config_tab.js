@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', (event) => {
+    let checklistItems = []
     const eventCodeForm = document.getElementById('eventCodeForm');
     const form = document.getElementById('teamForm');
 
@@ -42,5 +43,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
         localStorage.setItem('distance_shoot', distance_shoot);
         const amp = document.getElementById('amp').value;
         localStorage.setItem('amp', amp);
+});
+
+autoNamesForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const newItemsInput = document.getElementById('newItems');
+    const newItems = newItemsInput.value.split(' '); // Split input by spaces
+    checklistItems = checklistItems.concat(newItems); // Add new items to the global checklist items array
+   localStorage.setItem('autoNames', newItems)
+    newItemsInput.value = ''; // Clear the input field
 });
 });
