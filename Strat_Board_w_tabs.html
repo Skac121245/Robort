@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>FRC Match Strategy Planner</title>
-  <style>
+    <style>
    body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -145,23 +145,20 @@
 
   <nav>
     <a href="./index.html">Home</a>
-        <a href="./Team_List_element.html">Teams</a>
-        <a href="./Strat_Board_w_tabs.html">Canvas</a>
-        <a href="./Checklist.html">Pre Match Checklist</a>
-        <a href="./Control_Panel.html">Control Panel</a>
-        <a href="./2423_Features.html">Features</a>
-        <a href="./Config_tab.html">Configure</a>
+    <a href="./Team_List_element.html">Teams</a>
+    <a href="./Strat_Board_w_tabs.html">Canvas</a>
+    <a href="./preMatchChecklist.html">Pre Match Checklist</a>
+    <a href="./Control_Panel.html">Control Panel</a>
+    <a href="./2423_Features.html">Features</a>
   </nav>
 
 
 <div class="controls">
 
-  <h2>Current Event Code From Config: <span id="eventCodeInput"></span></h2>
-
-  <!-- <select id="eventCodeInput">
-    <option value="2024mabos">2024 Greater Boston Event</option>
+  <select id="eventCodeInput">
     <option value="2024mabri">2024 Week 2 BSU Event</option>
     <option value="2024week0">2024 Week 0 Event</option>
+    <option value="2024mabos">2024 Greater Boston Event</option>
 </select>
 <button onclick="fetchMatches()">Load Matches</button>
 </div>
@@ -169,7 +166,7 @@
 <div id="newOptionContainer">
   <input type="text" id="newOptionText" placeholder="Type new option here"/>
       <button id="addOptionButton">Add Option</button>
-</div> -->
+</div>
 
 <button id="saveAutoCanvas">Save Autonomous Canvas as PNG</button>
 
@@ -204,7 +201,6 @@
   let eraserEnabled = false;
 
   let selectedMatchKey = "";
-  let eventCode = '';
 
   document.getElementById('saveAutoCanvas').addEventListener('click', function() {
     const canvas = document.getElementById('teleopCanvas');
@@ -215,15 +211,15 @@
     link.click();
 });
 
-  // document.getElementById('addOptionButton').addEventListener('click', function() {
-  //       const selectElement = document.getElementById('eventCodeInput');
-  //       const newOptionText = document.getElementById('newOptionText').value;
-  //       if (newOptionText.trim() !== '') { // Ensure the input is not empty or just whitespace
-  //           const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
-  //           selectElement.add(newOptionElement);
-  //           document.getElementById('newOptionText').value = ''; // Clear the input field after adding
-  //       }
-  //   });
+  document.getElementById('addOptionButton').addEventListener('click', function() {
+        const selectElement = document.getElementById('eventCodeInput');
+        const newOptionText = document.getElementById('newOptionText').value;
+        if (newOptionText.trim() !== '') { // Ensure the input is not empty or just whitespace
+            const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
+            selectElement.add(newOptionElement);
+            document.getElementById('newOptionText').value = ''; // Clear the input field after adding
+        }
+    });
 
 
 
@@ -406,9 +402,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
   
   
     function fetchMatches() {
-      const eventCode = localStorage.getItem('eventCode');
-      document.getElementById('eventCodeInput').textContent = eventCode;
-      console.log(eventCode)
+      const eventCode = document.getElementById('eventCodeInput').value;
       const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
       fetch(webhookEndpoint, {
         method: "GET",
@@ -463,7 +457,6 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
   const padding = 10; // Padding around the text for the outline box
 
   teamKeys.forEach((key, index) => {
-    clearCanvas()
     const teamNumber = key.replace('frc', '');
     const position = positions[index];
     const color = teamColors[alliance][index];
@@ -553,7 +546,6 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
 
   
 function clearCanvas() {
-  
   if (isAuto) {
     ctx = ctxAuto
     canvas = canvasAuto
@@ -562,7 +554,7 @@ function clearCanvas() {
     canvas = canvasTeleop
   }
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-   ctx.globalCompositeOperation = 'source-over';
+
   // After clearing, redraw the team number boxes
   teamPositions.forEach(team => {
     drawTeamNumberBox(team.x, team.y, team.width, team.height, team.color, team.text);
@@ -585,5 +577,6 @@ function drawTeamNumberBox(x, y, width, height, color, text) {
     matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
     fetchMatches();
   </script>  
+  <script src="electron.js"></script>
 </body>
 </html>
