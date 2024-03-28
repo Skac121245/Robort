@@ -53,4 +53,65 @@ autoNamesForm.addEventListener('submit', function(e) {
    localStorage.setItem('autoNames', newItems)
     newItemsInput.value = ''; // Clear the input field
 });
+
+document.getElementById('addAutoName').addEventListener('click', function () {
+    const container = document.getElementById('autoNamesContainer');
+    const uniqueId = Date.now(); // Create a unique ID for matching label with input
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'autoItem';
+    itemDiv.innerHTML = `
+      <input type="text" placeholder="Auto Name" name="autoNames[]">
+      <input type="file" accept="image/*" name="autoImages[]" id="file-${uniqueId}" style="display: none;">
+      <label for="file-${uniqueId}" style="cursor: pointer;">Upload Image</label>
+      <img id="preview-${uniqueId}" style="display: none;" width="100" /> <!-- Placeholder for image preview -->
+  `;
+    container.appendChild(itemDiv);
+
+    // Add a change listener to this file input for image preview
+    document.getElementById(`file-${uniqueId}`).addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const imgElement = document.getElementById(`preview-${uniqueId}`);
+          imgElement.src = e.target.result;
+          imgElement.style.display = 'block'; // Show image preview
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  });
+
+  document.getElementById('autoNamesForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const autoNamesInputs = document.querySelectorAll('input[type="text"][name="autoNames[]"]');
+    const autoImagesInputs = document.querySelectorAll('input[type="file"][name="autoImages[]"]');
+    const autos = [];
+
+    // Assuming each auto name has a corresponding image input
+    autoNamesInputs.forEach((input, index) => {
+      const file = autoImagesInputs[index].files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+          // Once file is loaded, save auto name and image as Base64 string
+          autos.push({ name: input.value, image: reader.result });
+          // Check if all files have been processed then save to localStorage
+          if (autos.length === autoNamesInputs.length) {
+            localStorage.setItem('autos', JSON.stringify(autos));
+            alert('Auto names and images saved to localStorage.');
+          }
+        };
+        reader.readAsDataURL(file);
+      } else {
+        // If no file was selected, still save the name with a placeholder for the image
+        autos.push({ name: input.value, image: '' });
+        if (autos.length === autoNamesInputs.length) {
+          localStorage.setItem('autos', JSON.stringify(autos));
+          alert('Auto names and images saved to localStorage.');
+        }
+      }
+    });
+  });
 });
