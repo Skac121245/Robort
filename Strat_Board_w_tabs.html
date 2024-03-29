@@ -173,6 +173,8 @@
 
 <button id="saveAutoCanvas">Save Autonomous Canvas as PNG</button>
 
+<button id="uploadMatchData">Upload Data</button>
+
   <select id="matchSelect"></select>
   <div id="button-container">
     <button onclick="clearCanvas()">Clear</button>
@@ -199,7 +201,7 @@
   // import saveCanvas from "save-canvas-to-image";
 
 
-
+  let apiData = [];
   
   let eraserEnabled = false;
 
@@ -416,9 +418,15 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
           "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
         },
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Invalid Event Code');
+        }
+        return response.json();
+      })
       .then(data => {
         matches = data;
+        apiData = data;
         populateMatchSelect(data);
       })
       .catch(error => console.error('Error fetching matches:', error));
@@ -451,6 +459,29 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
   
       drawTeams(match.alliances.blue.team_keys, bluePositions, 'blue');
       drawTeams(match.alliances.red.team_keys, redPositions, 'red');
+    }
+
+    const uploadInput = document.getElementById('uploadMatchData');
+      uploadInput.addEventListener('change', uploadData);
+
+    function uploadData(event) {
+      const file = event.target.files[0];
+      if (!file) {
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        clearPreviousData()
+        const content = e.target.result;
+        apiData = JSON.parse(content);
+        populateMatchSelect(apiData); // Re-render the page with the uploaded data
+      };
+      reader.readAsText(file);
+    }
+
+    function clearPreviousData() {
+    // Clear the global data variable
+    apiData = [];
     }
   
     function drawTeams(teamKeys, positions, alliance) {
