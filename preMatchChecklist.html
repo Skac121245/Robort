@@ -2,220 +2,244 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pre-Match Checklist</title>
-</head>
-<style>
-    body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        nav.container {
-            display: flex;
-            justify-content: center;
-            padding: 10px;
-            background-color: #1df700;
-            margin-bottom: 20px;
-        
-        }
-        nav.container a {
-            text-decoration: none;
-            color: rgb(0, 0, 0);
-            margin: 0 15px;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-            font-weight: bold;
-        }
-        nav.container a:hover {
-            background-color: #4963f5;
-        }
-        h2 {
-            color: #333;
-        }
-        p {
-            background-color: #ffffff;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        input[type=checkbox] {
-            margin-right: 10px;
-            width: 30px;
-            height: 30px;
-        }
+    <title>Pre Match Checklist</title>
+    <style>
+        /* style.css content */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f0f0;
+    color: #333;
+}
 
-        #clearCheckboxesButton{
-            display: flex;
-            justify-content: center;
-            padding: 10px;
-            background-color: #a2c4f8;
-            margin-bottom: 20px;
-            font-size: 20px;
-            justify-content: center;
-            
+h1 {
+    color: #000000;
+    text-align: center;
+}
 
-        }
-</style>
-<body>
-    <nav class="container" style="text-decoration:none;">
-        <a href="./index.html">Home</a>
-        <a href="./Team_List_element.html">Teams</a>
-        <a href="./Strat_Board_w_tabs.html">Canvas</a>
-        <a href="./preMatchChecklist.html">Pre Match Checklist</a>
-        <a href="./Control_Panel.html">Control Panel</a>
-        <a href="./2423_Features.html">Features</a>
-    </nav>
+nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
 
-    <button id="clearCheckboxesButton" style="margin: 20px;">Clear All Checkboxes</button>
+nav a {
+    text-decoration: none;
+    color: white;
+    background-color: #15a801;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.1s;
+}
 
-    <div id="all" class="all">
+nav a:hover {
+    background-color: #02467e;
+}
 
-        <h2>1. Shooter</h2>
-        <p id="shooter">
-        <input type=checkbox>Wheel bolts secure<br>
-        <input type=checkbox>Wheels move by hand<br>
-        <input type=checkbox>Chain tensioned<br>
-        <input type=checkbox>Climber secure<br>
-        <input type=checkbox>Shooter angles by hand<br>
-        <input type=checkbox>Guiding walls secure<br>
-        <input type=checkbox>Amp Ramp secure<br>
-        </p>
-        <h2>2. Intake</h2>
-        <p id="intake">
-            <input type=checkbox>Shaft end bolts secure<br>
-            <input type=checkbox>Intake moves by hand<br>
-            <input type=checkbox>Intake wheels spin<br>
-            <input type=checkbox>Belts crossed/attached<br>
-            <input type=checkbox>Bearings on arm secure<br>
-            <input type=checkbox>Wires zip tied and secure<br>
-            <input type=checkbox>Intake ramp secure<br>
-            <input type=checkbox>Hard stop secure<br>
-            <input type=checkbox>Clear of shooter when up<br>
-            </p>
+#checklistContainer {
+    margin: 20px 0;
+    padding: 15px;
+    background: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
-        <h2>3. Swerve</h2>
-        <p id="swerve">
-            <input type=checkbox>Swerve modules drive by hand<br>
-            <input type=checkbox>Swerve modules steer by hand<br>
-            <input type=checkbox>Swerve wheel screws are tight<br>
-            <input type=checkbox>Swerve bolts to chassis are tight<br>
-            <input type=checkbox>Wheels aren't shredded<br>
-            <input type=checkbox>Encoder wires are secure<br>
-            </p>
-        <h2>4. Electronics</h2>
-        <p id="">
-            <input type=checkbox>Radio is secure<br>
-            <input type=checkbox>RoboRio is secure<br>
-            <input type=checkbox>PDH is secure<br>
-            <input type=checkbox>Camera is positioned correctly<br>
-            <input type=checkbox>Wires are clear of the shooter/intake<br>
-            <input type=checkbox>LEDs secure and wired<br> 
-            <input type=checkbox>Robot Powers On<br> 
-        </p>
-        <h2>5. Software</h2>
-        <p id="software">
-            <input type=checkbox>No CAN errors<br>
-            <input type=checkbox>Swerve steer and drive<br>
-            <input type=checkbox>Check intake setpoints<br>
-            <input type=checkbox>Check shooter setpoints<br>
-            <input type=checkbox>Can intake note<br>
-            <input type=checkbox>Hand off works<br> 
-            <input type=checkbox>DAS aims when shooting<br> 
-            <input type=checkbox>Week Zero mode shot<br> 
-            <input type=checkbox>Can source<br> 
-            <input type=checkbox>Can amp<br> 
-            <input type=checkbox>Can climb<br> 
-            <input type=checkbox>LEDs work when disabled<br> 
-            <input type=checkbox>Power Off<br> 
-        </p>
-        <h2>6. Prematch</h2>
-        <p id="prematch">
-            <input id="smt" type=checkbox>Change battery<br>
-            <input id="smt1" type=checkbox>Change bumpers<br>
-            <input id="smt2" type=checkbox>Lint roll and dryer sheet<br>
-            <input id="smt3" type=checkbox>No tools in the robot<br>
-            <input id="smt4" type=checkbox>Floorboards installed<br>
-            <input id="smt5" type=checkbox>Battery connector on the side not on top<br> 
-        </p>
-    </div>
-</body>
-<footer><div id="saveIndicator" style="display: none; text-align: center; font-size: 12px; margin-top: 20px;">Last saved on: Never</div></footer>
-<script>
+.checklist-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
 
+.checklist-item input[type="checkbox"] {
+    margin-right: 10px;
+}
 
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
 
-    window.onload = function() {
-        if (window.self !== window.top) {
-            // The page is in an iframe
-            var nav = document.querySelector('nav.container');
-            if (nav) {
-                nav.style.display = 'none';
-            }
-        }
-        document.getElementById('clearCheckboxesButton').onclick = clearCheckboxes;
-    };
+input[type="text"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
 
-    function clearCheckboxes() {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = false;
-    });
+button, .upload-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+button {
+    background-color: #28a745;
+}
+
+button:hover, .upload-btn:hover {
+    opacity: 0.7;
+}
+
+.upload-btn {
+    background-color: #3f8bd8;
+    display: inline-block;
+    margin: 0; /* Align with form elements */
+}
+
+#uploadChecklist {
+    display: none;
+}
+
+.checklist-item label {
+    font-size: 18px; /* Increased font size for better readability */
+    font-weight: bold; /* Make text bolder */
+    margin-left: 10px; /* Add some space between the checkbox and the label text */
+}
+
+/* Making checkboxes larger */
+.checklist-item input[type="checkbox"] {
+    transform: scale(2); /* Scale up the size of the checkboxes */
+    margin-right: 10px; /* Ensure there's adequate space around the scaled checkbox */
+    cursor: default; 
+}
+
+/* Optional: Add a subtle text shadow for better legibility */
+.checklist-item label {
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+}
+
+.checklist-item:hover {
+    transform:scale(1.0001);
 }
 
 
-</script>
-<script> //localstorage
-document.addEventListener('DOMContentLoaded', (event) => {
-    if (typeof window !== 'undefined' && window.process && window.process.type === 'renderer') {
-        const clearButton = document.getElementById('clearCheckboxesButton');
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        const saveIndicator = document.getElementById('saveIndicator');
+    </style>
+</head>
+<body>
+    <h1>Pre Match Checklist</h1>
+    <nav>
+        <a href="./index.html">Home</a>
+        <a href="./Team_List_element.html">Teams</a>
+        <a href="./Strat_Board_w_tabs.html">Canvas</a>
+        <a href="./Checklist.html">Pre Match Checklist</a>
+        <a href="./Control_Panel.html">Control Panel</a>
+        <a href="./2423_Features.html">Features</a>
+    </nav>
+    <div id="checklistContainer"></div>
+    
+    <form id="addItemForm">
+        <input type="text" id="newItems" placeholder="Enter items separated by spaces">
+        <button type="submit">Add Items</button>
+    </form>
+    <button id="loadChecklist">Load Checklist</button>
+
+    <button id="downloadChecklist">Download Checklist</button>
+<input type="file" id="uploadChecklist" style="display: none;" />
+<label for="uploadChecklist" class="upload-btn">Upload Checklist</label>
+<!-- <button id="clearChecklist">Clear Checklist</button> -->
+
+    <script>
+       document.addEventListener('DOMContentLoaded', function() {
+    const checklistContainer = document.getElementById('checklistContainer');
+    const loadChecklistButton = document.getElementById('loadChecklist');
+    const addItemForm = document.getElementById('addItemForm');
+    const newItemsInput = document.getElementById('newItems');
+
+    // Initially defined defaultChecklistItems
+    let checklistItems = [];
+
+    const clearChecklistButton = document.getElementById('clearChecklist');
+
+// clearChecklistButton.addEventListener('click', function() {
+//     if (confirm('Are you sure you want to clear the checklist?')) {
+//         checklistItems = [];
+//         saveItemsToStorage(checklistItems);
+//         renderChecklist(checklistItems);
+//     }
+// });
+
+    // Function to render checklist items
+    function renderChecklist(items) {
+    checklistContainer.innerHTML = ''; // Clear current items
+    items.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'checklist-item';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = 'check-' + index; // Unique ID for each checkbox
+
+        const label = document.createElement('label');
+        label.htmlFor = 'check-' + index;
+        label.textContent = typeof item === 'object' ? item.text : item; // Support both string and object item types
         
-        // Make the indicator visible only in Electron
-        saveIndicator.style.display = 'block';
+        div.appendChild(checkbox);
+        div.appendChild(label);
+        checklistContainer.appendChild(div);
+    });
+}
 
-        // Function to update the last saved timestamp
-        function updateLastSavedTimestamp() {
-            const now = new Date();
-            saveIndicator.textContent = `Last saved on: ${now.toLocaleString()}`;
+    // Load checklist from local storage or use default items
+    function loadChecklist() {
+        const storedItems = JSON.parse(localStorage.getItem('preMatchChecklistItems'));
+        if (storedItems && storedItems.length > 0) {
+            checklistItems = storedItems; // Update the global variable
         }
-
-        // Function to save the state of a single checkbox and update the timestamp
-        function saveCheckboxState(checkbox) {
-            const checkboxId = checkbox.id || `checkbox-${checkbox.dataset.index}`;
-            localStorage.setItem(checkboxId, checkbox.checked);
-            updateLastSavedTimestamp();
-        }
-
-        // Load and apply saved states
-        checkboxes.forEach((checkbox, index) => {
-            const checkboxId = checkbox.id || `checkbox-${index}`;
-            checkbox.dataset.index = index;
-            const savedState = localStorage.getItem(checkboxId);
-            if (savedState !== null) {
-                checkbox.checked = savedState === 'true';
-            }
-
-            // Save state upon change and update the timestamp
-            checkbox.addEventListener('change', () => saveCheckboxState(checkbox));
-        });
-
-        // Clear all checkboxes, save their states, and update the timestamp
-        clearButton.addEventListener('click', () => {
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = false;
-                saveCheckboxState(checkbox); // Also updates the timestamp
-            });
-        });
-
-        // Initial update to the timestamp when the page loads
-        updateLastSavedTimestamp();
+        renderChecklist(checklistItems);
     }
+
+    function saveItemsToStorage(items) {
+        localStorage.setItem('preMatchChecklistItems', JSON.stringify(items));
+    }
+
+    addItemForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const newItems = newItemsInput.value.split(' '); // Split input by spaces
+        checklistItems = checklistItems.concat(newItems); // Add new items to the global checklist items array
+        saveItemsToStorage(checklistItems); // Save updated list to local storage
+        renderChecklist(checklistItems); // Re-render the checklist
+        newItemsInput.value = ''; // Clear the input field
+    });
+
+
+    // Event listener for the load button
+    loadChecklistButton.addEventListener('click', loadChecklist);
+
+    // Optionally, automatically load the checklist when the page loads
+    loadChecklist();
+
+    const downloadChecklistButton = document.getElementById('downloadChecklist');
+    const uploadChecklistInput = document.getElementById('uploadChecklist');
+
+    downloadChecklistButton.addEventListener('click', function() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(checklistItems));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href",     dataStr);
+        downloadAnchorNode.setAttribute("download", "checklistItems.json");
+        document.body.appendChild(downloadAnchorNode); // Required for Firefox
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
 });
-</script>
+
+uploadChecklistInput.addEventListener('change', function(e) {
+        const fileReader = new FileReader();
+        fileReader.onload = function() {
+            const contents = JSON.parse(fileReader.result);
+            checklistItems = contents;
+            renderChecklist(checklistItems); // Re-render the checklist
+            saveItemsToStorage(checklistItems); // Save uploaded list to local storage
+        };
+        fileReader.readAsText(e.target.files[0]);
+    });
+});
+    </script>
+</body>
 </html>

@@ -38,18 +38,6 @@
     #eventCode,
     #showRankings {
       margin: 10px;
-      border-width: 4px;
-      border-radius: 8px;
-      border-color: #000000;
-    }
-
-    #eventCode {
-      background-color: #63bef3;
-      padding: 10px;
-      border-width: 4px;
-      border-color: #000000;
-      font-size: 30px;
-      font-weight: bold;
     }
 
     label,
@@ -122,7 +110,7 @@
       text-align: center;
       padding: 10px 0;
       border-radius: 10px;
-      width: 900px;
+      width: 800px;
     }
 
     nav a {
@@ -188,22 +176,19 @@
   <h5 style="text-align: center;">Click on a team for more info!</h5>
   <nav id="nav" class="container">
     <a href="./index.html">Home</a>
-    <a href="./Team_List_element.html">Teams</a>
-    <a href="./Strat_Board_w_tabs.html">Canvas</a>
-    <a href="./Checklist.html">Pre Match Checklist</a>
-    <a href="./Control_Panel.html">Control Panel</a>
-    <a href="./2423_Features.html">Features</a>
-    <a href="./Config_tab.html">Configure</a>
+        <a href="./Team_List_element.html">Teams</a>
+        <a href="./Strat_Board_w_tabs.html">Canvas</a>
+        <a href="./preMatchChecklist.html">Pre Match Checklist</a>
+        <a href="./Control_Panel.html">Control Panel</a>
+        <a href="./2423_Features.html">Features</a>
   </nav>
 
   <div style="text-align: center;">
     <input type="checkbox" id="showRankings" onchange="fetchTeams()">
     <label for="showRankings">Show Rankings</label><br>
-    <!-- <label for="eventCode">Enter Event Code:</label> -->
-    <h2>Event Code From Config: </h2>
-    <span id="eventCode"></span>
-    <!-- <input type="text" id="eventCode" value="2024mabos"> -->
-    <!-- <button onclick="fetchTeams()">Load</button> -->
+    <label for="eventCode">Enter Event Code:</label>
+    <input type="text" id="eventCode" value="2024mabos">
+    <button onclick="fetchTeams()">Load</button>
   </div>
 
   <table id="teamsTable">
@@ -246,8 +231,7 @@
 
   <script>
     async function fetchTeams() {
-      const eventCode = localStorage.getItem('eventCode');
-      document.getElementById('eventCode').textContent = eventCode;
+      const eventCode = document.getElementById('eventCode').value;
       const showRankings = document.getElementById('showRankings').checked;
       let url;
 
@@ -425,33 +409,6 @@
 
   </script>
 <script src="electron.js"></script>
-<!--Debug function-->
-<!-- <script>
-(function() {
-  function wrapWithLogging(originalFunction, name) {
-    return function(...args) {
-      console.log(`Function called: ${name}`, 'Arguments:', args);
-      return originalFunction.apply(this, args);
-    };
-  }
-
-  // Specify the target for wrapping functions with logging (e.g., window)
-  const target = window;
-
-  // Iterate over the properties of the target
-  Object.keys(target).forEach(key => {
-    const value = target[key];
-    // Check if the property is a function
-    if (typeof value === 'function') {
-      // Wrap the function with the logging wrapper
-      target[key] = wrapWithLogging(value, key);
-    }
-  });
-
-  // Now you can add specific handling for objects like document or others if needed
-})();
-</script> -->
-
 </body>
 
 </html>
