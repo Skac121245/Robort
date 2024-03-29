@@ -51,7 +51,8 @@
 
   #autoCanvas {
       width: 100%;
-      background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png');
+      /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
+      background-image: url("images/crescendo_feild.png");
       background-size: contain;
       border: 1px solid #000;
       width: 1152; /* Adjust based on your actual need */
@@ -60,7 +61,8 @@
 
     #teleopCanvas {
       width: 100%;
-      background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png');
+      /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
+      background-image: url("images/crescendo_feild.png");
       background-size: contain;
       border: 1px solid #000;
       width: 1152; /* Adjust based on your actual need */
@@ -74,6 +76,9 @@
 
   #eventCodeInput {
     flex-grow: 1;
+    background-color: #ae83e3;
+    padding: 10px;
+    border-radius: 8px;
   }
 
   #newOptionContainer {
@@ -89,8 +94,17 @@
   }
   
   .button-container {
-    display: flex;
-  }
+  display: flex;
+  justify-content: space-between; /* Distribute space between buttons */
+  gap: 60px; /* Space between each button */
+  padding: 0 20px; /* Padding on the sides of the container */
+  width: 100%; /* Make the container full width */
+}
+
+.button-container button {
+  flex: 1; /* Make each button take equal space */
+  margin: 0 10px; /* Add margin to space out buttons */
+}
 
   .eventAndDirections {
     display: flex;
@@ -121,6 +135,35 @@
   nav a:hover {
     color: #0056b3;
   }
+
+  .button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+  /* box-shadow: 0 9px #999; */
+}
+
+.button:hover {background-color: #45a049}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+/* Additional styling for file input to make it invisible */
+#uploadMatchData {
+  display: none;
+}
+
 /* Media Query for screens with a max-width of 600px */
 @media (max-width: 600px) {
     nav {
@@ -173,7 +216,11 @@
 
 <button id="saveAutoCanvas">Save Autonomous Canvas as PNG</button>
 
-<button id="uploadMatchData">Upload Data</button>
+<input type="file" id="uploadMatchData" style="display: none;" />
+      <label for="uploadMatchData" class="button">Upload Match Data</label>
+
+
+<input type="file" id="fileInput" style="display: none;"/>
 
   <select id="matchSelect"></select>
   <div id="button-container">
@@ -216,6 +263,43 @@
     link.href = dataURL;
     link.click();
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadButton = document.getElementById('uploadMatchData');
+    const fileInput = document.getElementById('uploadMatchData');
+
+    uploadButton.addEventListener('click', function() {
+      fileInput.click(); // Trigger file input when upload button is clicked
+    });
+
+    fileInput.addEventListener('change', function(event) {
+      uploadData(event); // Call your existing function to handle file upload
+    });
+
+  }
+  
+  
+);
+function uploadData(event) {
+  // apiData = [];
+  const file = event.target.files[0];
+  if (!file) {
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    clearPreviousData(); // Make sure this function fully resets the state as needed
+    const content = e.target.result;
+    try {
+      apiData = JSON.parse(content);
+      populateMatchSelect(apiData); // This should trigger a UI update to reflect the new data
+      // Optionally, clear and reset the canvas or other UI elements as needed here
+    } catch (err) {
+      console.error('Failed to parse uploaded file:', err);
+    }
+  };
+  reader.readAsText(file);
+}
 
   // document.getElementById('addOptionButton').addEventListener('click', function() {
   //       const selectElement = document.getElementById('eventCodeInput');
@@ -452,9 +536,19 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
   
     function displayTeamsForSelectedMatch() {
       selectedMatchKey = matchSelect.value;
-      const match = matches.find(m => m.key === selectedMatchKey);
-      if (!match) return;
+      const selectedMatch = apiData.find(match => match.key === selectedMatchKey);
+      const match = apiData.find(m => m.key === selectedMatchKey);
+      console.log(match)
+      if (!match) {
+        return;
+      }
+      if (!selectedMatch) {
+    console.error('Selected match not found');
+    return;
+  }
+
       clearCanvas();
+      console.log("cleared canvas")
       teamPositions = []; // Reset team positions
   
       drawTeams(match.alliances.blue.team_keys, bluePositions, 'blue');
@@ -464,20 +558,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
     const uploadInput = document.getElementById('uploadMatchData');
       uploadInput.addEventListener('change', uploadData);
 
-    function uploadData(event) {
-      const file = event.target.files[0];
-      if (!file) {
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        clearPreviousData()
-        const content = e.target.result;
-        apiData = JSON.parse(content);
-        populateMatchSelect(apiData); // Re-render the page with the uploaded data
-      };
-      reader.readAsText(file);
-    }
+    
 
     function clearPreviousData() {
     // Clear the global data variable
