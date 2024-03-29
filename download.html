@@ -1,12 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2423 Features</title>
+    <title>App Download Page</title>
     <style>
+
+
+   
+        .feature-comparison {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .feature-list {
+            width: 30%;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-list h2 {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+        }
+
+        .feature-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        .check {
+            color: green;
+            font-size: 24px;
+        }
+
+        .cross {
+            color: red;
+            font-size: 24px;
+        }
+
+    
+
+        
         body {
             margin: 0;
             padding: 0;
@@ -207,11 +247,8 @@
         transform: translateX(-100%);
     }
 }
-
-
     </style>
 </head>
-
 <body>
     <div class="hamburger-menu">
         <div class="bar"></div>
@@ -219,158 +256,87 @@
         <div class="bar"></div>
     </div>
     <header>
-        <link rel="manifest" href="/manifest.json">
         <div class="container">
-            <h1>The Features of Team 2423's "Con-duck-tor"</h1>
-            <h2>Hello alliance partners! This is what we do!</h2>
+            <h1>Download Our App for Enhanced Features!</h1>
         </div>
     </header>
 
-    <nav class="container">
+    <nav class="container nav-inactive">
         <a href="./index.html">Home</a>
         <a href="./Team_List_element.html">Teams</a>
         <a href="./Strat_Board_w_tabs.html">Canvas</a>
         <a href="./preMatchChecklist.html">Pre Match Checklist</a>
         <a href="./Control_Panel.html">Control Panel</a>
- </nav>
+        <a href="./2423_Features.html">2423 Features</a>
+    </nav>
 
-
-    <div class="sections-container">
-        <div class="section" id="auto">
-            <h2>Auto</h2>
-            <!-- Dropdown for selecting an auto -->
-            <select id="autoSelector" onchange="updateAutoDisplay()">
-                <option value="amp2">Start Amp - Amp Note</option>
-                <option value="middle-middle">Start Middle - Middle Note</option>
-                <option value="feeder2">Start Feederside - Feederside Note</option>
-                <option value="amp to center1">Start Amp - Center Line (first note)</option>
-                <option value="amp to center2">Start Amp - Center Line (second note)</option>
-                <option value="feeder to center1">Start Feeder - Feeder Side Note Center Line (first note)</option>
-                <option value="feeder to center2">Start Feeder - Feeder Side Note Center Line (second note)</option>
-                <option value="3peiceAuto">Start Middle - Middle Note - Amp Side Note</option>
-                <option value="amp to amp side then center1">Start Amp - Amp Side Note - Center Line (first note)</option>
-                <option value="amp to amp side then center2">Start Amp - Amp Side Note - Center Line (second note)</option>
-
-
-            </select>
-            <p id="autoName">Select an auto...</p>
-            <img id="autoImage" src="" alt="Auto Description Image" style="width:400px; height:auto; display: none;">
+    <div class="feature-comparison">
+        <div class="feature-list">
+            <h2>Website</h2>
+            <div class="feature-item"><span>Matches Table</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>Updated Team List</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>Canvas for Auto/Tele-Op</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>Customizable Pre-Match<br>Checklist</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>Control Panel</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>2423 Features Page</span> <span class="check">&#10004;</span></div>
+            
         </div>
-
-
-
-        <div class="section" id="teleop">
-            <h2>Teleop</h2>
-            <div id="pickup">
-                <h4>Pickup!</h4>
-                <h5>We Do It ALL!</h5>
-                <p>Ground + Source</p>
-            </div>
-            <div id="scoring">
-                <h4>Scoring!</h4>
-                <p>-Speaker (Any Distance!)</p>
-                <p>-Amp (Suppa speedy!)</p>
-            </div>
-        </div>
-
-        <div class="section" id="endgame">
-            <h2>End Game</h2>
-            <h3>We climb!</h3>
-            <p>No harmonies, sorry... unless you talk us into it</p>
-            <h2>General Pit Scouting Questions</h2>
-            <h3>Dimensions</h3>
-            <p>26 inches square (no bumpers)</p>
-            <p>32 inches square (yes bumpers)</p>
-            <h3>Drivetrain</h3>
-            <p>REV Swerve</p>
-            <h3>Weight</h3>
-            <p>96 lbs</p>
+        <div class="feature-list">
+            <h2>App</h2>
+            <div class="feature-item"><span>Matches Table</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>Updated Team List</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>Canvas for Auto/Tele-Op</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>Customizable Pre-Match<br>Checklist</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>Control Panel</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>Fully Configurable Features Page</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>Clean/Modular Bootstrap Layout</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>Regularly Updated with New Features</span> <span class="check">&#10004;</span></div>
         </div>
     </div>
 
     <script>
-        const autos = {
-            "amp2": {
-                name: "Amp side to amp side note",
-                img: "./images/amp2.png"
-            },
-            "middle-middle": {
-                name: "Middle to middle note",
-                img: "./images/middle-middle.jpeg"
-            },
-            "feeder2": {
-                name: "Feederside to feederside note",
-                img: "./images/feeder2.jpeg"
-            },
-            "amp to center1": {
-                name: "Amp side to center line (first note from the amp side)",
-                img: "./images/amp to center1.png"
-            },
-            "amp to center2": {
-                name: "Amp side to center line (second note from the amp side)",
-                img: "./images/amp to center2.png"
-            },
-            "feeder to center1": {
-                name: "feeder side to center line (first note)",
-                img: "./images/feeder1.png"
-            },
-            "feeder to center2": {
-                name: "feeder side to center line (second note)",
-                img: "./images/feeder to center2.png"
-            },
-            "3peiceAuto": {
-                name: "Start Middle - Middle Note - Amp Side Note",
-                img: "./images/3peiceAuto.png"
-            },
-            "amp to amp side then center1": {
-                name: "amp to amp side then center (first note)",
-                img: "./images/amp to amp side then center1.png"
-            },
-            "amp to amp side then center2": {
-                name: "amp to amp side then center (second note)",
-                img: "./images/amp to amp side then center2.png"
-            }
-        };
+        document.addEventListener('DOMContentLoaded', function() {
+       const hamburger = document.querySelector('.hamburger-menu');
+       const nav = document.querySelector('nav');
+   
+       // Initialize the nav as inactive (hidden)
+       nav.classList.add('nav-inactive');
+   
+       hamburger.addEventListener('click', function() {
+           // Toggle between active and inactive states
+           if (nav.classList.contains('nav-inactive')) {
+               nav.classList.remove('nav-inactive');
+               nav.classList.add('nav-active');
+           } else {
+               nav.classList.remove('nav-active');
+               nav.classList.add('nav-inactive');
+           }
+       });
+   });
+   
+   function adjustNavLayout() {
+    const navLinks = document.querySelectorAll('nav a');
+    const featuresLink = Array.from(navLinks).find(link => link.href.includes('2423_Features.html'));
 
-        function updateAutoDisplay() {
-            const selector = document.getElementById('autoSelector');
-            const selectedValue = selector.value;
-            const autoName = document.getElementById('autoName');
-            const autoImage = document.getElementById('autoImage');
-
-            if (autos[selectedValue]) {
-                autoName.innerText = autos[selectedValue].name;
-                autoImage.src = autos[selectedValue].img;
-                autoImage.style.display = 'block';
-            } else {
-                autoName.innerText = 'Select an auto...';
-                autoImage.style.display = 'none';
-            }
+    if (window.innerWidth > 768) { // Example breakpoint
+        // Check if the line break is not already added
+        if (!featuresLink.previousSibling || featuresLink.previousSibling.nodeName !== 'BR') {
+            const br = document.createElement('br');
+            featuresLink.parentNode.insertBefore(br, featuresLink);
         }
-    </script>
-    <script>
-     document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger-menu');
-    const nav = document.querySelector('nav');
+    } else {
+        // Remove the line break if screen is narrower than 768px
+        Array.from(navLinks).forEach(link => {
+            if (link.previousSibling && link.previousSibling.nodeName === 'BR') {
+                link.parentNode.removeChild(link.previousSibling);
+            }
+        });
+    }
+}
 
-    // Initialize the nav as inactive (hidden)
-    nav.classList.add('nav-inactive');
-
-    hamburger.addEventListener('click', function() {
-        // Toggle between active and inactive states
-        if (nav.classList.contains('nav-inactive')) {
-            nav.classList.remove('nav-inactive');
-            nav.classList.add('nav-active');
-        } else {
-            nav.classList.remove('nav-active');
-            nav.classList.add('nav-inactive');
-        }
-    });
-});
-
-
-    </script>
-<script src="electron.js"></script>
+// Run on load and on window resize
+window.addEventListener('load', adjustNavLayout);
+window.addEventListener('resize', adjustNavLayout);
+       </script>
 </body>
-
 </html>
