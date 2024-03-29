@@ -247,6 +247,36 @@
         transform: translateX(-100%);
     }
 }
+.download-section {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.download-button {
+    display: inline-block;
+    background-color: #1df700; /* Same green as nav bar */
+    color: #000; /* Text color */
+    text-decoration: none;
+    padding: 1vw 2vw; /* Responsive padding */
+    font-size: calc(14px + 2vw); /* Responsive font size */
+    font-weight: bold;
+    border-radius: 25px; /* Rounded corners */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Adjustments for small screens */
+@media (max-width: 768px) {
+    .download-button {
+        padding: 3vw 6vw; /* Increase padding */
+        font-size: calc(12px + 2vw); /* Slightly larger font size for better readability */
+    }
+}
+
+.download-button:hover {
+    background-color: #0cb500; /* Slightly darker green on hover */
+    color: #fff; /* White text on hover */
+}
+
     </style>
 </head>
 <body>
@@ -279,7 +309,10 @@
             <div class="feature-item"><span>Customizable Pre-Match<br>Checklist</span> <span class="check">&#10004;</span></div>
             <div class="feature-item"><span>Control Panel</span> <span class="check">&#10004;</span></div>
             <div class="feature-item"><span>2423 Features Page</span> <span class="check">&#10004;</span></div>
-            
+            <div class="feature-item"><span>Clean/Modular Bootstrap Layout</span> <span class="cross">&#10006;</span></div>
+            <div class="feature-item"><span>Download, Upload, and Transfer Data Locally</span> <span class="cross">&#10006;</span></div>
+            <div class="feature-item"><span>Regularly Updated with New Features</span> <span class="cross">&#10006;</span></div>
+            <div class="feature-item"><span>Variety of Settings</span> <span class="cross">&#10006;</span></div>
         </div>
         <div class="feature-list">
             <h2>App</h2>
@@ -290,8 +323,14 @@
             <div class="feature-item"><span>Control Panel</span> <span class="check">&#10004;</span></div>
             <div class="feature-item"><span>Fully Configurable Features Page</span> <span class="check">&#10004;</span></div>
             <div class="feature-item"><span>Clean/Modular Bootstrap Layout</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>Download, Upload, and Transfer Data Locally</span> <span class="check">&#10004;</span></div>
             <div class="feature-item"><span>Regularly Updated with New Features</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>Variety of Settings</span> <span class="check">&#10004;</span></div>
+            <div class="feature-item"><span>And More!</span> <span class="check">&#10004;</span></div>
         </div>
+    </div>
+    <div class="download-section">
+        <a href="https://github.com/Skac121245/Robort/releases/" class="download-button">Download Now!</a>
     </div>
 
     <script>
