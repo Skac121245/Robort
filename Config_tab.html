@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Configuration</title>
 </head>
+
 <body>
     <h1>Team Configuration</h1>
 
@@ -18,13 +20,13 @@
         <a href="./2423_Features.html">Features</a>
     </nav>
 
-<form id="eventCodeForm">
-    <label for="eventCode">What is the code for the event you are at?</label>
-    <input type="text" id="eventCode" name="eventCode" required>
+    <form id="eventCodeForm">
+        <label for="eventCode">What is the code for the event you are at?</label>
+        <input type="text" id="eventCode" name="eventCode" required>
 
-    <button type="submit">Save Just Event Code</button>
-</form>
-    
+        <button type="submit">Save Just Event Code</button>
+    </form>
+
     <form id="teamForm">
         <label for="teamNumber">What is your team number?</label>
         <input type="number" id="teamNumber" name="teamNumber">
@@ -41,7 +43,7 @@
         <label for="weight">What is your robot weight? (LBS)</label>
         <input type="number" id="weight" name="weight">
 
-       <!-- <div class="checkbox">
+        <!-- <div class="checkbox">
            <h2>Where do you pick up from?</h2>
            <input type="checkbox" id="ground" name="ground">Ground<br>
            <input type="checkbox" name="source">Source<br>
@@ -52,125 +54,146 @@
            <input type="checkbox" name="distance_shoot">Can you shoot from distance?<br>
            <input type="checkbox" name="amp">Amp<br>
        </div> -->
-        
+
 
         <button type="submit">Save</button>
+    </form>
+
+    <form id="autoNamesForm">
+        <h4>Auto Names + Pictures</h4>
+        <div id="autoNamesContainer">
+            <!-- Dynamic items will be added here -->
+        </div>
+        <button type="button" id="addAutoName">Add Auto Name</button>
+        <button type="submit">Save All</button>
     </form>
 
     <form id="teleopForm">
         <h4>Ground</h4>
-        <select id="ground"> 
+        <select id="ground">
             <option value="Yes">YES</option>
             <option value="No">NO</option>
-          </select>
+        </select>
 
-          <h4>Source</h4>
-          <select id="source"> 
-              <option value="Yes">YES</option>
-              <option value="No">NO</option>
-            </select>
+        <h4>Source</h4>
+        <select id="source">
+            <option value="Yes">YES</option>
+            <option value="No">NO</option>
+        </select>
 
-            <h4>Speaker</h4>
-          <select id="speaker"> 
-              <option value="Yes">YES</option>
-              <option value="No">NO</option>
-            </select>
+        <h4>Speaker</h4>
+        <select id="speaker">
+            <option value="Yes">YES</option>
+            <option value="No">NO</option>
+        </select>
 
-            <h4>Can you shoot from distance?</h4>
-          <select id="distance_shoot"> 
-              <option value="Yes">YES</option>
-              <option value="No">NO</option>
-            </select>
+        <h4>Can you shoot from distance?</h4>
+        <select id="distance_shoot">
+            <option value="Yes">YES</option>
+            <option value="No">NO</option>
+        </select>
 
-            <h4>Amp</h4>
-          <select id="amp"> 
-              <option value="Yes">YES</option>
-              <option value="No">NO</option>
-            </select>
+        <h4>Amp</h4>
+        <select id="amp">
+            <option value="Yes">YES</option>
+            <option value="No">NO</option>
+        </select>
 
         <button type="submit">Save</button>
     </form>
-    
-    <form id="autoNamesForm">
-        <h4>Auto Names + Pictures</h4>
-        <div id="autoNamesContainer">
-          <!-- Dynamic items will be added here -->
-        </div>
-        <button type="button" id="addAutoName">Add Auto Name</button>
-        <button type="submit">Save All</button>
-      </form>
+
+    <form id="endGameForm">
+        <h4>Can you climb?</h4>
+        <select id="climb">
+            <option value="Yes">YES</option>
+            <option value="No">NO</option>
+        </select>
+
+        <h4>Can you climb, not from the center?</h4>
+        <select id="harmony">
+            <option value="Yes">YES</option>
+            <option value="It's possible">It's possible</option>
+            <option value="No">NO</option>
+        </select>
+
+
+        <button type="submit">Save</button>
+    </form>
+
+
 
     <style>
         body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 20px;
-        color: #000000;
-    }
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #000000;
+        }
 
-    h1 {
-        color: #000000;
-    }
+        h1 {
+            color: #000000;
+        }
 
-    nav {
-        background-color: #00f729;
-        padding: 10px 0;
-        border-radius: 5px;
-        margin-bottom: 20px;
-    }
+        nav {
+            background-color: #00f729;
+            padding: 10px 0;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
 
-    nav a {
-        color: rgb(0, 0, 0);
-        text-decoration: none;
-        font-size: 20px;
-        font-weight: bold;
-        padding: 10px 20px;
-        display: inline-block;
-    }
+        nav a {
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 10px 20px;
+            display: inline-block;
+        }
 
-    nav a:hover {
-        background-color: #3295ff;
-    }
+        nav a:hover {
+            background-color: #3295ff;
+        }
 
-    form {
-        background-color: white;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-    label {
-        display: block;
-        margin: 10px 0 5px;
-    }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
 
-    input[type="number"],
-    input[type="text"] {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
 
-    button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        display: flex;
-        margin-top: 10px;
-        margin-bottom: 0px;
-    }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            margin-top: 10px;
+            margin-bottom: 0px;
+        }
 
-    button:hover {
-        background-color: #45a049;
-    }
+        button:hover {
+            background-color: #45a049;
+        }
     </style>
     <script src="Control_tab/Config_tab.js"></script>
 </body>
+
 </html>

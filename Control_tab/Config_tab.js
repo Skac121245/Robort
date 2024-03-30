@@ -54,6 +54,14 @@ autoNamesForm.addEventListener('submit', function(e) {
     newItemsInput.value = ''; // Clear the input field
 });
 
+endGameForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const climb = document.getElementById('climb').value
+ localStorage.setItem('climb', climb)
+ const harmony = document.getElementById('harmony').value
+ localStorage.setItem('harmony', harmony)
+});
+
 document.getElementById('addAutoName').addEventListener('click', function () {
     const container = document.getElementById('autoNamesContainer');
     const uniqueId = Date.now(); // Create a unique ID for matching label with input

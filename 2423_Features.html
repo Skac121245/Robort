@@ -277,8 +277,8 @@
 
         <div class="section" id="endgame">
             <h2>End Game</h2>
-            <h3>We climb!</h3>
-            <p>No harmonies, sorry... unless you talk us into it</p>
+            <h3><span id="climb"></span></h3>
+            <h3><span id="harmony"></span></h3>
             <h2>General Pit Scouting Questions</h2>
             <h3>Dimensions</h3>
             <p><span id="dim_w_bump"></span> inches square (yes bumpers)</p>
@@ -365,6 +365,11 @@
     const speaker = localStorage.getItem('speaker'); // Convert to boolean
     const distance_shoot = localStorage.getItem('distance_shoot'); // Convert to boolean
     const amp = localStorage.getItem('amp'); // Convert to boolean
+    const climb = localStorage.getItem('climb');
+    const harmony = localStorage.getItem('harmony');
+
+
+
     const autoNames = localStorage.getItem('autoNames').split(',')
     console.log(autoNames)
 
@@ -379,6 +384,9 @@
     document.getElementById('speaker').textContent = `Speaker: ${speaker}`;
     document.getElementById('distance_shoot').textContent = `Shoot from distance: ${distance_shoot}`;
     document.getElementById('amp').textContent = `Amp: ${amp}`;
+    document.getElementById('climb').textContent = `Climb: ${climb}` 
+    document.getElementById('harmony').textContent = `Harmony: ${harmony}`
+
 
     const autoNamesSelector = document.getElementById("autoNameSelector")
 
