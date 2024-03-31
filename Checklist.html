@@ -140,12 +140,12 @@ button:hover, .upload-btn:hover {
         <input type="text" id="newItems" placeholder="Enter items separated by spaces">
         <button type="submit">Add Items</button>
     </form>
-    <button id="loadChecklist">Load Checklist</button>
+    <!-- <button id="loadChecklist">Load Checklist</button> -->
 
     <button id="downloadChecklist">Download Checklist</button>
 <input type="file" id="uploadChecklist" style="display: none;" />
 <label for="uploadChecklist" class="upload-btn">Upload Checklist</label>
-<!-- <button id="clearChecklist">Clear Checklist</button> -->
+<button id="clearChecklist">Make a new list</button>
 
     <script>
        document.addEventListener('DOMContentLoaded', function() {
@@ -160,13 +160,13 @@ button:hover, .upload-btn:hover {
 
     const clearChecklistButton = document.getElementById('clearChecklist');
 
-// clearChecklistButton.addEventListener('click', function() {
-//     if (confirm('Are you sure you want to clear the checklist?')) {
-//         checklistItems = [];
-//         saveItemsToStorage(checklistItems);
-//         renderChecklist(checklistItems);
-//     }
-// });
+clearChecklistButton.addEventListener('click', function() {
+    if (confirm('You are clearing your local storage, are you sure you want to go forward?')) {
+        localStorage.removeItem("preMatchChecklistItems")
+        location.reload();
+        // renderChecklist(null);
+    }
+});
 
     // Function to render checklist items
     function renderChecklist(items) {
@@ -232,10 +232,11 @@ button:hover, .upload-btn:hover {
 });
 
 uploadChecklistInput.addEventListener('change', function(e) {
+        // checklistItems = []
         const fileReader = new FileReader();
         fileReader.onload = function() {
-            const contents = JSON.parse(fileReader.result);
-            checklistItems = contents;
+            checklistItems = JSON.parse(fileReader.result);
+            // checklistItems = contents;
             renderChecklist(checklistItems); // Re-render the checklist
             saveItemsToStorage(checklistItems); // Save uploaded list to local storage
         };

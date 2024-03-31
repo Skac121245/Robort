@@ -51,7 +51,7 @@
             padding: 10px;
         }
 
-        
+
         .section h2 {
             color: #007bff;
             border-bottom: 2px solid #007bff;
@@ -67,9 +67,9 @@
 
         nav {
             background-color: #1df700;
-            width: 740px;
+            width: 1000px;
             text-align: center;
-            right: 50px; 
+            right: 50px;
             border-radius: 10px;
             padding: 10px 0;
             transition: transform 0.3s ease-in-out;
@@ -139,76 +139,110 @@
         }
 
         #autoImage {
-    max-width: 100%; /* Ensure the image is not wider than the container */
-    max-height: 400px; /* Max height can be adjusted as needed */
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Display block to allow for margin auto to work */
-    margin: auto; /* Center the image within its container */
-}
+            max-width: 100%;
+            /* Ensure the image is not wider than the container */
+            max-height: 400px;
+            /* Max height can be adjusted as needed */
+            height: auto;
+            /* Maintain aspect ratio */
+            display: block;
+            /* Display block to allow for margin auto to work */
+            margin: auto;
+            /* Center the image within its container */
+        }
 
-.hamburger-menu {
-    display: none;
-    cursor: pointer;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 2;
-}
+        .hamburger-menu {
+            display: none;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
+        }
 
-.hamburger-menu .bar {
-    display: block;
-    width: 25px;
-    height: 3px;
-    margin: 5px auto;
-    background-color: #333;
-}
+        .hamburger-menu .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: #333;
+        }
 
-@media screen and (max-width: 768px) {
-    .hamburger-menu {
-        display: block;  }
+        .config-reminder-container {
+            text-align: center;
+            margin: 20px auto;
+            width: 400px;
+            padding: 1px;
+            font-size: 18px;
+            border-radius: 8px;
+            /* background-color: #d9534f; */
+        }
 
-     nav {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 100%; /* Positioned off-screen to the right */
-        width: 100%; /* Takes full width */
-        height: 100vh; /* Takes full height */
-        background-color: #1df700; /* The green background */
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding-top: 60px;
-        box-sizing: border-box;
-        z-index: 1; /* Ensure it's below the hamburger menu */
-        overflow-y: auto; /* Allows scrolling if content is too long */
-        transform: translateX(-100%); /* Hidden by default */
-    }
+        .config-reminder-container h4 {
+            font-size: 18px;
+            color:black;
+            font-weight: 700;
+            
+        }
 
-    nav a {
-        display: block;
-        margin: 10px 0; /* Adjusted margins for better spacing */
-        font-size: 18px; /* Adjusted font size for readability */
-        color: #000000; /* Text color for the links */
-        text-decoration: none;
-        transition: color 0.3s; /* Smooth color transition for hover */
-    }
+        @media screen and (max-width: 768px) {
+            .hamburger-menu {
+                display: block;
+            }
 
-    nav a:hover {
-        color: #0056b3; /* Hover color for links */
-    }
+            nav {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 100%;
+                /* Positioned off-screen to the right */
+                width: 100%;
+                /* Takes full width */
+                height: 100vh;
+                /* Takes full height */
+                background-color: #1df700;
+                /* The green background */
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding-top: 60px;
+                box-sizing: border-box;
+                z-index: 1;
+                /* Ensure it's below the hamburger menu */
+                overflow-y: auto;
+                /* Allows scrolling if content is too long */
+                transform: translateX(-100%);
+                /* Hidden by default */
+            }
 
-    .nav-inactive {
-        transform: translateX(0%); /* Keep nav off-screen */
-    }
+            nav a {
+                display: block;
+                margin: 10px 0;
+                /* Adjusted margins for better spacing */
+                font-size: 18px;
+                /* Adjusted font size for readability */
+                color: #000000;
+                /* Text color for the links */
+                text-decoration: none;
+                transition: color 0.3s;
+                /* Smooth color transition for hover */
+            }
 
-    .nav-active {
-        transform: translateX(-100%);
-    }
-}
+            nav a:hover {
+                color: #0056b3;
+                /* Hover color for links */
+            }
 
+            .nav-inactive {
+                transform: translateX(0%);
+                /* Keep nav off-screen */
+            }
 
+            .nav-active {
+                transform: translateX(-100%);
+            }
+        }
     </style>
 </head>
 
@@ -223,6 +257,7 @@
         <div class="container">
             <h1>The Features of team <span id="displayTeamNumber"></span></h1>
             <h2>Hello alliance partners! This is what we do!</h2>
+
         </div>
     </header>
 
@@ -233,8 +268,12 @@
         <a href="./preMatchChecklist.html">Pre Match Checklist</a>
         <a href="./Control_Panel.html">Control Panel</a>
         <a href="./2423_Features.html">Features</a>
+        <a href="Config_tab.html">Configure</a>
     </nav>
 
+    <div class="config-reminder-container">
+        <h4><span id="config_reminder"></span></h4>
+    </div>
 
     <div class="sections-container">
         <div class="section" id="auto">
@@ -253,9 +292,10 @@
                 <option value="amp to amp side then center2">Start Amp - Amp Side Note - Center Line (second note)</option>
             </select> -->
             <p id="autoName">Select an auto...</p>
+            <select id="autoNameSelector"></select>
             <img id="autoImage" src="" alt="Auto Description Image" style="width:400px; height:auto; display: none;">
 
-            <select id="autoNameSelector"></select>
+
         </div>
 
 
@@ -277,16 +317,18 @@
 
         <div class="section" id="endgame">
             <h2>End Game</h2>
-            <h3><span id="climb"></span></h3>
-            <h3><span id="harmony"></span></h3>
+            <h5><span id="climb"></span></h5>
+            <h5><span id="harmony"></span></h5>
             <h2>General Pit Scouting Questions</h2>
             <h3>Dimensions</h3>
-            <p><span id="dim_w_bump"></span> inches square (yes bumpers)</p>
-            <p><span id="dim_wout_bump"></span> inches square (no bumpers)</p>
+            <p><span id="dim_w_bump"></span> inches (yes bumpers)</p>
+            <p><span id="dim_wout_bump"></span> inches (no bumpers)</p>
             <h3>Drivetrain</h3>
             <p><span id="drive_train"></span></p>
             <h3>Weight</h3>
             <p><span id="weight"></span> lbs</p>
+            <h3>Intake Style</h3>
+            <p><span id="intake_sty"></span></p>
         </div>
     </div>
 
@@ -350,78 +392,137 @@
                 autoImage.style.display = 'none';
             }
         }
-    </script>
-    <script>
-     document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger-menu');
-    const nav = document.querySelector('nav');
-    const teamNumber = localStorage.getItem('teamNumber'); // Retrieve the team number from local storage
-    const dim_w_bump = localStorage.getItem('dim_w_bump'); // Retrieve the team number from local storage
-    const dim_wout_bump = localStorage.getItem('dim_wout_bump'); // Retrieve the team number from local storage
-    const drive_train = localStorage.getItem('drive_train'); // Retrieve the team number from local storage
-    const weight = localStorage.getItem('weight'); // Retrieve the team number from local storage
-    const ground = localStorage.getItem('ground'); // Convert to boolean
-    const source = localStorage.getItem('source'); // Convert to boolean
-    const speaker = localStorage.getItem('speaker'); // Convert to boolean
-    const distance_shoot = localStorage.getItem('distance_shoot'); // Convert to boolean
-    const amp = localStorage.getItem('amp'); // Convert to boolean
-    const climb = localStorage.getItem('climb');
-    const harmony = localStorage.getItem('harmony');
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamburger = document.querySelector('.hamburger-menu');
+            const nav = document.querySelector('nav');
+            const teamNumber = localStorage.getItem('teamNumber'); // Retrieve the team number from local storage
+            const dim_w_bump = localStorage.getItem('dim_w_bump'); // Retrieve the team number from local storage
+            const dim_wout_bump = localStorage.getItem('dim_wout_bump'); // Retrieve the team number from local storage
+            const drive_train = localStorage.getItem('drive_train'); // Retrieve the team number from local storage
+            const weight = localStorage.getItem('weight'); // Retrieve the team number from local storage
+            const ground = localStorage.getItem('ground'); // Convert to boolean
+            const source = localStorage.getItem('source'); // Convert to boolean
+            const speaker = localStorage.getItem('speaker'); // Convert to boolean
+            const distance_shoot = localStorage.getItem('distance_shoot'); // Convert to boolean
+            const amp = localStorage.getItem('amp'); // Convert to boolean
+            const climb = localStorage.getItem('climb');
+            const harmony = localStorage.getItem('harmony');
+            const intake_sty = localStorage.getItem('intake_sty');
+
+            if (teamNumber == "") {
+                document.getElementById("config_reminder").textContent = "You can configure this in the 'Configure' tab";
+            } 
+
+            
 
 
 
-    const autoNames = localStorage.getItem('autoNames').split(',')
-    console.log(autoNames)
+            // const autoNames = localStorage.getItem('autoNames').split(',')
+            // console.log(autoNames)
 
 
-    document.getElementById('displayTeamNumber').textContent = teamNumber;
-    document.getElementById('dim_w_bump').textContent = dim_w_bump;
-    document.getElementById('dim_wout_bump').textContent = dim_wout_bump;
-    document.getElementById('drive_train').textContent = drive_train;
-    document.getElementById('weight').textContent = weight;
-    document.getElementById('display_ground').textContent = `Ground: ${ground}`;
-    document.getElementById('display_source').textContent = `Source Pickup: ${source}`;
-    document.getElementById('speaker').textContent = `Speaker: ${speaker}`;
-    document.getElementById('distance_shoot').textContent = `Shoot from distance: ${distance_shoot}`;
-    document.getElementById('amp').textContent = `Amp: ${amp}`;
-    document.getElementById('climb').textContent = `Climb: ${climb}` 
-    document.getElementById('harmony').textContent = `Harmony: ${harmony}`
+            document.getElementById('displayTeamNumber').textContent = teamNumber;
+            document.getElementById('dim_w_bump').textContent = dim_w_bump;
+            document.getElementById('dim_wout_bump').textContent = dim_wout_bump;
+            document.getElementById('drive_train').textContent = drive_train;
+            document.getElementById('weight').textContent = weight;
+            document.getElementById('display_ground').textContent = `Ground: ${ground}`;
+            document.getElementById('display_source').textContent = `Source Pickup: ${source}`;
+            document.getElementById('speaker').textContent = `Speaker: ${speaker}`;
+            document.getElementById('distance_shoot').textContent = `Shoot from distance: ${distance_shoot}`;
+            document.getElementById('amp').textContent = `Amp: ${amp}`;
+            document.getElementById('climb').textContent = `Climb: ${climb}`
+            document.getElementById('harmony').textContent = `Harmony: ${harmony}`
+            document.getElementById('intake_sty').textContent = `${intake_sty}`
 
 
-    const autoNamesSelector = document.getElementById("autoNameSelector")
 
-    autoNames.forEach(item => {
-  // Creating a new option element
-  const option = document.createElement('option');
-  // Setting the value and text of the option element
-  option.value = item;
-  option.text = item;
+            document.getElementById('autoNameSelector').addEventListener('change', function () {
+                const selectedAutoName = this.value;
+                displaySelectedAutoImage(selectedAutoName);
+            });
 
-  // Appending the option element to the select element
-  autoNamesSelector.appendChild(option);
-});
+            loadAutosFromLocalStorage();
 
-    
+            autoNames.forEach(item => {
+                // Creating a new option element
+                const option = document.createElement('option');
+                // Setting the value and text of the option element
+                option.value = item;
+                option.text = item;
+
+                // Appending the option element to the select element
+                autoNamesSelector.appendChild(option);
+            });
 
 
-    // Initialize the nav as inactive (hidden)
-    nav.classList.add('nav-inactive');
 
-    hamburger.addEventListener('click', function() {
-        // Toggle between active and inactive states
-        if (nav.classList.contains('nav-inactive')) {
-            nav.classList.remove('nav-inactive');
-            nav.classList.add('nav-active');
-        } else {
-            nav.classList.remove('nav-active');
+
+            // Initialize the nav as inactive (hidden)
             nav.classList.add('nav-inactive');
-        }
-    });
-});
 
+            hamburger.addEventListener('click', function () {
+                // Toggle between active and inactive states
+                if (nav.classList.contains('nav-inactive')) {
+                    nav.classList.remove('nav-inactive');
+                    nav.classList.add('nav-active');
+                } else {
+                    nav.classList.remove('nav-active');
+                    nav.classList.add('nav-inactive');
+                }
+            });
+        });
+
+        function loadAutosFromLocalStorage() {
+            // Attempt to read the autos data from localStorage
+            const storedAutos = JSON.parse(localStorage.getItem('autos'));
+
+            if (!storedAutos) {
+                console.error('No autos data found in localStorage.');
+                return;
+            }
+
+            // Find the autoNameSelector dropdown in the document
+            const autoNameSelector = document.getElementById('autoNameSelector');
+
+            // Clear existing options in the dropdown
+            autoNameSelector.innerHTML = '';
+
+            // Add an initial "Select an auto..." option
+            autoNameSelector.appendChild(new Option('Select an auto...', ''));
+
+            // Iterate over each stored auto, adding it as an option in the dropdown
+            storedAutos.forEach(auto => {
+                const option = new Option(auto.name, auto.name);
+                autoNameSelector.appendChild(option);
+            });
+        }
+
+        function displaySelectedAutoImage(selectedAutoName) {
+            // Attempt to read the autos data from localStorage again
+            const storedAutos = JSON.parse(localStorage.getItem('autos'));
+            if (!storedAutos) {
+                console.error('No autos data found in localStorage.');
+                return;
+            }
+
+            // Find the stored auto data that matches the selected name
+            const selectedAutoData = storedAutos.find(auto => auto.name === selectedAutoName);
+
+            if (!selectedAutoData) {
+                console.error('Selected auto da ta not found.');
+                return;
+            }
+
+            // Update the src attribute of the autoImage element to display the selected auto's image
+            const autoImage = document.getElementById('autoImage');
+            autoImage.src = selectedAutoData.image;
+            autoImage.style.display = selectedAutoData.image ? 'block' : 'none'; // Show or hide the image element
+        }
 
     </script>
-<script src="electron.js"></script>
+    <script src="electron.js"></script>
 </body>
 
 </html>
