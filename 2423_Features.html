@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2423 Features</title>
+    <title>Features</title>
     <style>
         body {
             margin: 0;
@@ -65,9 +65,9 @@
             text-align: left;
         }
 
-        nav {
+        /* nav {
             background-color: #1df700;
-            width: 1000px;
+            width: 1100px;
             text-align: center;
             right: 50px;
             border-radius: 10px;
@@ -86,11 +86,40 @@
 
         nav a:hover {
             color: #0056b3;
+        } */
+
+        nav {
+            background-color: #1df700;
+            width: 1000px;
+            text-align: center;
+            padding: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            /* Ensures nav items wrap in smaller screens */
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #000000;
+            margin: 0 10px;
+            font-weight: bold;
+            font-size: 20px;
+            padding: 10px;
+            background-color: #1df700;
+            /* Makes sure each link has a green background */
+            border-radius: 8px;
+        }
+
+        nav a:hover {
+            background-color: #3295ff;
         }
 
         .container {
             border-radius: 10px;
-            max-width: 800px;
+            max-width: 1000px;
             margin: auto;
             padding: 20px;
             text-align: center;
@@ -180,9 +209,9 @@
 
         .config-reminder-container h4 {
             font-size: 18px;
-            color:black;
+            color: black;
             font-weight: 700;
-            
+
         }
 
         @media screen and (max-width: 768px) {
@@ -412,9 +441,9 @@
 
             if (teamNumber == "") {
                 document.getElementById("config_reminder").textContent = "You can configure this in the 'Configure' tab";
-            } 
+            }
 
-            
+
 
 
 

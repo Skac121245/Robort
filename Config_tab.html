@@ -11,7 +11,7 @@
     <h1>Team Configuration</h1>
 
 
-    <nav>
+    <nav class="nav_con">
         <a href="./index.html">Home</a>
         <a href="./Team_List_element.html">Teams</a>
         <a href="./Strat_Board_w_tabs.html">Canvas</a>
@@ -22,6 +22,7 @@
     </nav>
 
     <form id="eventCodeForm">
+        <h2>Event Code</h2>
         <label for="eventCode">What is the code for the event you are at?</label>
         <input type="text" id="eventCode" name="eventCode" required>
 
@@ -29,6 +30,7 @@
     </form>
 
     <form id="teamForm">
+        <h2>General Scouting Questions</h2>
         <label for="teamNumber">What is your team number?</label>
         <input type="number" id="teamNumber" name="teamNumber">
 
@@ -69,7 +71,8 @@
     </form>
 
     <form id="autoNamesForm">
-        <h4>Auto Names + Pictures</h4>
+        <h2>Add Auto Names and Pictures</h2>
+        <h5> (Square Images are Better)</h5>
         <div id="autoNamesContainer">
             <!-- Dynamic items will be added here -->
         </div>
@@ -78,6 +81,7 @@
     </form>
 
     <form id="teleopForm">
+        <h2>Teleop Form</h2>
         <h4>Ground</h4>
         <select id="ground">
             <option value="Yes">YES</option>
@@ -113,6 +117,7 @@
     </form>
 
     <form id="endGameForm">
+        <h2>Endgame Form</h2>
         <h4>Can you climb?</h4>
         <select id="climb">
             <option value="Yes">YES</option>
@@ -143,6 +148,12 @@
 
         h1 {
             color: #000000;
+            text-align: center;
+        }
+
+        h2 {
+            
+            font-weight: 600;
         }
 
         nav {
@@ -159,6 +170,7 @@
             font-weight: bold;
             padding: 10px 20px;
             display: inline-block;
+            border-radius: 8px;
         }
 
         nav a:hover {
@@ -170,6 +182,7 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* font-size: 30px; */
         }
 
         label {
@@ -189,19 +202,60 @@
         button {
             background-color: #4CAF50;
             color: white;
-            padding: 10px 15px;
+            padding: 10px 20px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
             display: flex;
-            margin-top: 10px;
+            margin-top: 20px;
             margin-bottom: 0px;
         }
 
         button:hover {
             background-color: #45a049;
         }
+
+        .nav_con {
+            border-radius: 10px;
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #teleopForm {
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        #endGameForm {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        #autoNamesForm {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        #teamForm {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        #eventCodeForm {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        select {
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
     </style>
     <script>
 

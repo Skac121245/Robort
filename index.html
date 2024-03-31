@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,41 +9,52 @@
         html {
             overflow-x: hidden;
         }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: gray; 
+            background-color: gray;
             text-align: center;
         }
+
         header {
             background-color: #007bff;
             color: #ffffff;
             padding: 20px 0;
             margin-bottom: 10px;
         }
-        h1{
-           font-size: 50px;
+
+        h1 {
+            font-size: 50px;
 
         }
+
         nav {
-    background-color: #1df700;
-    text-align: center;
-    border-radius: 10px;
-    padding: 10px 0; /* Adjusted padding */
-    transition: transform 0.3s ease-in-out;
-    padding: 20px 0; /* Increase the vertical padding */
-}
+            background-color: #1df700;
+            text-align: center;
+            border-radius: 10px;
+            padding: 10px 0;
+            /* Adjusted padding */
+            transition: transform 0.3s ease-in-out;
+            padding: 20px 0;
+            /* Increase the vertical padding */
+        }
+
         nav a {
             text-decoration: none;
             color: #000000;
             margin: 0 10px;
             font-weight: bold;
             font-size: 20px;
+            padding: 10px;
+            border-radius: 8px;
         }
+
         nav a:hover {
-            color: #0056b3;
+            background-color: #3295ff;
         }
+
         .container {
             border-radius: 10px;
             max-width: 800px;
@@ -50,70 +62,72 @@
             padding: 20px;
             text-align: center;
         }
+
         .hamburger-menu {
-    display: none;
-    cursor: pointer;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 2;
-}
+            display: none;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
+        }
 
-.hamburger-menu .bar {
-    display: block;
-    width: 25px;
-    height: 3px;
-    margin: 5px auto;
-    background-color: #333;
-}
-@media screen and (max-width: 768px) {
-    .hamburger-menu {
-        display: block;
-    }
+        .hamburger-menu .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: #333;
+        }
 
-    nav {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 100%;
-        width: 100%;
-        height: 100vh;
-        background-color: #1df700;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding-top: 60px;
-        box-sizing: border-box;
-        z-index: 1;
-        overflow-y: auto;
-        transform: translateX(0%);
-    }
+        @media screen and (max-width: 768px) {
+            .hamburger-menu {
+                display: block;
+            }
 
-    nav a {
-        display: block;
-        margin: 10px 0;
-        font-size: 18px;
-        color: #000000;
-        text-decoration: none;
-        transition: color 0.3s;
-    }
+            nav {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 100%;
+                width: 100%;
+                height: 100vh;
+                background-color: #1df700;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding-top: 60px;
+                box-sizing: border-box;
+                z-index: 1;
+                overflow-y: auto;
+                transform: translateX(0%);
+            }
 
-    nav a:hover {
-        color: #0056b3;
-    }
+            nav a {
+                display: block;
+                margin: 10px 0;
+                font-size: 18px;
+                color: #000000;
+                text-decoration: none;
+                transition: color 0.3s;
+            }
 
-    .nav-inactive {
-        transform: translateX(0%);
-    }
+            nav a:hover {
+                color: #0056b3;
+            }
 
-    .nav-active {
-        transform: translateX(-100%);
-    }
-}
+            .nav-inactive {
+                transform: translateX(0%);
+            }
 
+            .nav-active {
+                transform: translateX(-100%);
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="hamburger-menu">
         <div class="bar"></div>
@@ -143,338 +157,340 @@
 
     <!--Countdown Clock-->
     <!DOCTYPE html>
-<html lang="en">
+    <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <title>FRC Kickoff Countdown</title>
-    <style>
-        #lcd-container {
-            background-color: #f5f5f5;
-            padding: 0px;
-            border-radius: 10px;
-            width: 100%;
-            margin: auto;
-            overflow: auto;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <title>FRC Kickoff Countdown</title>
+        <style>
+            #lcd-container {
+                background-color: #f5f5f5;
+                padding: 0px;
+                border-radius: 10px;
+                width: 100%;
+                margin: auto;
+                overflow: auto;
+            }
 
-        .digit {
-            display: inline-block;
-            width: 50px;
-            height: 100px;
-            position: relative;
-            margin: 5px;
-        }
+            .digit {
+                display: inline-block;
+                width: 50px;
+                height: 100px;
+                position: relative;
+                margin: 5px;
+            }
 
-        .segment {
-            position: absolute;
-            opacity: 0.075;
-            background-color: rgb(255, 0, 0);
-        }
+            .segment {
+                position: absolute;
+                opacity: 0.075;
+                background-color: rgb(255, 0, 0);
+            }
 
-        .lit {
-            opacity: 1 !important;
-            background-color: red !important;
-        }
+            .lit {
+                opacity: 1 !important;
+                background-color: red !important;
+            }
 
-        .horizontal {
-            width: 40px;
-            height: 10px;
-        }
+            .horizontal {
+                width: 40px;
+                height: 10px;
+            }
 
-        .vertical {
-            width: 10px;
-            height: 40px;
-        }
+            .vertical {
+                width: 10px;
+                height: 40px;
+            }
 
-        .countdown-unit {
-            display: inline-block;
-            margin: 0 15px;
-            text-align: center;
-        }
+            .countdown-unit {
+                display: inline-block;
+                margin: 0 15px;
+                text-align: center;
+            }
 
-        .countdown-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: row;
-        }
+            .countdown-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: row;
+            }
 
-        .unit {
-            margin: 0 20px;
-        }
+            .unit {
+                margin: 0 20px;
+            }
 
-        .label {
-            margin-bottom: 10px;
-            font-size: 20px;
-            color: white;
-        }
-        .group {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    @media (max-width: 768px) {
-        .group {
-            flex-direction: column;
-        }
+            .label {
+                margin-bottom: 10px;
+                font-size: 20px;
+                color: white;
+            }
 
-        .unit {
-            margin-right: 30px; 
-        }
-    }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
-</head>
+            .group {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
 
-<body>
+            @media (max-width: 768px) {
+                .group {
+                    flex-direction: column;
+                }
 
-    <h1 id="h1">Countdown to the next FRC World Champs!</h1>
-    <div id="lcd-container">
-        <div id="countdown" class="countdown-container">
-          <div class="group">
-            <div class="unit">
-                <div class="label" style="color: grey;">Months</div>
-                <div style="display: inline-flex;">
-                <div class="digit" id="months-tens">
-                    <div class="segment horizontal" id="months-tens-a" style="top: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="months-tens-b" style="top: 5px; right: 0;"></div>
-                    <div class="segment vertical" id="months-tens-c" style="bottom: 5px; right: 0;"></div>
-                    <div class="segment horizontal" id="months-tens-d" style="bottom: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="months-tens-e" style="bottom: 5px; left: 0;"></div>
-                    <div class="segment vertical" id="months-tens-f" style="top: 5px; left: 0;"></div>
-                    <div class="segment horizontal" id="months-tens-g" style="top: 45px; left: 5px;"></div>
-                </div>
-                <div class="digit" id="months">
-                    <div class="segment horizontal" id="months-a" style="top: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="months-b" style="top: 5px; right: 0;"></div>
-                    <div class="segment vertical" id="months-c" style="bottom: 5px; right: 0;"></div>
-                    <div class="segment horizontal" id="months-d" style="bottom: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="months-e" style="bottom: 5px; left: 0;"></div>
-                    <div class="segment vertical" id="months-f" style="top: 5px; left: 0;"></div>
-                    <div class="segment horizontal" id="months-g" style="top: 45px; left: 5px;"></div>
-                </div>
-            </div>
-        </div>
-    
-            <div class="unit">
-                <div class="label" style="color: grey;">Days</div>
-                <div style="display: inline-flex;">
-                <div class="digit" id="days-tens">
-                    <div class="segment horizontal" id="days-tens-a" style="top: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="days-tens-b" style="top: 5px; right: 0;"></div>
-                    <div class="segment vertical" id="days-tens-c" style="bottom: 5px; right: 0;"></div>
-                    <div class="segment horizontal" id="days-tens-d" style="bottom: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="days-tens-e" style="bottom: 5px; left: 0;"></div>
-                    <div class="segment vertical" id="days-tens-f" style="top: 5px; left: 0;"></div>
-                    <div class="segment horizontal" id="days-tens-g" style="top: 45px; left: 5px;"></div>
-                </div>
-                
-                <div class="digit" id="days">
-                    <div class="segment horizontal" id="days-a" style="top: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="days-b" style="top: 5px; right: 0;"></div>
-                    <div class="segment vertical" id="days-c" style="bottom: 5px; right: 0;"></div>
-                    <div class="segment horizontal" id="days-d" style="bottom: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="days-e" style="bottom: 5px; left: 0;"></div>
-                    <div class="segment vertical" id="days-f" style="top: 5px; left: 0;"></div>
-                    <div class="segment horizontal" id="days-g" style="top: 45px; left: 5px;"></div>
-                </div>
-            </div>
-            </div>
-        </div>
-        <div class="group">
-            <div class="unit">
-                <div class="label" style="color: grey;">Hours</div>
-                <div style="display: inline-flex;">
-                <div class="digit" id="hours-tens">
-                    <div class="segment horizontal" id="hours-tens-a" style="top: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="hours-tens-b" style="top: 5px; right: 0;"></div>
-                    <div class="segment vertical" id="hours-tens-c" style="bottom: 5px; right: 0;"></div>
-                    <div class="segment horizontal" id="hours-tens-d" style="bottom: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="hours-tens-e" style="bottom: 5px; left: 0;"></div>
-                    <div class="segment vertical" id="hours-tens-f" style="top: 5px; left: 0;"></div>
-                    <div class="segment horizontal" id="hours-tens-g" style="top: 45px; left: 5px;"></div>
-                </div>
-                <div class="digit" id="hours">
-                    <div class="segment horizontal" id="hours-a" style="top: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="hours-b" style="top: 5px; right: 0;"></div>
-                    <div class="segment vertical" id="hours-c" style="bottom: 5px; right: 0;"></div>
-                    <div class="segment horizontal" id="hours-d" style="bottom: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="hours-e" style="bottom: 5px; left: 0;"></div>
-                    <div class="segment vertical" id="hours-f" style="top: 5px; left: 0;"></div>
-                    <div class="segment horizontal" id="hours-g" style="top: 45px; left: 5px;"></div>
-                </div>
-            </div>
-        </div>
-            <div class="unit">
-                <div class="label" style="color: grey;">Minutes</div>
-                <div style="display: inline-flex;">
-                <div class="digit" id="minutes-tens">
-                    <div class="segment horizontal" id="minutes-tens-a" style="top: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="minutes-tens-b" style="top: 5px; right: 0;"></div>
-                    <div class="segment vertical" id="minutes-tens-c" style="bottom: 5px; right: 0;"></div>
-                    <div class="segment horizontal" id="minutes-tens-d" style="bottom: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="minutes-tens-e" style="bottom: 5px; left: 0;"></div>
-                    <div class="segment vertical" id="minutes-tens-f" style="top: 5px; left: 0;"></div>
-                    <div class="segment horizontal" id="minutes-tens-g" style="top: 45px; left: 5px;"></div>
-                </div>
-                <div class="digit" id="minutes">
-                    <div class="segment horizontal" id="minutes-a" style="top: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="minutes-b" style="top: 5px; right: 0;"></div>
-                    <div class="segment vertical" id="minutes-c" style="bottom: 5px; right: 0;"></div>
-                    <div class="segment horizontal" id="minutes-d" style="bottom: 0; left: 5px;"></div>
-                    <div class="segment vertical" id="minutes-e" style="bottom: 5px; left: 0;"></div>
-                    <div class="segment vertical" id="minutes-f" style="top: 5px; left: 0;"></div>
-                    <div class="segment horizontal" id="minutes-g" style="top: 45px; left: 5px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-            <div class="unit">
-                <div class="label" style="color: grey;">Seconds</div>
-                <div style="display: inline-flex;">
-                    <div class="digit" id="seconds-tens">
-                        <div class="segment horizontal" id="seconds-tens-a" style="top: 0; left: 5px;"></div>
-                        <div class="segment vertical" id="seconds-tens-b" style="top: 5px; right: 0;"></div>
-                        <div class="segment vertical" id="seconds-tens-c" style="bottom: 5px; right: 0;"></div>
-                        <div class="segment horizontal" id="seconds-tens-d" style="bottom: 0; left: 5px;"></div>
-                        <div class="segment vertical" id="seconds-tens-e" style="bottom: 5px; left: 0;"></div>
-                        <div class="segment vertical" id="seconds-tens-f" style="top: 5px; left: 0;"></div>
-                        <div class="segment horizontal" id="seconds-tens-g" style="top: 45px; left: 5px;"></div>
+                .unit {
+                    margin-right: 30px;
+                }
+            }
+        </style>
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    </head>
+
+    <body>
+
+        <h1 id="h1">Countdown to the next FRC World Champs!</h1>
+        <div id="lcd-container">
+            <div id="countdown" class="countdown-container">
+                <div class="group">
+                    <div class="unit">
+                        <div class="label" style="color: grey;">Months</div>
+                        <div style="display: inline-flex;">
+                            <div class="digit" id="months-tens">
+                                <div class="segment horizontal" id="months-tens-a" style="top: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="months-tens-b" style="top: 5px; right: 0;"></div>
+                                <div class="segment vertical" id="months-tens-c" style="bottom: 5px; right: 0;"></div>
+                                <div class="segment horizontal" id="months-tens-d" style="bottom: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="months-tens-e" style="bottom: 5px; left: 0;"></div>
+                                <div class="segment vertical" id="months-tens-f" style="top: 5px; left: 0;"></div>
+                                <div class="segment horizontal" id="months-tens-g" style="top: 45px; left: 5px;"></div>
+                            </div>
+                            <div class="digit" id="months">
+                                <div class="segment horizontal" id="months-a" style="top: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="months-b" style="top: 5px; right: 0;"></div>
+                                <div class="segment vertical" id="months-c" style="bottom: 5px; right: 0;"></div>
+                                <div class="segment horizontal" id="months-d" style="bottom: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="months-e" style="bottom: 5px; left: 0;"></div>
+                                <div class="segment vertical" id="months-f" style="top: 5px; left: 0;"></div>
+                                <div class="segment horizontal" id="months-g" style="top: 45px; left: 5px;"></div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="digit" id="seconds">
-                        <div class="segment horizontal" id="seconds-a" style="top: 0; left: 5px;"></div>
-                        <div class="segment vertical" id="seconds-b" style="top: 5px; right: 0;"></div>
-                        <div class="segment vertical" id="seconds-c" style="bottom: 5px; right: 0;"></div>
-                        <div class="segment horizontal" id="seconds-d" style="bottom: 0; left: 5px;"></div>
-                        <div class="segment vertical" id="seconds-e" style="bottom: 5px; left: 0;"></div>
-                        <div class="segment vertical" id="seconds-f" style="top: 5px; left: 0;"></div>
-                        <div class="segment horizontal" id="seconds-g" style="top: 45px; left: 5px;"></div>
+                    <div class="unit">
+                        <div class="label" style="color: grey;">Days</div>
+                        <div style="display: inline-flex;">
+                            <div class="digit" id="days-tens">
+                                <div class="segment horizontal" id="days-tens-a" style="top: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="days-tens-b" style="top: 5px; right: 0;"></div>
+                                <div class="segment vertical" id="days-tens-c" style="bottom: 5px; right: 0;"></div>
+                                <div class="segment horizontal" id="days-tens-d" style="bottom: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="days-tens-e" style="bottom: 5px; left: 0;"></div>
+                                <div class="segment vertical" id="days-tens-f" style="top: 5px; left: 0;"></div>
+                                <div class="segment horizontal" id="days-tens-g" style="top: 45px; left: 5px;"></div>
+                            </div>
+
+                            <div class="digit" id="days">
+                                <div class="segment horizontal" id="days-a" style="top: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="days-b" style="top: 5px; right: 0;"></div>
+                                <div class="segment vertical" id="days-c" style="bottom: 5px; right: 0;"></div>
+                                <div class="segment horizontal" id="days-d" style="bottom: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="days-e" style="bottom: 5px; left: 0;"></div>
+                                <div class="segment vertical" id="days-f" style="top: 5px; left: 0;"></div>
+                                <div class="segment horizontal" id="days-g" style="top: 45px; left: 5px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="unit">
+                        <div class="label" style="color: grey;">Hours</div>
+                        <div style="display: inline-flex;">
+                            <div class="digit" id="hours-tens">
+                                <div class="segment horizontal" id="hours-tens-a" style="top: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="hours-tens-b" style="top: 5px; right: 0;"></div>
+                                <div class="segment vertical" id="hours-tens-c" style="bottom: 5px; right: 0;"></div>
+                                <div class="segment horizontal" id="hours-tens-d" style="bottom: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="hours-tens-e" style="bottom: 5px; left: 0;"></div>
+                                <div class="segment vertical" id="hours-tens-f" style="top: 5px; left: 0;"></div>
+                                <div class="segment horizontal" id="hours-tens-g" style="top: 45px; left: 5px;"></div>
+                            </div>
+                            <div class="digit" id="hours">
+                                <div class="segment horizontal" id="hours-a" style="top: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="hours-b" style="top: 5px; right: 0;"></div>
+                                <div class="segment vertical" id="hours-c" style="bottom: 5px; right: 0;"></div>
+                                <div class="segment horizontal" id="hours-d" style="bottom: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="hours-e" style="bottom: 5px; left: 0;"></div>
+                                <div class="segment vertical" id="hours-f" style="top: 5px; left: 0;"></div>
+                                <div class="segment horizontal" id="hours-g" style="top: 45px; left: 5px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="unit">
+                        <div class="label" style="color: grey;">Minutes</div>
+                        <div style="display: inline-flex;">
+                            <div class="digit" id="minutes-tens">
+                                <div class="segment horizontal" id="minutes-tens-a" style="top: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="minutes-tens-b" style="top: 5px; right: 0;"></div>
+                                <div class="segment vertical" id="minutes-tens-c" style="bottom: 5px; right: 0;"></div>
+                                <div class="segment horizontal" id="minutes-tens-d" style="bottom: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="minutes-tens-e" style="bottom: 5px; left: 0;"></div>
+                                <div class="segment vertical" id="minutes-tens-f" style="top: 5px; left: 0;"></div>
+                                <div class="segment horizontal" id="minutes-tens-g" style="top: 45px; left: 5px;"></div>
+                            </div>
+                            <div class="digit" id="minutes">
+                                <div class="segment horizontal" id="minutes-a" style="top: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="minutes-b" style="top: 5px; right: 0;"></div>
+                                <div class="segment vertical" id="minutes-c" style="bottom: 5px; right: 0;"></div>
+                                <div class="segment horizontal" id="minutes-d" style="bottom: 0; left: 5px;"></div>
+                                <div class="segment vertical" id="minutes-e" style="bottom: 5px; left: 0;"></div>
+                                <div class="segment vertical" id="minutes-f" style="top: 5px; left: 0;"></div>
+                                <div class="segment horizontal" id="minutes-g" style="top: 45px; left: 5px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="unit">
+                    <div class="label" style="color: grey;">Seconds</div>
+                    <div style="display: inline-flex;">
+                        <div class="digit" id="seconds-tens">
+                            <div class="segment horizontal" id="seconds-tens-a" style="top: 0; left: 5px;"></div>
+                            <div class="segment vertical" id="seconds-tens-b" style="top: 5px; right: 0;"></div>
+                            <div class="segment vertical" id="seconds-tens-c" style="bottom: 5px; right: 0;"></div>
+                            <div class="segment horizontal" id="seconds-tens-d" style="bottom: 0; left: 5px;"></div>
+                            <div class="segment vertical" id="seconds-tens-e" style="bottom: 5px; left: 0;"></div>
+                            <div class="segment vertical" id="seconds-tens-f" style="top: 5px; left: 0;"></div>
+                            <div class="segment horizontal" id="seconds-tens-g" style="top: 45px; left: 5px;"></div>
+                        </div>
+
+                        <div class="digit" id="seconds">
+                            <div class="segment horizontal" id="seconds-a" style="top: 0; left: 5px;"></div>
+                            <div class="segment vertical" id="seconds-b" style="top: 5px; right: 0;"></div>
+                            <div class="segment vertical" id="seconds-c" style="bottom: 5px; right: 0;"></div>
+                            <div class="segment horizontal" id="seconds-d" style="bottom: 0; left: 5px;"></div>
+                            <div class="segment vertical" id="seconds-e" style="bottom: 5px; left: 0;"></div>
+                            <div class="segment vertical" id="seconds-f" style="top: 5px; left: 0;"></div>
+                            <div class="segment horizontal" id="seconds-g" style="top: 45px; left: 5px;"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        const segmentMap = [
-            ['a', 'b', 'c', 'd', 'e', 'f'],  // 0
-            ['b', 'c'],  // 1
-            ['a', 'b', 'g', 'e', 'd'],  // 2
-            ['a', 'b', 'g', 'c', 'd'],  // 3
-            ['f', 'g', 'b', 'c'],  // 4
-            ['a', 'f', 'g', 'c', 'd'],  // 5
-            ['a', 'f', 'g', 'e', 'd', 'c'],  // 6
-            ['a', 'b', 'c'],  // 7
-            ['a', 'b', 'c', 'd', 'e', 'f', 'g'],  // 8
-            ['a', 'b', 'c', 'd', 'f', 'g']  // 9
-        ];
+        <script>
+            const segmentMap = [
+                ['a', 'b', 'c', 'd', 'e', 'f'],  // 0
+                ['b', 'c'],  // 1
+                ['a', 'b', 'g', 'e', 'd'],  // 2
+                ['a', 'b', 'g', 'c', 'd'],  // 3
+                ['f', 'g', 'b', 'c'],  // 4
+                ['a', 'f', 'g', 'c', 'd'],  // 5
+                ['a', 'f', 'g', 'e', 'd', 'c'],  // 6
+                ['a', 'b', 'c'],  // 7
+                ['a', 'b', 'c', 'd', 'e', 'f', 'g'],  // 8
+                ['a', 'b', 'c', 'd', 'f', 'g']  // 9
+            ];
 
-        function updateDigit(digit, value) {
-    const segments = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-    segments.forEach(segment => {
-        const element = document.getElementById(`${digit}-${segment}`);
-        if(element) {
-            element.classList.remove('lit');
-        }
-    });
-    segmentMap[value].forEach(segment => {
-        const element = document.getElementById(`${digit}-${segment}`);
-        if(element) {
-            element.classList.add('lit');
-        }
-    });
-}
-
-        function daysInMonth(year, month) {
-            return new Date(year, month, 0).getDate();
-        }
-
-        function getTimeRemaining() {
-            const now = new Date();
-            const nextKickoffDate = new Date("2024-04-17T07:00:00");
-            let delta = Math.abs(nextKickoffDate - now) / 1000;
-
-            const days = Math.floor(delta / 86400);
-            delta -= days * 86400;
-
-            const hours = Math.floor(delta / 3600) % 24;
-            delta -= hours * 3600; 
-
-            const minutes = Math.floor(delta / 60) % 60;
-            delta -= minutes * 60;
-
-            const seconds = Math.floor(delta % 60);
-
-            let months = 0;
-            let remainingDays = days;
-            let month = now.getMonth();
-            let yearCounter = now.getFullYear();
-
-            while (remainingDays > 0) {
-                let daysInCurrentMonth = new Date(yearCounter, month + 1, 0).getDate();
-                if (remainingDays >= daysInCurrentMonth) {
-                    remainingDays -= daysInCurrentMonth;
-                    months++;
-                    month++;
-                    if (month > 11) {
-                        month = 0;
-                        yearCounter++;
+            function updateDigit(digit, value) {
+                const segments = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+                segments.forEach(segment => {
+                    const element = document.getElementById(`${digit}-${segment}`);
+                    if (element) {
+                        element.classList.remove('lit');
                     }
-                } else {
-                    break;
+                });
+                segmentMap[value].forEach(segment => {
+                    const element = document.getElementById(`${digit}-${segment}`);
+                    if (element) {
+                        element.classList.add('lit');
+                    }
+                });
+            }
+
+            function daysInMonth(year, month) {
+                return new Date(year, month, 0).getDate();
+            }
+
+            function getTimeRemaining() {
+                const now = new Date();
+                const nextKickoffDate = new Date("2024-04-17T07:00:00");
+                let delta = Math.abs(nextKickoffDate - now) / 1000;
+
+                const days = Math.floor(delta / 86400);
+                delta -= days * 86400;
+
+                const hours = Math.floor(delta / 3600) % 24;
+                delta -= hours * 3600;
+
+                const minutes = Math.floor(delta / 60) % 60;
+                delta -= minutes * 60;
+
+                const seconds = Math.floor(delta % 60);
+
+                let months = 0;
+                let remainingDays = days;
+                let month = now.getMonth();
+                let yearCounter = now.getFullYear();
+
+                while (remainingDays > 0) {
+                    let daysInCurrentMonth = new Date(yearCounter, month + 1, 0).getDate();
+                    if (remainingDays >= daysInCurrentMonth) {
+                        remainingDays -= daysInCurrentMonth;
+                        months++;
+                        month++;
+                        if (month > 11) {
+                            month = 0;
+                            yearCounter++;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+
+                return {
+                    total: nextKickoffDate - now,
+                    months,
+                    days: remainingDays,
+                    hours,
+                    minutes,
+                    seconds
+                };
+            }
+
+            function updateCountdown() {
+                const t = getTimeRemaining();
+
+                // Update two-digit displays
+                updateDigit('months-tens', Math.floor(t.months / 10));
+                updateDigit('months', t.months % 10);
+
+                updateDigit('days-tens', Math.floor(t.days / 10));
+                updateDigit('days', t.days % 10);
+
+                updateDigit('hours-tens', Math.floor(t.hours / 10));
+                updateDigit('hours', t.hours % 10);
+
+                updateDigit('minutes-tens', Math.floor(t.minutes / 10));
+                updateDigit('minutes', t.minutes % 10);
+
+                updateDigit('seconds-tens', Math.floor(t.seconds / 10));
+                updateDigit('seconds', t.seconds % 10);
+
+                if (t.total <= 0) {
+                    clearInterval(timeinterval);
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+                    document.getElementById('h1').innerHTML = "FRC Kickoff is here! Good luck teams!";
+
                 }
             }
 
-            return {
-                total: nextKickoffDate - now,
-                months,
-                days: remainingDays,
-                hours,
-                minutes,
-                seconds
-            };
-        }
+            updateCountdown();
+            const timeinterval = setInterval(updateCountdown, 1000);
+        </script>
 
-        function updateCountdown() {
-            const t = getTimeRemaining();
+    </body>
 
-            // Update two-digit displays
-            updateDigit('months-tens', Math.floor(t.months / 10));
-            updateDigit('months', t.months % 10);
-
-            updateDigit('days-tens', Math.floor(t.days / 10));
-            updateDigit('days', t.days % 10);
-
-            updateDigit('hours-tens', Math.floor(t.hours / 10));
-            updateDigit('hours', t.hours % 10);
-
-            updateDigit('minutes-tens', Math.floor(t.minutes / 10));
-            updateDigit('minutes', t.minutes % 10);
-
-            updateDigit('seconds-tens', Math.floor(t.seconds / 10));
-            updateDigit('seconds', t.seconds % 10);
-
-            if (t.total <= 0) {
-                clearInterval(timeinterval);
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
-                document.getElementById('h1').innerHTML = "FRC Kickoff is here! Good luck teams!";
-                
-            }
-        }
-
-    updateCountdown();
-        const timeinterval = setInterval(updateCountdown, 1000);
-    </script>
-
-</body>
-
-</html>
+    </html>
 
 
 
@@ -486,482 +502,499 @@
     <!--Matches Element-->
     <!DOCTYPE html>
     <html>
-    
+
     <head>
-      <style>
-        body{
-          background-color: #f4f4f4;
-        }
-          table {
-          width: 100%;
-          border-collapse: separate;
-          border-spacing: 10px 5px;
-        }
-    
-        td, th {
-          padding: 10px;
-          text-align: center;
-          width: 10%;
-          font-weight: bold;
-          font-size: 25px;
-          padding: 10px;
-        }
-    
-        th {
-          border-bottom: 2px solid black;
-          border-top: 2px solid gray;
-        }
-    
-        .blue-cell {
-          background-color: #0000FF;
-          color: white;
-          /* border-radius: 10px; */
-        }
-    
-        .red-cell {
-          background-color: #FF0000;
-          color: white;
-          /* border-radius: 10px; */
-        }
-    
-        .highlight {
-          background-color: rgb(72, 208, 65);
-        }
-    
-        h1 {
-          text-align: center;
-          font-family: inherit;
-        }
-    
-        #eventCode, #teamHighlight {
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          font-size: 20px;
-        }
-    
-        button {
-          padding: 11px 20px;
-          background-color: #4CAF50;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-    
-        button:hover {
-          background-color: #45a049;
-        }
-    
-        label {
-          font-size: 18px;
-          margin-right: 10px;
-        }
-    
-        .error-message {
-          text-align: center;
-          font-size: 18px;
-          color: red;
-        }
-    
-        @media(max-width: 1000px) {
-          table, td, th {
-            font-size: 20px;
-            padding: 0px;
-          }
-    
-          #eventCode, #teamHighlight {
-            width: 100%;
-            padding: 8px;
-            font-size: 14px;
-            margin-bottom: 10px; /* Added margin for spacing */
-          }
-    
-          button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px; /* Added margin for spacing */
-          }
-    
-          label {
-            display: block;
-            margin: 10px 0 5px 0;
-            font-size: 16px;
-          }
-        }
-    
-        .controls {
-        margin-bottom: 10px;
-        /* background-color: #ffffff; */
-        padding: 15px;
-        border-radius: 8px;
-        /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-    
-      #eventCodeInput {
-        flex-grow: 1;
-      }
-    
-      #newOptionContainer {
-        margin-bottom: 20px;
-        /* background-color: #ffffff; */
-        padding: 1px;
-        border-radius: 8px;
-        /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-    
-      button, label[for='uploadMatchData'] { /* Apply similar styles to button and label */
-          display: inline-block; /* Required for proper spacing and alignment */
-          padding: 11px 20px;
-          background-color: #4CAF50;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          font-size: 16px; /* Match your button font size */
-          text-align: center; /* Center text for aesthetic reasons */
-          margin: 5px; /* Optional: to provide spacing around buttons */
-          transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-        }
-    
-        label[for='uploadMatchData']:hover {
-          background-color: #45a049;
-        }
-    
-        #uploadMatchData {
-          display: none; /* Hide the actual file input */
-        }
-      </style>
-    </head>
-    
-    <body>
-      <script>
-    
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     document.getElementById('addOptionButton').addEventListener('click', function() {
-    //         const selectElement = document.getElementById('eventCode');
-    //         const newOptionText = document.getElementById('newOptionText').value;
-    //         if (newOptionText.trim() !== '') {
-    //             const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
-    //             selectElement.add(newOptionElement);
-    //             document.getElementById('newOptionText').value = '';
-    //         }
-    //     });
-    // });
-    
-        let apiData = [];
-        let eventCode = "";
-
-        
-        
-        function onPageLoad() {
-      const landing = document.getElementById("google.blah");
-      landing.innerHTML = '';
-      const dropdown = document.getElementById("teamHighlight");
-      dropdown.innerHTML = '';
-      eventCode = localStorage.getItem('eventCode');
-      document.getElementById('eventCode').textContent = eventCode;
-      setupWebhookSubscription(eventCode);
-      console.log(eventCode)
-    }
-
-
-    
-    function setupWebhookSubscription(eventCode) {
-      const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
-      fetch(webhookEndpoint, {
-        method: "GET",
-        headers: {
-          "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
-        },
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Invalid Event Code');
-        }
-        return response.json();
-      })
-      .then(responseData => {
-        apiData = responseData;
-        writeMatchResults(apiData);
-        highlightCells();
-      })
-      .catch(error => {
-        console.error("Fetch error: ", error);
-        displayUploadOption(); // Display upload option if API fetch fails
-        document.getElementById('uploadSection').style.display = 'block';
-        document.getElementById('eventCode').textContent = ""
-      });
-    }
-    
-        function writeMatchResults(data) {
-
-
-            const landing = document.getElementById("google.blah");
-    landing.innerHTML = '';  // This ensures any previous data is removed
-
-        data.sort((a, b) => {
-            const order = ["qm", "qf", "sf", "f"];
-            if (order.indexOf(a.comp_level) !== order.indexOf(b.comp_level)) {
-                return order.indexOf(a.comp_level) - order.indexOf(b.comp_level);
+        <style>
+            body {
+                background-color: #f4f4f4;
             }
-            return a.match_number - b.match_number;
-        });
-    
-        var element = document.createElement("table");
-        // var landing = document.getElementById("google.blah");
-        element.id = "google.yay";
-        landing.appendChild(element);
-    
-        var headerRow = document.createElement("tr");
-        var headers = ["Match","Winning Alliance", "Blue 1", "Blue 2", "Blue 3", "Red 1", "Red 2", "Red 3"];
-        headers.forEach(headerText => {
-            var headerCell = document.createElement("th");
-            headerCell.appendChild(document.createTextNode(headerText));
-            headerRow.appendChild(headerCell);
-        });
-        element.appendChild(headerRow);
-    
-        const addedTeams = new Set();
-    
-        for (let i = 0; i < data.length; i++) {
-            const table_line = document.createElement("tr");
-            element.appendChild(table_line);
-    
-            var columns = [
-                data[i].comp_level.toUpperCase() + " " + data[i].match_number,
-                data[i].winning_alliance,
-                data[i].alliances.blue.team_keys[0].substring(3, 7),
-                data[i].alliances.blue.team_keys[1].substring(3, 7),
-                data[i].alliances.blue.team_keys[2].substring(3, 7),
-                data[i].alliances.red.team_keys[0].substring(3, 7),
-                data[i].alliances.red.team_keys[1].substring(3, 7),
-                data[i].alliances.red.team_keys[2].substring(3, 7)
-            ];
-    
-            columns.forEach((text, index) => {
-                const cell = document.createElement("td");
-                cell.appendChild(document.createTextNode(text));
-    
-                if (index === 1) {
-                    if (text === "blue") {
-                        cell.classList.add("blue-cell");
-                    } else if (text === "red") {
-                        cell.classList.add("red-cell");
-                    }
-                } else if (index >= 2 && index <= 4) {
-                    cell.classList.add("blue-cell");
-                    cell.addEventListener("click", () => cellClickHandler(text));
-                } else if (index >= 5 && index <= 7) {
-                    cell.classList.add("red-cell");
-                    cell.addEventListener("click", () => cellClickHandler(text));
+
+            table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 10px 5px;
+            }
+
+            td,
+            th {
+                padding: 10px;
+                text-align: center;
+                width: 10%;
+                font-weight: bold;
+                font-size: 25px;
+                padding: 10px;
+            }
+
+            th {
+                border-bottom: 2px solid black;
+                border-top: 2px solid gray;
+            }
+
+            .blue-cell {
+                background-color: #0000FF;
+                color: white;
+                /* border-radius: 10px; */
+            }
+
+            .red-cell {
+                background-color: #FF0000;
+                color: white;
+                /* border-radius: 10px; */
+            }
+
+            .highlight {
+                background-color: rgb(72, 208, 65);
+            }
+
+            h1 {
+                text-align: center;
+                font-family: inherit;
+            }
+
+            #eventCode,
+            #teamHighlight {
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 20px;
+            }
+
+            button {
+                padding: 11px 20px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #45a049;
+            }
+
+            label {
+                font-size: 18px;
+                margin-right: 10px;
+            }
+
+            .error-message {
+                text-align: center;
+                font-size: 18px;
+                color: red;
+            }
+
+            @media(max-width: 1000px) {
+
+                table,
+                td,
+                th {
+                    font-size: 20px;
+                    padding: 0px;
                 }
-    
-                table_line.appendChild(cell);
+
+                #eventCode,
+                #teamHighlight {
+                    width: 100%;
+                    padding: 8px;
+                    font-size: 14px;
+                    margin-bottom: 10px;
+                    /* Added margin for spacing */
+                }
+
+                button {
+                    width: 100%;
+                    padding: 10px;
+                    margin-bottom: 10px;
+                    /* Added margin for spacing */
+                }
+
+                label {
+                    display: block;
+                    margin: 10px 0 5px 0;
+                    font-size: 16px;
+                }
+            }
+
+            .controls {
+                margin-bottom: 10px;
+                /* background-color: #ffffff; */
+                padding: 15px;
+                border-radius: 8px;
+                /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            #eventCodeInput {
+                flex-grow: 1;
+            }
+
+            #newOptionContainer {
+                margin-bottom: 20px;
+                /* background-color: #ffffff; */
+                padding: 1px;
+                border-radius: 8px;
+                /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            button,
+            label[for='uploadMatchData'] {
+                /* Apply similar styles to button and label */
+                display: inline-block;
+                /* Required for proper spacing and alignment */
+                padding: 11px 20px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                /* Match your button font size */
+                text-align: center;
+                /* Center text for aesthetic reasons */
+                margin: 5px;
+                /* Optional: to provide spacing around buttons */
+                transition: background-color 0.3s ease;
+                /* Smooth transition for hover effect */
+            }
+
+            label[for='uploadMatchData']:hover {
+                background-color: #45a049;
+            }
+
+            #uploadMatchData {
+                display: none;
+                /* Hide the actual file input */
+            }
+        </style>
+    </head>
+
+    <body>
+        <script>
+
+            // document.addEventListener('DOMContentLoaded', function() {
+            //     document.getElementById('addOptionButton').addEventListener('click', function() {
+            //         const selectElement = document.getElementById('eventCode');
+            //         const newOptionText = document.getElementById('newOptionText').value;
+            //         if (newOptionText.trim() !== '') {
+            //             const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
+            //             selectElement.add(newOptionElement);
+            //             document.getElementById('newOptionText').value = '';
+            //         }
+            //     });
+            // });
+
+            let apiData = [];
+            let eventCode = "";
+
+
+
+            function onPageLoad() {
+                const landing = document.getElementById("google.blah");
+                landing.innerHTML = '';
+                const dropdown = document.getElementById("teamHighlight");
+                dropdown.innerHTML = '';
+                eventCode = localStorage.getItem('eventCode');
+                document.getElementById('eventCode').textContent = eventCode;
+                setupWebhookSubscription(eventCode);
+                console.log(eventCode)
+            }
+
+
+
+            function setupWebhookSubscription(eventCode) {
+                const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
+                fetch(webhookEndpoint, {
+                    method: "GET",
+                    headers: {
+                        "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
+                    },
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Invalid Event Code');
+                        }
+                        return response.json();
+                    })
+                    .then(responseData => {
+                        apiData = responseData;
+                        writeMatchResults(apiData);
+                        highlightCells();
+                    })
+                    .catch(error => {
+                        console.error("Fetch error: ", error);
+                        displayUploadOption(); // Display upload option if API fetch fails
+                        document.getElementById('uploadSection').style.display = 'block';
+                        document.getElementById('eventCode').textContent = ""
+                    });
+            }
+
+            function writeMatchResults(data) {
+
+
+                const landing = document.getElementById("google.blah");
+                landing.innerHTML = '';  // This ensures any previous data is removed
+
+                data.sort((a, b) => {
+                    const order = ["qm", "qf", "sf", "f"];
+                    if (order.indexOf(a.comp_level) !== order.indexOf(b.comp_level)) {
+                        return order.indexOf(a.comp_level) - order.indexOf(b.comp_level);
+                    }
+                    return a.match_number - b.match_number;
+                });
+
+                var element = document.createElement("table");
+                // var landing = document.getElementById("google.blah");
+                element.id = "google.yay";
+                landing.appendChild(element);
+
+                var headerRow = document.createElement("tr");
+                var headers = ["Match", "Winning Alliance", "Blue 1", "Blue 2", "Blue 3", "Red 1", "Red 2", "Red 3"];
+                headers.forEach(headerText => {
+                    var headerCell = document.createElement("th");
+                    headerCell.appendChild(document.createTextNode(headerText));
+                    headerRow.appendChild(headerCell);
+                });
+                element.appendChild(headerRow);
+
+                const addedTeams = new Set();
+
+                for (let i = 0; i < data.length; i++) {
+                    const table_line = document.createElement("tr");
+                    element.appendChild(table_line);
+
+                    var columns = [
+                        data[i].comp_level.toUpperCase() + " " + data[i].match_number,
+                        data[i].winning_alliance,
+                        data[i].alliances.blue.team_keys[0].substring(3, 7),
+                        data[i].alliances.blue.team_keys[1].substring(3, 7),
+                        data[i].alliances.blue.team_keys[2].substring(3, 7),
+                        data[i].alliances.red.team_keys[0].substring(3, 7),
+                        data[i].alliances.red.team_keys[1].substring(3, 7),
+                        data[i].alliances.red.team_keys[2].substring(3, 7)
+                    ];
+
+                    columns.forEach((text, index) => {
+                        const cell = document.createElement("td");
+                        cell.appendChild(document.createTextNode(text));
+
+                        if (index === 1) {
+                            if (text === "blue") {
+                                cell.classList.add("blue-cell");
+                            } else if (text === "red") {
+                                cell.classList.add("red-cell");
+                            }
+                        } else if (index >= 2 && index <= 4) {
+                            cell.classList.add("blue-cell");
+                            cell.addEventListener("click", () => cellClickHandler(text));
+                        } else if (index >= 5 && index <= 7) {
+                            cell.classList.add("red-cell");
+                            cell.addEventListener("click", () => cellClickHandler(text));
+                        }
+
+                        table_line.appendChild(cell);
+                    });
+
+                    const teams = [
+                        data[i].alliances.blue.team_keys[0].substring(3, 7),
+                        data[i].alliances.blue.team_keys[1].substring(3, 7),
+                        data[i].alliances.blue.team_keys[2].substring(3, 7),
+                        data[i].alliances.red.team_keys[0].substring(3, 7),
+                        data[i].alliances.red.team_keys[1].substring(3, 7),
+                        data[i].alliances.red.team_keys[2].substring(3, 7)
+                    ];
+
+                    for (let team of teams) {
+                        addedTeams.add(team);
+                    }
+                }
+
+                const sortedTeams = Array.from(addedTeams).sort((a, b) => a - b);
+                const dropdown = document.getElementById("teamHighlight");
+                dropdown.innerHTML = '';
+
+                for (let team of sortedTeams) {
+                    const option = document.createElement("option");
+                    option.value = team;
+                    option.textContent = team;
+                    dropdown.appendChild(option);
+                }
+            }
+
+
+            function highlightCells() {
+                var table = document.getElementById("google.yay");
+                var rows = table.getElementsByTagName("tr"); // Get all rows in the table
+                var highlightTeam = document.getElementById("teamHighlight").value;
+
+                // Start from i = 1 to skip the header row
+                for (var i = 1; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName("td");
+                    var matchHighlighted = false; // Flag to track if the match involves the highlighted team
+
+                    // Check each cell in the row to see if it matches the highlighted team
+                    for (var j = 0; j < cells.length; j++) {
+                        if (cells[j].innerText == highlightTeam) {
+                            cells[j].classList.add("highlight");
+                            matchHighlighted = true; // The highlighted team is in this match
+                        } else {
+                            cells[j].classList.remove("highlight");
+                        }
+                    }
+
+                    // If the match involves the highlighted team, highlight the "Match" column
+                    if (matchHighlighted) {
+                        cells[0].classList.add("highlight"); // cells[0] is the "Match" column
+                    } else {
+                        cells[0].classList.remove("highlight");
+                    }
+                }
+            }
+
+            function downloadData() {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(apiData));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute("download", `apiData_for_code_${eventCode}.json`);
+                document.body.appendChild(downloadAnchorNode); // Required for Firefox
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+            }
+
+            function uploadData(event) {
+                const file = event.target.files[0];
+                if (!file) {
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    clearPreviousData()
+                    const content = e.target.result;
+                    apiData = JSON.parse(content);
+                    writeMatchResults(apiData); // Re-render the page with the uploaded data
+                };
+                reader.readAsText(file);
+            }
+
+            function clearPreviousData() {
+                // Clear the global data variable
+                apiData = [];
+
+                // Clear the table UI
+                const landing = document.getElementById("google.blah");
+                if (landing) {
+                    landing.innerHTML = ''; // This removes all child elements, including the table
+                }
+
+                // Optionally, clear other UI elements or selections
+                const dropdown = document.getElementById("teamHighlight");
+                if (dropdown) {
+                    dropdown.innerHTML = ''; // Clear dropdown options if necessary
+                }
+            }
+
+            function displayUploadOption() {
+                // You can either display the upload option directly or show a message with a button to reveal the upload option
+                const uploadLabel = document.querySelector('label[for="uploadMatchData"]');
+                uploadLabel.style.display = 'block'; // Make the upload option visible
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const downloadBtn = document.getElementById('downloadMatchData');
+                downloadBtn.addEventListener('click', downloadData);
+
+                const uploadInput = document.getElementById('uploadMatchData');
+                uploadInput.addEventListener('change', uploadData);
+                onPageLoad()
             });
-    
-            const teams = [
-                data[i].alliances.blue.team_keys[0].substring(3, 7),
-                data[i].alliances.blue.team_keys[1].substring(3, 7),
-                data[i].alliances.blue.team_keys[2].substring(3, 7),
-                data[i].alliances.red.team_keys[0].substring(3, 7),
-                data[i].alliances.red.team_keys[1].substring(3, 7),
-                data[i].alliances.red.team_keys[2].substring(3, 7)
-            ];
-    
-            for (let team of teams) {
-                addedTeams.add(team);
-            }
-        }
-    
-        const sortedTeams = Array.from(addedTeams).sort((a, b) => a - b);
-        const dropdown = document.getElementById("teamHighlight");
-        dropdown.innerHTML = '';
-    
-        for (let team of sortedTeams) {
-            const option = document.createElement("option");
-            option.value = team;
-            option.textContent = team;
-            dropdown.appendChild(option);
-        }
-    }
-    
-    
-    function highlightCells() {
-      var table = document.getElementById("google.yay");
-      var rows = table.getElementsByTagName("tr"); // Get all rows in the table
-      var highlightTeam = document.getElementById("teamHighlight").value;
-    
-      // Start from i = 1 to skip the header row
-      for (var i = 1; i < rows.length; i++) {
-        var cells = rows[i].getElementsByTagName("td");
-        var matchHighlighted = false; // Flag to track if the match involves the highlighted team
-    
-        // Check each cell in the row to see if it matches the highlighted team
-        for (var j = 0; j < cells.length; j++) {
-          if (cells[j].innerText == highlightTeam) {
-            cells[j].classList.add("highlight");
-            matchHighlighted = true; // The highlighted team is in this match
-          } else {
-            cells[j].classList.remove("highlight");
-          }
-        }
-    
-        // If the match involves the highlighted team, highlight the "Match" column
-        if (matchHighlighted) {
-          cells[0].classList.add("highlight"); // cells[0] is the "Match" column
-        } else {
-          cells[0].classList.remove("highlight");
-        }
-      }
-    }
-    
-    function downloadData() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(apiData));
-      const downloadAnchorNode = document.createElement('a');
-      downloadAnchorNode.setAttribute("href", dataStr);
-      downloadAnchorNode.setAttribute("download", `apiData_for_code_${eventCode}.json`);
-      document.body.appendChild(downloadAnchorNode); // Required for Firefox
-      downloadAnchorNode.click();
-      downloadAnchorNode.remove();
-    }
-    
-    function uploadData(event) {
-      const file = event.target.files[0];
-      if (!file) {
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        clearPreviousData()
-        const content = e.target.result;
-        apiData = JSON.parse(content);
-        writeMatchResults(apiData); // Re-render the page with the uploaded data
-      };
-      reader.readAsText(file);
-    }
 
-    function clearPreviousData() {
-    // Clear the global data variable
-    apiData = [];
-    
-    // Clear the table UI
-    const landing = document.getElementById("google.blah");
-    if (landing) {
-        landing.innerHTML = ''; // This removes all child elements, including the table
-    }
-    
-    // Optionally, clear other UI elements or selections
-    const dropdown = document.getElementById("teamHighlight");
-    if (dropdown) {
-        dropdown.innerHTML = ''; // Clear dropdown options if necessary
-    }
-}
-    
-    function displayUploadOption() {
-      // You can either display the upload option directly or show a message with a button to reveal the upload option
-      const uploadLabel = document.querySelector('label[for="uploadMatchData"]');
-      uploadLabel.style.display = 'block'; // Make the upload option visible
-    }
-    
-    document.addEventListener('DOMContentLoaded', function() {
-      const downloadBtn = document.getElementById('downloadMatchData');
-      downloadBtn.addEventListener('click', downloadData);
-    
-      const uploadInput = document.getElementById('uploadMatchData');
-      uploadInput.addEventListener('change', uploadData);
-      onPageLoad()
-    });
-    
-    
-        function cellClickHandler(team) {
-          var dropdown = document.getElementById("teamHighlight");
-          dropdown.value = team;
-          highlightCells();
-        }
-    
-        function adjustStylesForIframe() {
-      // Check if the current page is loaded inside an iframe
-      if (window.location !== window.parent.location) {
-        // It's loaded within an iframe
-        // Apply CSS styles or classes here as needed
-        // For example, increase the font size for td elements
-        var styleSheet = document.createElement("style")
-        styleSheet.type = "text/css"
-        styleSheet.innerText = 'td { font-size: 20px; }'; // Adjust the font size as needed
-        document.head.appendChild(styleSheet);
-      }
-    }
-    
-    // Call the function when the page loads
-    window.addEventListener("load", adjustStylesForIframe);
-    window.addEventListener("load", onPageLoad);
-    
-    const secretCode = ['KeyE', 'KeyM', 'KeyI', 'KeyL', 'KeyY'];
-    let currentPosition = 0; 
-    
-    function activateEasterEgg() {
-        alert('Emily is AWESOME!!!!!!');
-    }
-    
-    document.addEventListener('keydown', (e) => {
-        if (e.code === secretCode[currentPosition]) {
-            currentPosition++;
-    
-            if (currentPosition === secretCode.length) {
-                activateEasterEgg();
-                currentPosition = 0; 
+
+            function cellClickHandler(team) {
+                var dropdown = document.getElementById("teamHighlight");
+                dropdown.value = team;
+                highlightCells();
             }
-        } else {
-            currentPosition = 0; 
-        }
-    });
-            document.addEventListener('DOMContentLoaded', function() {
-        const hamburger = document.querySelector('.hamburger-menu');
-        const nav = document.querySelector('nav');
-    
-        // Initialize the nav as inactive (hidden)
-        nav.classList.add('nav-inactive');
-    
-        hamburger.addEventListener('click', function() {
-            // Toggle between active and inactive states
-            if (nav.classList.contains('nav-inactive')) {
-                nav.classList.remove('nav-inactive');
-                nav.classList.add('nav-active');
-            } else {
-                nav.classList.remove('nav-active');
+
+            function adjustStylesForIframe() {
+                // Check if the current page is loaded inside an iframe
+                if (window.location !== window.parent.location) {
+                    // It's loaded within an iframe
+                    // Apply CSS styles or classes here as needed
+                    // For example, increase the font size for td elements
+                    var styleSheet = document.createElement("style")
+                    styleSheet.type = "text/css"
+                    styleSheet.innerText = 'td { font-size: 20px; }'; // Adjust the font size as needed
+                    document.head.appendChild(styleSheet);
+                }
+            }
+
+            // Call the function when the page loads
+            window.addEventListener("load", adjustStylesForIframe);
+            window.addEventListener("load", onPageLoad);
+
+            const secretCode = ['KeyE', 'KeyM', 'KeyI', 'KeyL', 'KeyY'];
+            let currentPosition = 0;
+
+            function activateEasterEgg() {
+                alert('Emily is AWESOME!!!!!!');
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.code === secretCode[currentPosition]) {
+                    currentPosition++;
+
+                    if (currentPosition === secretCode.length) {
+                        activateEasterEgg();
+                        currentPosition = 0;
+                    }
+                } else {
+                    currentPosition = 0;
+                }
+            });
+            document.addEventListener('DOMContentLoaded', function () {
+                const hamburger = document.querySelector('.hamburger-menu');
+                const nav = document.querySelector('nav');
+
+                // Initialize the nav as inactive (hidden)
                 nav.classList.add('nav-inactive');
-            }
-        });
-    });
-      </script>
-    
-    <div style="text-align: center;">
-      <h1>Matches</h1>
-      <h2>Current Event Code From Config: <span id="eventCode"></span></h2>
-    
-      <div id="matchDataContainer"></div> <!-- Placeholder for match data -->
-        
-      <!-- Download button for the match data -->
-      <button id="downloadMatchData">Download Match Data</button>
-      
-      <!-- Upload button disguised as a label for style, linked to a hidden file input for uploading match data -->
-      <input type="file" id="uploadMatchData" style="display: none;" />
-      <label for="uploadMatchData" class="button">Upload Match Data</label>
 
-      <!-- <button id="clear" onclick=clearPreviousData()>Clear</button> -->
-      <div id="upload_status"></div>
-      <!-- <label for="eventCode">Event Code Select: </label> -->
-    
-      <!-- <div class="controls">
+                hamburger.addEventListener('click', function () {
+                    // Toggle between active and inactive states
+                    if (nav.classList.contains('nav-inactive')) {
+                        nav.classList.remove('nav-inactive');
+                        nav.classList.add('nav-active');
+                    } else {
+                        nav.classList.remove('nav-active');
+                        nav.classList.add('nav-inactive');
+                    }
+                });
+            });
+        </script>
+
+        <div style="text-align: center;">
+            <h1>Matches</h1>
+            <h2>Current Event Code From Config: <span id="eventCode"></span></h2>
+
+            <div id="matchDataContainer"></div> <!-- Placeholder for match data -->
+
+            <!-- Download button for the match data -->
+            <button id="downloadMatchData">Download Match Data</button>
+
+            <!-- Upload button disguised as a label for style, linked to a hidden file input for uploading match data -->
+            <input type="file" id="uploadMatchData" style="display: none;" />
+            <label for="uploadMatchData" class="button">Upload Match Data</label>
+
+            <!-- <button id="clear" onclick=clearPreviousData()>Clear</button> -->
+            <div id="upload_status"></div>
+            <!-- <label for="eventCode">Event Code Select: </label> -->
+
+            <!-- <div class="controls">
         <select id="eventCode">
           <option value="2024mabos">2024 Greater Boston Event</option>
           <option value="2024mabri">2024 Week 2 BSU Event</option>
@@ -969,27 +1002,31 @@
         </select>
         <button onclick="onPageLoad()">Load Data</button><br><br>
       </div> -->
-      
-      <!-- <div id="newOptionContainer">
+
+            <!-- <div id="newOptionContainer">
         <input type="text" id="newOptionText" placeholder="Type new event code..."/>
             <button id="addOptionButton">Add Option</button>
       </div> -->
-    
-    
-    
-      <!-- <input type="text" id="eventCode" value="2024mabri"> -->
-      <label for="teamHighlight">Select a team to highlight: </label>
-      <select id="teamHighlight" onchange="highlightCells()"></select>
-    </div>
-    
-    <div>
-      <pre id="google.blah"></pre>
-    </div>
-    
-    <footer style="text-align: center; margin-top: 20px; font-family: Arial;">
-      <span>&copy; <script>document.write(new Date().getFullYear());</script> Watertown High School Robotics</span>
-    </footer>
+
+
+
+            <!-- <input type="text" id="eventCode" value="2024mabri"> -->
+            <label for="teamHighlight">Select a team to highlight: </label>
+            <select id="teamHighlight" onchange="highlightCells()"></select>
+        </div>
+
+        <div>
+            <pre id="google.blah"></pre>
+        </div>
+
+        <footer style="text-align: center; margin-top: 20px; font-family: Arial;">
+            <span>&copy;
+                <script>document.write(new Date().getFullYear());</script> Watertown High School Robotics
+            </span>
+        </footer>
     </body>
+
     </html>
 </body>
+
 </html>
