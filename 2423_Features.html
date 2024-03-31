@@ -52,12 +52,14 @@
         }
 
 
-        .section h2 {
+        .section h1 {
             color: #007bff;
             border-bottom: 2px solid #007bff;
+            font-weight: 600;
+            margin-top: 0%;
         }
 
-        .section h4 {
+        .section h3 {
             color: #d9534f;
         }
 
@@ -285,6 +287,7 @@
         <link rel="manifest" href="/manifest.json">
         <div class="container">
             <h1>The Features of team <span id="displayTeamNumber"></span></h1>
+            <h1><span id="robotName"></span></h1>
             <h2>Hello alliance partners! This is what we do!</h2>
 
         </div>
@@ -306,7 +309,7 @@
 
     <div class="sections-container">
         <div class="section" id="auto">
-            <h2>Auto</h2>
+            <h1>Auto</h1>
             <!-- Dropdown for selecting an auto -->
             <!-- <select id="autoSelector" onchange="updateAutoDisplay()">
                 <option value="amp2">Start Amp - Amp Note</option>
@@ -330,34 +333,34 @@
 
 
         <div class="section" id="teleop">
-            <h2>Teleop</h2>
+            <h1>Teleop</h1>
             <div id="pickup">
-                <h4>Pickup!</h4>
-                <h5><span id="display_ground"></span></h5>
-                <h5><span id="display_source"></span></h5>
+                <h3>Pickup!</h3>
+                <h4><span id="display_ground"></span></h4>
+                <h4><span id="display_source"></span></h4>
             </div>
             <div id="scoring">
-                <h4>Scoring!</h4>
-                <h5><span id="speaker"></span></h5>
-                <h5><span id="distance_shoot"></span></h5>
-                <h5><span id="amp"></span></h5>
+                <h3>Scoring!</h3>
+                <h4><span id="speaker"></span></h4>
+                <h4><span id="distance_shoot"></span></h4>
+                <h4><span id="amp"></span></h4>
             </div>
         </div>
 
         <div class="section" id="endgame">
-            <h2>End Game</h2>
-            <h5><span id="climb"></span></h5>
-            <h5><span id="harmony"></span></h5>
-            <h2>General Pit Scouting Questions</h2>
+            <h1>End Game</h1>
+            <h4><span id="climb"></span></h4>
+            <h4><span id="harmony"></span></h4>
+            <h1>Pit Scouting Questions</h1>
             <h3>Dimensions</h3>
-            <p><span id="dim_w_bump"></span> inches (yes bumpers)</p>
-            <p><span id="dim_wout_bump"></span> inches (no bumpers)</p>
+            <h4><span id="dim_w_bump"></span> inches (yes bumpers)</h4>
+            <h4><span id="dim_wout_bump"></span> inches (no bumpers)</h4>
             <h3>Drivetrain</h3>
-            <p><span id="drive_train"></span></p>
+            <h4><span id="drive_train"></span></h4>
             <h3>Weight</h3>
-            <p><span id="weight"></span> lbs</p>
+            <h4><span id="weight"></span> lbs</h4>
             <h3>Intake Style</h3>
-            <p><span id="intake_sty"></span></p>
+            <h4><span id="intake_sty"></span></h4>
         </div>
     </div>
 
@@ -438,10 +441,25 @@
             const climb = localStorage.getItem('climb');
             const harmony = localStorage.getItem('harmony');
             const intake_sty = localStorage.getItem('intake_sty');
+            const robotName = localStorage.getItem('robotName');
 
-            if (teamNumber == "") {
+            if (teamNumber == null || teamNumber == "") {
                 document.getElementById("config_reminder").textContent = "You can configure this in the 'Configure' tab";
             }
+
+            if(robotName != "") {
+                if(robotName == null) {
+                    document.getElementById('displayTeamNumber').textContent = teamNumber;
+                    document.getElementById('robotName').textContent = ""
+                } else {
+                    document.getElementById('displayTeamNumber').textContent = `${teamNumber}'s`;
+                document.getElementById('robotName').textContent = `"${robotName}"`
+                }
+                
+            } else {
+                document.getElementById('displayTeamNumber').textContent = teamNumber;
+                document.getElementById('robotName').textContent = ""
+            } 
 
 
 
@@ -451,7 +469,7 @@
             // console.log(autoNames)
 
 
-            document.getElementById('displayTeamNumber').textContent = teamNumber;
+            
             document.getElementById('dim_w_bump').textContent = dim_w_bump;
             document.getElementById('dim_wout_bump').textContent = dim_wout_bump;
             document.getElementById('drive_train').textContent = drive_train;

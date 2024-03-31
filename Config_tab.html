@@ -34,6 +34,9 @@
         <label for="teamNumber">What is your team number?</label>
         <input type="number" id="teamNumber" name="teamNumber">
 
+        <label for="robotName">What is the name of your robot?</label>
+        <input type="text" id="robotName" name="robotName">
+
         <label for="dim_w_bump">What are your dimensions WITH bumpers? (inches)</label>
         <input type="text" id="dim_w_bump" name="dim_w_bump" placeholder="Example: X-dimension by Y-dimension">
 
@@ -306,6 +309,7 @@ function addAutoNameField() {
         const drive_train = document.getElementById('drive_train').value;
         const weight = document.getElementById('weight').value;
         const intake_sty = document.getElementById('intake_sty').value;
+        const robotName = document.getElementById('robotName').value;
       
 
         localStorage.setItem('teamNumber', teamNumber); 
@@ -314,6 +318,8 @@ function addAutoNameField() {
         localStorage.setItem('drive_train', drive_train); 
         localStorage.setItem('weight', weight); 
         localStorage.setItem('intake_sty', intake_sty); 
+        localStorage.setItem('robotName', robotName); 
+
 
        
         document.querySelectorAll('.checkboxes input[type="checkbox"]').forEach(checkbox => {
