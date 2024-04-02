@@ -7,11 +7,11 @@
     <title>Team Configuration</title>
 </head>
 
-<body>
-    <h1>Team Configuration</h1>
+<body id="body">
+    <h1 id="title">Team Configuration</h1>
 
 
-    <nav class="nav_con">
+    <nav id="nav" class="nav_con">
         <a href="./index.html">Home</a>
         <a href="./Team_List_element.html">Teams</a>
         <a href="./Strat_Board_w_tabs.html">Canvas</a>
@@ -20,6 +20,13 @@
         <a href="./2423_Features.html">Features</a>
         <a href="Config_tab.html">Configure</a>
     </nav>
+<!-- <form id="darkModeForm">
+    <h2>Dark Mode</h2>
+    <div class="toggle">
+        <input id="darkMode" type="checkbox"/>
+        <label></label>
+    </div>
+</form> -->
 
     <form id="eventCodeForm">
         <h2>Event Code</h2>
@@ -160,7 +167,7 @@
         }
 
         nav {
-            background-color: #00f729;
+            background-color: #00ff2a;
             padding: 10px 0;
             border-radius: 5px;
             margin-bottom: 20px;
@@ -259,6 +266,67 @@
             padding: 10px;
         }
 
+        .toggle {
+  position: relative;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  box-sizing:border-box;
+}
+.toggle input[type="checkbox"] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  opacity: 0;
+}
+.toggle label {
+  position: relative;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  box-sizing:border-box;
+}
+.toggle label:before {
+  content: '';
+  background: #ffa3a3;
+  height: 32px;
+  width: 94px;
+  position: relative;
+  display: inline-block;
+  box-sizing:border-box;
+  transition: 0.2s ease-in;
+}
+.toggle label:after {
+  content: 'OFF';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 42px;
+  height: 24px;
+  z-index: 2;
+  display: grid;
+  place-content: center;
+  font-family: arial;
+  font-weight: bold;
+  box-sizing:border-box;
+  color:#FFF;
+  background: #ef3434;
+  transition: 0.25s ease-in-out;
+}
+
+.toggle input[type="checkbox"]:checked + label:before {
+  background: #c0e7e3;
+}
+.toggle input[type="checkbox"]:checked + label:after {
+  content: 'ON';
+  background: #21bf73;
+  transform: translatex(44px);
+}
+
     </style>
     <script>
 
@@ -275,6 +343,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         localStorage.setItem('eventCode', eventCode); 
 
 });
+
+
 
 function addAutoNameField() {
     const container = document.getElementById('autoNamesContainer');
@@ -322,13 +392,42 @@ function addAutoNameField() {
 
 
        
-        document.querySelectorAll('.checkboxes input[type="checkbox"]').forEach(checkbox => {
-            localStorage.setItem(checkbox.name, checkbox.checked);
-        });
-
+        
         
     });
+    document.getElementById('darkMode').addEventListener('change', function() {
+        var darkMode = document.getElementById('darkMode');
+        if (darkMode.checked) {
+            localStorage.setItem('darkMode', true)
+            document.getElementById('body').style.backgroundColor = '#404040';
+            document.getElementById('teamForm').style.backgroundColor = '#404040';
+            document.getElementById('autoNamesForm').style.backgroundColor = '#404040';
+            document.getElementById('darkModeForm').style.backgroundColor = '#404040';
+            document.getElementById('eventCodeForm').style.backgroundColor = '#404040';
+            document.getElementById('teleopForm').style.backgroundColor = '#404040';
+            document.getElementById('endGameForm').style.backgroundColor = '#404040';
+            document.getElementById('title').style.color = '#ffffff';
+            document.getElementById('nav').style.backgroundColor = '#009c1a';
 
+
+        } else {
+            localStorage.setItem('darkMode', false)
+            document.getElementById('body').style.backgroundColor = '#f4f4f4';
+            document.getElementById('teamForm').style.backgroundColor = '#f4f4f4';
+            document.getElementById('autoNamesForm').style.backgroundColor = '#f4f4f4';
+            document.getElementById('darkModeForm').style.backgroundColor = '#f4f4f4';
+            document.getElementById('teleopForm').style.backgroundColor = '#f4f4f4';
+            document.getElementById('endGameForm').style.backgroundColor = '#f4f4f4';
+            document.getElementById('eventCodeForm').style.backgroundColor = '#f4f4f4';
+            document.getElementById('title').style.color = 'black';
+            document.getElementById('nav').style.backgroundColor = '#00ff2a';
+
+            
+        }
+    });
+
+   
+    });
     teleopForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const ground = document.getElementById('ground').value;
@@ -457,7 +556,6 @@ function saveAutoNamesAndImages(e) {
       }
     });
   });
-});
     </script>
 </body>
 

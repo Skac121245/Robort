@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE LOVE YOU AMORYYY!!!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 20px 0;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            /* Adjusted for better fit */
+        }
+
+        nav {
+            background-color: #1df700;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #000000;
+            margin: 0 10px;
+            font-weight: bold;
+            font-size: 20px;
+            padding: 10px;
+            background-color: #1df700;
+            border-radius: 8px;
+        }
+
+        nav a:hover {
+            background-color: #3295ff;
+        }
+
+        .album-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .album-container div {
+            flex-basis: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            /* border: 1px solid #ddd; */
+            border-radius: 8px;
+        }
+
+        .album-container img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            /* Ensures the image covers the area, might crop but maintains aspect ratio */
+            /* border: 10px solid #007bff; */
+            border-radius: 8px;
+        }
+
+        .photo-description {
+            background-color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: start;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .footer-section {
+            margin: 10px;
+        }
+
+        .footer-section h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .footer-section p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .footer-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .footer-section ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            height: 30px;
+        }
+
+        /* Responsive layout for smaller screens */
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-section {
+                margin: 20px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>Amory Galili</h1>
+            <h2>- A KwarQ Forever -</h2>
+        </div>
+    </header>
+
+    <nav class="nav_con">
+        <a href="./index.html">Home</a>
+        <a href="./Team_List_element.html">Teams</a>
+        <a href="./Strat_Board_w_tabs.html">Canvas</a>
+        <a href="./preMatchChecklist.html">Pre Match Checklist</a>
+        <a href="./Control_Panel.html">Control Panel</a>
+        <a href="./2423_Features.html">Features</a>
+        <a href="Config_tab.html">Configure</a>
+    </nav>
+
+    <div class="album-container">
+        <!-- Photos -->
+        <div><img src="images/Amory_Bazooka.JPG" alt="Amory with Bazooka">
+            <div class="photo-description"></div>
+        </div>
+        <div><img src="images/Amory_Cowboy-huh.jpg" alt="Amory Cowboy">
+            <div class="photo-description"></div>
+        </div>
+        <div><img src="images/Amory_Evil.jpg" alt="Amory Evil">
+            <div class="photo-description"></div>
+        </div>
+        <div><img src="images/Amory_IDK.jpg" alt="Amory IDK">
+            <div class="photo-description"></div>
+        </div>
+        <div><img src="images/Amory_Note.jpg" alt="Amory Note">
+            <div class="photo-description"></div>
+        </div>
+        <div><img src="images/Amory_Portrait.jpeg" alt="Amory Portrait">
+            <div class="photo-description"></div>
+        </div>
+        <div><img src="images/Amory_sideWays.jpg" alt="Amory Sideways">
+            <div class="photo-description"></div>
+        </div>
+        <div><img src="images/Amory_stretch.jpg" alt="Amory Stretching">
+            <div class="photo-description"></div>
+        </div>
+        <div><img src="images/Amory_tired.jpg" alt="Amory Tired">
+            <div class="photo-description"></div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <section class="footer-section about">
+                <h2>Thank you for everything you've done!</h2>
+                <p>We are a team dedicated to sharing the best times of build season and the high points of the seaosn with everyone we can. That is what
+                    this page is for. It's not only to say thank you, but it's to share all the good times team 2423 has had with our lead programming coach and assistant coach, Amory.
+                </p>
+            </section>
+        </div>
+    </footer>
+</body>
+
+</html>
