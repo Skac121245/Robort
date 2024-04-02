@@ -938,27 +938,33 @@
             window.addEventListener("load", adjustStylesForIframe);
             window.addEventListener("load", onPageLoad);
 
-            const secretCode_One = ['KeyE', 'KeyM', 'KeyI', 'KeyL', 'KeyY'];
-            const secretCode_Two = ['KeyA', 'KeyM', 'KeyO', 'KeyR', 'KeyY',]
-            let currentPosition = 0;
+            const secretCode_One = ['KeyE', 'KeyM', 'KeyI', 'KeyL', 'KeyY']; // EMILY
+const secretCode_Two = ['KeyA', 'KeyM', 'KeyO', 'KeyR', 'KeyY']; // AMORY
+let currentSequence = [];
 
-            function activateEasterEgg() {
-              window.location.replace("amory.html")
-                // alert('Emily is AWESOME!!!!!!');
-            }
+function activateEasterEgg(code) {
+    if (code.join() === secretCode_One.join()) {
+        alert('Emily is AWESOME!!!!!!');
+    } else if (code.join() === secretCode_Two.join()) {
+        window.location.replace("amory.html");
+    }
+}
 
-            document.addEventListener('keydown', (e) => {
-                if (e.code === secretCode_One[currentPosition] || e.code === secretCode_Two[currentPosition]) {
-                    currentPosition++;
+document.addEventListener('keydown', (e) => {
+    // Add the current key to the sequence
+    currentSequence.push(e.code);
+    
+    // If the sequence is longer than the secret codes, remove the earliest key pressed
+    if (currentSequence.length > secretCode_One.length) {
+        currentSequence.shift();
+    }
 
-                    if (currentPosition === secretCode_One.length || currentPosition === secretCode_Two.length) {
-                        activateEasterEgg();
-                        currentPosition = 0;
-                    }
-                } else {
-                    currentPosition = 0;
-                }
-            });
+    // Check if the current sequence matches any secret codes
+    if (currentSequence.join() === secretCode_One.join() || currentSequence.join() === secretCode_Two.join()) {
+        activateEasterEgg(currentSequence);
+        currentSequence = []; // Reset the sequence after triggering an easter egg
+    }
+});
 
             
             document.addEventListener('DOMContentLoaded', function () {
