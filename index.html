@@ -86,12 +86,12 @@
             }
 
             nav {
-                position: fixed;
+                position: absolute;
                 top: 0;
                 right: 0;
                 bottom: 0;
-                left: 100%;
-                width: 100%;
+                left: 10px;
+                width: 10000px;
                 height: 100vh;
                 background-color: #1df700;
                 flex-direction: column;
@@ -938,18 +938,20 @@
             window.addEventListener("load", adjustStylesForIframe);
             window.addEventListener("load", onPageLoad);
 
-            const secretCode = ['KeyE', 'KeyM', 'KeyI', 'KeyL', 'KeyY'];
+            const secretCode_One = ['KeyE', 'KeyM', 'KeyI', 'KeyL', 'KeyY'];
+            const secretCode_Two = ['KeyA', 'KeyM', 'KeyO', 'KeyR', 'KeyY',]
             let currentPosition = 0;
 
             function activateEasterEgg() {
-                alert('Emily is AWESOME!!!!!!');
+              window.location.replace("amory.html")
+                // alert('Emily is AWESOME!!!!!!');
             }
 
             document.addEventListener('keydown', (e) => {
-                if (e.code === secretCode[currentPosition]) {
+                if (e.code === secretCode_One[currentPosition] || e.code === secretCode_Two[currentPosition]) {
                     currentPosition++;
 
-                    if (currentPosition === secretCode.length) {
+                    if (currentPosition === secretCode_One.length || currentPosition === secretCode_Two.length) {
                         activateEasterEgg();
                         currentPosition = 0;
                     }
@@ -957,6 +959,8 @@
                     currentPosition = 0;
                 }
             });
+
+            
             document.addEventListener('DOMContentLoaded', function () {
                 const hamburger = document.querySelector('.hamburger-menu');
                 const nav = document.querySelector('nav');
