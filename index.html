@@ -88,6 +88,48 @@
             margin-right: 30px; 
         }
     }
+
+    .blue-cell {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+}
+.red-cell {
+    background-color: #dc3545; /* Bootstrap danger color */
+    color: white;
+}
+.highlight {
+    background-color: #32a852; /* Bootstrap warning color, for highlighting */
+}
+
+.gray-cell {
+    background-color: #6c757d; /* Bootstrap secondary color, used here for gray */
+    color: white;
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Adjust this value as needed to control spacing */
+}
+
+/* Ensure uniform size and margin for buttons and labels */
+.button-wrapper button,
+.button-wrapper label {
+    margin: 0; /* Override default margins if necessary */
+    height: 38px; /* Adjust based on your design needs */
+    display: inline-flex; /* Align text and icons within buttons/labels */
+    align-items: center; /* Center items vertically inside the button/label */
+    justify-content: center; /* Center items horizontally inside the button/label */
+}
+
+/* Additional adjustments for label to mimic button appearance */
+.button-wrapper label {
+    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+    width: auto; /* Adjust width as needed, or set a specific width */
+    padding: 0 12px; /* Adjust padding to match the button's appearance, customize as needed */
+}
+
          </style>
 </head>
 <body>
@@ -259,24 +301,57 @@
                 </div>
             </div>
 </div>
-        <!-- Matches Element Section -->
-        <div class="row mt-5">
-            <div class="col-12 text-center">
-                <h1>Matches</h1>
-                <h2>Current Event Code From Config: <span id="eventCode"></span></h2>
-            </div>
-            <div class="col-12 d-flex justify-content-center">
-                <div id="matchDataContainer" class="w-100">
-                    <!-- Placeholder for match data, will be populated dynamically -->
-                </div>
-            </div>
-            <div class="col-12 text-center mt-3">
-                <button id="downloadMatchData" class="btn btn-success">Download Match Data</button>
-                <input type="file" id="uploadMatchData" hidden />
-                <label for="uploadMatchData" class="btn btn-info">Upload Match Data</label>
-            </div>
-        </div>
+       <div class="container mt-5">
+  <div class="row">
+    <div class="col-12 mb-4">
+      <h1 class="text-center">Matches</h1>
     </div>
+    <div class="col-lg-6 mx-auto">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="eventCode">Event Code</label>
+        </div>
+        <select class="custom-select" id="eventCode">
+          <option selected>Choose...</option>
+          <option value="2024mabos">2024 Greater Boston Event</option>
+          <option value="2024mabri">2024 Week 2 BSU Event</option>
+          <option value="2024week0">2024 Week 0 Event</option>
+        </select>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" id="loadData">Load Data</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 mx-auto mb-3">
+      <div class="d-flex justify-content-center">
+        <input type="text" class="form-control" id="newOptionText" placeholder="Type new event code...">
+        <div class="input-group-append">
+          <button class="btn btn-outline-primary" type="button" id="addOptionButton">Add Option</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="text-center mb-3">
+        <label for="teamHighlight" class="mr-2">Select a team to highlight:</label>
+        <select id="teamHighlight" class="custom-select d-inline w-auto">
+          <!-- Options will be added here dynamically -->
+        </select>
+      </div>
+      <div id="matchesTableContainer" class="table-responsive">
+        <!-- Table will be generated and placed here dynamically -->
+      </div>
+    </div>
+  </div>
+  <div id="matchesTableContainer" class="table-responsive">
+    <!-- Table will be generated and placed here dynamically -->
+</div>
+<!-- Insert the upload/download buttons here -->
+<div class="col-12 text-center mt-4 button-wrapper">
+    <button id="downloadMatchData" class="btn btn-success">Download Match Data</button>
+    <input type="file" id="uploadMatchData" hidden />
+    <label for="uploadMatchData" class="btn btn-info">Upload Match Data</label>
+</div>
+
     <footer class="text-center bg-light py-4 mt-5">
         <div class="container">
             <p class="mb-0">Made with love in cooperation with <s>your future overlord 😈</s> GPT-4</p>
@@ -291,10 +366,166 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     
     <script>
-        // Here you can add JavaScript code to make dynamic elements work, 
-        // like the countdown, or handling the upload and download of match data.
-        // Remember to keep the functionality identical but ensure it integrates well with the new Bootstrap components.
-    </script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('addOptionButton').addEventListener('click', function() {
+                const selectElement = document.getElementById('eventCode');
+                const newOptionText = document.getElementById('newOptionText').value;
+                if (newOptionText.trim() !== '') {
+                    const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
+                    selectElement.add(newOptionElement);
+                    document.getElementById('newOptionText').value = '';
+                }
+            });
+        
+            document.getElementById('loadData').addEventListener('click', onPageLoad);
+        });
+        
+        function onPageLoad() {
+            const eventCode = document.getElementById("eventCode").value || "2024mabos";
+            setupWebhookSubscription(eventCode);
+        }
+        
+        function setupWebhookSubscription(eventCode) {
+            const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
+            fetch(webhookEndpoint, {
+                method: "GET",
+                headers: {
+                    "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
+                },
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Invalid Event Code');
+                }
+                return response.json();
+            })
+            .then((responseData) => {
+                writeMatchResults(responseData);
+                highlightCells();
+            })
+            .catch((error) => {
+                const errorMsg = document.createElement("div");
+                errorMsg.textContent = "Invalid Event Code. Please try again.";
+                errorMsg.className = "alert alert-danger";
+                document.getElementById("matchesTableContainer").innerHTML = ''; // Clear previous data/messages
+                document.getElementById("matchesTableContainer").appendChild(errorMsg);
+            });
+        }
+        
+        function writeMatchResults(data) {
+            data.sort((a, b) => {
+        const order = ["qm", "qf", "sf", "f"];
+        if (order.indexOf(a.comp_level) !== order.indexOf(b.comp_level)) {
+            return order.indexOf(a.comp_level) - order.indexOf(b.comp_level);
+        }
+        return a.match_number - b.match_number;
+    });
+           
+            const tableContainer = document.getElementById("matchesTableContainer");
+    tableContainer.innerHTML = ''; // Clear existing table/data
+    var table = document.createElement("table");
+    table.className = "table table-hover table-striped table-bordered"; // Bootstrap classes
+    table.id = "matchesTable"; // Added ID for easy reference
+    var thead = table.createTHead();
+    var tbody = table.createTBody();
+    var headerRow = thead.insertRow();
+
+    ["Match", "Winning Alliance", "Blue 1", "Blue 2", "Blue 3", "Red 1", "Red 2", "Red 3"].forEach(headerText => {
+        var th = document.createElement("th");
+        th.textContent = headerText;
+        headerRow.appendChild(th);
+    });
+            const addedTeams = new Set();
+
+data.forEach(match => {
+    var row = tbody.insertRow();
+    var matchInfo = [
+        match.comp_level.toUpperCase() + " " + match.match_number,
+        match.winning_alliance,
+        ...match.alliances.blue.team_keys.map(teamKey => teamKey.substring(3)),
+        ...match.alliances.red.team_keys.map(teamKey => teamKey.substring(3)),
+    ];
+    matchInfo.forEach((text, index) => {
+        var cell = row.insertCell();
+        cell.textContent = text;
+
+        // Apply original coloring logic
+        if (index === 1) {
+                if (text === "blue") {
+                    cell.classList.add("blue-cell");
+                } else if (text === "red") {
+                    cell.classList.add("red-cell");
+                } else {
+                    // If 'winning alliance' is empty, apply gray color
+                    cell.classList.add("gray-cell");
+                }
+        } else if (index >= 2 && index <= 4) {
+            cell.classList.add("blue-cell");
+            cell.addEventListener("click", () => cellClickHandler(text));
+        } else if (index >= 5 && index <= 7) {
+            cell.classList.add("red-cell");
+            cell.addEventListener("click", () => cellClickHandler(text));
+        }
+
+        // Collecting teams for the dropdown
+        if (index > 1) addedTeams.add(text);
+    });
+});
+
+
+tableContainer.appendChild(table);
+
+// Populate teamHighlight dropdown with unique sorted team numbers
+populateTeamHighlightDropdown(Array.from(addedTeams));
+}
+
+function populateTeamHighlightDropdown(teams) {
+    const dropdown = document.getElementById("teamHighlight");
+    dropdown.innerHTML = ''; // Clear existing options
+
+    teams.sort((a, b) => a - b).forEach(team => {
+        const option = document.createElement("option");
+        option.value = team;
+        option.textContent = team;
+        dropdown.appendChild(option);
+    });
+}
+function highlightCells() {
+    var table = document.getElementById("matchesTable");
+    var highlightTeam = document.getElementById("teamHighlight").value;
+
+    for (let row of table.rows) {
+        let matchHighlighted = false;
+        for (let cell of row.cells) {
+            // Remove previous highlights
+            cell.classList.remove("highlight"); // Assuming you have CSS for .highlight
+            
+            // Highlight cells with matching team number
+            if (cell.textContent.trim() === highlightTeam) {
+                cell.classList.add("highlight");
+                matchHighlighted = true;
+            }
+        }
+
+        // Optionally highlight the match number cell if the team is in that match
+        if (matchHighlighted) {
+            row.cells[0].classList.add("highlight");
+        }
+    }
+}
+
+function cellClickHandler(team) {
+    var dropdown = document.getElementById("teamHighlight");
+    dropdown.value = team;
+    highlightCells();
+}
+
+// Ensure highlightCells is called whenever the dropdown selection changes
+document.getElementById("teamHighlight").addEventListener("change", highlightCells);
+
+        
+        </script>
+        
 
     <script>
        const segmentMap = [
