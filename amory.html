@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE LOVE YOU AMORYYY!!!</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Lighter shade */
+            color: #212529; /* Bootstrap default font color */
+        }
+
+        .container, .photo-description, .footer-content {
+            transition: all 0.3s ease; /* Smooth transition for all */
+        }
+
+        .album-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .album-container div {
+            flex-basis: 300px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .album-container img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-primary text-white text-center py-3 mb-4">
+        <div class="container">
+            <h1>Amory Galili</h1>
+            <h2>- A KwarQ Forever -</h2>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="./index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Team_List_element.html">Teams</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Strat_Board_w_tabs.html">Canvas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./preMatchChecklist.html">Pre Match Checklist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Control_Panel.html">Control Panel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./2423_Features.html">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Config_tab.html">Configure</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="album-container">
+        <div><img src="images/Amory_Bazooka.JPG" alt="Amory with Bazooka">
+            <div class="photo-description bg-white p-2"></div>
+        </div>
+        <div><img src="images/Amory_Cowboy-huh.jpg" alt="Amory Cowboy">
+            <div class="photo-description bg-white p-2"></div>
+        </div>
+        <div><img src="images/Amory_Evil.jpg" alt="Amory Evil">
+            <div class="photo-description bg-white p-2"></div>
+        </div>
+        <div><img src="images/Amory_IDK.jpg" alt="Amory IDK">
+            <div class="photo-description bg-white p-2"></div>
+        </div>
+        <div><img src="images/Amory_Note.jpg" alt="Amory Note">
+            <div class="photo-description bg-white p-2"></div>
+        </div>
+        <div><img src="images/Amory_Portrait.jpeg" alt="Amory Portrait">
+            <div class="photo-description bg-white p-2"></div>
+        </div>
+        <div><img src="images/Amory_sideWays.jpg" alt="Amory Sideways">
+            <div class="photo-description bg-white p-2"></div>
+        </div>
+        <div><img src="images/Amory_stretch.jpg" alt="Amory Stretching">
+            <div class="photo-description bg-white p-2"></div>
+        </div>
+        <div><img src="images/Amory_tired.jpg" alt="Amory Tired">
+            <div class="photo-description bg-white p-2"></div>
+        </div>
+    </div>
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <section class="text-center">
+                <h2>Thank you for everything you've done!</h2>
+                <p>We are a team dedicated to sharing the best times of build season and the high points of the season with everyone we can. That is what this page is for. It's not only to say thank you, but it's to share all the good times team 2423 has had with our lead programming coach and assistant coach, Amory.</p>
+            </section>
+        </div>
+    </footer>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/popper.min.js" integrity="sha384-oBqDVmMz9fnKO8kGVNtE5VltV7OgMwDdZxQMXx5lmT9sL+hsO/nwRiv3F8ajStB1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
