@@ -167,10 +167,15 @@
     box-shadow: none;
 }
 
+nav.navbar {
+    z-index: 1010; /* Ensures nav is above the confetti container */
+    position: relative; /* Required to make z-index effective */
+}
+
+
          </style>
 </head>
 <body>
-    <div id="confetti-container" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:1000;"></div>
     <div class="hamburger-menu d-lg-none">
         <div class="bar bg-dark"></div>
         <div class="bar bg-dark"></div>
@@ -212,6 +217,8 @@
             </ul>
         </div>
     </nav>
+    <div id="confetti-container" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;"></div>
+
     <div id="emilyModal" class="modal" tabindex="-1" role="dialog" style="display: none;">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -697,7 +704,7 @@ document.getElementById("teamHighlight").addEventListener("change", highlightCel
                 particleCount: 50,
                  spread: 70,
                  origin: { y: 0.6 },
-                zIndex: 1000, // Ensure this is high enough to be above the modal
+                zIndex: -1, // Ensure this is high enough to be above the modal
                 duration: 3000,
                 target: document.getElementById('confetti-container')
 });
