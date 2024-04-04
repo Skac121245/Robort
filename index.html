@@ -142,11 +142,6 @@
     width: 80%;
 }
 
-/* Add this class to your body when the modal is active */
-.blur-background > :not(#emilyModal) :not(#confetti-container) {
-    filter: blur(8px);
-}
-
 @keyframes explode {
     from {
         transform: scale(0.1);
@@ -176,6 +171,21 @@ nav.navbar {
          </style>
 </head>
 <body>
+     <div id="emilyModal" class="modal" tabindex="-1" role="dialog" style="display: none;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <p style="font-size: 2em;">Emily is AWESOME!!!!!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="hamburger-menu d-lg-none">
         <div class="bar bg-dark"></div>
         <div class="bar bg-dark"></div>
@@ -219,20 +229,7 @@ nav.navbar {
     </nav>
     <div id="confetti-container" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;"></div>
 
-    <div id="emilyModal" class="modal" tabindex="-1" role="dialog" style="display: none;">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" style="text-align: center;">
-                    <p style="font-size: 2em;">Emily is AWESOME!!!!!</p>
-                </div>
-            </div>
-        </div>
-    </div>
+   
     
     
     
@@ -739,7 +736,6 @@ function showModalAndConfetti() {
         return; // Exit if the modal is already displayed
     }
     modal.style.display = 'block';
-    document.body.classList.add('blur-background');
     confetti();
 }
 
@@ -747,7 +743,6 @@ function showModalAndConfetti() {
 function closeModal() {
     const modal = document.getElementById('emilyModal');
     modal.style.display = 'none';
-    document.body.classList.remove('blur-background');
     // Reset sequence or perform other cleanup tasks as necessary
 }
 
