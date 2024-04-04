@@ -171,7 +171,7 @@
       document.getElementById('teamCountry').innerText = `Country: ${teamData.country}`;
       document.getElementById('teamMotto').innerText = `Motto: ${teamData.motto}`;
       document.getElementById('teamRookieYear').innerText = `Rookie Year: ${teamData.rookie_year}`;
-      document.getElementById('teamHomeChampionship').innerText = `Home Championship: ${teamData.home_championship[Object.keys(teamData.home_championship)[0]]}`;
+      // document.getElementById('teamHomeChampionship').innerText = `Home Championship: ${teamData.home_championship[Object.keys(teamData.home_championship)[0]]}`;
       document.getElementById('teamWebsite').innerHTML = teamData.website ? `Website: <a href="${teamData.website}" target="_blank">${teamData.website}</a>` : 'Website: N/A';
       $('#teamInfoModal').modal('show');
     }
