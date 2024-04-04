@@ -717,12 +717,16 @@ document.getElementById("teamHighlight").addEventListener("change", highlightCel
         document.body.addEventListener('keyup', (function() {
     let sequence = '';
     const targetSequence = 'emily';
+    const targetSequence2 = 'amory';
     return function(event) {
         sequence += event.key.toLowerCase();
         if (sequence === targetSequence) {
             showModalAndConfetti();
             sequence = ''; // Reset the sequence after showing the modal.
-        } else if (!targetSequence.startsWith(sequence)) {
+        } else if (sequence === targetSequence2){
+            sequence = '';
+            window.location.replace("amory.html");
+        } else if (!targetSequence.startsWith(sequence) && !targetSequence2.startswith(sequence)) {
             // If the current sequence doesn't match the start of the target,
             // reset it to prevent incorrect partial matches.
             sequence = '';
