@@ -167,6 +167,27 @@ nav.navbar {
     position: relative; /* Required to make z-index effective */
 }
 
+.upload-success-alert {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    visibility: hidden; /* Initially hidden */
+    opacity: 0;
+    z-index: 1051; /* Higher than Bootstrap modals */
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear; /* Delay visibility change */
+    background-color: #d4edda; /* Light green background */
+    color: #155724; /* Dark green text */
+    border-color: #c3e6cb;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.25rem;
+}
+
+.upload-success-alert.show {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s linear;
+}
 
          </style>
 </head>
@@ -436,7 +457,25 @@ nav.navbar {
       </div>
     </div>
   </div>
-  
+  <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="errorModalMessage">An error occurred.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -445,7 +484,8 @@ nav.navbar {
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <script>
           let apiData = [];
-
+          let isDataLoaded = false;
+          let isDataPresent = false;
         function setupCloseModalEvent() {
     const closeModalButton = document.querySelector('.close');
     if (closeModalButton) {
@@ -470,7 +510,16 @@ nav.navbar {
         
             document.getElementById('loadData').addEventListener('click', onPageLoad);
         });
-        
+
+        function onPageLoad() {
+    const eventCode = document.getElementById("eventCode").value;
+    if (eventCode && eventCode !== "Choose...") {
+        setupWebhookSubscription(eventCode);
+        // Reset isDataLoaded for the new event
+        isDataLoaded = false;
+    }
+}
+
         function onPageLoad() {
             const eventCode = document.getElementById("eventCode").value || "2024mabos";
             setupWebhookSubscription(eventCode);
@@ -494,6 +543,7 @@ nav.navbar {
                  apiData = responseData;
                 writeMatchResults(apiData);
                 highlightCells();
+                isDataLoaded = true;
             })
             .catch((error) => {
                 const errorMsg = document.createElement("div");
@@ -776,13 +826,21 @@ function closeModal() {
 // This ensures the closeModal function is properly called when the close button is clicked.
 
 function downloadData() {
+    
     // Ensure this retrieves the current value at the time of function call
-    var eventCode = document.getElementById("eventCode").value;
+    if (apiData && apiData.some(entry => entry.hasOwnProperty('event_key'))) {
+        // Find the first occurrence of 'event_key' in uploadedData
+        const firstOccurrence = apiData.find(entry => entry.hasOwnProperty('event_key'));
+        eventCode = firstOccurrence.event_key;
+    } else {
+        // Fallback to getting the event code from the document if no uploaded data
+        eventCode = document.getElementById("eventCode").value;
+    }
     const eventCodeSelect = document.getElementById("eventCode");
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(apiData));
     const downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", dataStr);
-    if (eventCodeSelect.value === "Choose...") { 
+    if (eventCodeSelect.value === (("Choose..." || !isDataLoaded  || matchesTable.rows.length === 0) & !isDataPresent ) || !isDataLoaded) { 
     downloadAnchorNode.setAttribute("download", `apiData_for_code_null.json`);
     } else {downloadAnchorNode.setAttribute("download", `apiData_for_code_${eventCode}.json`);}
     document.body.appendChild(downloadAnchorNode); // Required for Firefox
@@ -792,7 +850,7 @@ function downloadData() {
 
 document.getElementById('downloadMatchData').addEventListener('click', function() {
     const eventCodeSelect = document.getElementById("eventCode");
-    if (eventCodeSelect.value === "Choose...") {
+    if (eventCodeSelect.value === (("Choose..." || !isDataLoaded  || matchesTable.rows.length === 0) & !isDataPresent) || !isDataLoaded) {
         // Show the warning modal
         $('#warningModal').modal('show');
     } else {
@@ -812,7 +870,63 @@ document.getElementById('confirmDownload').addEventListener('click', function() 
 document.addEventListener('DOMContentLoaded', function () {
                 const downloadBtn = document.getElementById('downloadMatchData');
 });
+document.getElementById('uploadMatchData').addEventListener('change', function(event) {
+    uploadData(event);
+});
+function uploadData(event) {
+    const file = event.target.files[0];
+    if (!file) {
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const content = e.target.result;
+            const uploadedData = JSON.parse(content);
+            if (!Array.isArray(uploadedData)) { // Basic validation to check if it's an array
+                throw new Error('Invalid data format');
+            }
+            apiData = uploadedData; // Assuming apiData is the variable used to store and display match data
+            writeMatchResults(apiData); // Re-render the match table with the uploaded data
+            showSuccessAlert('Upload success!');
+            isDataLoaded = true;
+            isDataPresent = true;
+            // Optionally reset other UI elements as needed, similar to the clearPreviousData function
+        } catch (error) {
+            // Show error modal if JSON is invalid or if there's any other error
+            showErrorModal('Invalid file format. Please upload a valid JSON file.');
+        }
+    };
+    reader.readAsText(file);
+}
 
+function showErrorModal(errorMessage) {
+    // Assuming there's an element with id 'errorModal' and an element inside it to display the error message
+    document.getElementById('errorModalMessage').textContent = errorMessage;
+    $('#errorModal').modal('show'); // Using Bootstrap's jQuery modal show function
+}
+function showSuccessAlert(message) {
+    const alertBox = document.createElement('div');
+    alertBox.className = 'alert alert-success upload-success-alert';
+    alertBox.innerHTML = `<span class="mr-2">&#10003;</span>${message}`;
+    document.body.appendChild(alertBox);
+
+    // Trigger reflow to ensure the transition can happen
+    alertBox.offsetHeight; // Read offsetHeight to force reflow
+
+    // Start fade in
+    alertBox.classList.add('show');
+
+    // Start fade out after a delay
+    setTimeout(() => {
+        alertBox.classList.remove('show');
+
+        // Remove the element after the fade-out transition completes
+        setTimeout(() => {
+            document.body.removeChild(alertBox);
+        }, 500); // Match the CSS transition duration
+    }, 3000); // Visible duration before starting fade-out
+}
         </script>
          </body>
     </html>
