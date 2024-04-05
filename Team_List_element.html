@@ -164,16 +164,22 @@
     }
   
     function displayTeamData(teamData) {
-      document.getElementById('teamLocation').innerText = `Location: ${teamData.city}, ${teamData.state_prov}, ${teamData.country}`;
-      document.getElementById('teamSchoolName').innerText = `School Name: ${teamData.school_name}`;
-      document.getElementById('teamCity').innerText = `City: ${teamData.city}`;
-      document.getElementById('teamCountry').innerText = `Country: ${teamData.country}`;
-      document.getElementById('teamMotto').innerText = `Motto: ${teamData.motto}`;
-      document.getElementById('teamRookieYear').innerText = `Rookie Year: ${teamData.rookie_year}`;
-      // document.getElementById('teamHomeChampionship').innerText = `Home Championship: ${teamData.home_championship[Object.keys(teamData.home_championship)[0]]}`;
-      document.getElementById('teamWebsite').innerHTML = teamData.website ? `Website: <a href="${teamData.website}" target="_blank">${teamData.website}</a>` : 'Website: N/A';
-      $('#teamInfoModal').modal('show');
-    }
+  // Check each field for null or empty string and conditionally display
+  document.getElementById('teamLocation').innerText = teamData.city && teamData.state_prov && teamData.country ? `Location: ${teamData.city}, ${teamData.state_prov}, ${teamData.country}` : '';
+  document.getElementById('teamSchoolName').innerText = teamData.school_name ? `School Name: ${teamData.school_name}` : '';
+  document.getElementById('teamCity').innerText = teamData.city ? `City: ${teamData.city}` : '';
+  document.getElementById('teamCountry').innerText = teamData.country ? `Country: ${teamData.country}` : '';
+  document.getElementById('teamMotto').innerText = teamData.motto ? `Motto: ${teamData.motto}` : '';
+  document.getElementById('teamRookieYear').innerText = teamData.rookie_year ? `Rookie Year: ${teamData.rookie_year}` : '';
+  document.getElementById('teamHomeChampionship').innerText = teamData.home_championship && Object.keys(teamData.home_championship).length > 0 ? `Home Championship: ${teamData.home_championship[Object.keys(teamData.home_championship)[0]]}` : '';
+  document.getElementById('teamWebsite').innerHTML = teamData.website ? `Website: <a href="${teamData.website}" target="_blank">${teamData.website}</a>` : '';
+
+  // Show modal only if there's any data to display
+  const modalContent = document.querySelector('.modal-body').textContent.trim();
+  if (modalContent) {
+    $('#teamInfoModal').modal('show');
+  }
+}
   </script>
   
 </body>
