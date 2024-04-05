@@ -97,6 +97,16 @@
     background-color: #dc3545; /* Bootstrap danger color */
     color: white;
 }
+
+.winning-score {
+    font-weight: bold;
+    background-color: white;
+    padding: 5px 10px; /* Add padding to make it taller and wider */
+    border-radius: 5px; /* Rounded edges */
+    color: inherit; /* Ensure the text color inherits from the inline style */
+}
+
+
 .highlight {
     background-color: #32a852; /* Bootstrap warning color, for highlighting */
 }
@@ -476,16 +486,15 @@ nav.navbar {
     </div>
 </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+   
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9fnKO8kGVNtE5VltV7OgMwDdZxQMXx5lmT9sL+hsO/nwRiv3F8ajStB1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <script>
           let apiData = [];
           let isDataLoaded = false;
           let isDataPresent = false;
+          let lastSelectedOption = "winningAlliance"; // Default option
         function setupCloseModalEvent() {
     const closeModalButton = document.querySelector('.close');
     if (closeModalButton) {
@@ -562,7 +571,171 @@ nav.navbar {
         }
         return a.match_number - b.match_number;
     });
-           
+    
+    document.addEventListener('change', function(e) {
+    if (e.target && e.target.id === 'winningAllianceSelect') {
+        lastSelectedOption = e.target.value;
+        switch (e.target.value) {
+            case "winningAlliance":
+                updateTableForWinningAlliance();
+                break;
+            case "matchScore":
+                updateTableForMatchScore(apiData);
+                break;
+            case "predictedStartTime":
+                updateTableForPredictedStartTime(apiData);
+                break;
+            case "none":
+                toggleWinningAllianceColumn(false);
+                break;
+        }
+    }
+});
+
+function updateTableForWinningAlliance() {
+    // Access the table body where match data rows are present
+    const tbody = document.querySelector("#matchesTable tbody");
+    if (!tbody) return; // Exit if the table body is not found
+
+    // Ensure the Winning Alliance column is visible
+    toggleWinningAllianceColumn(true);
+
+    // Iterate over each row in the table body to update the Winning Alliance cell
+    Array.from(tbody.rows).forEach((row, index) => {
+        // Ensure there's corresponding data in apiData for this row
+        if (index < apiData.length) {
+            const matchData = apiData[index];
+            const winningAlliance = matchData.winning_alliance;
+            
+            // Find the cell in the Winning Alliance column (assumed to be index 1)
+            const winningAllianceCell = row.cells[1];
+
+            // Reset the cell's text content to show the winning alliance
+            // Additionally, apply styling based on the winning alliance
+            winningAllianceCell.textContent = winningAlliance.charAt(0)+ winningAlliance.slice(1);
+            winningAllianceCell.className = ''; // Clear any existing styles
+            if (winningAlliance === 'blue') {
+                winningAllianceCell.classList.add('blue-cell');
+            } else if (winningAlliance === 'red') {
+                winningAllianceCell.classList.add('red-cell');
+            } else {
+                // Handle cases where there might not be a winning alliance, if necessary
+                winningAllianceCell.classList.add('gray-cell');
+            }
+        }
+    });
+}
+
+function updateTableForMatchScore(data) {
+    const tbody = document.querySelector("#matchesTable tbody");
+    if (!tbody) return;
+
+    Array.from(tbody.rows).forEach((row, index) => {
+        if (index < data.length) {
+            const match = data[index];
+            const blueScore = match.alliances.blue.score;
+            const redScore = match.alliances.red.score;
+            let winningAlliance = match.winning_alliance;
+
+            // Determine score text based on the winning alliance, apply color dynamically
+            let scoreText = '';
+            if (winningAlliance === 'blue') {
+                scoreText = `<span class="winning-score" style="color: blue;">${blueScore}</span> to <span>${redScore}</span>`;
+            } else if (winningAlliance === 'red') {
+                scoreText = `<span>${blueScore}</span> to <span class="winning-score" style="color: red;">${redScore}</span>`;
+            } else {
+                // No winning alliance (e.g., a tie)
+                scoreText = `${blueScore} to ${redScore}`;
+            }
+
+            const scoreCell = row.cells[1];
+            scoreCell.innerHTML = scoreText;
+        }
+    });
+}
+
+
+
+
+function toggleWinningAllianceColumn(show) {
+    const table = document.getElementById('matchesTable');
+    const reAddButtonId = 'reAddColumnButton';
+
+    // Find the index of the Winning Alliance column
+    const columnIndex = Array.from(table.rows[0].cells).findIndex(cell => cell.querySelector('select#winningAllianceSelect'));
+
+    // Loop through all rows and toggle the display of the specified column
+    Array.from(table.rows).forEach(row => {
+        if (columnIndex !== -1) {
+            row.cells[columnIndex].style.display = show ? '' : 'none'; // Hide or show the cell
+        }
+    });
+
+    // Locate the dropdown for team highlight
+    const teamHighlightDropdown = document.getElementById('teamHighlight');
+    
+    if (!show) {
+        if (!document.getElementById(reAddButtonId)) {
+            // Create the re-add button
+            const button = document.createElement('button');
+            button.id = reAddButtonId;
+            button.textContent = 'Re-add Winning Alliance Column';
+            button.className = 'btn btn-primary ml-2'; // Added margin-left for spacing, assuming Bootstrap is used
+            
+            // Add onclick event to re-add the column and remove the button
+            button.onclick = () => {
+    // Remove the button once the column is potentially re-added
+    button.remove();
+
+    const winningAllianceSelect = document.getElementById('winningAllianceSelect');
+    if (winningAllianceSelect) {
+        // Reset the dropdown to the last selected option
+        winningAllianceSelect.value = lastSelectedOption;
+
+        // Ensure the Winning Alliance column is visible before dispatching the event
+        toggleWinningAllianceColumn(true);
+
+        // Manually trigger the change event to refresh the table based on the last selected option
+        const event = new Event('change', { bubbles: true });
+        winningAllianceSelect.dispatchEvent(event);
+    }
+};
+
+
+
+            // Assuming the dropdown is wrapped in a div or similar container for layout
+            // Insert the button next to the dropdown
+            teamHighlightDropdown.parentNode.insertBefore(button, teamHighlightDropdown.nextSibling);
+        }
+    } else {
+        const button = document.getElementById(reAddButtonId);
+        if (button) {
+            button.remove(); // Remove the button if the column is shown again
+        }
+        // Reset the dropdown to show 'Winning Alliance' as selected
+        document.getElementById('winningAllianceSelect').value = 'winningAlliance';
+    }
+}
+
+function updateTableForPredictedStartTime(data) {
+    // Assume the table body has an id or can be accessed via querySelector
+    const tbody = document.querySelector("#matchesTable tbody");
+    if (!tbody) return; // Exit if the table body is not found
+
+    // Iterate through each row in the table body
+    Array.from(tbody.rows).forEach((row, index) => {
+        if (index < data.length) { // Guard clause to avoid out-of-bounds access
+            const predictedTime = data[index].predicted_time;
+            const date = new Date(predictedTime * 1000); // Convert UNIX timestamp to JavaScript Date object
+            const formattedDate = date.toLocaleString(); // Convert to readable local date and time string
+
+            // Update the cell in the Winning Alliance column (index 1) with formatted date
+            row.cells[1].textContent = formattedDate;
+        }
+    });
+}
+
+
             const tableContainer = document.getElementById("matchesTableContainer");
     tableContainer.innerHTML = ''; // Clear existing table/data
     var table = document.createElement("table");
@@ -573,10 +746,21 @@ nav.navbar {
     var headerRow = thead.insertRow();
 
     ["Match", "Winning Alliance", "Blue 1", "Blue 2", "Blue 3", "Red 1", "Red 2", "Red 3"].forEach(headerText => {
-        var th = document.createElement("th");
+    var th = document.createElement("th");
+    if (headerText === "Winning Alliance") {
+        // Add a dropdown menu to the "Winning Alliance" header
+        th.innerHTML = `<select class="custom-select" id="winningAllianceSelect">
+            <option value="winningAlliance">Winning Alliance</option>
+            <option value="matchScore">Match Score</option>
+            <option value="predictedStartTime">Estimated Start Time</option>
+            <option value="none">None</option>
+        </select>`;
+    } else {
         th.textContent = headerText;
-        headerRow.appendChild(th);
-    });
+    }
+    headerRow.appendChild(th);
+});
+
             const addedTeams = new Set();
 
 data.forEach(match => {
