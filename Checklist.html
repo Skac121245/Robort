@@ -74,6 +74,37 @@
         input[type="file"] {
             display: none;
         }
+       
+
+/* Ensure uniform size and margin for buttons and labels */
+.button-wrapper label {
+    margin: 0; /* Override default margins if necessary */
+    height: 38px; /* Adjust based on your design needs */
+    display: inline-flex; /* Align text and icons within buttons/labels */
+    align-items: center; /* Center items vertically inside the button/label */
+    justify-content: center; /* Center items horizontally inside the button/label */
+}
+.upload-success-alert {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    visibility: hidden; /* Initially hidden */
+    opacity: 0;
+    z-index: 1051; /* Higher than Bootstrap modals */
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear; /* Delay visibility change */
+    background-color: #d4edda; /* Light green background */
+    color: #155724; /* Dark green text */
+    border-color: #c3e6cb;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.25rem;
+}
+
+.upload-success-alert.show {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s linear;
+}
     </style>
 </head>
 <body>
@@ -98,7 +129,7 @@
         <!-- Checklist items will be dynamically inserted here -->
     </div>
     
-    <div class="container mt-4">
+    <div class="container mt-4 justify-content-between button-wrapper">
         <form id="addItemForm" class="mb-3">
             <div class="input-group mb-3">
                 <input type="text" id="newItems" class="form-control" placeholder="Enter items separated by spaces" aria-label="Checklist item">
@@ -107,18 +138,61 @@
                 </div>
             </div>
         </form>
-        <button id="loadChecklist" class="btn btn-primary">Load Checklist</button>
+        <button id="clearChecklist" class="btn btn-danger" data-toggle="modal" data-target="#clearModal">Clear Checklist</button>
         <button id="downloadChecklist" class="btn btn-success">Download Checklist</button>
         <input type="file" id="uploadChecklist">
-        <label for="uploadChecklist" class="btn btn-info upload-btn">Upload Checklist</label>
+        <input type="file" id="uploadChecklistInput" style="display: none;">
+<label for="uploadChecklistInput" class="btn btn-info upload-btn">Upload Checklist</label>
+
     </div>
+    <!-- Add Bootstrap Modal for Clear Confirmation -->
+    <div class="modal fade" id="clearModal" tabindex="-1" role="dialog" aria-labelledby="clearModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="clearModalLabel">Clear Checklist</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to clear the checklist? This action will remove all items from local storage.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmClear">Clear Checklist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Error Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Upload Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="errorModalBody">
+                The file is not valid JSON.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const checklistContainer = document.getElementById('checklistContainer');
-            const loadChecklistButton = document.getElementById('loadChecklist');
             const addItemForm = document.getElementById('addItemForm');
             const newItemsInput = document.getElementById('newItems');
             let checklistItems = [];
+            loadChecklist();
 
             function renderChecklist(items) {
                 checklistContainer.innerHTML = '';
@@ -136,28 +210,40 @@
                     div.appendChild(checkbox);
                     div.appendChild(label);
                     checklistContainer.appendChild(div);
-                });
+                // Listener to update localStorage when an item is checked/unchecked
+        checkbox.addEventListener('change', () => {
+            checklistItems[index].checked = checkbox.checked; // Update the 'checked' state
+            localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems)); // Save updated list
+        });
+    });
             }
 
-            function loadChecklist() {
-                const storedItems = JSON.parse(localStorage.getItem('preMatchChecklistItems'));
-                if (storedItems && storedItems.length > 0) {
-                    checklistItems = storedItems;
-                }
-                renderChecklist(checklistItems);
-            }
+            document.getElementById('confirmClear').addEventListener('click', function() {
+    checklistItems = []; // Clear the array
+    localStorage.removeItem('preMatchChecklistItems'); // Clear local storage
+    renderChecklist(checklistItems); // Re-render the checklist (now empty)
+    $('#clearModal').modal('hide'); // Hide the confirmation modal
+});
+function loadChecklist() {
+    const storedItems = JSON.parse(localStorage.getItem('preMatchChecklistItems'));
+    if (storedItems) {
+        checklistItems = storedItems;
+    } else {
+        checklistItems = [];
+    }
+    renderChecklist(checklistItems);
+}
 
-            addItemForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const newItems = newItemsInput.value.split(' ');
-                checklistItems = checklistItems.concat(newItems);
-                localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems));
-                renderChecklist(checklistItems);
-                newItemsInput.value = '';
-            });
 
-            loadChecklistButton.addEventListener('click', loadChecklist);
-            loadChecklist();
+addItemForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const newItems = newItemsInput.value.split(' ');
+    checklistItems = checklistItems.concat(newItems.filter(item => item.trim() !== '')); // Filter out any empty strings
+    localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems)); // Save updated list to localStorage
+    renderChecklist(checklistItems);
+    newItemsInput.value = '';
+});
+
 
             const downloadChecklistButton = document.getElementById('downloadChecklist');
             const uploadChecklistInput = document.getElementById('uploadChecklist');
@@ -172,17 +258,58 @@
                 downloadAnchorNode.remove();
             });
 
-            uploadChecklistInput.addEventListener('change', function(e) {
-                const fileReader = new FileReader();
-                fileReader.onload = function() {
-                    const contents = JSON.parse(fileReader.result);
-                    checklistItems = contents;
-                    renderChecklist(checklistItems);
-                    localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems));
-                };
-                fileReader.readAsText(e.target.files[0]);
-            });
+            document.getElementById('uploadChecklistInput').addEventListener('change', function(e) {
+    const fileReader = new FileReader();
+    fileReader.onload = function() {
+        try {
+            const contents = JSON.parse(fileReader.result);
+            checklistItems = contents;
+            renderChecklist(checklistItems);
+            localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems));
+            showSuccessAlert('Upload success!');
+        } catch (error) {
+            console.error("Error parsing uploaded file as JSON:", error);
+            // Show error modal instead of alert
+            showErrorModal("Upload failed: The file is not a valid JSON.");
+        }
+    };
+    if (e.target.files[0]) {
+        fileReader.readAsText(e.target.files[0]);
+    }
+});
+
+// Function to display the error modal with a custom message
+function showErrorModal(errorMessage) {
+    document.getElementById('errorModalBody').textContent = errorMessage; // Set the error message
+    $('#errorModal').modal('show'); // Use jQuery to show the modal
+}
+
+
+
         });
+
+        function showSuccessAlert(message) {
+    const alertBox = document.createElement('div');
+    alertBox.className = 'alert alert-success upload-success-alert';
+    alertBox.innerHTML = `<span class="mr-2">&#10003;</span>${message}`;
+    document.body.appendChild(alertBox);
+
+    // Trigger reflow to ensure the transition can happen
+    alertBox.offsetHeight; // Read offsetHeight to force reflow
+
+    // Start fade in
+    alertBox.classList.add('show');
+
+    // Start fade out after a delay
+    setTimeout(() => {
+        alertBox.classList.remove('show');
+
+        // Remove the element after the fade-out transition completes
+        setTimeout(() => {
+            document.body.removeChild(alertBox);
+        }, 500); // Match the CSS transition duration
+    }, 3000); // Visible duration before starting fade-out
+}
     </script>
 <script src="jquery-3.3.1.slim.min.js"></script>
 <script src="bootstrap.min.js"></script>
