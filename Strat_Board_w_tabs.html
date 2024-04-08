@@ -13,17 +13,15 @@
     align-items: center;
   }
 
+  
+
   .controls {
-    margin-bottom: 20px;
-    background-color: #ffffff;
-    padding: 15px;
-    border-radius: 8px;
-    /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+  display: flex;
+  flex-direction: column; /* Stack controls vertically */
+  align-items: center; /* Align controls in the middle */
+  width: 100%; /* Use full width to manage spacing better */
+  gap: 15px; /* Space out the individual controls */
+}
 
   select, button, input {
     padding: 10px;
@@ -93,17 +91,67 @@
     justify-content: center;
   }
   
-  .button-container {
+  #button-container {
   display: flex;
-  justify-content: space-between; /* Distribute space between buttons */
-  gap: 60px; /* Space between each button */
-  padding: 0 20px; /* Padding on the sides of the container */
-  width: 100%; /* Make the container full width */
+  justify-content: space-around; /* Space out buttons evenly */
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+  gap: 20px; /* Space between buttons when they wrap */
+  width: 80%; /* Adjust based on your layout needs */
+  margin-top: 10px; /* Add some space above the button container */
 }
 
-.button-container button {
-  flex: 1; /* Make each button take equal space */
-  margin: 0 10px; /* Add margin to space out buttons */
+#button-container button {
+  flex: 1; /* Allow buttons to grow and fill the space */
+  margin: 0 5px; /* Add margin on the sides */
+  min-width: 180px; /* Minimum width for buttons to maintain readability */
+}
+
+#other-button-container {
+  display: flex;
+  justify-content: space-around; /* Space out buttons evenly */
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+  gap: 50px; /* Space between buttons when they wrap */
+  width: 80%; /* Adjust based on your layout needs */
+  margin-top: 10px; /* Add some space above the button container */
+}
+
+#manualTeamEntry div {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Space between input fields */
+}
+
+#manualTeamEntry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px; /* Space between rows */
+}
+
+#switchTabs {
+  background-color: hsl(206, 100%, 61%);
+  /* background-color: #ff6161; */
+}
+
+#clear {
+   background-color: #ff6161;
+}
+
+#matchSelect-label {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+#matchSelect-container {
+  display: flex;
+  justify-content: space-around; /* Space out buttons evenly */
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+  gap: 10px; /* Space between buttons when they wrap */
+  width: 15%; /* Adjust based on your layout needs */
+  margin-top: 10px; /* Add some space above the button container */
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #8595ff;
 }
 
   .eventAndDirections {
@@ -215,26 +263,47 @@
       <button id="addOptionButton">Add Option</button>
 </div> -->
 
-<button id="saveAutoCanvas">Save Autonomous Canvas as PNG</button>
+<div id="matchSelect-container">
+<label id="matchSelect-label">Select a match</label>
+<select id="matchSelect"></select>
+</div>
 
-<input type="file" id="uploadMatchData" style="display: none;" />
-      <label for="uploadMatchData" class="button">Upload Match Data</label>
-
-
-<input type="file" id="fileInput" style="display: none;"/>
-
-  <select id="matchSelect"></select>
-  <div id="button-container">
-    <button onclick="clearCanvas()">Clear</button>
-    <button id="toggleEraser">Toggle Eraser</button>
-    <button onclick="switchTabs()"id="switchTabs">Switch Tabs</button>
+<div id="other-button-container">
+  
+  <button id="saveCanvas">Save Autonomous Canvas as PNG</button>
+  
+  <input type="file" id="uploadMatchData" style="display: none;" />
+  <label for="uploadMatchData" class="button">Upload Match Data</label>
+  
+  
+  <input type="file" id="fileInput" style="display: none;"/>
+  <button id="toggleDataInputMode">Switch to Manual Team Entry</button>
+  <div id="manualTeamEntry" style="display: none;">
+    <div>
+      <input type="text" id="blue1" placeholder="Blue Team 1">
+      <input type="text" id="blue2" placeholder="Blue Team 2">
+      <input type="text" id="blue3" placeholder="Blue Team 3">
+    </div>
+    <div>
+      <input type="text" id="red1" placeholder="Red Team 1">
+      <input type="text" id="red2" placeholder="Red Team 2">
+      <input type="text" id="red3" placeholder="Red Team 3">
+    </div>
+    <button id="submitManualTeams">Submit Teams</button>
   </div>
+  
+</div>
 
+<div id="button-container">
+  <button id="clear"onclick="clearCanvas()">Clear</button>
+  <button id="toggleEraser">Toggle Eraser</button>
+  <button onclick="switchTabs()"id="switchTabs">Switch Tabs</button>
+  
+</div>
 
-  <!-- <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri"/> -->
+<!-- <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri"/> -->
 
 <h1 id="tabLabel">Autonomous</h1>
-
 <div id="backgroundImage">
   <canvas id="autoCanvas" width="1536" height="664" style="display: show;"></canvas>
   <canvas id="teleopCanvas" width="1536" height="664" style="display: none;"></canvas>
@@ -244,11 +313,13 @@
 
 
 
+
 <script>
+
 
   // import saveCanvas from "save-canvas-to-image";
 
-
+  let isManualEntry = false;
   let apiData = [];
   
   let eraserEnabled = false;
@@ -265,16 +336,97 @@
 //     link.click();
 // });
 
-document.getElementById('saveAutoCanvas').addEventListener('click', function() {
-    // Assume canvas size is constant, and we want to preserve it
-    const canvas = document.getElementById('teleopCanvas');
-    const ctx = canvas.getContext('2d');
+// document.getElementById('saveAutoCanvas').addEventListener('click', function() {
+//     // Assume canvas size is constant, and we want to preserve it
+//     const canvas = document.getElementById('teleopCanvas');
+//     const ctx = canvas.getContext('2d');
     
-    // Background Image
-    const backgroundImage = new Image();
-    backgroundImage.src = "images/crescendo_feild.png"; // Ensure this path is correct
+//     // Background Image
+//     const backgroundImage = new Image();
+//     backgroundImage.src = "images/crescendo_feild.png"; // Ensure this path is correct
 
-    backgroundImage.onload = () => {
+//     backgroundImage.onload = () => {
+//         // Create a temporary canvas to draw the background and the existing content
+//         const tempCanvas = document.createElement('canvas');
+//         const tempCtx = tempCanvas.getContext('2d');
+
+//         tempCanvas.width = canvas.width;
+//         tempCanvas.height = canvas.height;
+
+//         // Draw the background on the temp canvas, scaled to fit
+//         tempCtx.drawImage(backgroundImage, 0, 0, tempCanvas.width, tempCanvas.height);
+
+//         // Now draw the original canvas content on top of the background
+//         tempCtx.drawImage(canvas, 0, 0);
+
+//         // Save the combined content from the temporary canvas
+//         const dataURL = tempCanvas.toDataURL('image/png');
+//         const link = document.createElement('a');
+//         link.download = `autonomous-${selectedMatchKey}-canvas.png`; // You can change the filename
+//         link.href = dataURL;
+//         link.click();
+//     };
+// });
+
+document.getElementById('toggleDataInputMode').addEventListener('click', function() {
+  isManualEntry = !isManualEntry;
+  document.getElementById('manualTeamEntry').style.display = isManualEntry ? "block" : "none";
+  document.getElementById('matchSelect').style.display = isManualEntry ? "none" : "block";
+  document.getElementById('matchSelect-container').style.display = isManualEntry ? "none" : "flex";
+  this.textContent = isManualEntry ? "Switch to API Data Entry" : "Switch to Manual Team Entry";
+});
+
+document.getElementById('submitManualTeams').addEventListener('click', function() {
+  const blueTeams = [
+    document.getElementById('blue1').value,
+    document.getElementById('blue2').value,
+    document.getElementById('blue3').value
+  ];
+  const redTeams = [
+    document.getElementById('red1').value,
+    document.getElementById('red2').value,
+    document.getElementById('red3').value
+  ];
+  
+  // Validate input (basic example, extend as needed)
+  if (blueTeams.some(team => team === "") || redTeams.some(team => team === "")) {
+    alert("Please fill in all team numbers.");
+    return;
+  }
+  
+  // Assuming drawTeams function can handle team numbers directly
+  clearCanvas();
+  drawTeams(blueTeams.map(team => `frc${team}`), bluePositions, 'blue');
+  drawTeams(redTeams.map(team => `frc${team}`), redPositions, 'red');
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  updateSaveButton();
+    const uploadButton = document.getElementById('uploadMatchData');
+    const fileInput = document.getElementById('uploadMatchData');
+
+    uploadButton.addEventListener('click', function() {
+      fileInput.click(); // Trigger file input when upload button is clicked
+    });
+
+    fileInput.addEventListener('change', function(event) {
+      uploadData(event); // Call your existing function to handle file upload
+    });
+
+  }
+
+  
+  
+  ); 
+  document.getElementById('saveCanvas').addEventListener('click', function() {
+  const canvas = isAuto ? document.getElementById('autoCanvas') : document.getElementById('teleopCanvas');
+  const ctx = canvas.getContext('2d');
+  const backgroundImage = new Image();
+  const fileName = `${isAuto ? 'autonomous' : 'teleop'}-${selectedMatchKey}-canvas.png`; // Adjust file name based on the canvas type
+  backgroundImage.src = "images/crescendo_feild.png";
+  backgroundImage.onload = () => {
         // Create a temporary canvas to draw the background and the existing content
         const tempCanvas = document.createElement('canvas');
         const tempCtx = tempCanvas.getContext('2d');
@@ -291,31 +443,14 @@ document.getElementById('saveAutoCanvas').addEventListener('click', function() {
         // Save the combined content from the temporary canvas
         const dataURL = tempCanvas.toDataURL('image/png');
         const link = document.createElement('a');
-        link.download = `autonomous-${selectedMatchKey}-canvas.png`; // You can change the filename
+        link.download = `${fileName}-${selectedMatchKey}-canvas.png`; // You can change the filename
         link.href = dataURL;
         link.click();
     };
 });
 
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    const uploadButton = document.getElementById('uploadMatchData');
-    const fileInput = document.getElementById('uploadMatchData');
-
-    uploadButton.addEventListener('click', function() {
-      fileInput.click(); // Trigger file input when upload button is clicked
-    });
-
-    fileInput.addEventListener('change', function(event) {
-      uploadData(event); // Call your existing function to handle file upload
-    });
-
-  }
-  
-  
-);
-function uploadData(event) {
+  function uploadData(event) {
   // apiData = [];
   const file = event.target.files[0];
   if (!file) {
@@ -395,23 +530,28 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
     }
 
     function switchTabs() {
+  if (canvasAuto.style.display !== "none") {
+    canvasTeleop.style.display = "block";
+    canvasAuto.style.display = "none";
+    isAuto = false; // Update to reflect the current canvas
+    tabLabel.textContent = "Teleop";
+  } else {
+    canvasTeleop.style.display = "none";
+    canvasAuto.style.display = "block";
+    isAuto = true; // Update to reflect the current canvas
+    tabLabel.textContent = "Autonomous";
+  }
+  updateSaveButton(); // Update the save button's label and functionality
+}
 
-      window.addEventListener("load", onPageLoad)
-
-      if (canvasAuto.style.display != "none") {
-        console.log("autoCanvas is not showing")
-        canvasTeleop.style.display = "block"
-        canvasAuto.style.display = "none"
-        isAuto = false
-        tabLabel.textContent="Auto"
-      } else {
-        console.log("autoCanvas is showing")
-        canvasTeleop.style.display = "none"
-        canvasAuto.style.display = "block"
-        isAuto = true
-        tabLabel.textContent="Teleop"
-      }
-    }
+function updateSaveButton() {
+  const saveButton = document.getElementById('saveCanvas');
+  if (isAuto) {
+    saveButton.textContent = 'Save Autonomous Canvas as PNG';
+  } else {
+    saveButton.textContent = 'Save Teleop Canvas as PNG';
+  }
+}
 
 
     function setupCanvas() {

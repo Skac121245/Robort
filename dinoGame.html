@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Dino Game</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #gameContainer {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            height: 200px; /* Adjust based on your ground level */
+            background-color: #fff;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+        }
+
+        #dino {
+            width: 44px; /* Initial width, will be set in JS */
+            height: 47px; /* Initial height, will be set in JS */
+            background-size: cover;
+            position: absolute;
+            bottom: 0px; /* Adjust based on your game's ground level */
+            left: 20px; /* Starting position */
+        }
+
+        .obstacle {
+            background-size: cover;
+            position: absolute;
+            bottom: 0; /* Adjust based on your game's ground level */
+        }
+
+        #startButton {
+            padding: 10px 20px;
+            font-size: 24px;
+            cursor: pointer;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        #score {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #000;
+            font-size: 18px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <button id="startButton">Start Game</button>
+    <div id="gameContainer">
+        <!-- Dino will be dynamically added here -->
+    </div>
+    <div id="score">Score: 0</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const gameContainer = document.getElementById('gameContainer');
+    const scoreDisplay = document.getElementById('score');
+    let dino, gameInterval, obstacles = [], score = 0, gameSpeed = 5, isJumping = false, jumpVelocity = 0;
+
+    function setupGame() {
+        gameContainer.innerHTML = '<div id="dino"></div>'; // Clear and re-add dino
+        dino = document.getElementById('dino');
+        score = 0;
+        gameSpeed = 5; // Reset game speed
+        obstacles = [];
+        isJumping = false;
+        jumpVelocity = 0;
+        scoreDisplay.textContent = `Score: 0`;
+        document.getElementById('startButton').style.display = 'none'; // Hide start button
+        clearInterval(gameInterval);
+        gameInterval = setInterval(gameLoop, 50);
+    }
+
+    function jump() {
+        if (isJumping) return;
+        isJumping = true;
+        jumpVelocity = 20; // Initial jump velocity
+    }
+
+    function createObstacle() {
+        const obstacle = document.createElement('div');
+        obstacle.classList.add('obstacle');
+        const size = Math.random() * 30 + 20; // Example: randomize size for variety
+        obstacle.style.width = `${size}px`;
+        obstacle.style.height = `${size}px`;
+        gameContainer.appendChild(obstacle);
+        obstacles.push(obstacle);
+    }
+
+    function gameLoop() {
+        // Handle jump physics
+        if (isJumping) {
+            dino.style.bottom = `${Math.max(0, parseInt(dino.style.bottom) + jumpVelocity)}px`;
+            jumpVelocity -= 2; // Gravity effect
+            if (parseInt(dino.style.bottom) <= 0) {
+                dino.style.bottom = '0px'; // Reset on ground
+                isJumping = false;
+            }
+        }
+
+        // Move obstacles
+        obstacles.forEach((obstacle, index) => {
+            const newPos = parseInt(obstacle.style.left) - gameSpeed;
+            if (newPos + obstacle.offsetWidth < 0) {
+                gameContainer.removeChild(obstacle);
+                obstacles.splice(index, 1);
+                score++;
+                scoreDisplay.textContent = `Score: ${score}`;
+                // Increase speed every 10 points
+                if (score % 10 === 0) gameSpeed += 1;
+            } else {
+                obstacle.style.left = `${newPos}px`;
+            }
+        });
+
+        // Collision detection
+        obstacles.forEach(obstacle => {
+            if (checkCollision(dino, obstacle)) gameOver();
+        });
+
+        // Generate new obstacle conditionally to maintain game flow
+        if (!obstacles.length || (gameContainer.offsetWidth - parseInt(obstacles[obstacles.length - 1].style.left) > 200 + Math.random() * 300)) {
+            createObstacle(); // Adjust timing and conditions as needed
+        }
+    }
+
+    function checkCollision(dino, obstacle) {
+        const dRect = dino.getBoundingClientRect();
+        const oRect = obstacle.getBoundingClientRect();
+        return !(dRect.right < oRect.left || dRect.left > oRect.right || dRect.bottom < oRect.top || dRect.top > oRect.bottom);
+    }
+
+    function gameOver() {
+        clearInterval(gameInterval);
+        alert('Game Over!'); // Placeholder, replace with a more integrated approach
+        document.getElementById('startButton').style.display = 'block'; // Show start button again
+    }
+
+    // Event listeners for starting and jumping
+    document.getElementById('startButton').addEventListener('click', setupGame);
+    document.addEventListener('keydown', (e) => { if (e.key === " " || e.key === "ArrowUp") jump(); });
+    gameContainer.addEventListener('click', jump);
+
+    // Initialize obstacles with a starting position offscreen to the right
+    function initializeObstacle(obstacle) {
+        obstacle.style.left = `${gameContainer.offsetWidth}px`;
+    }
+});
+
+// Note: Ensure this script is correctly linked in your HTML file and executed after the DOM has fully loaded.
+
+    </script>
+</body>
+</html>
