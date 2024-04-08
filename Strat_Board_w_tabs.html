@@ -318,7 +318,7 @@
 
 
   // import saveCanvas from "save-canvas-to-image";
-
+  
   let isManualEntry = false;
   let apiData = [];
   
@@ -517,16 +517,16 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
     const bluePositions = [{x: 70, y: 150}, {x: 70, y: 380}, {x: 70, y: 500}];
     const redPositions = [{x: 1400, y: 500}, {x: 1400, y: 380}, {x: 1400, y: 150}];
     const teamColors = {
-      blue: ['#07f7df', '#075bf7', '#7307f7'],
-      red: ['#f70707', '#f76707', '#f7c707']
+      blue: ['#07f7df', '#075bf7', '#AD00FF'],
+      red: ['#FF00A5', '#f76707', '#f7c707']
     };
   
     setupCanvas();
 
 
     function onPageLoad() {
+      let isAuto = true;
         switchTabs();
-        let isAuto = true;
     }
 
     function switchTabs() {
@@ -804,6 +804,8 @@ function updateSaveButton() {
     // Draw the team number text on top
     ctx.fillStyle = 'black'; // Contrast color for text
     ctx.fillText(text, x, y);
+  
+    document.getElementById('tabLabel').style.backgroundColor = "blue"
 
     // Update the teamPositions array for click detection
     teamPositions.push({
@@ -811,32 +813,45 @@ function updateSaveButton() {
       y: rectY,
       width: rectWidth,
       height: rectHeight,
-      color: color // Assign the drawing color for when the area is clicked
+      color: color, // Assign the drawing color for when the area is clicked
     });
   }
 
   function checkTeamClick(x, y) {
+    let scale, scaledX, scaledY, colorFound = false;
+
     if (isAuto) {
-        ctx = ctxAuto
-        canvas = canvasAuto
-      } else {
-        ctx = ctxTeleop
-        canvas = canvasTeleop
-      }
+        ctx = ctxAuto;
+        canvas = canvasAuto;
+    } else {
+        ctx = ctxTeleop;
+        canvas = canvasTeleop;
+    }
+
     if (!eraserEnabled) {
-      teamPositions.forEach(team => {
-        // Convert canvas-relative coordinates to the scaled drawing coordinates
-        const scale = canvas.offsetWidth / canvas.width;
-        const scaledX = x / scale;
-        const scaledY = y / scale;
-    
-        // Check if the click is within the bounds of a team's clickable area
-        if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
-          drawColor = team.color; // Set the drawing color to the team's color
+        teamPositions.forEach(team => {
+            // Convert canvas-relative coordinates to the scaled drawing coordinates
+            scale = canvas.offsetWidth / canvas.width;
+            scaledX = x / scale;
+            scaledY = y / scale;
+
+            // Check if the click is within the bounds of a team's clickable area
+            if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
+                drawColor = team.color; // Set the drawing color to the team's color
+                colorFound = true; // Indicate that a color was found based on user click
+                console.log("Selected color:", team.color); // Logging for verification
+            }
+        });
+
+        // If a team's color was found, update the tabLabel's background color
+        if (colorFound) {
+            // document.getElementById('tabLabel').style.backgroundColor = drawColor;
+            canvas.style.border = "20px solid " + drawColor;
+            canvas.style.borderRadius = "10px";
         }
-      });
     }
 }
+
 
   
 function clearCanvas() {
