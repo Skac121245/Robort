@@ -34,7 +34,17 @@
         <input type="text" id="eventCode" name="eventCode" required>
 
         <button type="submit">Save Just Event Code</button>
+
+        
     </form>
+    <div id="uploadArea">
+        <h2>Upload a File</h2>
+        <input type="file" id="fileInput">
+        <button onclick="uploadFile()">Upload</button>
+        <div id="fileName"></div>
+    </div>
+    
+    <div id="fileContent"></div>
 
     <form id="teamForm">
         <h2>General Scouting Questions</h2>
@@ -327,8 +337,42 @@
   transform: translatex(44px);
 }
 
+#uploadArea {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  #fileContent { 
+    white-space: pre-wrap; 
+    margin-top: 20px; 
+    border: 1px solid #ccc; 
+    padding: 10px; 
+    max-height: 300px; 
+    max-width: 300px; 
+    overflow: auto; 
+  }
+  #fileName { margin-top: 10px; }
+
     </style>
     <script>
+
+function uploadFile() {
+  const fileInput = document.getElementById('fileInput');
+  if (fileInput.files.length === 0) {
+    alert("Please select a file first.");
+    return;
+  }
+
+  const file = fileInput.files[0];
+  document.getElementById('fileName').innerText = `File Name: ${file.name}`;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('fileContent').innerText = e.target.result;
+    localStorage.setItem('ApiDataUploaded', e.target.result)
+  };
+  reader.readAsText(file);
+}
 
 document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById('addAutoName').addEventListener('click', addAutoNameField);
