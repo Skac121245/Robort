@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pre Match Checklist</title>
     <style>
-        /* style.css content */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f0f0f0;
-    color: #333;
-}
+      /* style.css content */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+        color: #333;
+      }
 
-h1 {
-    color: #000000;
-    text-align: center;
-}
+      h1 {
+        color: #000000;
+        text-align: center;
+      }
 
-/* nav {
+      /* nav {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -40,236 +40,248 @@ nav a:hover {
     background-color: #02467e;
 } */
 
-nav {
-    background-color: #1df700;
-    /* width: 1000px; */
-    text-align: center;
-    padding: 10px 0;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap; /* Ensures nav items wrap in smaller screens */
-  }
+      nav {
+        background-color: #1df700;
+        /* width: 1000px; */
+        text-align: center;
+        padding: 10px 0;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap; /* Ensures nav items wrap in smaller screens */
+      }
 
-  nav a {
-    text-decoration: none;
-    color: #000000;
-    margin: 0 10px;
-    font-weight: bold;
-    font-size: 20px;
-    padding: 10px;
-    background-color: #1df700; /* Makes sure each link has a green background */
-    border-radius: 8px;
-  }
+      nav a {
+        text-decoration: none;
+        color: #000000;
+        margin: 0 10px;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 10px;
+        background-color: #1df700; /* Makes sure each link has a green background */
+        border-radius: 8px;
+      }
 
-  nav a:hover {
-    background-color: #3295ff;
-  }
+      nav a:hover {
+        background-color: #3295ff;
+      }
 
-#checklistContainer {
-    margin: 20px 0;
-    padding: 15px;
-    background: #ffffff;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+      #checklistContainer {
+        margin: 20px 0;
+        padding: 15px;
+        background: #ffffff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-.checklist-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
+      .checklist-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
 
-.checklist-item input[type="checkbox"] {
-    margin-right: 10px;
-}
+      .checklist-item input[type="checkbox"] {
+        margin-right: 10px;
+      }
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-}
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
 
-input[type="text"] {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
+      input[type="text"] {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
 
-button, .upload-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    transition: opacity 0.3s;
-}
+      button,
+      .upload-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        transition: opacity 0.3s;
+      }
 
-button {
-    background-color: #28a745;
-}
+      button {
+        background-color: #28a745;
+      }
 
-button:hover, .upload-btn:hover {
-    opacity: 0.7;
-}
+      button:hover,
+      .upload-btn:hover {
+        opacity: 0.7;
+      }
 
-.upload-btn {
-    background-color: #3f8bd8;
-    display: inline-block;
-    margin: 0; /* Align with form elements */
-}
+      .upload-btn {
+        background-color: #3f8bd8;
+        display: inline-block;
+        margin: 0; /* Align with form elements */
+      }
 
-#uploadChecklist {
-    display: none;
-}
+      #uploadChecklist {
+        display: none;
+      }
 
-.checklist-item label {
-    font-size: 18px; /* Increased font size for better readability */
-    font-weight: bold; /* Make text bolder */
-    margin-left: 10px; /* Add some space between the checkbox and the label text */
-}
+      .checklist-item label {
+        font-size: 18px; /* Increased font size for better readability */
+        font-weight: bold; /* Make text bolder */
+        margin-left: 10px; /* Add some space between the checkbox and the label text */
+      }
 
-/* Making checkboxes larger */
-.checklist-item input[type="checkbox"] {
-    transform: scale(2); /* Scale up the size of the checkboxes */
-    margin-right: 10px; /* Ensure there's adequate space around the scaled checkbox */
-    cursor: default; 
-}
+      /* Making checkboxes larger */
+      .checklist-item input[type="checkbox"] {
+        transform: scale(2); /* Scale up the size of the checkboxes */
+        margin-right: 10px; /* Ensure there's adequate space around the scaled checkbox */
+        cursor: default;
+      }
 
-/* Optional: Add a subtle text shadow for better legibility */
-.checklist-item label {
-    text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
-}
+      /* Optional: Add a subtle text shadow for better legibility */
+      .checklist-item label {
+        text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+      }
 
-.checklist-item:hover {
-    transform:scale(1.0001);
-}
-
-
+      .checklist-item:hover {
+        transform: scale(1.0001);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Pre Match Checklist</h1>
     <nav>
-        <a href="./index.html">Home</a>
-        <a href="./Team_List_element.html">Teams</a>
-        <a href="./Strat_Board_w_tabs.html">Canvas</a>
-        <a href="./Checklist.html">Pre Match Checklist</a>
-        <a href="./Control_Panel.html">Control Panel</a>
-        <a href="./2423_Features.html">Features</a>
-        <a href="./Config_tab.html">Configure</a>
+      <a href="./index.html">Home</a>
+      <a href="./Team_List_element.html">Teams</a>
+      <a href="./Strat_Board_w_tabs.html">Canvas</a>
+      <a href="./Checklist.html">Pre Match Checklist</a>
+      <a href="./Control_Panel.html">Control Panel</a>
+      <a href="./2423_Features.html">Features</a>
+      <a href="./Config_tab.html">Configure</a>
     </nav>
     <div id="checklistContainer"></div>
-    
+
     <form id="addItemForm">
-        <input type="text" id="newItems" placeholder="Enter items separated by spaces">
-        <button type="submit">Add Items</button>
+      <input
+        type="text"
+        id="newItems"
+        placeholder="Enter items separated by spaces"
+      />
+      <button type="submit">Add Items</button>
     </form>
     <!-- <button id="loadChecklist">Load Checklist</button> -->
 
     <button id="downloadChecklist">Download Checklist</button>
-<input type="file" id="uploadChecklist" style="display: none;" />
-<label for="uploadChecklist" class="upload-btn">Upload Checklist</label>
-<button id="clearChecklist">Make a new list</button>
+    <input type="file" id="uploadChecklist" style="display: none" />
+    <label for="uploadChecklist" class="upload-btn">Upload Checklist</label>
+    <button id="clearChecklist">Make a new list</button>
 
     <script>
-       document.addEventListener('DOMContentLoaded', function() {
-    const checklistContainer = document.getElementById('checklistContainer');
-    const loadChecklistButton = document.getElementById('loadChecklist');
-    const addItemForm = document.getElementById('addItemForm');
-    const newItemsInput = document.getElementById('newItems');
+      document.addEventListener("DOMContentLoaded", function () {
+        const checklistContainer =
+          document.getElementById("checklistContainer");
+        const loadChecklistButton = document.getElementById("loadChecklist");
+        const addItemForm = document.getElementById("addItemForm");
+        const newItemsInput = document.getElementById("newItems");
 
-    // Initially defined defaultChecklistItems
-    let checklistItems = [];
+        // Initially defined defaultChecklistItems
+        let checklistItems = [];
 
+        const clearChecklistButton = document.getElementById("clearChecklist");
 
-    const clearChecklistButton = document.getElementById('clearChecklist');
+        clearChecklistButton.addEventListener("click", function () {
+          if (
+            confirm(
+              "You are clearing your local storage, are you sure you want to go forward?"
+            )
+          ) {
+            localStorage.removeItem("preMatchChecklistItems");
+            location.reload();
+            // renderChecklist(null);
+          }
+        });
 
-clearChecklistButton.addEventListener('click', function() {
-    if (confirm('You are clearing your local storage, are you sure you want to go forward?')) {
-        localStorage.removeItem("preMatchChecklistItems")
-        location.reload();
-        // renderChecklist(null);
-    }
-});
+        // Function to render checklist items
+        function renderChecklist(items) {
+          checklistContainer.innerHTML = ""; // Clear current items
+          items.forEach((item, index) => {
+            const div = document.createElement("div");
+            div.className = "checklist-item";
 
-    // Function to render checklist items
-    function renderChecklist(items) {
-    checklistContainer.innerHTML = ''; // Clear current items
-    items.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'checklist-item';
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.id = "check-" + index; // Unique ID for each checkbox
 
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.id = 'check-' + index; // Unique ID for each checkbox
+            const label = document.createElement("label");
+            label.htmlFor = "check-" + index;
+            label.textContent = typeof item === "object" ? item.text : item; // Support both string and object item types
 
-        const label = document.createElement('label');
-        label.htmlFor = 'check-' + index;
-        label.textContent = typeof item === 'object' ? item.text : item; // Support both string and object item types
-        
-        div.appendChild(checkbox);
-        div.appendChild(label);
-        checklistContainer.appendChild(div);
-    });
-}
-
-    // Load checklist from local storage or use default items
-    function loadChecklist() {
-        const storedItems = JSON.parse(localStorage.getItem('preMatchChecklistItems'));
-        if (storedItems && storedItems.length > 0) {
-            checklistItems = storedItems; // Update the global variable
+            div.appendChild(checkbox);
+            div.appendChild(label);
+            checklistContainer.appendChild(div);
+          });
         }
-        renderChecklist(checklistItems);
-    }
 
-    function saveItemsToStorage(items) {
-        localStorage.setItem('preMatchChecklistItems', JSON.stringify(items));
-    }
+        // Load checklist from local storage or use default items
+        function loadChecklist() {
+          const storedItems = JSON.parse(
+            localStorage.getItem("preMatchChecklistItems")
+          );
+          if (storedItems && storedItems.length > 0) {
+            checklistItems = storedItems; // Update the global variable
+          }
+          renderChecklist(checklistItems);
+        }
 
-    addItemForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const newItems = newItemsInput.value.split(' '); // Split input by spaces
-        checklistItems = checklistItems.concat(newItems); // Add new items to the global checklist items array
-        saveItemsToStorage(checklistItems); // Save updated list to local storage
-        renderChecklist(checklistItems); // Re-render the checklist
-        newItemsInput.value = ''; // Clear the input field
-    });
+        function saveItemsToStorage(items) {
+          localStorage.setItem("preMatchChecklistItems", JSON.stringify(items));
+        }
 
+        addItemForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const newItems = newItemsInput.value.split(" "); // Split input by spaces
+          checklistItems = checklistItems.concat(newItems); // Add new items to the global checklist items array
+          saveItemsToStorage(checklistItems); // Save updated list to local storage
+          renderChecklist(checklistItems); // Re-render the checklist
+          newItemsInput.value = ""; // Clear the input field
+        });
 
-    // Event listener for the load button
-    // loadChecklistButton.addEventListener('click', loadChecklist);
+        // Event listener for the load button
+        // loadChecklistButton.addEventListener('click', loadChecklist);
 
-    // Optionally, automatically load the checklist when the page loads
-    loadChecklist();
+        // Optionally, automatically load the checklist when the page loads
+        loadChecklist();
 
-    const downloadChecklistButton = document.getElementById('downloadChecklist');
-    const uploadChecklistInput = document.getElementById('uploadChecklist');
+        const downloadChecklistButton =
+          document.getElementById("downloadChecklist");
+        const uploadChecklistInput = document.getElementById("uploadChecklist");
 
-    downloadChecklistButton.addEventListener('click', function() {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(checklistItems));
-        const downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href",     dataStr);
-        downloadAnchorNode.setAttribute("download", "checklistItems.json");
-        document.body.appendChild(downloadAnchorNode); // Required for Firefox
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
-});
+        downloadChecklistButton.addEventListener("click", function () {
+          const dataStr =
+            "data:text/json;charset=utf-8," +
+            encodeURIComponent(JSON.stringify(checklistItems));
+          const downloadAnchorNode = document.createElement("a");
+          downloadAnchorNode.setAttribute("href", dataStr);
+          downloadAnchorNode.setAttribute("download", "checklistItems.json");
+          document.body.appendChild(downloadAnchorNode); // Required for Firefox
+          downloadAnchorNode.click();
+          downloadAnchorNode.remove();
+        });
 
-uploadChecklistInput.addEventListener('change', function(e) {
-        // checklistItems = []
-        const fileReader = new FileReader();
-        fileReader.onload = function() {
+        uploadChecklistInput.addEventListener("change", function (e) {
+          // checklistItems = []
+          const fileReader = new FileReader();
+          fileReader.onload = function () {
             checklistItems = JSON.parse(fileReader.result);
             // checklistItems = contents;
             renderChecklist(checklistItems); // Re-render the checklist
             saveItemsToStorage(checklistItems); // Save uploaded list to local storage
-        };
-        fileReader.readAsText(e.target.files[0]);
-    });
-});
+          };
+          fileReader.readAsText(e.target.files[0]);
+        });
+      });
     </script>
-</body>
+  </body>
 </html>
