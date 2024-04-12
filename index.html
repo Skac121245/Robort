@@ -753,6 +753,8 @@
                             apiData = responseData;
                             writeMatchResults(apiData);
                             highlightCells();
+                            apiData = JSON.stringify(apiData);
+                            localStorage.setItem('ApiDataUploaded', apiData)
                         
                     })
                     .catch(error => {
@@ -762,11 +764,14 @@
                             // clearPreviousData();
                             writeMatchResults(apiData);
                             highlightCells();
+                            document.getElementById('plz_up').style.display = "none";
                         } else {
                             console.error("Fetch error: ", error);
                             displayUploadOption(); // Display upload option if API fetch fails
                             document.getElementById('uploadSection').style.display = 'block';
                             document.getElementById('eventCode').textContent = ""
+                            document.getElementById('plz_up').style.display = "inline-block";
+
                         }
                     });
             }
