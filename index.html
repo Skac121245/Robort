@@ -672,6 +672,29 @@
                 display: none;
                 /* Hide the actual file input */
             }
+
+            #plz_up {
+                /* background-color: #b700ff; */
+                /* Apply similar styles to button and label */
+                display: inline-block;
+                /* Required for proper spacing and alignment */
+                padding: 11px 20px;
+                background-color: #b700ff;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                /* Match your button font size */
+                text-align: center;
+                /* Center text for aesthetic reasons */
+                margin: 5px;
+                /* Optional: to provide spacing around buttons */
+                transition: background-color 0.3s ease;
+                /* Smooth transition for hover effect */
+            }
+
+            
         </style>
     </head>
 
@@ -707,6 +730,9 @@
                 console.log(eventCode)
             }
 
+            let ApiDataUploaded = localStorage.getItem('ApiDataUploaded')
+
+            
 
 
             function setupWebhookSubscription(eventCode) {
@@ -724,15 +750,24 @@
                         return response.json();
                     })
                     .then(responseData => {
-                        apiData = responseData;
-                        writeMatchResults(apiData);
-                        highlightCells();
+                            apiData = responseData;
+                            writeMatchResults(apiData);
+                            highlightCells();
+                        
                     })
                     .catch(error => {
-                        console.error("Fetch error: ", error);
-                        displayUploadOption(); // Display upload option if API fetch fails
-                        document.getElementById('uploadSection').style.display = 'block';
-                        document.getElementById('eventCode').textContent = ""
+                        if(ApiDataUploaded != null || ApiDataUploaded != "" || ApiDataUploaded != "[]") {
+                            // console.log(ApiDataUploaded);
+                            apiData = JSON.parse(ApiDataUploaded);
+                            // clearPreviousData();
+                            writeMatchResults(apiData);
+                            highlightCells();
+                        } else {
+                            console.error("Fetch error: ", error);
+                            displayUploadOption(); // Display upload option if API fetch fails
+                            document.getElementById('uploadSection').style.display = 'block';
+                            document.getElementById('eventCode').textContent = ""
+                        }
                     });
             }
 
@@ -875,6 +910,7 @@
                 }
                 const reader = new FileReader();
                 reader.onload = (e) => {
+                    // console.log(e.target.result)
                     clearPreviousData()
                     const content = e.target.result;
                     apiData = JSON.parse(content);
@@ -994,12 +1030,15 @@ document.addEventListener('keydown', (e) => {
 
             <div id="matchDataContainer"></div> <!-- Placeholder for match data -->
 
-            <!-- Download button for the match data -->
-            <button id="downloadMatchData">Download Match Data</button>
+            <div id="down_up_con">
+                <button id="downloadMatchData">Download Match Data</button>
+    
+                <!-- Upload button disguised as a label for style, linked to a hidden file input for uploading match data -->
+                <!-- <input type="file" id="uploadMatchData" style="display: none;" /> -->
+                <h3 id="plz_up">To upload data go to the config tab and upload from there!</h3>
 
-            <!-- Upload button disguised as a label for style, linked to a hidden file input for uploading match data -->
-            <input type="file" id="uploadMatchData" style="display: none;" />
-            <label for="uploadMatchData" class="button">Upload Match Data</label>
+            </div>
+            <!-- Download button for the match data -->
 
             <!-- <button id="clear" onclick=clearPreviousData()>Clear</button> -->
             <div id="upload_status"></div>

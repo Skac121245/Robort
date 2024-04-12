@@ -36,15 +36,16 @@
         <button type="submit">Save Just Event Code</button>
 
         
-    </form>
     <div id="uploadArea">
         <h2>Upload a File</h2>
         <input type="file" id="fileInput">
         <button onclick="uploadFile()">Upload</button>
         <div id="fileName"></div>
     </div>
-    
     <div id="fileContent"></div>
+</form>
+
+    
 
     <form id="teamForm">
         <h2>General Scouting Questions</h2>
@@ -439,36 +440,36 @@ function addAutoNameField() {
         
         
     });
-    document.getElementById('darkMode').addEventListener('change', function() {
-        var darkMode = document.getElementById('darkMode');
-        if (darkMode.checked) {
-            localStorage.setItem('darkMode', true)
-            document.getElementById('body').style.backgroundColor = '#404040';
-            document.getElementById('teamForm').style.backgroundColor = '#404040';
-            document.getElementById('autoNamesForm').style.backgroundColor = '#404040';
-            document.getElementById('darkModeForm').style.backgroundColor = '#404040';
-            document.getElementById('eventCodeForm').style.backgroundColor = '#404040';
-            document.getElementById('teleopForm').style.backgroundColor = '#404040';
-            document.getElementById('endGameForm').style.backgroundColor = '#404040';
-            document.getElementById('title').style.color = '#ffffff';
-            document.getElementById('nav').style.backgroundColor = '#009c1a';
+    // document.getElementById('darkMode').addEventListener('change', function() {
+    //     var darkMode = document.getElementById('darkMode');
+    //     if (darkMode.checked) {
+    //         localStorage.setItem('darkMode', true)
+    //         document.getElementById('body').style.backgroundColor = '#404040';
+    //         document.getElementById('teamForm').style.backgroundColor = '#404040';
+    //         document.getElementById('autoNamesForm').style.backgroundColor = '#404040';
+    //         document.getElementById('darkModeForm').style.backgroundColor = '#404040';
+    //         document.getElementById('eventCodeForm').style.backgroundColor = '#404040';
+    //         document.getElementById('teleopForm').style.backgroundColor = '#404040';
+    //         document.getElementById('endGameForm').style.backgroundColor = '#404040';
+    //         document.getElementById('title').style.color = '#ffffff';
+    //         document.getElementById('nav').style.backgroundColor = '#009c1a';
 
 
-        } else {
-            localStorage.setItem('darkMode', false)
-            document.getElementById('body').style.backgroundColor = '#f4f4f4';
-            document.getElementById('teamForm').style.backgroundColor = '#f4f4f4';
-            document.getElementById('autoNamesForm').style.backgroundColor = '#f4f4f4';
-            document.getElementById('darkModeForm').style.backgroundColor = '#f4f4f4';
-            document.getElementById('teleopForm').style.backgroundColor = '#f4f4f4';
-            document.getElementById('endGameForm').style.backgroundColor = '#f4f4f4';
-            document.getElementById('eventCodeForm').style.backgroundColor = '#f4f4f4';
-            document.getElementById('title').style.color = 'black';
-            document.getElementById('nav').style.backgroundColor = '#00ff2a';
+    //     } else {
+    //         localStorage.setItem('darkMode', false)
+    //         document.getElementById('body').style.backgroundColor = '#f4f4f4';
+    //         document.getElementById('teamForm').style.backgroundColor = '#f4f4f4';
+    //         document.getElementById('autoNamesForm').style.backgroundColor = '#f4f4f4';
+    //         document.getElementById('darkModeForm').style.backgroundColor = '#f4f4f4';
+    //         document.getElementById('teleopForm').style.backgroundColor = '#f4f4f4';
+    //         document.getElementById('endGameForm').style.backgroundColor = '#f4f4f4';
+    //         document.getElementById('eventCodeForm').style.backgroundColor = '#f4f4f4';
+    //         document.getElementById('title').style.color = 'black';
+    //         document.getElementById('nav').style.backgroundColor = '#00ff2a';
 
             
-        }
-    });
+    //     }
+    // });
 
    
     });
