@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Demo</title>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self' 'unsafe-inline';"
+    />
+  </head>
+
+  <body>
+    <h1>sqlite-electron Demo</h1>
+    <label for="dbpath">Enter the file to open:</label>
+    <br />
+    <button type="button" id="open-file-button">Choose a file</button>
+    File path:
+    <strong id="filePath"></strong>
+    <p>
+      If you only want to know how to get the path to a file, you can stop here!
+    </p>
+    <p>
+      But if you want to see how you can connect to a database, try the buttons
+      below.
+    </p>
+    <p id="output"></p>
+    <br />
+    <button id="connect-db">Connect to db</button>
+    <br />
+    <br />
+    <button id="add-record">Add random word to db</button>
+    <br />
+    <br />
+    <button id="clear-db">Clear the database</button>
+
+    <br />
+    <br />
+    <h2>Database contents</h2>
+    <div id="table-container"></div>
+    <script src="./renderer.js"></script>
+  </body>
+</html>
