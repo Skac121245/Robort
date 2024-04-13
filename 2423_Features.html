@@ -199,103 +199,205 @@
     <script src="jquery-3.3.1.slim.min.js"></script>
     <script src="bootstrap.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const hamburger = document.querySelector('.hamburger-menu');
-            const nav = document.querySelector('nav');
-            const teamNumber = localStorage.getItem('teamNumber');
-            const robotName = localStorage.getItem('robotName');
-
-            function updateDisplayFields() {
-                if (teamNumber) {
-                    document.getElementById('displayTeamNumber').textContent = `${teamNumber}'s`;
-                } else {
-                    document.getElementById('displayTeamNumber').textContent = 'Team Number';
-                }
-                
-                if (robotName) {
-                    document.getElementById('robotName').textContent = robotName;
-                } else {
-                    document.getElementById('robotName').textContent = 'Robot Name';
-                }
-            }
-
-            updateDisplayFields();  // Update the display fields
-
-            const autos = {
-                "amp2": {
-                    name: "Amp side to amp side note",
-                    img: "./images/amp2.png"
-                },
-                "middle-middle": {
-                    name: "Middle to middle note",
-                    img: "./images/middle-middle.jpeg"
-                },
-                "feeder2": {
-                    name: "Feederside to feederside note",
-                    img: "./images/feeder2.jpeg"
-                },
-                "amp to center1": {
-                    name: "Amp side to center line (first note)",
-                    img: "./images/amp to center1.png"
-                },
-                "amp to center2": {
-                    name: "Amp side to center line (second note)",
-                    img: "./images/amp to center2.png"
-                },
-                "feeder to center1": {
-                    name: "Feeder side to center line (first note)",
-                    img: "./images/feeder1.png"
-                },
-                "feeder to center2": {
-                    name: "Feeder side to center line (second note)",
-                    img: "./images/feeder to center2.png"
-                },
-                "3peiceAuto": {
-                    name: "Start Middle - Middle Note - Amp Side Note",
-                    img: "./images/3peiceAuto.png"
-                },
-                "amp to amp side then center1": {
-                    name: "Amp to amp side then center (first note)",
-                    img: "./images/amp to amp side then center1.png"
-                },
-                "amp to amp side then center2": {
-                    name: "Amp to amp side then center (second note)",
-                    img: "./images/amp to amp side then center2.png"
-                }
-            };
-
-            const autoNameSelector = document.getElementById('autoNameSelector');
-            const autoName = document.getElementById('autoName');
-            const autoImage = document.getElementById('autoImage');
-
-            function populateAutoSelector() {
-                Object.keys(autos).forEach(key => {
-                    let option = new Option(autos[key].name, key);
-                    autoNameSelector.appendChild(option);
-                });
-            }
-
-            populateAutoSelector();  // Populate the auto selector on load
-
+        document.addEventListener('DOMContentLoaded', function() {
+            // const autos = {
+            //     "amp2": {
+            //         name: "Amp side to amp side note",
+            //         img: "./images/amp2.png"
+            //     },
+            //     "middle-middle": {
+            //         name: "Middle to middle note",
+            //         img: "./images/middle-middle.jpeg"
+            //     },
+            //     "feeder2": {
+            //         name: "Feederside to feederside note",
+            //         img: "./images/feeder2.jpeg"
+            //     },
+            //     "amp to center1": {
+            //         name: "Amp side to center line (first note from the amp side)",
+            //         img: "./images/amp to center1.png"
+            //     },
+            //     "amp to center2": {
+            //         name: "Amp side to center line (second note from the amp side)",
+            //         img: "./images/amp to center2.png"
+            //     },
+            //     "feeder to center1": {
+            //         name: "feeder side to center line (first note)",
+            //         img: "./images/feeder1.png"
+            //     },
+            //     "feeder to center2": {
+            //         name: "feeder side to center line (second note)",
+            //         img: "./images/feeder to center2.png"
+            //     },
+            //     "3peiceAuto": {
+            //         name: "Start Middle - Middle Note - Amp Side Note",
+            //         img: "./images/3peiceAuto.png"
+            //     },
+            //     "amp to amp side then center1": {
+            //         name: "amp to amp side then center (first note)",
+            //         img: "./images/amp to amp side then center1.png"
+            //     },
+            //     "amp to amp side then center2": {
+            //         name: "amp to amp side then center (second note)",
+            //         img: "./images/amp to amp side then center2.png"
+            //     }
+            // };
+            const autos = {};
+    
             function updateAutoDisplay() {
-                const selectedValue = autoNameSelector.value;
-
+                const selector = document.getElementById('autoNameSelector');
+                const selectedValue = selector.value;
+                const autoName = document.getElementById('autoName');
+                const autoImage = document.getElementById('autoImage');
+    
                 if (autos[selectedValue]) {
-                    autoName.textContent = autos[selectedValue].name;
+                    autoName.innerText = autos[selectedValue].name;
                     autoImage.src = autos[selectedValue].img;
                     autoImage.style.display = 'block';
                 } else {
-                    autoName.textContent = 'Select an auto...';
+                    autoName.innerText = 'Select an auto...';
                     autoImage.style.display = 'none';
                 }
             }
-
+    
+            // Populate the autoNameSelector dropdown
+            const autoNameSelector = document.getElementById('autoNameSelector');
+            Object.keys(autos).forEach(autoKey => {
+                const option = document.createElement('option');
+                option.value = autoKey;
+                option.text = autos[autoKey].name;
+                autoNameSelector.appendChild(option);
+            });
+    
             autoNameSelector.addEventListener('change', updateAutoDisplay);
-
-            hamburger.addEventListener('click', function () {
+    
+            // Initialize and manage mobile navigation visibility
+            const hamburger = document.querySelector('.hamburger-menu');
+            const nav = document.querySelector('nav');
+    
+            hamburger.addEventListener('click', function() {
                 nav.classList.toggle('nav-active');
             });
+    
+            // Display dynamic team and robot information
+            const teamNumber = localStorage.getItem('teamNumber');
+            const robotName = localStorage.getItem('robotName');
+            if (teamNumber) {
+                document.getElementById('displayTeamNumber').textContent = `${teamNumber}'s`;
+            }
+            if (robotName) {
+                document.getElementById('robotName').textContent = `"${robotName}"`;
+            }
+    
+            // Display stored team details
+            const dim_w_bump = localStorage.getItem('dim_w_bump');
+            const dim_wout_bump = localStorage.getItem('dim_wout_bump');
+            const drive_train = localStorage.getItem('drive_train');
+            const weight = localStorage.getItem('weight');
+            const ground = localStorage.getItem('ground');
+            const source = localStorage.getItem('source');
+            const speaker = localStorage.getItem('speaker');
+            const distance_shoot = localStorage.getItem('distance_shoot');
+            const amp = localStorage.getItem('amp');
+            const climb = localStorage.getItem('climb');
+            const harmony = localStorage.getItem('harmony');
+            const intake_sty = localStorage.getItem('intake_sty');
+    
+            if (teamNumber == null || teamNumber == "") {
+                document.getElementById("config_reminder").textContent = "You can configure this in the 'Configure' tab";
+            }
+
+            if(robotName != "") {
+                if(robotName == null) {
+                    document.getElementById('displayTeamNumber').textContent = teamNumber;
+                    document.getElementById('robotName').textContent = ""
+                } else {
+                    document.getElementById('displayTeamNumber').textContent = `${teamNumber}'s`;
+                document.getElementById('robotName').textContent = `"${robotName}"`
+                }
+                
+            } else {
+                document.getElementById('displayTeamNumber').textContent = teamNumber;
+                document.getElementById('robotName').textContent = ""
+            } 
+            document.getElementById('dim_w_bump').textContent = dim_w_bump || 'Not set';
+            document.getElementById('dim_wout_bump').textContent = dim_wout_bump || 'Not set';
+            document.getElementById('drive_train').textContent = drive_train || 'Not set';
+            document.getElementById('weight').textContent = weight || 'Not set';
+            document.getElementById('display_ground').textContent = `Ground: ${ground || 'Not set'}`;
+            document.getElementById('display_source').textContent = `Source Pickup: ${source || 'Not set'}`;
+            document.getElementById('speaker').textContent = `Speaker: ${speaker || 'Not set'}`;
+            document.getElementById('distance_shoot').textContent = `Shoot from distance: ${distance_shoot || 'Not set'}`;
+            document.getElementById('amp').textContent = `Amp: ${amp || 'Not set'}`;
+            document.getElementById('climb').textContent = `Climb: ${climb || 'Not set'}`;
+            document.getElementById('harmony').textContent = `Harmony: ${harmony || 'Not set'}`;
+            document.getElementById('intake_sty').textContent = intake_sty || 'Not set';
         });
+
+   document.getElementById('autoNameSelector').addEventListener('change', function () {
+                const selectedAutoName = this.value;
+                displaySelectedAutoImage(selectedAutoName);
+            });
+
+            loadAutosFromLocalStorage();
+
+            autoNames.forEach(item => {
+                // Creating a new option element
+                const option = document.createElement('option');
+                // Setting the value and text of the option element
+                option.value = item;
+                option.text = item;
+
+                // Appending the option element to the select element
+                autoNamesSelector.appendChild(option);
+            });
+     function loadAutosFromLocalStorage() {
+            // Attempt to read the autos data from localStorage
+            const storedAutos = JSON.parse(localStorage.getItem('autos'));
+
+            if (!storedAutos) {
+                console.error('No autos data found in localStorage.');
+                return;
+            }
+
+            // Find the autoNameSelector dropdown in the document
+            const autoNameSelector = document.getElementById('autoNameSelector');
+
+            // Clear existing options in the dropdown
+            autoNameSelector.innerHTML = '';
+
+            // Add an initial "Select an auto..." option
+            autoNameSelector.appendChild(new Option('Select an auto...', ''));
+
+            // Iterate over each stored auto, adding it as an option in the dropdown
+            storedAutos.forEach(auto => {
+                const option = new Option(auto.name, auto.name);
+                autoNameSelector.appendChild(option);
+            });
+        }
+
+        function displaySelectedAutoImage(selectedAutoName) {
+            // Attempt to read the autos data from localStorage again
+            const storedAutos = JSON.parse(localStorage.getItem('autos'));
+            if (!storedAutos) {
+                console.error('No autos data found in localStorage.');
+                return;
+            }
+
+            // Find the stored auto data that matches the selected name
+            const selectedAutoData = storedAutos.find(auto => auto.name === selectedAutoName);
+
+            if (!selectedAutoData) {
+                console.error('Selected auto da ta not found.');
+                return;
+            }
+
+            // Update the src attribute of the autoImage element to display the selected auto's image
+            const autoImage = document.getElementById('autoImage');
+            autoImage.src = selectedAutoData.image;
+            autoImage.style.display = selectedAutoData.image ? 'block' : 'none'; // Show or hide the image element
+        }
     </script>
+    
 </body>
 </html>
