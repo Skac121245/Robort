@@ -394,7 +394,7 @@ nav.navbar {
       <h1 class="text-center">Matches</h1>
     </div>
     <div class="col-lg-6 mx-auto">
-      <div class="input-group mb-3">
+      <!-- <div class="input-group mb-3">
         <div class="input-group-prepend">
           <label class="input-group-text" for="eventCode">Event Code</label>
         </div>
@@ -408,16 +408,17 @@ nav.navbar {
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button" id="loadData">Load Data</button>
         </div>
-      </div>
+      </div> -->
+        <h2>Current Event Code From Config: <span id="eventCode"></span></h2>
     </div>
-    <div class="col-lg-6 mx-auto mb-3">
+    <!-- <div class="col-lg-6 mx-auto mb-3">
       <div class="d-flex justify-content-center">
         <input type="text" class="form-control" id="newOptionText" placeholder="Type new event code...">
         <div class="input-group-append">
           <button class="btn btn-outline-primary" type="button" id="addOptionButton">Add Option</button>
         </div>
-      </div>
-    </div>
+      </div> -->
+    </div><br>
     <div class="col-12">
       <div class="text-center mb-3">
         <label for="teamHighlight" class="mr-2">Select a team to highlight:</label>
@@ -499,39 +500,32 @@ nav.navbar {
         closeModalButton.addEventListener('click', closeModal);
     }
 }
-        document.addEventListener('DOMContentLoaded', function() {
-            const closeModalButton = document.querySelector('.close');
-    closeModalButton.addEventListener('click', function() {
-        closeModal();
-    });
-    setupCloseModalEvent();
-            document.getElementById('addOptionButton').addEventListener('click', function() {
-                const selectElement = document.getElementById('eventCode');
-                const newOptionText = document.getElementById('newOptionText').value;
-                if (newOptionText.trim() !== '') {
-                    const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
-                    selectElement.add(newOptionElement);
-                    document.getElementById('newOptionText').value = '';
-                }
-            });
+    //     document.addEventListener('DOMContentLoaded', function() {
+    //         const closeModalButton = document.querySelector('.close');
+    // closeModalButton.addEventListener('click', function() {
+    //     closeModal();
+    // });
+    // setupCloseModalEvent();
+    //         document.getElementById('addOptionButton').addEventListener('click', function() {
+    //             const selectElement = document.getElementById('eventCode');
+    //             const newOptionText = document.getElementById('newOptionText').value;
+    //             if (newOptionText.trim() !== '') {
+    //                 const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
+    //                 selectElement.add(newOptionElement);
+    //                 document.getElementById('newOptionText').value = '';
+    //             }
+    //         });
         
-            document.getElementById('loadData').addEventListener('click', onPageLoad);
-        });
+    //         document.getElementById('loadData').addEventListener('click', onPageLoad);
+    //     });
 
-        function onPageLoad() {
-    const eventCode = document.getElementById("eventCode").value;
-    if (eventCode && eventCode !== "Choose...") {
-        setupWebhookSubscription(eventCode);
-        // Reset isDataLoaded for the new event
-        isDataLoaded = false;
-    }
-}
-
-        function onPageLoad() {
-            const eventCode = document.getElementById("eventCode").value || "2024mabos";
-            setupWebhookSubscription(eventCode);
-        }
-        
+    document.addEventListener('DOMContentLoaded', (event) => {
+                let eventCode = localStorage.getItem('eventCode');
+                document.getElementById('eventCode').textContent = eventCode;
+                document.getElementById('eventCode').style = "color: red;";
+                setupWebhookSubscription(eventCode);
+                console.log(eventCode)
+});
         function setupWebhookSubscription(eventCode) {
             const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
             fetch(webhookEndpoint, {
