@@ -4,66 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Interactive Workspace</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <style>
-        body,
-        html {
-            margin: 0;
-            padding: 0;
+        body, html {
             height: 100%;
-            box-sizing: border-box;
             overflow: hidden;
         }
 
         #sidebar {
-            width: 200px;
-            height: 100%;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background: #f0f0f0;
-            padding: 10px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-            transition: left 0.5s;
-        }
-
-        #sidebarToggle {
-            right: 20px;
-            /* Adjusted to not overlap edit mode button */
-            position: fixed;
-            top: 5px;
-            /* Adjust so it's below the edit mode button */
-
-
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1060; /* Ensure sidebar is above other content but below fixed-top nav */
         }
 
         .iframe-option {
-            cursor: grab;
-            padding: 10px;
-            margin-bottom: 5px;
-            background: #ddd;
-            user-select: none;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            margin-bottom: 0.5rem;
+            background: #e9ecef;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
         }
 
         .iframe-option:hover {
-            background: #ccc;
+            background: #dde4e9;
         }
 
         nav {
-            background-color: #1df700;
-            margin: 20px auto;
-            text-align: center;
-            padding: 10px 0;
-            border-radius: 10px;
-            width: 800px;
-            display:block;
+            background-color: #f8f9fa;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-radius: 0.25rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
         }
 
         nav a {
-            text-decoration: none;
-            color: #000000;
-            margin: 0 10px;
-            font-weight: bold;
-            font-size: 20px;
+            color: #007bff;
+            margin: 0 15px;
         }
 
         nav a:hover {
@@ -71,101 +52,55 @@
         }
 
         #workspace {
-            margin-left: 200px;
-            height: 100%;
-            position: relative;
-            transition: margin-left 0.5s;
+            transition: margin-left 0.3s;
         }
 
         .iframe-container {
-            position: absolute;
-            border: 2px solid #ccc;
+            border: 1px solid #dee2e6;
             resize: both;
             overflow: auto;
         }
 
-        #editModeToggle {
-            position: fixed;
-            top: 5px;
-            right: 130px;
-            z-index: 1000;
-        }
-
-        .edit-mode iframe {
-            pointer-events: none;
-            user-select: none;
-        }
-
-        #hideNavButton{
-            position: absolute;
-            top: 30px;
-            right: 100px;
-            z-index:100;
+        #editModeToggle, #sidebarToggle, #hideNavButton {
+            margin: 0.5rem;
         }
 
         .highlight {
             animation: outlineFadeInOut 3s;
-            /* Adjust duration as needed */
-        }
-
-        #cheatSheet {
-            display: flex;
         }
 
         @keyframes outlineFadeInOut {
-
-            0%,
-            100% {
-                outline: none;
-            }
-
-            50% {
-                outline: 4px solid yellow;
-            }
-
-            /* Change color and size as needed */
+            0%, 100% { outline: none; }
+            50% { outline: 2px solid #ffc107; }
         }
-     /* Styles for mobile view overlay and message */
-     #mobileOverlay {
-        display: none; /* Hidden by default */
-        position: fixed; /* Full-screen */
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0,0,0,0.5); /* Black background with opacity */
-        z-index: 10000;
-        cursor: pointer; /* Indicate clickable */
-    }
 
-    #mobileMessage {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        font-size: 20px;
-        color: white;
-        transform: translate(-50%, -50%);
-        text-align: center;
-    }
+        #workspace {
+    transition: margin-left 0.3s ease;
+}
+.buttons-container {
+    z-index: 1050; /* Higher than most elements */
+}
 
-    #mobileMessage button {
-        margin-top: 20px;
-        padding: 10px;
-        font-size: 18px;
-    }
-</style>
+#sidebarToggle {
+    transition: left 0.5s ease-in-out, top 0.5s ease-in-out;
+}
+
+    </style>
 </head>
-
 <body>
-    <div id="mobileOverlay" onclick="goBack()">
-        <div id="mobileMessage">
+    <button id="sidebarToggle" class="btn btn-secondary position-fixed" style="top: 50px; left: calc(200px + 10px);">Toggle Sidebar</button>
+    <!-- Bootstrap's JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <div id="mobileOverlay" onclick="goBack()" class="d-md-none position-fixed w-100 h-100" style="background-color: rgba(0,0,0,0.5); cursor: pointer; display: none;">
+        <div id="mobileMessage" class="position-absolute text-white" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
             This site can only run on a desktop.<br>
-            <button onclick="window.history.back();">Go Back</button>
+            <button class="btn btn-primary mt-3" onclick="window.history.back();">Go Back</button>
         </div>
     </div>
-    
+
     <nav id="nav" class="container">
         <a href="./index.html">Home</a>
         <a href="./Team_List_element.html">Teams</a>
@@ -174,198 +109,134 @@
         <a href="./Control_Panel.html">Control Panel</a>
         <a href="./2423_Features.html">Features</a>
     </nav>
-    
-    <button id="hideNavButton">Hide Nav</button>
-    <div id="sidebar">
-        <div class="iframe-option" draggable="true" data-src="Matches_element.html">Matches</div>
-        <div class="iframe-option" draggable="true" data-src="Checklist.html">Pre-Match Checklist</div>
-        <div class="iframe-option" draggable="true" data-src="DriverStationPopulate.html">Canvas</div>
-        <div class="iframe-option" draggable="true" data-src="crescendo-cheat-sheet.png">Crescendo Cheat Sheet</div>
+    <div id="workspace" style="position: absolute; top: 60px; left: 210px; right: 0; bottom: 0; overflow: auto;"></div>
 
-
-        <!-- Add more iframe options here -->
+    <div id="sidebar" class="bg-light border-right" style="width: 200px; position: fixed; top: 0; bottom: 0; overflow-y: auto;">
+        <div class="list-group list-group-flush">
+            <div class="iframe-option list-group-item list-group-item-action d-flex justify-content-between align-items-center" draggable="true" data-src="Matches_element.html">Matches</div>
+            <div class="iframe-option list-group-item list-group-item-action d-flex justify-content-between align-items-center" draggable="true" data-src="Checklist.html">Pre-Match Checklist</div>
+            <div class="iframe-option list-group-item list-group-item-action d-flex justify-content-between align-items-center" draggable="true" data-src="DriverStationPopulate.html">Canvas</div>
+            <div class="iframe-option list-group-item list-group-item-action d-flex justify-content-between align-items-center" draggable="true" data-src="crescendo-cheat-sheet.png">Crescendo Cheat Sheet</div>
+        </div>
+        <div class="mt-auto p-2">
+            <button id="editModeToggle" class="btn btn-info mb-2 w-80">Toggle Move Mode</button>
+            <button id="hideNavButton" class="btn btn-light mb-2 w-80">Hide Nav</button>
+        </div>
     </div>
-    <div id="workspace"></div>
-    <button id="editModeToggle">Toggle Move Mode</button>
-    <button id="sidebarToggle">Toggle Sidebar</button> <!-- Toggle button for sidebar -->
-    <div id="iframeList" style="position:fixed; top:60px; right:20px; width:180px;"></div>
+
+    
+    <div id="iframeList" class="position-fixed" style="top: 60px; right: 20px; width: 180px;"></div>
     <script>
-            // Check if the screen width is less than 800px
-    if (window.innerWidth < 800) {
-        document.getElementById('mobileOverlay').style.display = 'block';
-    }
-
-    function goBack() {
-        window.history.back(); // Go back to the previous page
-    }
+        // Toggles for sidebar and edit mode
         let editMode = false;
-        let dropped = false;
-        let dropped1 = false;
-        let ishideNav = false;
-        // let currentlyDragging = null;
-        let navButton = document.getElementById('hideNavButton')
-        let nav = document.getElementById("nav")
-        document.getElementById('editModeToggle').addEventListener('click', () => {
-            editMode = !editMode;
-            console.log("blah");
-            document.body.classList.toggle('edit-mode', editMode);
-        });
+        document.getElementById('editModeToggle').addEventListener('click', function() {
+    editMode = !editMode;
+    document.body.classList.toggle('edit-mode', editMode);
+    this.textContent = editMode ? "Move Mode On" : "Move Mode Off";
 
+    // Assuming your iframe containers have the class 'iframe-container'
+    const iframeContainers = document.querySelectorAll('.iframe-container');
+
+    // Check if jQuery UI is loaded and iframeContainers exist
+    if (window.jQuery && jQuery.ui && iframeContainers.length) {
+        // Toggle draggable based on the editMode
+        if (editMode) {
+            $(iframeContainers).draggable({ disabled: false });
+        } else {
+            $(iframeContainers).draggable({ disabled: true });
+        }
+    }
+});
+
+    
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+    const sidebar = document.getElementById('sidebar');
+    const button = this; // 'this' refers to the #sidebarToggle button itself
+    const isHidden = sidebar.style.transform === 'translateX(-200px)';
+
+    // Toggle sidebar visibility
+    sidebar.style.transform = isHidden ? 'translateX(0px)' : 'translateX(-200px)';
+
+    // Move button to the top left when the sidebar is hidden, and back to original position when shown
+    if (isHidden) {
+        // Adjust button position when the sidebar is shown
+        button.style.left = 'calc(200px + 10px)';
+        button.style.top = '50px';
+    } else {
+        // Move button to the top left when the sidebar is hidden
+        button.style.left = '10px';
+        button.style.top = '10px';
+    }
+});
+
+
+    
+        document.getElementById('hideNavButton').addEventListener('click', function() {
+            const nav = document.getElementById('nav');
+            nav.style.display = nav.style.display === 'none' ? 'block' : 'none';
+        });
+    
+        // Drag-and-drop functionality
         document.querySelectorAll('.iframe-option').forEach(option => {
-            option.addEventListener('dragstart', function (e) {
+            option.addEventListener('dragstart', function(e) {
                 const src = option.getAttribute('data-src');
                 e.dataTransfer.setData('text/plain', src);
             });
         });
-
+    
         const workspace = document.getElementById('workspace');
-
-        workspace.addEventListener('dragover', function (e) {
+        workspace.addEventListener('dragover', function(e) {
             e.preventDefault();
         });
+    
+        workspace.addEventListener('drop', function(e) {
+    e.preventDefault();
+    const src = e.dataTransfer.getData('text/plain');
 
-        const toggleText = document.querySelector("#editModeToggle"); // Correct variable name
-        toggleText.addEventListener("click", function () {
-            if (editMode) {
-                console.log("blurg")
-                this.textContent = "Move Mode Toggled On"; // Correct way to set text content
-            } else {
-                this.textContent = "Move Mode Toggled Off"
-            }
-            if (!dropped && !dropped1) {
-                this.textContent = "Move Mode Toggled On";
-                dropped1 = true;
-            } else if (!editMode) {
-                this.textContent = "Move Mode Toggled Off";
-            }
-        });
+    // Assuming you're using the presence of 'src' to determine if this is a new iframe
+    // Modify this logic based on how you're currently determining whether to create a new iframe
+    if (src && !e.target.getAttribute('data-in-workspace')) {
+        createIframeContainer(src, e.clientX - parseInt(workspace.style.left), e.clientY - parseInt(workspace.style.top));
+    }
+});
+    
+        function createIframeContainer(src, x, y) {
+    // Create the container div
+    const iframeContainer = document.createElement('div');
+    iframeContainer.classList.add('iframe-container');
+    iframeContainer.style.position = 'absolute';
+    iframeContainer.style.left = x + 'px';
+    iframeContainer.style.top = y + 'px';
+    iframeContainer.style.width = '400px'; // Set a default width
+    iframeContainer.style.height = '300px'; // Set a default height
 
-        workspace.addEventListener('drop', function (e) {
-            e.preventDefault();
-            dropped = true;
-            const src = e.dataTransfer.getData('text/plain');
-            const iframeContainer = document.createElement('div');
-            iframeContainer.classList.add('iframe-container');
-            iframeContainer.style.left = (e.clientX - 250) + 'px'; // Adjusting to workspace offset
-            iframeContainer.style.top = (e.clientY - 150) + 'px';
-
-            if (src === "crescendo-cheat-sheet.png") {
-        // For the cheat sheet, use an img tag inside the container
-        iframeContainer.innerHTML = `<img draggable="false" src="${src}" style="width:100%; height:auto; max-width:600px;">`;
+    // Check if src is an image or webpage to decide between img and iframe tag
+    if (src.endsWith('.png') || src.endsWith('.jpg') || src.endsWith('.gif')) {
+        // For images, create an img element
+        const img = document.createElement('img');
+        img.src = src;
+        img.style.width = '100%';
+        img.style.height = '100%';
+        iframeContainer.appendChild(img);
     } else {
-        // For all other types, use an iframe
-        iframeContainer.innerHTML = `<iframe src="${src}" frameborder="0" style="width:100%; height:100%;"></iframe>`;
+        // For web pages, create an iframe element
+        const iframe = document.createElement('iframe');
+        iframe.src = src;
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.frameBorder = '0'; // Remove border for cleaner look
+        iframeContainer.appendChild(iframe);
     }
 
-            // iframeContainer.innerHTML = `<iframe src="${src}" frameborder="0" style="width:100%; height:100%;"></iframe>`;
-            const uniqueId = `iframe-${Date.now()}`; // Generates a unique ID using current timestamp
-iframeContainer.id = uniqueId;
-// Create list item for iframe
-            const listItem = document.createElement('div');
-            listItem.style.padding = '10px';
-            listItem.style.marginBottom = '5px';
-            listItem.style.background = '#ddd';
-            listItem.style.cursor = 'pointer';
-            listItem.textContent = src.split('/').pop().split('.')[0]; // Display filename without extension as name
+    // Append the container to the workspace
+    const workspace = document.getElementById('workspace');
+    workspace.appendChild(iframeContainer);
 
-            // Add delete icon
-            const deleteIcon = document.createElement('span');
-            deleteIcon.textContent = 'x';
-            deleteIcon.style.float = 'right';
-            deleteIcon.style.cursor = 'pointer';
-            listItem.appendChild(deleteIcon);
-
-            // Append the list item to the iframe list
-            document.getElementById('iframeList').appendChild(listItem);
-            listItem.setAttribute('data-iframe-id', iframeContainer.id);
-            listItem.addEventListener('click', function () {
-                const iframeId = this.getAttribute('data-iframe-id');
-                const targetIframeContainer = document.getElementById(iframeId);
-                targetIframeContainer.classList.add('highlight');
-                setTimeout(() => {
-                    targetIframeContainer.classList.remove('highlight');
-                }, 3000); // Adjust to match the duration of the animation
-            });
-
-
-            // Delete functionality
-            deleteIcon.addEventListener('click', function (event) {
-                event.stopPropagation(); // Prevent triggering listItem click event
-                    iframeContainer.remove(); // Remove iframe from workspace
-                    listItem.remove(); // Remove list item
-            });
-
-            console.log("HI:", iframeContainer, editMode)
-            // if (editMode || true) {
-            // Enable moving and resizing
-            iframeContainer.style.resize = 'both';
-            iframeContainer.style.overflow = 'auto';
-            // iframeContainer.children.forEach(child => {
-            //     child.styles.
-            // })
-
-            let isDragging = false;
-
-
-            iframeContainer.addEventListener('mousedown', e => {
-                console.log("MOUSE DOWN")
-                if (!editMode) return;
-                isDragging = true;
-                let startX = e.pageX - iframeContainer.offsetLeft;
-                let startY = e.pageY - iframeContainer.offsetTop;
-
-                function onMove(e) {
-                    if (!isDragging) return;
-                    iframeContainer.style.left = (e.pageX - startX) + 'px';
-                    iframeContainer.style.top = (e.pageY - startY) + 'px';
-                }
-
-                function onUp() {
-                    isDragging = false;
-                    window.removeEventListener('mousemove', onMove);
-                    window.removeEventListener('mouseup', onUp);
-                }
-
-                window.addEventListener('mousemove', onMove);
-                window.addEventListener('mouseup', onUp);
-            });
-            // }
-
-            workspace.appendChild(iframeContainer);
-        });
-        let sidebarVisible = true; // New variable to track the visibility of the sidebar
-
-        // Sidebar toggle functionality
-        document.getElementById('sidebarToggle').addEventListener('click', () => {
-            sidebarVisible = !sidebarVisible;
-            const sidebar = document.getElementById('sidebar');
-            const workspace = document.getElementById('workspace');
-            if (sidebarVisible) {
-                sidebar.style.left = '0';
-                workspace.style.marginLeft = '200px';
-            } else {
-                sidebar.style.left = '-200px';
-                workspace.style.marginLeft = '0';
-            }
-        });
-
-        navButton.addEventListener("click", () => {
-            if (!ishideNav) {
-                console.log("Nav going bye bye")
-                ishideNav = true
-                nav.style.display = "none";
-            }
-            else if (ishideNav) {
-                console.log("nav is coming here!!!!")
-                ishideNav = false
-                nav.style.display = "block";
-            }
-
-
-        })
-            
+    // Make the container resizable and draggable
+    $(iframeContainer).resizable().draggable();
+}
+        
     </script>
-    <script src="electron.js"></script>
+    
 </body>
-
 </html>
