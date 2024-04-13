@@ -1,47 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2423 Features</title>
+    <title>Robort</title>
+    <!-- Bootstrap CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #f8f9fa; /* Lighter shade */
+            color: #212529; /* Bootstrap default font color */
         }
-
+        header, .hamburger-menu .bar, nav {
+            transition: all 0.3s ease; /* Smooth transition for all */
+        }
         .container {
-            border-radius: 10px;
-            max-width: 700px;
+            max-width: 1000px;
             margin: auto;
             padding: 20px;
             text-align: center;
         }
-
-        header {
-            background-color: #007bff;
-            color: #ffffff;
-            padding: 20px 0;
-            margin-bottom: 10px;
-            /* background-image: url(https://cdn.discordapp.com/attachments/750520188423635046/1220499603003019264/image.png?ex=660f29d5&is=65fcb4d5&hm=3531ea3571a4b60a3dcc193290414a8f19a2f470d469371636bd294d829dc336&); */
-
-        }
-
         h1 {
-            font-size: 50px;
+            font-size: 30px;
         }
-
         .sections-container {
             display: flex;
             justify-content: space-around;
             margin: 20px 10px;
         }
-
         .section {
             width: 30%;
             background-color: #ffffff;
@@ -50,369 +37,265 @@
             margin: 0 10px;
             padding: 10px;
         }
-
-        
-        .section h2 {
+        .section h1 {
             color: #007bff;
             border-bottom: 2px solid #007bff;
+            font-weight: 600;
+            margin-top: 0;
         }
-
-        .section h4 {
-            color: #d9534f;
+        .section h3 {
+            color: #d9534f; /* Bootstrap red */
         }
-
         .section p {
             text-align: left;
         }
-
-        nav {
-            background-color: #1df700;
-            width: 740px;
-            text-align: center;
-            right: 50px; 
-            border-radius: 10px;
-            padding: 10px 0;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #000000;
-            margin: 0 10px;
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-
-        nav a:hover {
-            color: #0056b3;
-        }
-
-        .container {
-            border-radius: 10px;
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            text-align: center;
-        }
-
         select#autoNameSelector {
             padding: 8px 12px;
             border: 2px solid #007bff;
-            /* Blue border to match your header color */
             border-radius: 5px;
-            /* Rounded corners */
             background-color: #f4f4f4;
-            /* Light grey background to match the page */
             font-family: Arial, sans-serif;
-            /* Font family matching the rest of the page */
             color: #333;
-            /* Text color */
             cursor: pointer;
-            /* Change cursor to pointer to indicate it's clickable */
             outline: none;
-            /* Remove the default focus outline */
             margin-top: 10px;
-            /* Add some space above the dropdown */
             margin-bottom: 20px;
-            /* Add some space below the dropdown */
             width: 100%;
         }
-
-        select#autoNameSelector:hover {
-            background-color: #e2e6ea;
-            /* Slightly darker grey on hover */
-        }
-
-        select#autoNameSelector:focus {
-            border-color: #0056b3;
-            /* Darker blue when focused */
-            background-color: #e2e6ea;
-            /* Slightly darker grey to indicate focus */
-        }
-
-        /* You might want to add styles for the option elements as well, although
-   customization options are limited due to browser default styling. */
-        select#autoSelector option {
-            padding: 6px;
-            /* Add padding for options for better readability */
-        }
-
         #autoImage {
-    max-width: 100%; /* Ensure the image is not wider than the container */
-    max-height: 400px; /* Max height can be adjusted as needed */
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Display block to allow for margin auto to work */
-    margin: auto; /* Center the image within its container */
-}
-
-.hamburger-menu {
-    display: none;
-    cursor: pointer;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 2;
-}
-
-.hamburger-menu .bar {
-    display: block;
-    width: 25px;
-    height: 3px;
-    margin: 5px auto;
-    background-color: #333;
-}
-
-@media screen and (max-width: 768px) {
-    .hamburger-menu {
-        display: block;  }
-
-     nav {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 100%; /* Positioned off-screen to the right */
-        width: 100%; /* Takes full width */
-        height: 100vh; /* Takes full height */
-        background-color: #1df700; /* The green background */
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding-top: 60px;
-        box-sizing: border-box;
-        z-index: 1; /* Ensure it's below the hamburger menu */
-        overflow-y: auto; /* Allows scrolling if content is too long */
-        transform: translateX(-100%); /* Hidden by default */
-    }
-
-    nav a {
-        display: block;
-        margin: 10px 0; /* Adjusted margins for better spacing */
-        font-size: 18px; /* Adjusted font size for readability */
-        color: #000000; /* Text color for the links */
-        text-decoration: none;
-        transition: color 0.3s; /* Smooth color transition for hover */
-    }
-
-    nav a:hover {
-        color: #0056b3; /* Hover color for links */
-    }
-
-    .nav-inactive {
-        transform: translateX(0%); /* Keep nav off-screen */
-    }
-
-    .nav-active {
-        transform: translateX(-100%);
-    }
-}
-
-
+            max-width: 100%;
+            max-height: 400px;
+            height: auto;
+            display: block;
+            margin: auto;
+        }
+        .config-reminder-container {
+            text-align: center;
+            margin: 20px auto;
+            width: 400px;
+            padding: 1px;
+            font-size: 18px;
+            border-radius: 8px;
+        }
+        .config-reminder-container h4 {
+            font-size: 18px;
+            color: black;
+            font-weight: 700;
+        }
+        @media screen and (max-width: 768px) {
+            .hamburger-menu {
+                display: block;
+                cursor: pointer;
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                z-index: 2;
+            }
+            .sections-container {
+                flex-direction: column;
+            }
+            .section {
+                width: 100%;
+            }
+            nav {
+                flex-direction: column;
+            }
+            nav a {
+                font-size: 18px;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
-
 <body>
     <div class="hamburger-menu">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
+        <div class="bar bg-dark"></div>
+        <div class="bar bg-dark"></div>
+        <div class="bar bg-dark"></div>
     </div>
-    <header>
-        <link rel="manifest" href="/manifest.json">
+    <header class="bg-primary text-white py-3 mb-4">
         <div class="container">
-            <h1>The Features of team <span id="displayTeamNumber"></span></h1>
+            <h1>The Features of Team <span id="displayTeamNumber"></span></h1>
+            <h1><span id="robotName"></span></h1>
             <h2>Hello alliance partners! This is what we do!</h2>
         </div>
     </header>
 
-    <nav class="container">
-        <a href="./index.html">Home</a>
-        <a href="./Team_List_element.html">Teams</a>
-        <a href="./Strat_Board_w_tabs.html">Canvas</a>
-        <a href="./preMatchChecklist.html">Pre Match Checklist</a>
-        <a href="./2423_Features.html">Features</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="./index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Team_List_element.html">Teams</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Strat_Board_w_tabs.html">Canvas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./preMatchChecklist.html">Pre Match Checklist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Control_Panel.html">Control Panel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./2423_Features.html">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Config_tab.html">Configure</a>
+                </li>
+            </ul>
+        </div>
     </nav>
 
+    <div class="config-reminder-container">
+        <h4><span id="config_reminder"></span></h4>
+    </div>
 
     <div class="sections-container">
         <div class="section" id="auto">
-            <h2>Auto</h2>
-            <!-- Dropdown for selecting an auto -->
-            <!-- <select id="autoSelector" onchange="updateAutoDisplay()">
-                <option value="amp2">Start Amp - Amp Note</option>
-                <option value="middle-middle">Start Middle - Middle Note</option>
-                <option value="feeder2">Start Feederside - Feederside Note</option>
-                <option value="amp to center1">Start Amp - Center Line (first note)</option>
-                <option value="amp to center2">Start Amp - Center Line (second note)</option>
-                <option value="feeder to center1">Start Feeder - Feeder Side Note Center Line (first note)</option>
-                <option value="feeder to center2">Start Feeder - Feeder Side Note Center Line (second note)</option>
-                <option value="3peiceAuto">Start Middle - Middle Note - Amp Side Note</option>
-                <option value="amp to amp side then center1">Start Amp - Amp Side Note - Center Line (first note)</option>
-                <option value="amp to amp side then center2">Start Amp - Amp Side Note - Center Line (second note)</option>
-            </select> -->
+            <h1>Auto</h1>
             <p id="autoName">Select an auto...</p>
-            <img id="autoImage" src="" alt="Auto Description Image" style="width:400px; height:auto; display: none;">
-
             <select id="autoNameSelector"></select>
+            <img id="autoImage" src="" alt="Auto Description Image">
         </div>
 
-
-
         <div class="section" id="teleop">
-            <h2>Teleop</h2>
+            <h1>Teleop</h1>
             <div id="pickup">
-                <h4>Pickup!</h4>
-                <h5><span id="display_ground"></span></h5>
-                <h5><span id="display_source"></span></h5>
+                <h3>Pickup!</h3>
+                <h4><span id="display_ground"></span></h4>
+                <h4><span id="display_source"></span></h4>
             </div>
             <div id="scoring">
-                <h4>Scoring!</h4>
-                <h5><span id="speaker"></span></h5>
-                <h5><span id="distance_shoot"></span></h5>
-                <h5><span id="amp"></span></h5>
+                <h3>Scoring!</h3>
+                <h4><span id="speaker"></span></h4>
+                <h4><span id="distance_shoot"></span></h4>
+                <h4><span id="amp"></span></h4>
             </div>
         </div>
 
         <div class="section" id="endgame">
-            <h2>End Game</h2>
-            <h3>We climb!</h3>
-            <p>No harmonies, sorry... unless you talk us into it</p>
-            <h2>General Pit Scouting Questions</h2>
+            <h1>End Game</h1>
+            <h4><span id="climb"></span></h4>
+            <h4><span id="harmony"></span></h4>
+            <h1>Pit Scouting Questions</h1>
             <h3>Dimensions</h3>
-            <p><span id="dim_w_bump"></span> inches square (yes bumpers)</p>
-            <p><span id="dim_wout_bump"></span> inches square (no bumpers)</p>
+            <h4><span id="dim_w_bump"></span> inches (yes bumpers)</h4>
+            <h4><span id="dim_wout_bump"></span> inches (no bumpers)</h4>
             <h3>Drivetrain</h3>
-            <p><span id="drive_train"></span></p>
+            <h4><span id="drive_train"></span></h4>
             <h3>Weight</h3>
-            <p><span id="weight"></span> lbs</p>
+            <h4><span id="weight"></span> lbs</h4>
+            <h3>Intake Style</h3>
+            <h4><span id="intake_sty"></span></h4>
         </div>
     </div>
-
+    <script src="electron.js"></script>
+    <script src="jquery-3.3.1.slim.min.js"></script>
+    <script src="bootstrap.min.js"></script>
     <script>
-        let autoNames = []
-        const autos = {
-            "amp2": {
-                name: "Amp side to amp side note",
-                img: "./images/amp2.png"
-            },
-            "middle-middle": {
-                name: "Middle to middle note",
-                img: "./images/middle-middle.jpeg"
-            },
-            "feeder2": {
-                name: "Feederside to feederside note",
-                img: "./images/feeder2.jpeg"
-            },
-            "amp to center1": {
-                name: "Amp side to center line (first note from the amp side)",
-                img: "./images/amp to center1.png"
-            },
-            "amp to center2": {
-                name: "Amp side to center line (second note from the amp side)",
-                img: "./images/amp to center2.png"
-            },
-            "feeder to center1": {
-                name: "feeder side to center line (first note)",
-                img: "./images/feeder1.png"
-            },
-            "feeder to center2": {
-                name: "feeder side to center line (second note)",
-                img: "./images/feeder to center2.png"
-            },
-            "3peiceAuto": {
-                name: "Start Middle - Middle Note - Amp Side Note",
-                img: "./images/3peiceAuto.png"
-            },
-            "amp to amp side then center1": {
-                name: "amp to amp side then center (first note)",
-                img: "./images/amp to amp side then center1.png"
-            },
-            "amp to amp side then center2": {
-                name: "amp to amp side then center (second note)",
-                img: "./images/amp to amp side then center2.png"
-            }
-        };
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamburger = document.querySelector('.hamburger-menu');
+            const nav = document.querySelector('nav');
+            const teamNumber = localStorage.getItem('teamNumber');
+            const robotName = localStorage.getItem('robotName');
 
-        function updateAutoDisplay() {
-            const selector = document.getElementById('autoSelector');
-            const selectedValue = selector.value;
+            function updateDisplayFields() {
+                if (teamNumber) {
+                    document.getElementById('displayTeamNumber').textContent = `${teamNumber}'s`;
+                } else {
+                    document.getElementById('displayTeamNumber').textContent = 'Team Number';
+                }
+                
+                if (robotName) {
+                    document.getElementById('robotName').textContent = robotName;
+                } else {
+                    document.getElementById('robotName').textContent = 'Robot Name';
+                }
+            }
+
+            updateDisplayFields();  // Update the display fields
+
+            const autos = {
+                "amp2": {
+                    name: "Amp side to amp side note",
+                    img: "./images/amp2.png"
+                },
+                "middle-middle": {
+                    name: "Middle to middle note",
+                    img: "./images/middle-middle.jpeg"
+                },
+                "feeder2": {
+                    name: "Feederside to feederside note",
+                    img: "./images/feeder2.jpeg"
+                },
+                "amp to center1": {
+                    name: "Amp side to center line (first note)",
+                    img: "./images/amp to center1.png"
+                },
+                "amp to center2": {
+                    name: "Amp side to center line (second note)",
+                    img: "./images/amp to center2.png"
+                },
+                "feeder to center1": {
+                    name: "Feeder side to center line (first note)",
+                    img: "./images/feeder1.png"
+                },
+                "feeder to center2": {
+                    name: "Feeder side to center line (second note)",
+                    img: "./images/feeder to center2.png"
+                },
+                "3peiceAuto": {
+                    name: "Start Middle - Middle Note - Amp Side Note",
+                    img: "./images/3peiceAuto.png"
+                },
+                "amp to amp side then center1": {
+                    name: "Amp to amp side then center (first note)",
+                    img: "./images/amp to amp side then center1.png"
+                },
+                "amp to amp side then center2": {
+                    name: "Amp to amp side then center (second note)",
+                    img: "./images/amp to amp side then center2.png"
+                }
+            };
+
+            const autoNameSelector = document.getElementById('autoNameSelector');
             const autoName = document.getElementById('autoName');
             const autoImage = document.getElementById('autoImage');
 
-            if (autos[selectedValue]) {
-                autoName.innerText = autos[selectedValue].name;
-                autoImage.src = autos[selectedValue].img;
-                autoImage.style.display = 'block';
-            } else {
-                autoName.innerText = 'Select an auto...';
-                autoImage.style.display = 'none';
+            function populateAutoSelector() {
+                Object.keys(autos).forEach(key => {
+                    let option = new Option(autos[key].name, key);
+                    autoNameSelector.appendChild(option);
+                });
             }
-        }
+
+            populateAutoSelector();  // Populate the auto selector on load
+
+            function updateAutoDisplay() {
+                const selectedValue = autoNameSelector.value;
+
+                if (autos[selectedValue]) {
+                    autoName.textContent = autos[selectedValue].name;
+                    autoImage.src = autos[selectedValue].img;
+                    autoImage.style.display = 'block';
+                } else {
+                    autoName.textContent = 'Select an auto...';
+                    autoImage.style.display = 'none';
+                }
+            }
+
+            autoNameSelector.addEventListener('change', updateAutoDisplay);
+
+            hamburger.addEventListener('click', function () {
+                nav.classList.toggle('nav-active');
+            });
+        });
     </script>
-    <script>
-     document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger-menu');
-    const nav = document.querySelector('nav');
-    const teamNumber = localStorage.getItem('teamNumber'); // Retrieve the team number from local storage
-    const dim_w_bump = localStorage.getItem('dim_w_bump'); // Retrieve the team number from local storage
-    const dim_wout_bump = localStorage.getItem('dim_wout_bump'); // Retrieve the team number from local storage
-    const drive_train = localStorage.getItem('drive_train'); // Retrieve the team number from local storage
-    const weight = localStorage.getItem('weight'); // Retrieve the team number from local storage
-    const ground = localStorage.getItem('ground'); // Convert to boolean
-    const source = localStorage.getItem('source'); // Convert to boolean
-    const speaker = localStorage.getItem('speaker'); // Convert to boolean
-    const distance_shoot = localStorage.getItem('distance_shoot'); // Convert to boolean
-    const amp = localStorage.getItem('amp'); // Convert to boolean
-    const autoNames = localStorage.getItem('autoNames').split(',')
-    console.log(autoNames)
-
-
-    document.getElementById('displayTeamNumber').textContent = teamNumber;
-    document.getElementById('dim_w_bump').textContent = dim_w_bump;
-    document.getElementById('dim_wout_bump').textContent = dim_wout_bump;
-    document.getElementById('drive_train').textContent = drive_train;
-    document.getElementById('weight').textContent = weight;
-    document.getElementById('display_ground').textContent = `Ground: ${ground}`;
-    document.getElementById('display_source').textContent = `Source Pickup: ${source}`;
-    document.getElementById('speaker').textContent = `Speaker: ${speaker}`;
-    document.getElementById('distance_shoot').textContent = `Shoot from distance: ${distance_shoot}`;
-    document.getElementById('amp').textContent = `Amp: ${amp}`;
-
-    const autoNamesSelector = document.getElementById("autoNameSelector")
-
-    autoNames.forEach(item => {
-  // Creating a new option element
-  const option = document.createElement('option');
-  // Setting the value and text of the option element
-  option.value = item;
-  option.text = item;
-
-  // Appending the option element to the select element
-  autoNamesSelector.appendChild(option);
-});
-
-    
-
-
-    // Initialize the nav as inactive (hidden)
-    nav.classList.add('nav-inactive');
-
-    hamburger.addEventListener('click', function() {
-        // Toggle between active and inactive states
-        if (nav.classList.contains('nav-inactive')) {
-            nav.classList.remove('nav-inactive');
-            nav.classList.add('nav-active');
-        } else {
-            nav.classList.remove('nav-active');
-            nav.classList.add('nav-inactive');
-        }
-    });
-});
-
-
-    </script>
-<script src="electron.js"></script>
 </body>
-
 </html>
