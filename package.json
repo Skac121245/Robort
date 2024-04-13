@@ -32,7 +32,12 @@
     "electron-squirrel-startup": "^1.0.0",
     "jspdf": "^2.5.1",
     "save-canvas-to-image": "^0.1.1",
-    "update-electron-app": "^3.0.0",
-    "usb": "^2.12.1"
+    "sqlite-electron": "^3.0.5",
+    "update-electron-app": "^3.0.0"
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
   }
 }
