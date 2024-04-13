@@ -1,175 +1,374 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Configuration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Robort</title>
 </head>
-<body>
-    <h1>Team Configuration</h1>
 
+<body class="bg-light">
 
-    <nav>
-        <a href="./index.html">Home</a>
-        <a href="./Team_List_element.html">Teams</a>
-        <a href="./Strat_Board_w_tabs.html">Canvas</a>
-        <a href="./preMatchChecklist.html">Pre Match Checklist</a>
-        <a href="./2423_Features.html">Features</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="./index.html">Robort</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./Team_List_element.html">Teams</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./Strat_Board_w_tabs.html">Canvas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./preMatchChecklist.html">Pre Match Checklist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./Control_Panel.html">Control Panel</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./2423_Features.html">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Config_tab.html">Configure</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
 
-<form id="eventCodeForm">
-    <label for="eventCode">What is the code for the event you are at?</label>
-    <input type="text" id="eventCode" name="eventCode" required>
+    <div class="container">
+        <h1 class="text-center my-4">Team Configuration</h1>
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        Event Code
+                    </div>
+                    <div class="card-body">
+                        <form id="eventCodeForm">
+                            <div class="form-group">
+                                <label for="eventCode">What is the code for the event you are at?</label>
+                                <input type="text" id="eventCode" name="eventCode" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Just Event Code</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-    <button type="submit">Save Just Event Code</button>
-</form>
-    
-    <form id="teamForm">
-        <label for="teamNumber">What is your team number?</label>
-        <input type="number" id="teamNumber" name="teamNumber">
-
-        <label for="dim_w_bump">What are your dimensions WITH bumpers? (inches)</label>
-        <input type="number" id="dim_w_bump" name="dim_w_bump">
-
-        <label for="dim_wout_bump">What are your dimensions WITHOUT bumpers? (inches)</label>
-        <input type="number" id="dim_wout_bump" name="dim_wout_bump">
-
-        <label for="drive_train">What is your type of Drivetrain?</label>
-        <input type="text" id="drive_train" name="drive_train">
-
-        <label for="weight">What is your robot weight? (LBS)</label>
-        <input type="number" id="weight" name="weight">
-
-       <!-- <div class="checkbox">
-           <h2>Where do you pick up from?</h2>
-           <input type="checkbox" id="ground" name="ground">Ground<br>
-           <input type="checkbox" name="source">Source<br>
-      
-
-           <h2>Where do you score?</h2>
-           <input type="checkbox" name="speaker">Speaker<br>
-           <input type="checkbox" name="distance_shoot">Can you shoot from distance?<br>
-           <input type="checkbox" name="amp">Amp<br>
-       </div> -->
-        
-
-        <button type="submit">Save</button>
-    </form>
-
-    <form id="teleopForm">
-        <h4>Ground</h4>
-        <select id="ground"> 
-            <option value="Yes">YES</option>
-            <option value="No">NO</option>
-          </select>
-
-          <h4>Source</h4>
-          <select id="source"> 
-              <option value="Yes">YES</option>
-              <option value="No">NO</option>
-            </select>
-
-            <h4>Speaker</h4>
-          <select id="speaker"> 
-              <option value="Yes">YES</option>
-              <option value="No">NO</option>
-            </select>
-
-            <h4>Can you shoot from distance?</h4>
-          <select id="distance_shoot"> 
-              <option value="Yes">YES</option>
-              <option value="No">NO</option>
-            </select>
-
-            <h4>Amp</h4>
-          <select id="amp"> 
-              <option value="Yes">YES</option>
-              <option value="No">NO</option>
-            </select>
-
-        <button type="submit">Save</button>
-    </form>
-    
-    <form id="autoNamesForm">
-        <h4>Auto Names + Pictures</h4>
-        <div id="autoNamesContainer">
-          <!-- Dynamic items will be added here -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        Upload API Data
+                    </div>
+                    <div class="card-body">
+                        <h6 onclick="showMomAlert()" id="uploadRe" class="text-warning">Only do this if you see a purple reminder on the home page!</h6>
+                        <input type="file" id="fileInput" class="form-control-file mb-2">
+                        <button onclick="uploadFile()" class="btn btn-success">Upload</button>
+                        <div id="fileName" class="mt-2"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button type="button" id="addAutoName">Add Auto Name</button>
-        <button type="submit">Save All</button>
-      </form>
 
-    <style>
-        body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 20px;
-        color: #000000;
-    }
+        <div class="row">
+            <div class="col-lg-12 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        General Scouting Questions
+                    </div>
+                    <div class="card-body">
+                        <form id="teamForm">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="teamNumber">What is your team number?</label>
+                                    <input type="number" id="teamNumber" name="teamNumber" class="form-control">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="robotName">What is the name of your robot?</label>
+                                    <input type="text" id="robotName" name="robotName" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="dim_w_bump">What are your dimensions WITH bumpers? (inches)</label>
+                                <input type="text" id="dim_w_bump" name="dim_w_bump" class="form-control" placeholder="Example: X-dimension by Y-dimension">
+                            </div>
+                            <div class="form-group">
+                                <label for="dim_wout_bump">What are your dimensions WITHOUT bumpers? (inches)</label>
+                                <input type="text" id="dim_wout_bump" name="dim_wout_bump" class="form-control" placeholder="Example: X-dimension by Y-dimension">
+                            </div>
+                            <div class="form-group">
+                                <label for="drive_train">What is your type of Drivetrain?</label>
+                                <input type="text" id="drive_train" name="drive_train" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="weight">What is your robot weight? (LBS)</label>
+                                <input type="number" id="weight" name="weight" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Intake Style</label>
+                                <select id="intake_sty" class="form-control">
+                                    <option value="Under the bumper">Under the bumper</option>
+                                    <option value="Over bumper">Over bumper</option>
+                                    <option value="Talk to a team member, it's hard to explain">Something Else</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        Add Auto Names and Pictures
+                    </div>
+                    <div class="card-body">
+                        <form id="autoNamesForm">
+                            <div id="autoNamesContainer" class="mb-3">
+                                <!-- Dynamic items will be added here -->
+                            </div>
+                            <button type="button" id="addAutoName" class="btn btn-info mb-2">Add Auto Name</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-    h1 {
-        color: #000000;
-    }
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        Teleop Form
+                    </div>
+                    <div class="card-body">
+                        <form id="teleopForm">
+                            <div class="form-group">
+                                <label>Ground</label>
+                                <select id="ground" class="form-control">
+                                    <option value="Yes">YES</option>
+                                    <option value="No">NO</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Source</label>
+                                <select id="source" class="form-control">
+                                    <option value="Yes">YES</option>
+                                    <option value="No">NO</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Speaker</label>
+                                <select id="speaker" class="form-control">
+                                    <option value="Yes">YES</option>
+                                    <option value="No">NO</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Can you shoot from distance?</label>
+                                <select id="distance_shoot" class="form-control">
+                                    <option value="Yes">YES</option>
+                                    <option value="No">NO</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Amp</label>
+                                <select id="amp" class="form-control">
+                                    <option value="Yes">YES</option>
+                                    <option value="No">NO</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Endgame Form
+                    </div>
+                    <div class="card-body">
+                        <form id="endGameForm">
+                            <div class="form-group">
+                                <label>Can you climb?</label>
+                                <select id="climb" class="form-control">
+                                    <option value="Yes">YES</option>
+                                    <option value="No">NO</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Can you climb, not from the center? (Harmony)</label>
+                                <select id="harmony" class="form-control">
+                                    <option value="Yes">YES</option>
+                                    <option value="It's possible">It's possible</option>
+                                    <option value="No">NO</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    nav {
-        background-color: #00f729;
-        padding: 10px 0;
-        border-radius: 5px;
-        margin-bottom: 20px;
-    }
+    </div> <!-- Closing container div -->
 
-    nav a {
-        color: rgb(0, 0, 0);
-        text-decoration: none;
-        font-size: 20px;
-        font-weight: bold;
-        padding: 10px 20px;
-        display: inline-block;
-    }
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    nav a:hover {
-        background-color: #3295ff;
-    }
+    <script>
+        function showMomAlert() {
+            alert("Purple color chosen by my mother");
+        }
+    
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length === 0) {
+                alert("Please select a file first.");
+                return;
+            }
+            const file = fileInput.files[0];
+            document.getElementById('fileName').innerText = `File Name: ${file.name}`;
+    
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('fileContent').innerText = e.target.result;
+                localStorage.setItem('ApiDataUploaded', e.target.result);
+            };
+            reader.readAsText(file);
+        }
+    
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('addAutoName').addEventListener('click', addAutoNameField);
+            document.getElementById('autoNamesForm').addEventListener('submit', saveAutoNamesAndImages);
+    
+            document.getElementById('eventCodeForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const eventCode = document.getElementById('eventCode').value;
+                localStorage.setItem('eventCode', eventCode);
+                alert('Event code saved.');
+            });
+    
+           document.getElementById('teamForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Stop the form from submitting the traditional way
 
-    form {
-        background-color: white;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+    const teamNumber = document.getElementById('teamNumber').value;
+    const robotName = document.getElementById('robotName').value;
+    const dim_w_bump = document.getElementById('dim_w_bump').value;
+    const dim_wout_bump = document.getElementById('dim_wout_bump').value;
+    const drive_train = document.getElementById('drive_train').value;
+    const weight = document.getElementById('weight').value;
+    const intake_sty = document.getElementById('intake_sty').value;
 
-    label {
-        display: block;
-        margin: 10px 0 5px;
-    }
-
-    input[type="number"],
-    input[type="text"] {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        display: flex;
-        margin-top: 10px;
-        margin-bottom: 0px;
-    }
-
-    button:hover {
-        background-color: #45a049;
-    }
-    </style>
-    <script src="Control_tab/Config_tab.js"></script>
+    localStorage.setItem('teamNumber', teamNumber); 
+        localStorage.setItem('dim_w_bump', dim_w_bump); 
+        localStorage.setItem('dim_wout_bump', dim_wout_bump); 
+        localStorage.setItem('drive_train', drive_train); 
+        localStorage.setItem('weight', weight); 
+        localStorage.setItem('intake_sty', intake_sty); 
+        localStorage.setItem('robotName', robotName); 
+        
+    alert('Team information saved.');
+});
+    
+            document.getElementById('teleopForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const teleopData = {
+                    ground: document.getElementById('ground').value,
+                    source: document.getElementById('source').value,
+                    speaker: document.getElementById('speaker').value,
+                    distance_shoot: document.getElementById('distance_shoot').value,
+                    amp: document.getElementById('amp').value
+                };
+                localStorage.setItem('teleopData', JSON.stringify(teleopData));
+                alert('Teleop data saved.');
+            });
+    
+            document.getElementById('endGameForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const endGameData = {
+                    climb: document.getElementById('climb').value,
+                    harmony: document.getElementById('harmony').value
+                };
+                localStorage.setItem('endGameData', JSON.stringify(endGameData));
+                alert('Endgame data saved.');
+            });
+        });
+    
+        function addAutoNameField() {
+            const container = document.getElementById('autoNamesContainer');
+            const uniqueId = Date.now();
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'autoItem';
+            itemDiv.innerHTML = `
+                <input type="text" placeholder="Auto Name" name="autoNames[]" class="form-control mb-2">
+                <input type="file" accept="image/*" name="autoImages[]" id="file-${uniqueId}" style="display: none;">
+                <label for="file-${uniqueId}" class="btn btn-secondary">Upload Image</label>
+                <img id="preview-${uniqueId}" style="display: none; max-width: 100%; height: auto;" class="img-thumbnail mt-2"/>
+            `;
+            container.appendChild(itemDiv);
+    
+            document.getElementById(`file-${uniqueId}`).addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById(`preview-${uniqueId}`).src = e.target.result;
+                        document.getElementById(`preview-${uniqueId}`).style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    
+        function saveAutoNamesAndImages(e) {
+            e.preventDefault();
+            const autoNamesInputs = document.querySelectorAll('input[type="text"][name="autoNames[]"]');
+            const autoImagesInputs = document.querySelectorAll('input[type="file"][name="autoImages[]"]');
+            const autosData = [];
+    
+            autoNamesInputs.forEach((input, index) => {
+                const fileInput = autoImagesInputs[index];
+                const file = fileInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = function() {
+                        autosData.push({ name: input.value, image: reader.result });
+                        if (autosData.length === autoNamesInputs.length) {
+                            localStorage.setItem('autos', JSON.stringify(autosData));
+                            alert('Auto names and images saved to localStorage.');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    autosData.push({ name: input.value, image: '' });
+                    if (autosData.length === autoNamesInputs.length) {
+                        localStorage.setItem('autos', JSON.stringify(autosData));
+                        alert('Auto names and images saved to localStorage.');
+                    }
+                }
+            });
+    
+            if (autoNamesInputs.length === 0) {
+                alert('Please add at least one auto name and image.');
+            }
+        }
+    </script>
+    
 </body>
 </html>
