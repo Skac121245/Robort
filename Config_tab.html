@@ -299,15 +299,14 @@
                 alert('Teleop data saved.');
             });
     
-            document.getElementById('endGameForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const endGameData = {
-                    climb: document.getElementById('climb').value,
-                    harmony: document.getElementById('harmony').value
-                };
-                localStorage.setItem('endGameData', JSON.stringify(endGameData));
-                alert('Endgame data saved.');
-            });
+            endGameForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const climb = document.getElementById('climb').value
+ localStorage.setItem('climb', climb)
+ const harmony = document.getElementById('harmony').value
+ localStorage.setItem('harmony', harmony)
+ alert('Endgame data saved.');
+});
         });
     
         function addAutoNameField() {
