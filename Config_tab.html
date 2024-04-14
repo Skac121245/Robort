@@ -238,9 +238,18 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-        function showMomAlert() {
-            alert("Purple color chosen by my mother");
-        }
+        document.addEventListener('DOMContentLoaded', (event) => {
+    // Set the event code input placeholder to the last saved event code if it exists
+    const lastEventCode = localStorage.getItem('eventCode');
+    const eventCodeInput = document.getElementById('eventCode');
+    if (lastEventCode) {
+        eventCodeInput.placeholder = lastEventCode;
+    }
+});
+
+        // function showMomAlert() {
+        //     alert("Purple color chosen by my mother");
+        // }
     
         function uploadFile() {
             const fileInput = document.getElementById('fileInput');
