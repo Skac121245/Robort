@@ -693,8 +693,6 @@
                 transition: background-color 0.3s ease;
                 /* Smooth transition for hover effect */
             }
-
-            
         </style>
     </head>
 
@@ -716,7 +714,7 @@
             let apiData = [];
             let eventCode = "";
 
- 
+
 
 
             function onPageLoad() {
@@ -732,7 +730,7 @@
 
             let ApiDataUploaded = localStorage.getItem('ApiDataUploaded')
 
-            
+
 
 
             function setupWebhookSubscription(eventCode) {
@@ -750,21 +748,27 @@
                         return response.json();
                     })
                     .then(responseData => {
-                            apiData = responseData;
-                            writeMatchResults(apiData);
-                            highlightCells();
-                            apiData = JSON.stringify(apiData);
-                            localStorage.setItem('ApiDataUploaded', apiData)
-                        
+                        apiData = responseData;
+                        writeMatchResults(apiData);
+                        highlightCells();
+                        apiData = JSON.stringify(apiData);
+                        localStorage.setItem('ApiDataUploaded', apiData)
+                        document.getElementById('storeOrConfig').textContent = "Config"
+
+
                     })
                     .catch(error => {
-                        if(ApiDataUploaded != null || ApiDataUploaded != "" || ApiDataUploaded != "[]") {
+                        if (ApiDataUploaded != null || ApiDataUploaded != "" || ApiDataUploaded != "[]") {
                             // console.log(ApiDataUploaded);
                             apiData = JSON.parse(ApiDataUploaded);
                             // clearPreviousData();
                             writeMatchResults(apiData);
                             highlightCells();
                             document.getElementById('plz_up').style.display = "none";
+                            eventCodeStored = apiData[0].event_key
+                            document.getElementById('storeOrConfig').textContent = "Local Storage"
+                            document.getElementById('eventCode').textContent = `${eventCodeStored}`
+                            
                         } else {
                             console.error("Fetch error: ", error);
                             displayUploadOption(); // Display upload option if API fetch fails
@@ -981,34 +985,34 @@
             window.addEventListener("load", onPageLoad);
 
             const secretCode_One = ['KeyE', 'KeyM', 'KeyI', 'KeyL', 'KeyY']; // EMILY
-const secretCode_Two = ['KeyA', 'KeyM', 'KeyO', 'KeyR', 'KeyY']; // AMORY
-let currentSequence = [];
+            const secretCode_Two = ['KeyA', 'KeyM', 'KeyO', 'KeyR', 'KeyY']; // AMORY
+            let currentSequence = [];
 
-function activateEasterEgg(code) {
-    if (code.join() === secretCode_One.join()) {
-        alert('Emily is AWESOME!!!!!!');
-    } else if (code.join() === secretCode_Two.join()) {
-        window.location.replace("amory.html");
-    }
-}
+            function activateEasterEgg(code) {
+                if (code.join() === secretCode_One.join()) {
+                    alert('Emily is AWESOME!!!!!!');
+                } else if (code.join() === secretCode_Two.join()) {
+                    window.location.replace("amory.html");
+                }
+            }
 
-document.addEventListener('keydown', (e) => {
-    // Add the current key to the sequence
-    currentSequence.push(e.code);
-    
-    // If the sequence is longer than the secret codes, remove the earliest key pressed
-    if (currentSequence.length > secretCode_One.length) {
-        currentSequence.shift();
-    }
+            document.addEventListener('keydown', (e) => {
+                // Add the current key to the sequence
+                currentSequence.push(e.code);
 
-    // Check if the current sequence matches any secret codes
-    if (currentSequence.join() === secretCode_One.join() || currentSequence.join() === secretCode_Two.join()) {
-        activateEasterEgg(currentSequence);
-        currentSequence = []; // Reset the sequence after triggering an easter egg
-    }
-});
+                // If the sequence is longer than the secret codes, remove the earliest key pressed
+                if (currentSequence.length > secretCode_One.length) {
+                    currentSequence.shift();
+                }
 
-            
+                // Check if the current sequence matches any secret codes
+                if (currentSequence.join() === secretCode_One.join() || currentSequence.join() === secretCode_Two.join()) {
+                    activateEasterEgg(currentSequence);
+                    currentSequence = []; // Reset the sequence after triggering an easter egg
+                }
+            });
+
+
             document.addEventListener('DOMContentLoaded', function () {
                 const hamburger = document.querySelector('.hamburger-menu');
                 const nav = document.querySelector('nav');
@@ -1031,13 +1035,13 @@ document.addEventListener('keydown', (e) => {
 
         <div style="text-align: center;">
             <h1>Matches</h1>
-            <h2>Current Event Code From Config: <span id="eventCode"></span></h2>
+            <h2>Current Event Code From <span id="storeOrConfig"></span>: <span id="eventCode"></span></h2>
 
             <div id="matchDataContainer"></div> <!-- Placeholder for match data -->
 
             <div id="down_up_con">
                 <button id="downloadMatchData">Download Match Data</button>
-    
+
                 <!-- Upload button disguised as a label for style, linked to a hidden file input for uploading match data -->
                 <!-- <input type="file" id="uploadMatchData" style="display: none;" /> -->
                 <h3 id="plz_up">To upload data go to the config tab and upload from there!</h3>

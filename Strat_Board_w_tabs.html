@@ -248,7 +248,7 @@
 
 <div class="controls">
 
-  <h2>Current Event Code From Config: <span id="eventCodeInput"></span></h2>
+  <h2>Current Event Code From <span id="storeOrConfig"></span>: <span id="eventCodeInput"></span></h2>
 
   <!-- <select id="eventCodeInput">
     <option value="2024mabos">2024 Greater Boston Event</option>
@@ -691,11 +691,21 @@ function updateSaveButton() {
         apiData = JSON.stringify(apiData)
         localStorage.setItem('ApiDataUploaded', apiData)
         apiData = data
+        document.getElementById('storeOrConfig').textContent = "Config"
       })
       .catch(error => {
         if(ApiDataUploaded != null || ApiDataUploaded != "" || ApiDataUploaded != "[]") {
           apiData = JSON.parse(ApiDataUploaded);
           populateMatchSelect(apiData);
+          selectedMatchKey = matchSelect.value;
+          console.log(selectedMatchKey)
+          const selectedMatch = apiData.find(match => match.key === selectedMatchKey);
+          const match = apiData.find(m => m.key === selectedMatchKey);
+          eventCodeStored = match.event_key
+          console.log(`eventCodeStored = ${eventCodeStored}`)
+          document.getElementById('storeOrConfig').textContent = "Local Storage"
+          document.getElementById('eventCodeInput').textContent = `${eventCodeStored}`
+
 
         } else {
         console.error('Error fetching matches:', error)
