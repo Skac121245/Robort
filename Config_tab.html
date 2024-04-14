@@ -6,6 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Robort</title>
+    <style>
+        .disabled-form {
+    pointer-events: none; /* Disables interactions */
+    opacity: 0.5; /* Grey out the appearance */
+        }
+/* Ensure uniform size and margin for buttons and labels */
+.button-wrapper button {
+    margin: 0 !important;
+    height: 38px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+    </style>
 </head>
 
 <body class="bg-light">
@@ -44,7 +59,7 @@
 
     <div class="container">
         <h1 class="text-center my-4">Team Configuration</h1>
-        
+    
         <div class="row">
             <div class="col-lg-12 mb-4">
                 <div class="card">
@@ -52,6 +67,7 @@
                         Event Code
                     </div>
                     <div class="card-body">
+                        <div id="offlineMessage" class="alert alert-warning" style="display: none;">You need to be online to change event codes.</div>
                         <form id="eventCodeForm">
                             <div class="form-group">
                                 <label for="eventCode">What is the code for the event you are at?</label>
@@ -63,23 +79,6 @@
                 </div>
             </div>
         </div>
-    
-        <!-- This section is commented out as per previous instructions -->
-        <!-- <div class="row">
-            <div class="col-lg-6 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        Upload API Data
-                    </div>
-                    <div class="card-body">
-                        <h6 onclick="showMomAlert()" id="uploadRe" class="text-warning">Only do this if you see a purple reminder on the home page!</h6>
-                        <input type="file" id="fileInput" class="form-control-file mb-2">
-                        <button onclick="uploadFile()" class="btn btn-success">Upload</button>
-                        <div id="fileName" class="mt-2"></div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
     
         <div class="row">
             <div class="col-lg-12 mb-4">
@@ -141,8 +140,10 @@
                             <div id="autoNamesContainer" class="mb-3">
                                 <!-- Dynamic items will be added here -->
                             </div>
+                            <div class="button-wrapper">
                             <button type="button" id="addAutoName" class="btn btn-info mb-2">Add Auto Name</button>
                             <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -229,6 +230,7 @@
     </div> <!-- Closing container div -->
     
     
+    
 
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -292,14 +294,16 @@
     
             document.getElementById('teleopForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                const teleopData = {
-                    ground: document.getElementById('ground').value,
-                    source: document.getElementById('source').value,
-                    speaker: document.getElementById('speaker').value,
-                    distance_shoot: document.getElementById('distance_shoot').value,
-                    amp: document.getElementById('amp').value
-                };
-                localStorage.setItem('teleopData', JSON.stringify(teleopData));
+                const ground = document.getElementById('ground').value
+                localStorage.setItem('ground', ground);
+                const source = document.getElementById('source').value
+                localStorage.setItem('source', source);
+                const speaker = document.getElementById('speaker').value
+                localStorage.setItem('speaker', speaker);
+                const distance_shoot = document.getElementById('distance_shoot').value
+                localStorage.setItem('distance_shoot', distance_shoot);
+                const amp = document.getElementById('amp').value
+                localStorage.setItem('amp', amp);
                 alert('Teleop data saved.');
             });
     
@@ -371,6 +375,42 @@
                 alert('Please add at least one auto name and image.');
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('eventCodeForm');
+    const message = document.getElementById('offlineMessage');
+
+    function checkConnectivity() {
+        fetch('https://www.gstatic.com/generate_204', {
+            method: 'HEAD',
+            mode: 'no-cors', // Added no-cors mode
+            cache: 'no-cache'
+        }).then((response) => {
+            if (response.type === "opaque") { // Handle opaque responses
+                form.classList.remove('disabled-form');
+                message.style.display = 'none';
+            } else {
+                throw new Error('Network response was not opaque.');
+            }
+        }).catch(() => {
+            form.classList.add('disabled-form');
+            message.style.display = 'block';
+        });
+    }
+
+    // Check connectivity on initial load and periodically thereafter
+    checkConnectivity();
+    setInterval(checkConnectivity, 5000); // Check every 5 seconds
+
+    // Optional: Handle manual retry or other logic
+    form.addEventListener('submit', function(event) {
+        if (form.classList.contains('disabled-form')) {
+            event.preventDefault();
+            alert("Cannot submit while offline. Please check your connection and try again.");
+        }
+    });
+});
+
     </script>
     
 </body>
