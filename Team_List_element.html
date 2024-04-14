@@ -2,431 +2,258 @@
 <html>
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
+      background-color: #f8f9fa;
     }
-
-    #teamsTable,
-    #rankingsTable {
-      width: 60%;
-      margin: 20px auto;
-      border-collapse: collapse;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    .table-responsive {
+      margin: 20px 0;
     }
-
-    #teamsTable th,
-    #teamsTable td,
-    #rankingsTable th,
-    #rankingsTable td {
-      border: 1px solid #ccc;
-      padding: 15px;
-      text-align: center;
-      font-size: 18px;
+    .custom-table th {
+      background-color: #e9ecef;
     }
-
-    th {
-      background-color: #f2f2f2;
-      font-weight: bold;
-    }
-
-    tbody tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-
-    #eventCode,
-    #showRankings {
+    .custom-button {
       margin: 10px;
-      border-width: 4px;
-      border-radius: 8px;
-      border-color: #000000;
     }
-
-    #eventCode {
-      background-color: #63bef3;
-      padding: 10px;
-      border-width: 4px;
-      border-color: #000000;
-      font-size: 30px;
+    .event-code {
+      font-size: 24px;
       font-weight: bold;
+      color: #007bff;
     }
-
-    label,
-    button {
-      font-size: 18px;
+    .info-modal-content {
+      padding: 20px;
+      border-radius: 5px;
+      background-color: #ffffff;
+      box-shadow: 0 5px 15px rgba(0,0,0,.5);
     }
-
-    button {
-      padding: 11px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-
-    /* New Styles for Ranking Table */
-    #rankingsTable {
-      display: none;
-    }
-
-    #infoContainer {
-      margin-left: 20px;
-      align-self: center;
-    }
-
-    #mainContainer {
-      position: relative;
-    }
-
-    #teamInfo {
-  display: none;
-  position: fixed; /* Use fixed to keep it in view even on scroll */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50%; /* or any specific width */
-  text-align: center;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  background-color: #f2f2f2;
-  z-index: 20; /* Ensure it's above the backdrop */
-}
-@media (max-width: 600px) {
-  #teamInfo {
-    width: 80%;
-    padding: 10px;
-  }
-}
-    #teamInfo h2 {
-      margin-bottom: 20px;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      padding: 0;
-      background-color: #f4f4f4;
-      text-align: center;
-    }
-
-    nav {
-      background-color: #1df700;
-      margin: 20px auto;
-      text-align: center;
-      padding: 20px 0;
-      border-radius: 10px;
-      width: 1000px;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #000000;
-      margin: 0 10px;
-      font-weight: bold;
-      font-size: 20px;
-      padding: 10px;
-      border-radius: 8px;
-    }
-
-    nav a:hover {
-      background-color: #3295ff;
-    }
-
-    .modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 10;
-  display: none;
-}
-
-.modal-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 20;
-  /* Ensure your modal content stands out */
-}
-
-.blur-effect {
-  filter: blur(5px);
-  pointer-events: none;
-  user-select: none;
-}
-@media (max-width: 840px) {
-  nav {
-    width: 100%; /* Adjust the width to fit the screen */
-    padding: 0;
-    margin: 0 auto; /* Center the nav */
-    border-radius: 0; /* Optional: adjust the border-radius */
-  }
-
-  nav a {
-    display: block; /* Each link takes its own line */
-    margin: 12px 0; /* Add some margin between links */
-
-  }
-}
-
   </style>
 </head>
-
-
-
-<body onload="fetchTeams()">
-
-  <h1 style="text-align: center;">Teams and Rankings</h1>
-  <h5 style="text-align: center;">Click on a team for more info!</h5>
-  <nav id="nav" class="container">
-    <a href="./index.html">Home</a>
-    <a href="./Team_List_element.html">Teams</a>
-    <a href="./Strat_Board_w_tabs.html">Canvas</a>
-    <a href="./Checklist.html">Pre Match Checklist</a>
-    <a href="./Control_Panel.html">Control Panel</a>
-    <a href="./2423_Features.html">Features</a>
-    <a href="./Config_tab.html">Configure</a>
-  </nav>
-
-  <div style="text-align: center;">
-    <input type="checkbox" id="showRankings" onchange="fetchTeams()">
-    <label for="showRankings">Show Rankings</label><br>
-    <!-- <label for="eventCode">Enter Event Code:</label> -->
-    <h2>Event Code From Config: </h2>
-    <span id="eventCode"></span>
-    <!-- <input type="text" id="eventCode" value="2024mabos"> -->
-    <!-- <button onclick="fetchTeams()">Load</button> -->
+<body onload="fetchTeams(); updateOnlineStatus();">
+  <div class="container text-center mt-5">
+    <h1>Teams and Rankings</h1>
+    <h5>Click on a team for more info!</h5>
+    <nav class="nav justify-content-center mt-4">
+      <a class="nav-link active" href="./index.html">Home</a>
+      <a class="nav-link" href="./Team_List_element.html">Teams</a>
+      <a class="nav-link" href="./Strat_Board_w_tabs.html">Canvas</a>
+      <a class="nav-link" href="./Checklist.html">Pre Match Checklist</a>
+      <a class="nav-link" href="./2423_Features.html">Features</a>
+      <a class="nav-link" href="./Config_tab.html">Configure</a>
+    </nav>
+    <div class="mt-4">
+      <input type="checkbox" id="showRankings" class="custom-control-input" onchange="fetchTeams()">
+      <label class="custom-control-label" for="showRankings">Show Rankings</label>
+      <h2 class="mt-3">Event Code From Config: <span id="eventCode" class="event-code"></span></h2>
+    </div>
+    <div class="table-responsive">
+      <table id="teamsTable" class="table custom-table">
+        <thead>
+          <tr>
+            <th>Team Number</th>
+          </tr>
+        </thead>
+        <tbody onclick="cellClickHandler(event.target.textContent)">
+        </tbody>
+      </table>
+    </div>
+    <div class="table-responsive" style="display:none;">
+      <table id="rankingsTable" class="table custom-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Team Number</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
   </div>
-
-  <table id="teamsTable">
-    <thead>
-      <tr>
-        <th>Team Number</th>
-      </tr>
-    </thead>
-    <tbody onclick="cellClickHandler(event.target.textContent)">
-    </tbody>
-  </table>
-
-  <!-- New Rankings Table -->
-  <table id="rankingsTable">
-    <thead>
-      <tr>
-        <th>Rank</th>
-        <th>Team Number</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
-
-
-  <div id="teamInfo">
-    <h2 id="teamTitle"></h2>
-    <p id="teamLocation"></p>
-    <p id="teamSchoolName"></p>
-    <p id="teamCity"></p>
-    <p id="teamCountry"></p>
-    <p id="teamMotto"></p>
-    <p id="teamRookieYear"></p>
-    <p id="teamHomeChampionship"></p>
-    <p id="teamWebsite"></p>
-    <button id="backButton" onclick="goBack()">Back</button>
+  <!-- Bootstrap Modal for Team Info -->
+  <div class="modal fade" id="teamInfoModal" tabindex="-1" role="dialog" aria-labelledby="teamInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="teamInfoModalLabel">Team Information</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="teamLocation"></p>
+          <p id="teamSchoolName"></p>
+          <p id="teamCity"></p>
+          <p id="teamCountry"></p>
+          <p id="teamMotto"></p>
+          <p id="teamRookieYear"></p>
+          <p id="teamHomeChampionship"></p>
+          <p id="teamWebsite"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
   </div>
+<!-- Offline Modal -->
+<div class="modal" id="offlineModal" tabindex="-1" role="dialog" aria-labelledby="offlineModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="offlineModalLabel">Offline Notice</h5>
+      </div>
+      <div class="modal-body">
+        You need to be online to view the teams list.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="history.back();">Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Invalid Event Code Modal -->
+<div class="modal" id="invalidEventCodeModal" tabindex="-1" role="dialog" aria-labelledby="invalidEventCodeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="invalidEventCodeModalLabel">Invalid Event Code</h5>
+      </div>
+      <div class="modal-body">
+        The provided event code is invalid. Please check and try again.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="location.href='Config_tab.html'" type="button">Configure</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-
-
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="electron.js"></script>
   <script>
     async function fetchTeams() {
       const eventCode = localStorage.getItem('eventCode');
       document.getElementById('eventCode').textContent = eventCode;
       const showRankings = document.getElementById('showRankings').checked;
       let url;
-
+  
       if (showRankings) {
         url = `https://www.thebluealliance.com/api/v3/event/${eventCode}/rankings`;
+        document.getElementById('teamsTable').parentNode.style.display = 'none';
+        document.getElementById('rankingsTable').parentNode.style.display = 'block';
       } else {
-        url = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
+        url = `https://www.thebluealliance.com/api/v3/event/${eventCode}/teams`;
+        document.getElementById('teamsTable').parentNode.style.display = 'block';
+        document.getElementById('rankingsTable').parentNode.style.display = 'none';
       }
-
+  
       const headers = new Headers({
         'X-TBA-Auth-Key': 'J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV'
       });
-
+  
       const response = await fetch(url, { method: 'GET', headers: headers });
       const data = await response.json();
+      if (response.status !== 200) {
+  $('#invalidEventCodeModal').modal('show');
+  return;
+}
 
+  
       const table = showRankings ? document.querySelector('#rankingsTable tbody') : document.querySelector('#teamsTable tbody');
       table.innerHTML = '';
-
+  
       if (showRankings) {
-        document.getElementById('teamsTable').style.display = 'none';
-        document.getElementById('rankingsTable').style.display = 'table';
-
         data.rankings.forEach(ranking => {
           const row = document.createElement('tr');
-          const rankCell = document.createElement('td');
-          const teamCell = document.createElement('td');
-
-          rankCell.textContent = ranking.rank;
-          teamCell.textContent = ranking.team_key.replace('frc', '');
-
-          row.appendChild(rankCell);
-          row.appendChild(teamCell);
+          row.innerHTML = `<td>${ranking.rank}</td><td>${ranking.team_key.replace('frc', '')}</td>`;
           table.appendChild(row);
         });
       } else {
-        document.getElementById('teamsTable').style.display = 'table';
-        document.getElementById('rankingsTable').style.display = 'none';
-
-        const teamsSet = new Set();
-        data.forEach(match => {
-          if (match.comp_level === 'qm') {
-            match.alliances.blue.team_keys.forEach(team => teamsSet.add(team));
-            match.alliances.red.team_keys.forEach(team => teamsSet.add(team));
-          }
-        });
-        const sortedTeams = Array.from(teamsSet).sort((a, b) => a.substring(3) - b.substring(3));
-
-        for (const teamKey of sortedTeams) {
-          const teamUrl = `https://www.thebluealliance.com/api/v3/team/${teamKey}`;
-          const headers = new Headers({
-            'X-TBA-Auth-Key': 'J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV'
-          });
-
-          let teamData;
-          try {
-            const teamResponse = await fetch(teamUrl, { method: 'GET', headers: headers });
-            teamData = await teamResponse.json();
-          } catch (error) {
-            console.error(`Error fetching data for team ${teamKey}:`, error);
-          }
-
+        data.forEach(team => {
           const row = document.createElement('tr');
-          const cell = document.createElement('td');
-          cell.style.cursor = 'pointer';
-
-          if (teamData) {
-            cell.textContent = `${teamData.team_number} - ${teamData.nickname}`;
-            cell.onclick = function () { displayTeamData(teamData); };
-          } else {
-            cell.textContent = teamKey.replace('frc', '');
-          }
-
-          row.appendChild(cell);
+          row.innerHTML = `<td style="cursor:pointer;" onclick="fetchTeamData('${team.team_number}')">${team.team_number} - ${team.nickname}</td>`;
           table.appendChild(row);
-        }
+        });
       }
     }
-
-
-
-    function fetchTeamData(teamNumber) {
+  
+    async function fetchTeamData(teamNumber) {
       const teamKey = "frc" + teamNumber;
       const teamEndpoint = `https://www.thebluealliance.com/api/v3/team/${teamKey}`;
-
-      fetch(teamEndpoint, {
-        method: "GET",
-        headers: {
-          "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
-        },
-      })
-        .then((response) => response.json())
-        .then((teamData) => {
-          displayTeamData(teamData);
-        })
-        .catch((error) => {
-          console.error("Error fetching the team data:", error);
-        });
-    }
-
-    function displayTeamData(teamData) {
-      const teamsTable = document.getElementById('teamsTable');
-  const rankingsTable = document.getElementById('rankingsTable');
-  const teamInfo = document.getElementById('teamInfo');
-  const modalBackdrop = document.createElement('div');
-  modalBackdrop.className = 'modal-backdrop';
-  document.body.appendChild(modalBackdrop);
+      const headers = new Headers({
+        'X-TBA-Auth-Key': 'J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV'
+      });
   
-  modalBackdrop.style.display = 'block';
-  teamsTable.classList.add('blur-effect');
-  rankingsTable.classList.add('blur-effect');
-  
-  teamInfo.style.display = 'block';
-  document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-
-      document.getElementById('teamTitle').innerText = `Team ${teamData.team_number} - ${teamData.nickname}`;
-      document.getElementById('teamLocation').innerText = `Location: ${teamData.city}, ${teamData.state_prov}, ${teamData.country}`;
-
-      // Display the website as a clickable link if it exists
-      const teamWebsiteElement = document.getElementById('teamWebsite');
-      if (teamData.website) {
-        teamWebsiteElement.innerHTML = `Website: <a href="${teamData.website}" target="_blank">${teamData.website}</a>`;
-      } else {
-        teamWebsiteElement.innerText = 'Website: N/A';
+      try {
+        const teamResponse = await fetch(teamEndpoint, { method: 'GET', headers: headers });
+        const teamData = await teamResponse.json();
+        displayTeamData(teamData);
+      } catch (error) {
+        console.error("Error fetching the team data:", error);
+        
       }
-
-      teamsTable.style.display = 'none';
-      teamInfo.style.display = 'block';
-
-      document.getElementById('teamMotto').innerText = `Motto: ${teamData.motto ? teamData.motto : 'N/A'}`;
-      document.getElementById('teamRookieYear').innerText = `Rookie Year: ${teamData.rookie_year ? teamData.rookie_year : 'N/A'}`;
-      document.getElementById('teamHomeChampionship').innerText = `Home Championship: ${teamData.home_championship ? JSON.stringify(teamData.home_championship) : 'N/A'}`;
-      document.getElementById('teamSchoolName').innerText = `School: ${teamData.school_name ? teamData.school_name : 'N/A'}`;
-      document.getElementById('teamCity').innerText = `City: ${teamData.city ? teamData.city : 'N/A'}`;
-      document.getElementById('teamCountry').innerText = `Country: ${teamData.country ? teamData.country : 'N/A'}`;
-
-
-      document.getElementById('teamTitle').innerText = `Team ${teamNumber} - ${teamData.name}`;
-      document.getElementById('teamInfoText').innerText = teamData.description;
-      document.getElementById('teamInfo').style.display = 'block';
-
-      
     }
-
-    function closeInfo() {
-      document.getElementById('teamInfo').style.display = 'none';
-    }
-
-
-    function cellClickHandler(teamNumber) {
-      // Your logic to fetch team info
-      // Display it inside the infoContainer
-      document.getElementById('infoContainer').innerHTML = `<h3>Team ${teamNumber}</h3><p>More info about this team.</p>`;
-    }
-
-
-
-
-    function goBack() {
-  const teamsTable = document.getElementById('teamsTable');
-  const rankingsTable = document.getElementById('rankingsTable');
-  const teamInfo = document.getElementById('teamInfo');
-  const modalBackdrop = document.querySelector('.modal-backdrop');
-
-  teamsTable.style.display = 'table';
-  teamsTable.classList.remove('blur-effect');
-  rankingsTable.classList.remove('blur-effect');
   
-  teamInfo.style.display = 'none';
-  document.body.style.overflow = ''; // Re-enable scrolling
-  
-  modalBackdrop.remove(); // Remove the backdrop
+    function displayTeamData(teamData) {
+  // Check each field for null or empty string and conditionally display
+  document.getElementById('teamLocation').innerText = teamData.city && teamData.state_prov && teamData.country ? `Location: ${teamData.city}, ${teamData.state_prov}, ${teamData.country}` : '';
+  document.getElementById('teamSchoolName').innerText = teamData.school_name ? `School Name: ${teamData.school_name}` : '';
+  document.getElementById('teamCity').innerText = teamData.city ? `City: ${teamData.city}` : '';
+  document.getElementById('teamCountry').innerText = teamData.country ? `Country: ${teamData.country}` : '';
+  document.getElementById('teamMotto').innerText = teamData.motto ? `Motto: ${teamData.motto}` : '';
+  document.getElementById('teamRookieYear').innerText = teamData.rookie_year ? `Rookie Year: ${teamData.rookie_year}` : '';
+  document.getElementById('teamHomeChampionship').innerText = teamData.home_championship && Object.keys(teamData.home_championship).length > 0 ? `Home Championship: ${teamData.home_championship[Object.keys(teamData.home_championship)[0]]}` : '';
+  document.getElementById('teamWebsite').innerHTML = teamData.website ? `Website: <a href="${teamData.website}" target="_blank">${teamData.website}</a>` : '';
+
+  // Show modal only if there's any data to display
+  const modalContent = document.querySelector('.modal-body').textContent.trim();
+  if (modalContent) {
+    $('#teamInfoModal').modal('show');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    updateOnlineStatus(); // Also do an initial check
+    setInterval(updateOnlineStatus, 5000);
+});
+async function checkConnectivity() {
+  try {
+    await fetch('http://clients3.google.com/generate_204', {
+      method: 'HEAD',
+      mode: 'no-cors'
+    });
+    return true; // If fetch resolves, the network is online
+  } catch (error) {
+    return false; // If fetch rejects, the network is offline
+  }
 }
 
 
+async function updateOnlineStatus() {
+  const isConnected = await checkConnectivity();
+  if (isConnected) {
+    $('#offlineModal').modal('hide');
+  } else {
+    $('#offlineModal').modal({
+      backdrop: 'static', // Disables modal closing by clicking on the backdrop
+      keyboard: false // Disables modal closing by keyboard keys
+    });
+    $('#offlineModal').modal('show');
+  }
+}
+
+
+
   </script>
-<script src="electron.js"></script>
+  
 </body>
 
 </html>
