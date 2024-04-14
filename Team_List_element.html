@@ -175,11 +175,11 @@
           table.appendChild(row);
         });
       } else {
-        data.forEach(team => {
-          const row = document.createElement('tr');
-          row.innerHTML = `<td style="cursor:pointer;" onclick="fetchTeamData('${team.team_number}')">${team.team_number} - ${team.nickname}</td>`;
-          table.appendChild(row);
-        });
+        data.sort((a, b) => a.team_number - b.team_number).forEach(team => {
+  const row = document.createElement('tr');
+  row.innerHTML = `<td style="cursor:pointer;" onclick="fetchTeamData('${team.team_number}')">${team.team_number} - ${team.nickname}</td>`;
+  table.appendChild(row);
+});
       }
     }
   
