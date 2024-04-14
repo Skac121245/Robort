@@ -509,6 +509,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
     const ctxTeleop = canvasTeleop.getContext('2d');
     const tabLabel = document.getElementById('tabLabel')
     const matchSelect = document.getElementById('matchSelect');
+    let ApiDataUploaded = localStorage.getItem('ApiDataUploaded')
     let matches = [];
     let drawing = false;
     let drawColor = 'black';
@@ -687,8 +688,19 @@ function updateSaveButton() {
         matches = data;
         apiData = data;
         populateMatchSelect(data);
+        apiData = JSON.stringify(apiData)
+        localStorage.setItem('ApiDataUploaded', apiData)
+        apiData = data
       })
-      .catch(error => console.error('Error fetching matches:', error));
+      .catch(error => {
+        if(ApiDataUploaded != null || ApiDataUploaded != "" || ApiDataUploaded != "[]") {
+          apiData = JSON.parse(ApiDataUploaded);
+          populateMatchSelect(apiData);
+
+        } else {
+        console.error('Error fetching matches:', error)
+      }
+      });
     }
   
     function populateMatchSelect(matches) {
