@@ -100,7 +100,7 @@
     </div>
   </div>
 <!-- Offline Modal -->
-<div class="modal" id="offlineModal" tabindex="-1" role="dialog" aria-labelledby="offlineModalLabel" aria-hidden="true">
+<div class="modal" id="offlineModal" tabindex="-1" role="dialog" aria-labelledby="offlineModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -111,6 +111,22 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" onclick="history.back();">Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Invalid Event Code Modal -->
+<div class="modal" id="invalidEventCodeModal" tabindex="-1" role="dialog" aria-labelledby="invalidEventCodeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="invalidEventCodeModalLabel">Invalid Event Code</h5>
+      </div>
+      <div class="modal-body">
+        The provided event code is invalid. Please check and try again.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="location.href='Config_tab.html'" type="button">Configure</button>
       </div>
     </div>
   </div>
@@ -143,6 +159,11 @@
   
       const response = await fetch(url, { method: 'GET', headers: headers });
       const data = await response.json();
+      if (response.status !== 200) {
+  $('#invalidEventCodeModal').modal('show');
+  return;
+}
+
   
       const table = showRankings ? document.querySelector('#rankingsTable tbody') : document.querySelector('#teamsTable tbody');
       table.innerHTML = '';
