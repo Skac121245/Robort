@@ -32,7 +32,7 @@
     }
   </style>
 </head>
-<body onload="fetchTeams()">
+<body onload="fetchTeams(); updateOnlineStatus();">
   <div class="container text-center mt-5">
     <h1>Teams and Rankings</h1>
     <h5>Click on a team for more info!</h5>
@@ -99,6 +99,22 @@
       </div>
     </div>
   </div>
+<!-- Offline Modal -->
+<div class="modal" id="offlineModal" tabindex="-1" role="dialog" aria-labelledby="offlineModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="offlineModalLabel">Offline Notice</h5>
+      </div>
+      <div class="modal-body">
+        You need to be online to view the teams list.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="history.back();">Back</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -159,6 +175,7 @@
         displayTeamData(teamData);
       } catch (error) {
         console.error("Error fetching the team data:", error);
+        
       }
     }
   
@@ -179,6 +196,41 @@
     $('#teamInfoModal').modal('show');
   }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    updateOnlineStatus(); // Also do an initial check
+    setInterval(updateOnlineStatus, 5000);
+});
+async function checkConnectivity() {
+  try {
+    await fetch('http://clients3.google.com/generate_204', {
+      method: 'HEAD',
+      mode: 'no-cors'
+    });
+    return true; // If fetch resolves, the network is online
+  } catch (error) {
+    return false; // If fetch rejects, the network is offline
+  }
+}
+
+
+async function updateOnlineStatus() {
+  const isConnected = await checkConnectivity();
+  if (isConnected) {
+    $('#offlineModal').modal('hide');
+  } else {
+    $('#offlineModal').modal({
+      backdrop: 'static', // Disables modal closing by clicking on the backdrop
+      keyboard: false // Disables modal closing by keyboard keys
+    });
+    $('#offlineModal').modal('show');
+  }
+}
+
+
+
   </script>
   
 </body>
