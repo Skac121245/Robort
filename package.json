@@ -12,9 +12,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com//Skac121245Robort.git"
+    "url": "https://github.com/Skac121245/Robort.git"
   },
-  "author": "Ben Skraly",
+  "author": "Ben Skraly & Toba Banjo",
   "license": "MIT",
   "devDependencies": {
     "@electron-forge/cli": "^7.3.0",
