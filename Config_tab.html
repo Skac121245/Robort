@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="jquery-3.3.1.slim.min.js"></script>
     <link rel="stylesheet" href="bootstrap.min.css">
     <title>Robort</title>
     <style>
@@ -384,40 +385,36 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('eventCodeForm');
-    const message = document.getElementById('offlineMessage');
+//         document.addEventListener('DOMContentLoaded', function() {
+//     const form = document.getElementById('eventCodeForm');
+//     const message = document.getElementById('offlineMessage');
 
-    function checkConnectivity() {
-        fetch('https://www.gstatic.com/generate_204', {
-            method: 'HEAD',
-            mode: 'no-cors', // Added no-cors mode
-            cache: 'no-cache'
-        }).then((response) => {
-            if (response.type === "opaque") { // Handle opaque responses
-                form.classList.remove('disabled-form');
-                message.style.display = 'none';
-            } else {
-                throw new Error('Network response was not opaque.');
-            }
-        }).catch(() => {
-            form.classList.add('disabled-form');
-            message.style.display = 'block';
-        });
-    }
+//     const dns = require('dns');
 
-    // Check connectivity on initial load and periodically thereafter
-    checkConnectivity();
-    setInterval(checkConnectivity, 5000); // Check every 5 seconds
+// function checkNetworkConnectivity() {
+//     dns.resolve('www.google.com', (err) => {
+//         if (err) {
+//             form.classList.add('disabled-form');
+//             message.style.display = 'block';
+//         } else {
+//             form.classList.remove('disabled-form');
+//             message.style.display = 'none';
+//         }
+//     });
+// }
 
-    // Optional: Handle manual retry or other logic
-    form.addEventListener('submit', function(event) {
-        if (form.classList.contains('disabled-form')) {
-            event.preventDefault();
-            alert("Cannot submit while offline. Please check your connection and try again.");
-        }
-    });
-});
+//     // Check connectivity on initial load and periodically thereafter
+//     checkConnectivity();
+//     setInterval(checkConnectivity, 5000); // Check every 5 seconds
+
+//     // Optional: Handle manual retry or other logic
+//     form.addEventListener('submit', function(event) {
+//         if (form.classList.contains('disabled-form')) {
+//             event.preventDefault();
+//             alert("Cannot submit while offline. Please check your connection and try again.");
+//         }
+//     });
+// });
 
     </script>
     

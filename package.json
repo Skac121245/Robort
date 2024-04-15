@@ -1,6 +1,6 @@
 {
   "name": "robort",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "The ultimate in FRC competition gear",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "electron": "^29.1.5"
   },
   "dependencies": {
+    "dns": "^0.2.2",
     "electron-icon-maker": "^0.0.5",
     "electron-squirrel-startup": "^1.0.0",
     "jspdf": "^2.5.1",
