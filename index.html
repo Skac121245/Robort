@@ -556,7 +556,7 @@ nav.navbar {
                 writeMatchResults(apiData);
                 highlightCells();
                 isDataLoaded = true;
-                apiData = JSON.stringify(apiData);
+                apiData = JSON.parse(apiData);
                 localStorage.setItem('ApiDataUploaded', apiData)
             })
             .catch((error) => {
