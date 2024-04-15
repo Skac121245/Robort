@@ -162,7 +162,7 @@
     <div class="container mt-4 justify-content-between button-wrapper">
         <form id="addItemForm" class="mb-3">
             <div class="input-group mb-3">
-                <input type="text" id="newItems" class="form-control" placeholder="Enter items separated by spaces" aria-label="Checklist item">
+                <input type="text" id="newItems" class="form-control" placeholder="Enter items separated by commas" aria-label="Checklist item">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="submit">Add Items</button>
                 </div>
@@ -267,7 +267,7 @@ function loadChecklist() {
 
 addItemForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    const newItems = newItemsInput.value.split(' ');
+    const newItems = newItemsInput.value.split(',');
     checklistItems = checklistItems.concat(newItems.filter(item => item.trim() !== '')); // Filter out any empty strings
     localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems)); // Save updated list to localStorage
     renderChecklist(checklistItems);
