@@ -199,6 +199,11 @@ nav.navbar {
     transition: opacity 0.5s linear;
 }
 
+.down_up_container {
+    margin-top: -30px;
+    margin-bottom: 20px;
+}
+
          </style>
 </head>
 <body>
@@ -420,6 +425,13 @@ nav.navbar {
         </div>
       </div> -->
     </div><br>
+    <div class="down_up_container">
+        <div class="col-12 text-center mt-4 button-wrapper">
+            <button id="downloadMatchData" class="btn btn-success">Download Match Data</button>
+            <input type="file" id="uploadMatchData" hidden />
+            <label for="uploadMatchData" class="btn btn-info">Upload Match Data</label>
+        </div>
+    </div>
     <div class="col-12">
       <div class="text-center mb-3">
         <label for="teamHighlight" class="mr-2">Select a team to highlight:</label>
@@ -436,11 +448,6 @@ nav.navbar {
     <!-- Table will be generated and placed here dynamically -->
 </div>
 <!-- Insert the upload/download buttons here -->
-<div class="col-12 text-center mt-4 button-wrapper">
-    <button id="downloadMatchData" class="btn btn-success">Download Match Data</button>
-    <input type="file" id="uploadMatchData" hidden />
-    <label for="uploadMatchData" class="btn btn-info">Upload Match Data</label>
-</div>
 
     <footer class="text-center bg-light py-4 mt-5">
         <div class="container">

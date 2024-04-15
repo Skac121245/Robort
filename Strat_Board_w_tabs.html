@@ -2,15 +2,50 @@
 <html>
 <head>
   <title>Robort</title>
+  <header>
+    <link rel="manifest" href="/manifest.json">
+    <div class="container">
+        <h1>Robort</h1>
+        <h2>Match Planning</h2>
+    </div>
+</header>
   <style>
    body {
     font-family: 'Arial', sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0px;
     background-color: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  h2 {
+    margin:0;
+  }
+
+  header {
+    width: 100%;
+    display: block;
+    /* unicode-bidi: isolate; */
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 20px;
+    padding-top: 20px;
+    margin-bottom: 0px;
+}
+  
+
+  .container {
+    border-radius: 10px;
+    max-width: 800px;
+    margin: auto;
+    padding: 0px;
+    text-align: center;
   }
 
   
@@ -159,12 +194,12 @@
   }
 
   nav {
-    background-color: #1df700;
+    background-color: none;
     width: 1000px;
     text-align: center;
     padding: 10px 0;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
     display: flex;
     justify-content: center;
     flex-wrap: wrap; /* Ensures nav items wrap in smaller screens */
@@ -177,7 +212,7 @@
     font-weight: bold;
     font-size: 20px;
     padding: 10px;
-    background-color: #1df700; /* Makes sure each link has a green background */
+    /* background-color: #1df700; */
     border-radius: 8px;
   }
 

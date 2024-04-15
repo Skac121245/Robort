@@ -15,11 +15,11 @@
         }
 
         .navbar-light .navbar-nav .nav-link {
-            color: #15a801;
+            color: #696868;
         }
 
         .navbar-light .navbar-nav .nav-link:hover {
-            color: #02467e;
+            color: #000000;
         }
 
         #checklistContainer {
@@ -108,7 +108,38 @@
     </style>
 </head>
 <body>
-   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="./index.html">Robort</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./Team_List_element.html">Teams</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./Strat_Board_w_tabs.html">Canvas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./Checklist.html">Pre Match Checklist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./2423_Features.html">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Config_tab.html">Configure</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+   <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Pre Match Checklist</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -123,7 +154,7 @@
             <a class="nav-item nav-link" href="./Config_tab.html">Configure</a>
         </div>
     </div>
-</nav>
+</nav> -->
     <div class="container mt-4" id="checklistContainer">
         <!-- Checklist items will be dynamically inserted here -->
     </div>
