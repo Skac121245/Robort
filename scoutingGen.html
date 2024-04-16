@@ -17,6 +17,9 @@
     #exclusionList li {
         margin-bottom: 5px; /* Spacing between list items */
     }
+    .btn-spacing {
+        margin-left: 10px;
+    }
 </style>
 <link rel="stylesheet" href="jquery-ui.css">
 <script src="jquery-3.5.1.min.js"></script>
@@ -70,6 +73,7 @@
             <div class="input-group">
                 <input type="text" class="form-control" id="eventCode" required>
                 <div class="input-group-append">
+                    <button class="btn btn-success" type="button" id="uploadButton">Upload</button>
                     <button class="btn btn-secondary" type="button" id="configButton">Config</button>
                 </div>
             </div>
@@ -86,7 +90,7 @@
 
         
         
-        <button type="submit" class="btn btn-primary">Fetch Matches</button>
+        <button type="submit" class="btn btn-primary" id="fetchMatchesButton">Fetch Matches</button>
     <!-- Button to trigger modal -->
     <button type="button" class="btn btn-primary" id="excludeTeamsButton" data-toggle="modal" data-target="#excludeTeamsModal">
         Exclude Teams
@@ -107,10 +111,49 @@
         <tbody id="matchData"></tbody>
     </table>
 </div>
-
-
+<div id="messageContainer" style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1000;">
+    <div class="alert alert-success" id="successMessage"></div>
+</div>
+ <!-- Alert Modal -->
+ <div class="modal fade" id="customAlertModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel">Alert</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="modalText">This is a modal replacing an alert.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <script src="bootstrap.min.js"></script>
 <script>
+        document.addEventListener('DOMContentLoaded', function() {
+  const originalAlert = window.alert;
+  
+  window.alert = function(message) {
+    $('#modalText').text(message); // Set the text of the modal to the alert message
+    $('#customAlertModal').modal('show'); // Show the Bootstrap modal
+  };
+});
+
+    function displaySuccessMessage(message) {
+    var messageBox = $('#successMessage');
+    messageBox.text(message);
+    $('#messageContainer').fadeIn();
+
+    setTimeout(function() {
+        $('#messageContainer').fadeOut();
+    }, 4000); // Message will fade out after 4 seconds
+}
+
     $(document).ready(function() {
         $('#excludeTeamsButton').hide(); 
         // Handling the form submission
@@ -139,6 +182,11 @@
     
     // Fetch matches from The Blue Alliance API
     function fetchMatches(eventCode, teamsPerMatch) {
+        if ($('#fetchMatchesButton').text() === 'Fetch Matches from Upload') {
+        var matches = JSON.parse(localStorage.getItem('uploadedMatches'));
+        displayMatches(matches, teamsPerMatch);
+        $('#excludeTeamsButton').show();
+    } else {
         var url = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
         $.ajax({
             url: url,
@@ -156,6 +204,7 @@
                 alert('Failed to retrieve data. Check the event code and your internet connection.');
             }
         });
+    }
     }
     
     // Display the matches in the table with filtering based on team appearances
@@ -317,6 +366,39 @@ function printTable() {
     printWindow.document.close();
     printWindow.print();
 }
+$('#uploadButton').click(function() {
+    $('<input type="file" accept=".json">').on('change', function(event) {
+        var fileReader = new FileReader();
+        fileReader.onload = function(e) {
+            try {
+                var jsonData = JSON.parse(e.target.result);
+                if (Array.isArray(jsonData) && jsonData.every(match => match.hasOwnProperty('event_key'))) {
+                    localStorage.setItem('uploadedMatches', JSON.stringify(jsonData));
+                    $('#eventCode').val(jsonData[0].event_key);
+                    $('#fetchMatchesButton').text('Fetch Matches from Upload');
+                    $('<button class="btn btn-danger btn-spacing" type="button" id="cancelUploadButton">Cancel</button>')
+                        .insertAfter('#fetchMatchesButton')
+                        .click(function() {
+                            $(this).remove();
+                            $('#fetchMatchesButton').text('Fetch Matches');
+                            $('#uploadButton').prop('disabled', false);
+                            localStorage.removeItem('uploadedMatches'); // Ensures clean state
+                        });
+                    $('#uploadButton').prop('disabled', true);
+                    $('#eventCode').prop('disabled', true);
+                    displaySuccessMessage('File loaded successfully.');
+                } else {
+                    alert('Invalid JSON format');
+                }
+            } catch (error) {
+                alert('Error reading JSON file');
+            }
+        };
+        fileReader.readAsText(event.target.files[0]);
+    }).click();
+});
+
+
     </script>
 <!-- Exclude Teams Modal -->
 <!-- Exclude Teams Modal -->
