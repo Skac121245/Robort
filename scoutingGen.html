@@ -20,6 +20,9 @@
     .btn-spacing {
         margin-left: 10px;
     }
+    .highlighted {
+        background-color: #ffff99 !important;
+    }
 </style>
 <link rel="stylesheet" href="jquery-ui.css">
 <script src="jquery-3.5.1.min.js"></script>
@@ -99,7 +102,14 @@
 <button type="button" id="exportExcel" class="btn btn-success" style="display:none;">Export to Excel</button>
 <!-- Print button -->
 <button type="button" id="printButton" class="btn btn-secondary" style="display:none;" onclick="printTable()">Print</button>
-
+<div class="form-group">
+    <div id="highlightGroup" style="display:none;">
+    <label for="highlightTeamSelect"><br>Highlight Team:</label>
+    <select class="form-control" id="highlightTeamSelect">
+        <option value="">Select a team to highlight</option>
+    </select>
+</div>
+</div>
     </form>
     <table class="table table-bordered mt-4 data-table">
         <thead style="display:none;">
@@ -135,6 +145,37 @@
   </div>
 <script src="bootstrap.min.js"></script>
 <script>
+    function collectTeams(matches) {
+    var teams = [];
+    matches.forEach(function(match) {
+        match.alliances.red.team_keys.concat(match.alliances.blue.team_keys).forEach(function(team) {
+            team = team.replace('frc', ''); // Normalize team number
+            if (teams.indexOf(team) === -1) {
+                teams.push(team);
+            }
+        });
+    });
+    updateHighlightTeamDropdown(teams.sort());
+}
+
+    function updateHighlightTeamDropdown(teams) {
+    var select = $('#highlightTeamSelect');
+    select.empty(); // Clear previous options
+    select.append('<option value="">Select a team to highlight</option>');
+    teams.forEach(function(team) {
+        select.append($('<option></option>').val(team).text(team));
+    });
+}
+$('#highlightTeamSelect').change(function() {
+    var selectedTeam = $(this).val();
+    $('.team-number').each(function() {
+        $(this).css('background-color', ''); // Reset highlight for all team number spans
+        if (selectedTeam && $(this).text() === selectedTeam) {
+            $(this).css('background-color', '#ffff99'); // Apply highlight color
+        }
+    });
+});
+
         document.addEventListener('DOMContentLoaded', function() {
   const originalAlert = window.alert;
   
@@ -214,6 +255,7 @@
     $('#exportExcel').show();
     $('#printButton').show();
     $('#excludeTeamButton').show();
+    $('#highlightGroup').show();
     var matchData = '';
     let appearanceCount = {};
 
@@ -237,12 +279,13 @@
 
         // Add the match row only if there are displayed teams
         if (displayedTeams.length > 0) {
-            matchData += `<tr><td>Match ${match.match_number}</td><td>${displayedTeams.join(', ')}</td></tr>`;
+            matchData += `<tr><td>Match ${match.match_number}</td><td>${displayedTeams.map(team => `<span class='team-number'>${team}</span>`).join(', ')}</td></tr>`;
         }
     });
 
     $('#matchData').html(matchData);
     setupTeamAutocomplete(); 
+    collectTeams(matches); 
 }
 
 let exclusionList = [];
