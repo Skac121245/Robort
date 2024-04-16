@@ -1,63 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>File Upload</title>
-<style>
-  /* body { 
-    font-family: Arial, sans-serif; 
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-  } */
-  #uploadArea {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  #fileContent { 
-    white-space: pre-wrap; 
-    margin-top: 20px; 
-    border: 1px solid #ccc; 
-    padding: 10px; 
-    max-height: 300px; 
-    max-width: 300px; 
-    overflow: auto; 
-  }
-  #fileName { margin-top: 10px; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robort</title>
+  <!-- Include Bootstrap CSS from a CDN -->
+  <link href="bootstrap.min.css" rel="stylesheet">
+  <style>
+    .wide-table {
+      width: 100%;
+      border-collapse: collapse;
+      /* Collapse borders */
+    }
+
+    .wide-table th,
+    .wide-table td {
+      border: 1px solid #ddd;
+      /* Light grey border */
+      text-align: center;
+      padding: 8px;
+    }
+
+    /* Header styling */
+    .wide-table thead th {
+      background-color: #f2f2f2;
+      color: #333;
+    }
+
+    /* Zebra striping for rows */
+    .wide-table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    /* Hover effect for rows */
+    .wide-table tr:hover {
+      background-color: #ddd;
+    }
+
+    /* Highlighting style for selected team and match */
+    .highlight {
+      background-color: #32a852;
+    }
+  </style>
 </head>
-<body>
 
-<div id="uploadArea">
-  <h2>Upload a File</h2>
-  <input type="file" id="fileInput">
-  <button onclick="uploadFile()">Upload</button>
-  <div id="fileName"></div>
-</div>
+<body class="container py-4">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+    <div class="container">
+      <a class="navbar-brand" href="./index.html">Robort</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="./index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./Team_List_element.html">Teams</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./Strat_Board_w_tabs.html">Canvas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./Checklist.html">Pre Match Checklist</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./2423_Features.html">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="Config_tab.html">Configure</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <h1 class="mb-3">FRC Scouting Scheduler</h1>
+  <div class="mb-3">
+    <h2>Current Event Code From Config: <span style="color: red;" id="eventCode"></span></h2>
+  </div>
+  <div class="mb-3">
+    <label for="teamsPerMatch" class="form-label">Teams to scout per match:</label>
+    <input type="number" id="teamsPerMatch" class="form-control" min="1" value="3">
+  </div>
+  <button onclick="fetchMatches()" class="btn btn-primary">Fetch Matches</button>
 
-<div id="fileContent"></div>
+  <div id="schedule" class="mt-4"></div>
 
-<script>
-function uploadFile() {
-  const fileInput = document.getElementById('fileInput');
-  if (fileInput.files.length === 0) {
-    alert("Please select a file first.");
-    return;
-  }
+  <script>
+    function onPageLoad() {
+      const ApiDataUploaded = localStorage.getItem('ApiDataUploaded')
+      const eventCode = localStorage.getItem('eventCode');
+      let matches = []
+      if (eventCode) {
+        document.getElementById('eventCode').textContent = eventCode;
+      }
+      fetchMatches()
+      console.log("page load")
+    }
 
-  const file = fileInput.files[0];
-  document.getElementById('fileName').innerText = `File Name: ${file.name}`;
+    function fetchMatches() {
+      const eventCode = localStorage.getItem('eventCode');
+      const teamsPerMatch = parseInt(document.getElementById('teamsPerMatch').value, 10);
 
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    document.getElementById('fileContent').innerText = e.target.result;
-  };
-  reader.readAsText(file);
+      if (!eventCode) {
+        alert('Please enter an event code.');
+        return;
+      }
+
+
+      // const response = fetch(`https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`, {
+      //     headers: {
+      //         'X-TBA-Auth-Key': 'J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV'
+      //     }
+
+      // });
+      const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
+      let response = fetch(webhookEndpoint, {
+        method: "GET",
+        headers: {
+          "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Bad event code')
+          } else {
+            return matches
+
+          }
+        })
+        .then((responseData) => {
+          matches = responseData
+          if (!matches.length) {
+            document.getElementById('schedule').innerHTML = '<div class="alert alert-warning">No matches found for this event.</div>';
+            return;
+          }
+          processMatches(matches.filter(match => match.comp_level === 'qm'), teamsPerMatch);
+          matches = JSON.parse(matches)
+          localStorage.setItem('ApiDataUploaded', matches)
+
+
+        })
+        .catch((error) => {
+          const ApiDataUploaded = localStorage.getItem('ApiDataUploaded')
+          // console.log(ApiDataUploaded)
+          if ((ApiDataUploaded != null || ApiDataUploaded != "" || ApiDataUploaded != "[]")) {
+            matches = JSON.parse(ApiDataUploaded)
+            console.log(matches)
+            if (!matches.length) {
+              document.getElementById('schedule').innerHTML = '<div class="alert alert-warning">No matches found for this event.</div>';
+              return;
+            }
+            processMatches(matches.filter(match => match.comp_level === 'qm'), teamsPerMatch);
+          }
+          console.log('Network Error')
+        })
+    }
+
+    function processMatches(matches, teamsPerMatch) {
+      matches.sort((a, b) => a.match_number - b.match_number);
+
+      const teams = {};
+      matches.forEach(match => {
+        ['blue', 'red'].forEach(color => {
+          match.alliances[color].team_keys.forEach(teamKey => {
+            const teamNumber = teamKey.replace('frc', '');
+            if (!teams[teamNumber]) {
+              teams[teamNumber] = [];
+            }
+            teams[teamNumber].push(`QM ${match.match_number}`);
+          });
+        });
+      });
+
+      const scoutingSchedule = {};
+      matches.forEach(match => {
+        const matchKey = `QM ${match.match_number}`;
+        scoutingSchedule[matchKey] = [];
+      });
+
+      Object.keys(teams).forEach(team => {
+        teams[team].forEach(matchKey => {
+          if (scoutingSchedule[matchKey].length < teamsPerMatch) {
+            scoutingSchedule[matchKey].push(team);
+          }
+        });
+      });
+
+      renderSchedule(scoutingSchedule);
+    }
+
+    function renderSchedule(scoutingSchedule) {
+    let scheduleHtml = `<h2>Scouting Schedule</h2>
+                        <table class="table wide-table">
+                        <thead>
+                            <tr>
+                                <th>Match</th>`;
+    for (let i = 0; i < teamsPerMatch; i++) {
+        scheduleHtml += `<th>Team ${i + 1}</th>`;
+    }
+    scheduleHtml += `</tr>
+                        </thead>
+                        <tbody>`;
+    Object.keys(scoutingSchedule).sort((a, b) => parseInt(a.slice(3)) - parseInt(b.slice(3))).forEach(match => {
+        scheduleHtml += `<tr data-match="${match}"><td>${match}</td>`;
+        scoutingSchedule[match].forEach(team => {
+            scheduleHtml += `<td class="team-number" data-team="${team}" data-match="${match}">${team}</td>`;
+        });
+        scheduleHtml += '</tr>';
+    });
+
+    scheduleHtml += `</tbody></table>`;
+    document.getElementById('schedule').innerHTML = scheduleHtml;
+    attachClickHandlers();
 }
 
+function attachClickHandlers() {
+    document.querySelectorAll('.team-number').forEach(element => {
+        element.addEventListener('click', function() {
+            clearHighlights();
+            const teamNumber = this.getAttribute('data-team');
+            const match = this.getAttribute('data-match');
+            highlightTeamAndMatch(teamNumber, match);
+        });
+    });
+}
 
-</script>
+function clearHighlights() {
+    document.querySelectorAll('.highlight').forEach(element => {
+        element.classList.remove('highlight');
+    });
+}
+
+function highlightTeamAndMatch(teamNumber, match) {
+    document.querySelectorAll(`.team-number[data-team="${teamNumber}"]`).forEach(element => {
+        element.classList.add('highlight'); // Highlight the team number
+    });
+    document.querySelector(`tr[data-match="${match}"]`).classList.add('highlight'); // Highlight the match row
+}
+
+window.addEventListener('load', onPageLoad);
+
+  </script>
 </body>
+
 </html>
