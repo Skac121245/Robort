@@ -229,7 +229,26 @@
             </div>
         </div>
     </div> <!-- Closing container div -->
-    
+    <!-- Modal -->
+<div class="modal fade" id="customAlertModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel">Alert</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="modalText">This is a modal replacing an alert.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
     
     
 
@@ -238,6 +257,15 @@
     <script src="bootstrap.min.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+  const originalAlert = window.alert;
+  
+  window.alert = function(message) {
+    $('#modalText').text(message); // Set the text of the modal to the alert message
+    $('#customAlertModal').modal('show'); // Show the Bootstrap modal
+  };
+});
+
         document.addEventListener('DOMContentLoaded', (event) => {
     // Set the event code input placeholder to the last saved event code if it exists
     const lastEventCode = localStorage.getItem('eventCode');
