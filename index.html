@@ -594,14 +594,34 @@ nav.navbar {
     });
         }
         
-        function writeMatchResults(data) {
-            data.sort((a, b) => {
+    //     function writeMatchResults(data) {
+    //         data.sort((a, b) => {
+    //     const order = ["qm", "qf", "sf", "f"];
+    //     if (order.indexOf(a.comp_level) !== order.indexOf(b.comp_level)) {
+    //         return order.indexOf(a.comp_level) - order.indexOf(b.comp_level);
+    //     }
+    //     return a.match_number - b.match_number;
+    // });
+
+    function writeMatchResults(data) {
+        data.sort((a, b) => {
         const order = ["qm", "qf", "sf", "f"];
         if (order.indexOf(a.comp_level) !== order.indexOf(b.comp_level)) {
             return order.indexOf(a.comp_level) - order.indexOf(b.comp_level);
         }
+
+        // If competition level is 'sf', compare using set_number
+        if (a.comp_level === "sf" && b.comp_level === "sf") {
+            // console.log(a.comp_level)
+            // console.log(a.set_number)
+            // console.log(a.set_number - b.set_number)
+            return a.set_number - b.set_number;
+        }
+
         return a.match_number - b.match_number;
+        
     });
+
     
     document.addEventListener('change', function(e) {
     if (e.target && e.target.id === 'winningAllianceSelect') {
@@ -622,6 +642,8 @@ nav.navbar {
         }
     }
 });
+
+
 
 function updateTableForWinningAlliance() {
     // Access the table body where match data rows are present
@@ -794,10 +816,22 @@ function updateTableForPredictedStartTime(data) {
 
             const addedTeams = new Set();
 
+            let setOrMatchNumber = "";
+
+
 data.forEach(match => {
+    var comp_level = match.comp_level;
+    if (comp_level === "sf") {
+        setOrMatchNumber = match.set_number
+        // console.log('1')
+    } else if(comp_level === "qm" || comp_level === "f") {
+        // console.log('2')
+        setOrMatchNumber = match.match_number
+
+    }
     var row = tbody.insertRow();
     var matchInfo = [
-        match.comp_level.toUpperCase() + " " + match.match_number,
+        match.comp_level.toUpperCase() + " " + setOrMatchNumber,
         match.winning_alliance,
         ...match.alliances.blue.team_keys.map(teamKey => teamKey.substring(3)),
         ...match.alliances.red.team_keys.map(teamKey => teamKey.substring(3)),
@@ -835,6 +869,7 @@ tableContainer.appendChild(table);
 // Populate teamHighlight dropdown with unique sorted team numbers
 populateTeamHighlightDropdown(Array.from(addedTeams));
 }
+
 
 function populateTeamHighlightDropdown(teams) {
     const dropdown = document.getElementById("teamHighlight");
