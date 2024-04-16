@@ -185,6 +185,7 @@
         if ($('#fetchMatchesButton').text() === 'Fetch Matches from Upload') {
         var matches = JSON.parse(localStorage.getItem('uploadedMatches'));
         displayMatches(matches, teamsPerMatch);
+        originalMatches = matches;
         $('#excludeTeamsButton').show();
     } else {
         var url = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
