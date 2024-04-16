@@ -2,6 +2,8 @@
 <html>
 <head>
   <title>Robort</title>
+  <link href="bootstrap.min.css" rel="stylesheet">
+  <script src="jquery-3.3.1.slim.min.js"></script>
   <!-- <header>
     <link rel="manifest" href="/manifest.json">
     <div class="container">
@@ -10,7 +12,7 @@
     </div>
 </header> -->
   <style>
-   body {
+   /* body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0px;
@@ -18,7 +20,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+  } */
 
   h1 {
     margin: 0;
@@ -40,13 +42,13 @@
 }
   
 
-  .container {
+  /* .container {
     border-radius: 10px;
     max-width: 800px;
     margin: auto;
     padding: 0px;
     text-align: center;
-  }
+  } */
 
   
 
@@ -108,11 +110,12 @@
   }
 
   #eventCodeInput {
-    flex-grow: 1;
-    background-color: #ae83e3;
-    padding: 10px;
-    border-radius: 8px;
-  }
+  background-color: #ae83e3;  /* Adjust the color to your preference */
+  padding: 5px 10px;          /* Adds padding inside the span for better visibility */
+  border-radius: 5px;         /* Optional: adds rounded corners */
+  margin-top: 10px;           /* Adds space above the span */
+  display: inline-block;      /* Makes the span respect padding and margin */
+}
 
   #newOptionContainer {
     margin-bottom: 20px;
@@ -178,46 +181,27 @@
 }
 
 #matchSelect-container {
-  display: flex;
-  justify-content: space-around; /* Space out buttons evenly */
-  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
-  gap: 10px; /* Space between buttons when they wrap */
-  width: 15%; /* Adjust based on your layout needs */
-  margin-top: 10px; /* Add some space above the button container */
-  padding: 20px;
-  border-radius: 8px;
-  background-color: #8595ff;
+  margin-top: 20px; /* Adds some spacing above the dropdown on smaller screens */
 }
+
+@media (max-width: 768px) {
+  .container h2 {
+    text-align: center; /* Center-align the heading on smaller screens */
+    margin-bottom: 20px; /* Adds more space between the heading and the dropdown */
+  }
+
+  #matchSelect-container {
+    text-align: center; /* Center-align the dropdown for a balanced look */
+  }
+
+  #matchSelect {
+    width: 100%; /* Ensures the select element uses full width available */
+  }
+}
+
 
   .eventAndDirections {
     display: flex;
-  }
-
-  nav {
-    background-color: none;
-    width: 1000px;
-    text-align: center;
-    padding: 10px 0;
-    border-radius: 10px;
-    /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap; /* Ensures nav items wrap in smaller screens */
-  }
-
-  nav a {
-    text-decoration: none;
-    color: #000000;
-    margin: 0 10px;
-    font-weight: bold;
-    font-size: 20px;
-    padding: 10px;
-    /* background-color: #1df700; */
-    border-radius: 8px;
-  }
-
-  nav a:hover {
-    background-color: #3295ff;
   }
 
   .button {
@@ -248,18 +232,7 @@
   display: none;
 }
 
-/* Media Query for screens with a max-width of 600px */
-@media (max-width: 600px) {
-    nav {
-      flex-direction: column;
-    }
 
-    nav a {
-      width: 100%; /* Ensures each link uses the full width of nav */
-      margin: 5px 0; /* Adjusts spacing between links in the vertical layout */
-      padding: 0;
-    }
-  }
 
     /* Adjust the .controls container to stack its children vertically */
     .controls {
@@ -267,53 +240,16 @@
       align-items: center; /* Align items for a centered layout */
     }
 
-    .navbar {
-      background-color: rgb(255, 255, 255); /* Or any other color you want */
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 5px 260px;
-      box-shadow:0 0.125rem 0.25rem rgba(0, 0, 0, .075);
-      width: 100%; /* This makes sure your navbar spans the full width */
-      box-sizing: border-box; /* This ensures padding doesn't affect overall width */
-      margin-bottom: 20px;
-      height: 66px;
-    }
-    .navbar a {
-      margin: 0 10px;
-    font-size: 20px;
-    font-weight: 900;
-    display: block;
-    /* padding: .5rem 1rem; */
-    padding-left: 12.4px;
-    padding-right: 12.4px;
-    color: rgba(0, 0, 0, .5);
-    /* font-family:'Times New Roman', Times, serif */
-    }
+    
 
     .brand_con a {
       font-weight: 100;
       color: rgba(0, 0, 0, .9);
     }
-    .navbar a:hover {
-      background-color: #59a9ff;
-      color: rgb(0, 0, 0);
-    }
-    .container {
+    /* .container {
         max-width: 1170px;
         margin: 20px;
-    }
-    .navbar-brand {
-      display: inline-block;
-    padding-top: .3125rem;
-    padding-bottom: .3125rem;
-    margin-right: 1rem;
-    font-size: 1.25rem;
-    line-height: inherit;
-    white-space: nowrap;
-    color:rgba(0, 0, 0, .9);
-    font-weight: 100;
-    }
+    } */
 
     .flex-row {
       display: flex;
@@ -325,15 +261,6 @@
     }
 
     @media screen and (max-width: 600px) {
-      .navbar {
-        flex-direction: column;
-        padding: 10px;
-      }
-      .navbar a {
-        text-align: left;
-        padding: 10px 0; /* More vertical padding, no horizontal padding */
-        width: 100%; /* Full width links for a vertical layout */
-      }
       .flex-row {
         flex-direction: column;
       }
@@ -342,29 +269,55 @@
 </head>
 <body>
 
-  <nav class="navbar">
-    <div class="brand_con">
-      <a class="navbar-brand" href="./index.html">Robort</a>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-5">
+    <div class="container">
+        <a class="navbar-brand" href="./index.html">Robort</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="./index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Team_List_element.html">Teams</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Strat_Board_w_tabs.html">Canvas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Checklist.html">Pre Match Checklist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./2423_Features.html">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Config_tab.html">Configure</a>
+                </li>
+            </ul>
+        </div>
     </div>
-      <div class="flex-row">
-        <a id="home_nav" href="./index.html">Home</a>
-        <a href="./Team_List_element.html">Teams</a>
-        <a href="./Strat_Board_w_tabs.html">Canvas</a>
-        <a href="./Checklist.html">Pre Match Checklist</a>
-        <a href="./2423_Features.html">Features</a>
-        <a href="Config_tab.html">Configure</a>
-      </div>
-  </nav>
+</nav>
+  
 
 <div class="controls">
-
-  <h2>Current Event Code From <span id="storeOrConfig"></span>: <span id="eventCodeInput"></span></h2>
-
-
-<div id="matchSelect-container">
-<label id="matchSelect-label">Select a match</label>
-<select id="matchSelect"></select>
-</div>
+  
+  <div class="container">
+    <div class="row align-items-center"> <!-- Ensure vertical alignment is centered -->
+      <div class="col-sm-12 col-md-6">
+        <h2>Current Event Code From <span id="storeOrConfig"></span>: <span id="eventCodeInput"></span></h2>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <div id="matchSelect-container" class="form-group">
+          <label for="matchSelect" id="matchSelect-label">Select a match</label>
+          <select id="matchSelect" class="form-control"></select>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 
 <div id="other-button-container">
   
@@ -406,7 +359,7 @@
   <canvas id="autoCanvas" width="1536" height="664" style="display: show;"></canvas>
   <canvas id="teleopCanvas" width="1536" height="664" style="display: none;"></canvas>
 </div>
-
+<script src="bootstrap.min.js"></script>
 
 
 
