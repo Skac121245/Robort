@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRC Scouting Page</title>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>FRC Scouting App</h1>
+    <form id="scoutingForm">
+        <div class="form-group">
+            <label for="eventCode">Event Code:</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="eventCode" required>
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="button" id="configButton">Config</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="teamsPerMatch">Teams per Match:</label>
+            <input type="number" class="form-control" id="teamsPerMatch" min="1" max="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Fetch Matches</button>
+    </form>
+    <table class="table table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>Match</th>
+                <th>Teams</th>
+            </tr>
+        </thead>
+        <tbody id="matchData"></tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+
+$(document).ready(function() {
+    $('#scoutingForm').on('submit', function(e) {
+        e.preventDefault();
+        var eventCode = $('#eventCode').val();
+        var teamsPerMatch = parseInt($('#teamsPerMatch').val(), 10);
+        fetchMatches(eventCode, teamsPerMatch);
+    });
+
+    var storedEventCode = localStorage.getItem('eventCode');
+    if (storedEventCode) {
+        $('#eventCode').val(storedEventCode);
+        $('#eventCode').prop('disabled', true);
+    }
+
+    $('#configButton').click(function() {
+        window.location.href = 'Config_tab.html';
+    });
+});
+
+
+function fetchMatches(eventCode, teamsPerMatch) {
+    var url = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
+    $.ajax({
+        url: url,
+        headers: {
+            'X-TBA-Auth-Key': 'J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV'
+        },
+        success: function(data) {
+            data = data.filter(match => match.comp_level === 'qm');
+    data.sort((a, b) => a.match_number - b.match_number);
+    displayMatches(data, teamsPerMatch);
+        },
+        error: function() {
+            alert('Failed to retrieve data. Check the event code and your internet connection.');
+        }
+    });
+}
+
+function displayMatches(matches, teamsPerMatch) {
+    var matchData = '';
+    matches.forEach(function(match) {
+        var teams = match.alliances.red.team_keys.concat(match.alliances.blue.team_keys);
+        teams = teams.map(team => team.replace('frc', '')).slice(0, teamsPerMatch);
+        matchData += `<tr><td>Match ${match.match_number}</td><td>${teams.join(', ')}</td></tr>`;
+    });
+    $('#matchData').html(matchData);
+}
+</script>
+</body>
+</html>
