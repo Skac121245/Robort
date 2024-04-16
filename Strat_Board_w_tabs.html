@@ -2,19 +2,19 @@
 <html>
 <head>
   <title>Robort</title>
-  <header>
+  <!-- <header>
     <link rel="manifest" href="/manifest.json">
     <div class="container">
         <h1>Robort</h1>
         <h2>Match Planning</h2>
     </div>
-</header>
+</header> -->
   <style>
    body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0px;
-    background-color: #ffffff;
+    background-color: #f8f9fa;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -266,36 +266,100 @@
       flex-direction: column;
       align-items: center; /* Align items for a centered layout */
     }
+
+    .navbar {
+      background-color: rgb(255, 255, 255); /* Or any other color you want */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 260px;
+      box-shadow:0 0.125rem 0.25rem rgba(0, 0, 0, .075);
+      width: 100%; /* This makes sure your navbar spans the full width */
+      box-sizing: border-box; /* This ensures padding doesn't affect overall width */
+      margin-bottom: 20px;
+      height: 66px;
+    }
+    .navbar a {
+      margin: 0 10px;
+    font-size: 20px;
+    font-weight: 900;
+    display: block;
+    /* padding: .5rem 1rem; */
+    padding-left: 12.4px;
+    padding-right: 12.4px;
+    color: rgba(0, 0, 0, .5);
+    /* font-family:'Times New Roman', Times, serif */
+    }
+
+    .brand_con a {
+      font-weight: 100;
+      color: rgba(0, 0, 0, .9);
+    }
+    .navbar a:hover {
+      background-color: #59a9ff;
+      color: rgb(0, 0, 0);
+    }
+    .container {
+        max-width: 1170px;
+        margin: 20px;
+    }
+    .navbar-brand {
+      display: inline-block;
+    padding-top: .3125rem;
+    padding-bottom: .3125rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    line-height: inherit;
+    white-space: nowrap;
+    color:rgba(0, 0, 0, .9);
+    font-weight: 100;
+    }
+
+    .flex-row {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .nav_container {
+      /* width: 1000px; */
+    }
+
+    @media screen and (max-width: 600px) {
+      .navbar {
+        flex-direction: column;
+        padding: 10px;
+      }
+      .navbar a {
+        text-align: left;
+        padding: 10px 0; /* More vertical padding, no horizontal padding */
+        width: 100%; /* Full width links for a vertical layout */
+      }
+      .flex-row {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <nav>
-    <a href="./index.html">Home</a>
+  <nav class="navbar">
+    <div class="brand_con">
+      <a class="navbar-brand" href="./index.html">Robort</a>
+    </div>
+      <div class="flex-row">
+        <a id="home_nav" href="./index.html">Home</a>
         <a href="./Team_List_element.html">Teams</a>
         <a href="./Strat_Board_w_tabs.html">Canvas</a>
         <a href="./Checklist.html">Pre Match Checklist</a>
         <a href="./2423_Features.html">Features</a>
-        <a href="./Config_tab.html">Configure</a>
+        <a href="Config_tab.html">Configure</a>
+      </div>
   </nav>
-
 
 <div class="controls">
 
   <h2>Current Event Code From <span id="storeOrConfig"></span>: <span id="eventCodeInput"></span></h2>
 
-  <!-- <select id="eventCodeInput">
-    <option value="2024mabos">2024 Greater Boston Event</option>
-    <option value="2024mabri">2024 Week 2 BSU Event</option>
-    <option value="2024week0">2024 Week 0 Event</option>
-</select>
-<button onclick="fetchMatches()">Load Matches</button>
-</div>
-
-<div id="newOptionContainer">
-  <input type="text" id="newOptionText" placeholder="Type new option here"/>
-      <button id="addOptionButton">Add Option</button>
-</div> -->
 
 <div id="matchSelect-container">
 <label id="matchSelect-label">Select a match</label>
