@@ -510,12 +510,13 @@ nav.navbar {
         closeModalButton.addEventListener('click', closeModal);
     }
 }
-    //     document.addEventListener('DOMContentLoaded', function() {
-    //         const closeModalButton = document.querySelector('.close');
-    // closeModalButton.addEventListener('click', function() {
-    //     closeModal();
-    // });
-    // setupCloseModalEvent();
+        document.addEventListener('DOMContentLoaded', function() {
+            const closeModalButton = document.querySelector('.close');
+    closeModalButton.addEventListener('click', function() {
+        closeModal();
+    });
+    setupCloseModalEvent();
+});
     //         document.getElementById('addOptionButton').addEventListener('click', function() {
     //             const selectElement = document.getElementById('eventCode');
     //             const newOptionText = document.getElementById('newOptionText').value;
@@ -576,13 +577,15 @@ nav.navbar {
                             // clearPreviousData();
                             writeMatchResults(apiData);
                             highlightCells();
-                        } else {
-                const errorMsg = document.createElement("div");
-                errorMsg.textContent = "Invalid Event Code. Please try again.";
-                errorMsg.className = "alert alert-danger";
-                document.getElementById("matchesTableContainer").innerHTML = ''; // Clear previous data/messages
-                document.getElementById("matchesTableContainer").appendChild(errorMsg);
-        }});
+                        } 
+                        // else {
+        //         const errorMsg = document.createElement("div");
+        //         errorMsg.textContent = "Invalid Event Code. Please try again.";
+        //         errorMsg.className = "alert alert-danger";
+        //         document.getElementById("matchesTableContainer").innerHTML = ''; // Clear previous data/messages
+        //         document.getElementById("matchesTableContainer").appendChild(errorMsg);
+        // }
+    });
         }
         
         function writeMatchResults(data) {
@@ -1005,7 +1008,7 @@ document.getElementById("teamHighlight").addEventListener("change", highlightCel
         } else if (sequence === targetSequence2){
             sequence = '';
             window.location.replace("amory.html");
-        } else if (!targetSequence.startsWith(sequence) && !targetSequence2.startswith(sequence)) {
+        } else if (!targetSequence.startsWith(sequence) && !targetSequence2.startsWith(sequence)) {
             // If the current sequence doesn't match the start of the target,
             // reset it to prevent incorrect partial matches.
             sequence = '';
