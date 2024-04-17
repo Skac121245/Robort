@@ -13,6 +13,7 @@
 }
         body {
             background-color: #f8f9fa;
+            display: none;
         }
 
         nav {
@@ -518,7 +519,7 @@ function showErrorModal(errorMessage) {
       } else {
         disableDarkMode();
       }
-    
+      body.style.display = 'block';
       // Toggle dark mode on change
       toggle.addEventListener('change', function() {
         if (this.checked) {
