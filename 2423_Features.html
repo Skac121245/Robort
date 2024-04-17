@@ -231,7 +231,7 @@ body.bg-dark p, h4 {
     </style>
 </head>
 <body>
-    <div class="hamburger-menu">
+    <div class="hamburger-menu">  
         <div class="bar bg-dark"></div>
         <div class="bar bg-dark"></div>
         <div class="bar bg-dark"></div>
@@ -289,43 +289,43 @@ body.bg-dark p, h4 {
         <h4><span id="config_reminder"></span></h4>
     </div>
 
-    <div class="sections-container">
+    <div class="sections-container"> 
         <div class="section" id="auto">
             <h1>Auto</h1>
-            <p id="autoName">Select an auto...</p>
-            <select id="autoNameSelector"></select>
+            <p class="dark_mode" id="autoName">Select an auto...</p>
+            <select class="dark_mode" id="autoNameSelector"></select>
             <img id="autoImage" src="">
         </div>
 
         <div class="section" id="teleop">
             <h1>Teleop</h1>
-            <div id="pickup">
+            <div class="dark_mode" id="pickup">
                 <h3>Pickup!</h3>
-                <h4><span id="display_ground"></span></h4>
-                <h4><span id="display_source"></span></h4>
+                <h4 class="dark_mode"><span id="display_ground"></span></h4>
+                <h4 class="dark_mode"><span id="display_source"></span></h4>
             </div>
-            <div id="scoring">
+            <div class="dark_mode" id="scoring">
                 <h3>Scoring!</h3>
-                <h4><span id="speaker"></span></h4>
-                <h4><span id="distance_shoot"></span></h4>
-                <h4><span id="amp"></span></h4>
+                <h4 class="dark_mode" ><span id="speaker"></span></h4>
+                <h4 class="dark_mode"><span id="distance_shoot"></span></h4>
+                <h4 class="dark_mode"><span id="amp"></span></h4>
             </div>
         </div>
 
         <div class="section" id="endgame">
             <h1>End Game</h1>
-            <h4><span id="climb"></span></h4>
-            <h4><span id="harmony"></span></h4>
+            <h4 class="dark_mode"><span id="climb"></span></h4>
+            <h4 class="dark_mode"><span id="harmony"></span></h4>
             <h1>Pit Scouting Questions</h1>
             <h3>Dimensions</h3>
-            <h4><span id="dim_w_bump"></span> inches (yes bumpers)</h4>
-            <h4><span id="dim_wout_bump"></span> inches (no bumpers)</h4>
+            <h4 class="dark_mode"><span id="dim_w_bump"></span> inches (yes bumpers)</h4>
+            <h4 class="dark_mode"><span id="dim_wout_bump"></span> inches (no bumpers)</h4>
             <h3>Drivetrain</h3>
-            <h4><span id="drive_train"></span></h4>
+            <h4 class="dark_mode"><span id="drive_train"></span></h4>
             <h3>Weight</h3>
-            <h4><span id="weight"></span> lbs</h4>
+            <h4 class="dark_mode"><span id="weight"></span> lbs</h4>
             <h3>Intake Style</h3>
-            <h4><span id="intake_sty"></span></h4>
+            <h4 class="dark_mode"><span id="intake_sty"></span></h4>
         </div>
     </div>
     <script src="electron.js"></script>
@@ -536,6 +536,10 @@ body.bg-dark p, h4 {
           const toggle = document.getElementById('darkModeToggle');
           const body = document.body;
           const navbar = document.querySelector('.navbar'); // Select the navbar element
+          const section = document.querySelector('section'); // Select the navbar element
+          const dark = document.querySelector('dark_mode');
+
+
         
           // Function to apply dark mode classes
           function enableDarkMode() {
@@ -543,6 +547,14 @@ body.bg-dark p, h4 {
             body.classList.remove('bg-light');
             navbar.classList.add('navbar-dark');
             navbar.classList.remove('navbar-light', 'bg-white');
+            document.querySelectorAll('.dark_mode').forEach(element => {
+              element.classList.add('bg-dark');
+              element.classList.remove('bg-white');
+            });
+            document.querySelectorAll('.section').forEach(element => {
+              element.classList.add('bg-dark');
+              element.classList.remove('bg-white');
+            });
             document.querySelectorAll('.navbar').forEach(element => {
               element.classList.add('bg-dark');
               element.classList.remove('bg-white');
@@ -555,6 +567,14 @@ body.bg-dark p, h4 {
             body.classList.remove('bg-dark');
             navbar.classList.add('navbar-light');
             navbar.classList.remove('navbar-dark', 'bg-dark');
+            document.querySelectorAll('.dark_mode').forEach(element => {
+              element.classList.remove('bg-dark');
+              element.classList.add('bg-white');
+            });
+            document.querySelectorAll('.section').forEach(element => {
+              element.classList.remove('bg-dark');
+              element.classList.add('bg-white');
+            });
             document.querySelectorAll('.navbar').forEach(element => {
               element.classList.add('bg-white');
               element.classList.remove('bg-dark');
