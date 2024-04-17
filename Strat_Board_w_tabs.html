@@ -1086,6 +1086,9 @@ function drawTeamNumberBox(x, y, width, height, color, text) {
       const toggle = document.getElementById('darkModeToggle');
       const body = document.body;
       const navbar = document.querySelector('.navbar'); // Select the navbar element
+      const teleopCanvas = document.getElementById('teleopCanvas');
+      const autoCanvas = document.getElementById('autoCanvas');
+
     
       // Function to apply dark mode classes
       function enableDarkMode() {
@@ -1093,6 +1096,8 @@ function drawTeamNumberBox(x, y, width, height, color, text) {
         body.classList.remove('bg-light');
         navbar.classList.add('navbar-dark');
         navbar.classList.remove('navbar-light', 'bg-white');
+        autoCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')"
+        teleopCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')"
         document.querySelectorAll('.navbar').forEach(element => {
           element.classList.add('bg-dark');
           element.classList.remove('bg-white');
@@ -1105,6 +1110,8 @@ function drawTeamNumberBox(x, y, width, height, color, text) {
         body.classList.remove('bg-dark');
         navbar.classList.add('navbar-light');
         navbar.classList.remove('navbar-dark', 'bg-dark');
+        autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')"
+        teleopCanvas.style.backgroundImage = "url('images/crescendo_feild.png')"
         document.querySelectorAll('.navbar').forEach(element => {
           element.classList.add('bg-white');
           element.classList.remove('bg-dark');
