@@ -18,6 +18,12 @@
 <script src="bootstrap.min.js"></script>
 <script>window.jQuery.fn.modal || document.write('<script src="bootstrap.min.js"><\/script>')</script>
 <style>
+    body {
+        display: none;
+    }
+    body, nav, header, .navbar, #footer {
+      transition: background-color 0.3s ease, color 0.3s ease;
+  }
     .ui-autocomplete {
         z-index: 1051 !important; /* Bootstrap modals usually have a z-index of 1050 */
     }
@@ -151,7 +157,7 @@ body.bg-dark p, h5 {
     color: #343a40
 }
 
-body.bg-dark a {
+body.bg-dark .dropdown-item {
     background-color: #343a40 !important; /* Dark gray background */
   color: #f8f9fa !important; /* Light text for readability */
 }
@@ -255,8 +261,8 @@ body.bg-dark .dropdown-menu {
     <table class="table table-bordered mt-4 data-table">
         <thead style="display:none;">
             <tr>
-                <th>Match</th>
-                <th>Teams</th>
+                <th style="background-color: #f8f9fa !important; color:#343a40 !important;">Match</th>
+                <th style="background-color: #f8f9fa !important; color:#343a40 !important;">Teams</th>
             </tr>
         </thead>
         <tbody id="matchData"></tbody>
@@ -626,7 +632,8 @@ $('#uploadButton').click(function() {
           } else {
             disableDarkMode();
           }
-        
+          body.style.display = 'block';
+
           // Toggle dark mode on change
           toggle.addEventListener('change', function() {
             if (this.checked) {

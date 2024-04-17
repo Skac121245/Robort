@@ -10,6 +10,9 @@
     <!-- Bootstrap CSS -->
     <link href="bootstrap.min.css" rel="stylesheet">
     <style>
+          body, nav, header, .navbar, #footer, a {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
         body {
             background-color: #f8f9fa; /* Lighter shade */
             color: #212529; /* Bootstrap default font color */
@@ -321,7 +324,7 @@ body.bg-dark p {
 .navbar-dark .navbar-brand {
   color: #f8f9fa !important; /* Ensure navbar text colors are adjusted for dark mode */
 }
-body.bg-dark a {
+body.bg-dark .dropdown-item {
     background-color: #343a40 !important; /* Dark gray background */
   color: #f8f9fa !important; /* Light text for readability */
 }

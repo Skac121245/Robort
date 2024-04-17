@@ -8,8 +8,12 @@
   <!-- Bootstrap CSS -->
   <link href="bootstrap.min.css" rel="stylesheet">
   <style>
+  body, nav, header, .navbar, #footer, a, th {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
     body {
       background-color: #f8f9fa;
+      display: none;
     }
     .table-responsive {
       margin: 20px 0;
@@ -160,7 +164,7 @@ body.bg-dark th {
 .modal-content-dark a {
   color: #f8f9fa !important; /* Light text for readability */
 }
-body.bg-dark a {
+body.bg-dark .dropdown-item {
     background-color: #343a40 !important; /* Dark gray background */
   color: #f8f9fa !important; /* Light text for readability */
 }
@@ -476,7 +480,7 @@ function disableDarkMode() {
       } else {
         disableDarkMode();
       }
-    
+      body.style.display = 'block';
       // Toggle dark mode on change
       toggle.addEventListener('change', function() {
         if (this.checked) {

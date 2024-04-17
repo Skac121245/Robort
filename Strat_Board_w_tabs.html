@@ -13,6 +13,12 @@
     </div>
 </header> -->
   <style>
+  body, nav, header, .navbar, #footer, a, #backgroundImage {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+body {
+  display: none;
+}
    /* body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -1126,7 +1132,7 @@ function drawTeamNumberBox(x, y, width, height, color, text) {
       } else {
         disableDarkMode();
       }
-    
+      body.style.display = 'block';
       // Toggle dark mode on change
       toggle.addEventListener('change', function() {
         if (this.checked) {

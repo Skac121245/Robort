@@ -8,6 +8,9 @@
     <script src="bootstrap.min.js"></script>
     <link href="bootstrap.min.css" rel="stylesheet">
     <style>
+  body, nav, header, .navbar, #footer, a {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
         body {
             background-color: #f8f9fa;
         }
@@ -195,12 +198,12 @@ input:not(:checked) + .slider .moon {
   color: #f8f9fa !important; /* Light text for readability */
 }
 
-body.bg-dark div {
+body.bg-dark .mt-4 {
     background-color: #343a40 !important; /* Dark gray background */
   color: #f8f9fa !important; /* Light text for readability */
 }
 
-body.bg-dark a {
+body.bg-dark .dropdown-item {
     background-color: #343a40 !important; /* Dark gray background */
   color: #f8f9fa !important; /* Light text for readability */
 }
@@ -296,7 +299,7 @@ body.bg-dark .dropdown-item:hover {
         <!-- Checklist items will be dynamically inserted here -->
     </div>
     
-    <div class="container mt-4 justify-content-between button-wrapper">
+    <div class="container mt-4 justify-content-between button-wrapper" style="background-color:transparent !important;">
         <form id="addItemForm" class="mb-3">
             <div class="input-group mb-3">
                 <input type="text" id="newItems" class="form-control" placeholder="Enter items separated by commas" aria-label="Checklist item">

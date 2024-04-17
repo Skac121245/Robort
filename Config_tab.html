@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="bootstrap.min.css">
     <title>Robort</title>
     <style>
+  body, nav, header, .navbar, #footer, .card-body, form {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+body {
+    display: none;
+}
         .disabled-form {
     pointer-events: none; /* Disables interactions */
     opacity: 0.5; /* Grey out the appearance */
@@ -156,7 +162,7 @@ body.bg-dark p, h5 {
 .navbar-dark .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
-body.bg-dark a {
+body.bg-dark .dropdown-item {
     background-color: #343a40 !important; /* Dark gray background */
   color: #f8f9fa !important; /* Light text for readability */
 }
@@ -642,7 +648,7 @@ body.bg-dark .dropdown-menu {
   } else {
     disableDarkMode();
   }
-
+  body.style.display = 'block';
   // Toggle dark mode on change
   toggle.addEventListener('change', function() {
     if (this.checked) {
