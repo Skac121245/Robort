@@ -13,6 +13,7 @@
         body {
             background-color: #f8f9fa; /* Lighter shade */
             color: #212529; /* Bootstrap default font color */
+            display: none; /* Hide body by default */
         }
         header, .hamburger-menu .bar, nav {
             transition: all 0s ease; /* Smooth transition for all */
@@ -1330,62 +1331,63 @@ function showSuccessAlert(message) {
 }
         </script>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-              const toggle = document.getElementById('darkModeToggle');
-              const body = document.body;
-              const navbar = document.querySelector('.navbar'); // Select the navbar element
-              const footer = document.getElementById('footer');
-        
+         document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    const navbar = document.querySelector('.navbar');
+    const footer = document.getElementById('footer');
 
-              // Function to apply dark mode classes
-              function enableDarkMode() {
-                body.classList.add('bg-dark');
-                body.classList.remove('bg-light');
-                navbar.classList.add('navbar-dark');
-                navbar.classList.remove('bg-white');
-                navbar.classList.remove('navbar-light');
-                footer.classList.add('bg-dark')
-                footer.classList.remove('bg-light');
-                document.querySelectorAll('.navbar').forEach(element => {
-                  element.classList.add('bg-dark');
-                  element.classList.remove('bg-white');
-                });
-              }
-            
-              // Function to remove dark mode classes
-              function disableDarkMode() {
-                body.classList.add('bg-light');
-                body.classList.remove('bg-dark');
-                navbar.classList.add('navbar-light');
-                navbar.classList.remove('bg-dark');
-                navbar.classList.remove('navbar-dark');
-                footer.classList.remove('bg-dark')
-                footer.classList.add('bg-light');
-                document.querySelectorAll('.navbar').forEach(element => {
-                  element.classList.add('bg-white');
-                  element.classList.remove('bg-dark');
-                });
-              }
-            
-              // Initialize dark mode from local storage
-              if (localStorage.getItem('darkMode') === 'true') {
-                enableDarkMode();
-                toggle.checked = true;
-              } else {
-                disableDarkMode();
-              }
-            
-              // Toggle dark mode on change
-              toggle.addEventListener('change', function() {
-                if (this.checked) {
-                  localStorage.setItem('darkMode', 'true');
-                  enableDarkMode();
-                } else {
-                  localStorage.setItem('darkMode', 'false');
-                  disableDarkMode();
-                }
-              });
-            });
+    // Function to apply dark mode
+    function applyDarkMode() {
+        body.classList.add('bg-dark');
+        body.classList.remove('bg-light');
+        navbar.classList.add('navbar-dark');
+        navbar.classList.remove('navbar-light');
+        footer.classList.add('bg-dark');
+        footer.classList.remove('bg-light');
+        document.querySelectorAll('.navbar').forEach(element => {
+            element.classList.add('bg-dark');
+            element.classList.remove('bg-light');
+        });
+    }
+
+    // Function to remove dark mode
+    function removeDarkMode() {
+        body.classList.add('bg-light');
+        body.classList.remove('bg-dark');
+        navbar.classList.add('navbar-light');
+        navbar.classList.remove('navbar-dark');
+        footer.classList.add('bg-light');
+        footer.classList.remove('bg-dark');
+        document.querySelectorAll('.navbar').forEach(element => {
+            element.classList.add('bg-light');
+            element.classList.remove('bg-dark');
+        });
+    }
+
+    // Check local storage and apply dark mode if enabled
+    let darkModeSetting = localStorage.getItem('darkMode');
+    if (darkModeSetting === 'true') {
+        applyDarkMode();
+        toggle.checked = true;
+    } else {
+        removeDarkMode();
+    }
+
+    // Ensure the body is visible after applying the settings
+    body.style.display = 'block';
+
+    // Toggle dark mode on checkbox change and update local storage
+    toggle.addEventListener('change', function() {
+        if (this.checked) {
+            localStorage.setItem('darkMode', 'true');
+            applyDarkMode();
+        } else {
+            localStorage.setItem('darkMode', 'false');
+            removeDarkMode();
+        }
+    });
+});
 
             </script>
             
