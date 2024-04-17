@@ -325,6 +325,7 @@ body.bg-dark p {
          </style>
 </head>
 <body>
+    
      <div id="emilyModal" class="modal" tabindex="-1" role="dialog" style="display: none;">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -525,6 +526,7 @@ body.bg-dark p {
                     </div>
                 </div>
             </div>
+            
 </div>
        <div class="container mt-5">
   <div class="row">
@@ -581,11 +583,7 @@ body.bg-dark p {
 </div>
 <!-- Insert the upload/download buttons here -->
 
-    <footer class="text-center bg-light py-4 mt-5">
-        <div class="container">
-            <span>&copy; <script>document.write(new Date().getFullYear());</script> Watertown High School Robotics</span>
-        </div>
-    </footer>
+    
     <!-- Warning Modal -->
 <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -624,6 +622,11 @@ body.bg-dark p {
         </div>
     </div>
 </div>
+<footer id="footer"class="text-center bg-dark py-4 mt-5">
+    <div class="container">
+        <span>&copy; <script>document.write(new Date().getFullYear());</script> Watertown High School Robotics</span>
+    </div>
+</footer>
 
    
 <script src="jquery-3.3.1.slim.min.js"></script>
@@ -1321,6 +1324,7 @@ function showSuccessAlert(message) {
               const toggle = document.getElementById('darkModeToggle');
               const body = document.body;
               const navbar = document.querySelector('.navbar'); // Select the navbar element
+              const footer = document.getElementById('footer');
         
 
               // Function to apply dark mode classes
@@ -1329,6 +1333,8 @@ function showSuccessAlert(message) {
                 body.classList.remove('bg-light');
                 navbar.classList.add('navbar-dark');
                 navbar.classList.remove('navbar-light', 'bg-white');
+                footer.classList.add('bg-dark')
+                footer.classList.remove('bg-light');
                 document.querySelectorAll('.navbar').forEach(element => {
                   element.classList.add('bg-dark');
                   element.classList.remove('bg-white');
@@ -1341,6 +1347,8 @@ function showSuccessAlert(message) {
                 body.classList.remove('bg-dark');
                 navbar.classList.add('navbar-light');
                 navbar.classList.remove('navbar-dark', 'bg-dark');
+                footer.classList.remove('bg-dark')
+                footer.classList.add('bg-light');
                 document.querySelectorAll('.navbar').forEach(element => {
                   element.classList.add('bg-white');
                   element.classList.remove('bg-dark');
@@ -1368,6 +1376,7 @@ function showSuccessAlert(message) {
             });
 
             </script>
+            
             
          </body>
     </html>
