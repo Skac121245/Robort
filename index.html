@@ -12,7 +12,7 @@
             color: #212529; /* Bootstrap default font color */
         }
         header, .hamburger-menu .bar, nav {
-            transition: all 0.3s ease; /* Smooth transition for all */
+            transition: all 0s ease; /* Smooth transition for all */
         }
        
         #lcd-container {
@@ -1332,7 +1332,8 @@ function showSuccessAlert(message) {
                 body.classList.add('bg-dark');
                 body.classList.remove('bg-light');
                 navbar.classList.add('navbar-dark');
-                navbar.classList.remove('navbar-light', 'bg-white');
+                navbar.classList.remove('bg-white');
+                navbar.classList.remove('navbar-light');
                 footer.classList.add('bg-dark')
                 footer.classList.remove('bg-light');
                 document.querySelectorAll('.navbar').forEach(element => {
@@ -1346,7 +1347,8 @@ function showSuccessAlert(message) {
                 body.classList.add('bg-light');
                 body.classList.remove('bg-dark');
                 navbar.classList.add('navbar-light');
-                navbar.classList.remove('navbar-dark', 'bg-dark');
+                navbar.classList.remove('bg-dark');
+                navbar.classList.remove('navbar-dark');
                 footer.classList.remove('bg-dark')
                 footer.classList.add('bg-light');
                 document.querySelectorAll('.navbar').forEach(element => {
