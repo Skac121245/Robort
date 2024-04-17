@@ -2,8 +2,9 @@
 <html>
 <head>
   <title>Robort</title>
-  <link href="bootstrap.min.css" rel="stylesheet">
   <script src="jquery-3.3.1.slim.min.js"></script>
+  <script src="bootstrap.min.js"></script>
+  <link href="bootstrap.min.css" rel="stylesheet">
   <!-- <header>
     <link rel="manifest" href="/manifest.json">
     <div class="container">
@@ -12,6 +13,12 @@
     </div>
 </header> -->
   <style>
+  body, nav, header, .navbar, #footer, a, #backgroundImage {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+body {
+  display: none;
+}
    /* body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -480,7 +487,7 @@ input:not(:checked) + .slider .moon {
   <canvas id="autoCanvas" width="1536" height="664" style="display: show;"></canvas>
   <canvas id="teleopCanvas" width="1536" height="664" style="display: none;"></canvas>
 </div>
-<script src="bootstrap.min.js"></script>
+
 
 
 
@@ -1133,7 +1140,7 @@ function drawTeamNumberBox(x, y, width, height, color, text) {
       } else {
         disableDarkMode();
       }
-    
+      body.style.display = 'block';
       // Toggle dark mode on change
       toggle.addEventListener('change', function() {
         if (this.checked) {

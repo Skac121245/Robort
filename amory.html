@@ -7,6 +7,12 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="bootstrap.min.css">
     <style>
+  body, nav, header, .navbar, #footer, a {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+  body, nav, header, .navbar, #footer, a {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
         body {
             background-color: #f8f9fa; /* Lighter shade */
             color: #212529; /* Bootstrap default font color */
@@ -156,7 +162,17 @@ input:not(:checked) + .slider .moon {
 .navbar-dark .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
-
+body.bg-dark .dropdown-item {
+    background-color: #343a40 !important; /* Dark gray background */
+  color: #f8f9fa !important; /* Light text for readability */
+}
+body.bg-dark .dropdown-item:hover {
+    background-color: #f8f9fa !important; /* Light gray background */
+  color: #343a40 !important; /* Dark text for readability */
+}
+body.bg-dark .dropdown-menu {
+    background-color:  #343a40 !important; /* Light gray background */
+}
     </style>
 </head>
 <body>

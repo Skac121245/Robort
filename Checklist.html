@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pre Match Checklist</title>
+    <script src="jquery-3.3.1.slim.min.js"></script>
+    <script src="bootstrap.min.js"></script>
     <link href="bootstrap.min.css" rel="stylesheet">
     <style>
+  body, nav, header, .navbar, #footer, a {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
         body {
             background-color: #f8f9fa;
+            display: none;
         }
 
         nav {
@@ -193,9 +199,18 @@ input:not(:checked) + .slider .moon {
   color: #f8f9fa !important; /* Light text for readability */
 }
 
-body.bg-dark div {
+body.bg-dark .mt-4 {
     background-color: #343a40 !important; /* Dark gray background */
   color: #f8f9fa !important; /* Light text for readability */
+}
+
+body.bg-dark .dropdown-item {
+    background-color: #343a40 !important; /* Dark gray background */
+  color: #f8f9fa !important; /* Light text for readability */
+}
+body.bg-dark .dropdown-item:hover {
+    background-color: #f8f9fa !important; /* Light gray background */
+  color: #343a40 !important; /* Dark text for readability */
 }
 
 .bg-light, .navbar-light {
@@ -285,7 +300,7 @@ body.bg-dark div {
         <!-- Checklist items will be dynamically inserted here -->
     </div>
     
-    <div class="container mt-4 justify-content-between button-wrapper">
+    <div class="container mt-4 justify-content-between button-wrapper" style="background-color:transparent !important;">
         <form id="addItemForm" class="mb-3">
             <div class="input-group mb-3">
                 <input type="text" id="newItems" class="form-control" placeholder="Enter items separated by commas" aria-label="Checklist item">
@@ -467,8 +482,6 @@ function showErrorModal(errorMessage) {
     }, 3000); // Visible duration before starting fade-out
 }
     </script>
-<script src="jquery-3.3.1.slim.min.js"></script>
-<script src="bootstrap.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
       const toggle = document.getElementById('darkModeToggle');
@@ -514,7 +527,7 @@ function showErrorModal(errorMessage) {
       } else {
         disableDarkMode();
       }
-    
+      body.style.display = 'block';
       // Toggle dark mode on change
       toggle.addEventListener('change', function() {
         if (this.checked) {
