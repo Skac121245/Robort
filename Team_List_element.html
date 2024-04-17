@@ -31,6 +31,135 @@
       background-color: #ffffff;
       box-shadow: 0 5px 15px rgba(0,0,0,.5);
     }
+
+    /* Dark Mode Toggle Switch Styles */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 34px;
+  margin: 10px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: background-color .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: transform .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #555; /* Dark mode slider color */
+}
+
+input:checked + .slider:before {
+  transform: translateX(46px); /* Slide to the right */
+}
+
+.icon {
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  transition: opacity 0.4s; /* Smooth transition for opacity */
+}
+
+.sun {
+  left: 10px;
+  opacity: 0; /* Start hidden */
+}
+
+.moon {
+  right: 10px;
+  opacity: 1; /* Start visible */
+}
+
+input:checked + .slider .sun {
+  opacity: 1; /* Fade in when dark mode is on */
+}
+
+input:checked + .slider .moon {
+  opacity: 0; /* Fade out when dark mode is on */
+}
+
+input:not(:checked) + .slider .sun {
+  opacity: 0; /* Remain hidden when light mode is on */
+}
+
+input:not(:checked) + .slider .moon {
+  opacity: 1; /* Remain visible when light mode is on */
+}
+
+/* Styles for dark and light modes */
+.bg-dark, .navbar-dark, .card {
+  background-color: #343a40 !important; /* Dark gray background */
+  color: #f8f9fa !important; /* Light text for readability */
+}
+
+body.bg-dark table {
+  background-color: #343a40; 
+  color: #f8f9fa; 
+}
+
+body.bg-dark th {
+  color: #343a40; 
+}
+
+
+.bg-light, .navbar-light, .card {
+  background-color: #f8f9fa !important; /* Light gray background */
+  color: #343a40 !important; /* Dark text for readability */
+}
+
+/* Enhanced specific selectors for navbar in dark mode */
+.navbar-dark {
+  background-color: #343a40 !important; /* Dark gray background */
+  color: #f8f9fa !important; /* Light text for readability */
+}
+
+.navbar-dark .navbar-nav .nav-link,
+.navbar-dark .navbar-brand {
+  color: #f8f9fa !important; /* Ensure navbar text colors are adjusted for dark mode */
+}
+
+.navbar-dark .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+/* Dark mode styles for the modal */
+.modal-content-dark {
+  background-color: #343a40 !important; /* Dark background */
+  color: #f8f9fa !important; /* Light text */
+}
+.modal-header-dark, .modal-footer-dark {
+  background-color: #495057 !important; /* Slightly lighter dark background for header and footer */
+}
+.modal-content-dark a {
+  color: #f8f9fa !important; /* Light text for readability */
+}
   </style>
 </head>
 <body onload="fetchTeams(); updateOnlineStatus();">
@@ -68,6 +197,13 @@
                     <a class="nav-link" href="Config_tab.html">Configure</a>
                 </li>
             </ul>
+            <label class="switch">
+              <input type="checkbox" id="darkModeToggle">
+              <span class="slider round">
+                <span class="icon sun">🌞</span> <!-- Sun icon -->
+                <span class="icon moon">🌜</span> <!-- Moon icon -->
+              </span>
+            </label>            
         </div>
     </div>
 </nav>
@@ -283,7 +419,66 @@ async function updateOnlineStatus() {
 
 
   </script>
-  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggle = document.getElementById('darkModeToggle');
+      const body = document.body;
+      const navbar = document.querySelector('.navbar'); // Select the navbar element
+    
+      /// Function to apply dark mode classes including modal
+function enableDarkMode() {
+  body.classList.add('bg-dark');
+  body.classList.remove('bg-light');
+  navbar.classList.add('navbar-dark');
+  navbar.classList.remove('navbar-light', 'bg-white');
+  document.querySelectorAll('.navbar').forEach(element => {
+    element.classList.add('bg-dark');
+    element.classList.remove('bg-white');
+  });
+  document.querySelectorAll('.modal-content').forEach(element => {
+    element.classList.add('modal-content-dark');
+    element.classList.remove('modal-content-light');
+  });
+}
+
+// Function to remove dark mode classes including modal
+function disableDarkMode() {
+  body.classList.add('bg-light');
+  body.classList.remove('bg-dark');
+  navbar.classList.add('navbar-light');
+  navbar.classList.remove('navbar-dark', 'bg-dark');
+  document.querySelectorAll('.navbar').forEach(element => {
+    element.classList.add('bg-white');
+    element.classList.remove('bg-dark');
+  });
+  document.querySelectorAll('.modal-content').forEach(element => {
+    element.classList.add('modal-content-light');
+    element.classList.remove('modal-content-dark');
+  });
+}
+
+    
+      // Initialize dark mode from local storage
+      if (localStorage.getItem('darkMode') === 'true') {
+        enableDarkMode();
+        toggle.checked = true;
+      } else {
+        disableDarkMode();
+      }
+    
+      // Toggle dark mode on change
+      toggle.addEventListener('change', function() {
+        if (this.checked) {
+          localStorage.setItem('darkMode', 'true');
+          enableDarkMode();
+        } else {
+          localStorage.setItem('darkMode', 'false');
+          disableDarkMode();
+        }
+      });
+    });
+    </script>
+    
 </body>
 
 </html>
