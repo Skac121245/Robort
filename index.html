@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robort</title>
+    <script src="jquery-3.3.1.slim.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <!-- Bootstrap CSS -->
     <link href="bootstrap.min.css" rel="stylesheet">
     <style>
@@ -317,11 +320,21 @@ body.bg-dark p {
 .navbar-dark .navbar-brand {
   color: #f8f9fa !important; /* Ensure navbar text colors are adjusted for dark mode */
 }
+body.bg-dark a {
+    background-color: #343a40 !important; /* Dark gray background */
+  color: #f8f9fa !important; /* Light text for readability */
+}
+body.bg-dark .dropdown-item:hover {
+    background-color: #f8f9fa !important; /* Light gray background */
+  color: #343a40 !important; /* Dark text for readability */
+}
+body.bg-dark .dropdown-menu {
+    background-color:  #343a40 !important; /* Light gray background */
+}
 
 .navbar-dark .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
-
          </style>
 </head>
 <body>
@@ -628,10 +641,7 @@ body.bg-dark p {
     </div>
 </footer>
 
-   
-<script src="jquery-3.3.1.slim.min.js"></script>
-<script src="bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
     <script>
           let apiData = [];
           let isDataLoaded = false;
