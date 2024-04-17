@@ -616,6 +616,7 @@ body.bg-dark .dropdown-menu {
   const toggle = document.getElementById('darkModeToggle');
   const body = document.body;
   const navbar = document.querySelector('.navbar'); // Select the navbar element
+  const formControl = document.querySelector('form-control'); 
 
   // Function to apply dark mode classes
   function enableDarkMode() {
@@ -624,6 +625,10 @@ body.bg-dark .dropdown-menu {
     navbar.classList.add('navbar-dark');
     navbar.classList.remove('navbar-light', 'bg-white'); // Explicitly remove 'bg-white' if it's set by Bootstrap
     document.querySelectorAll('.navbar').forEach(element => {
+      element.classList.add('bg-dark');
+      element.classList.remove('bg-white');
+    });
+    document.querySelectorAll('.form-control').forEach(element => {
       element.classList.add('bg-dark');
       element.classList.remove('bg-white');
     });
@@ -638,6 +643,10 @@ body.bg-dark .dropdown-menu {
     document.querySelectorAll('.navbar').forEach(element => {
       element.classList.add('bg-white');
       element.classList.remove('bg-dark');
+    });
+    document.querySelectorAll('.form-control').forEach(element => {
+      element.classList.remove('bg-dark');
+      element.classList.add('bg-white');
     });
   }
 

@@ -4432,7 +4432,7 @@ input[type=submit].btn-block {
 .custom-control-label::before,
 .custom-file-label,
 .custom-select {
-    transition: background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
+    transition: background-color 0s ease-in-out, border-color 0s ease-in-out, box-shadow 0s ease-in-out
 }
 
 @media (prefers-reduced-motion:reduce) {

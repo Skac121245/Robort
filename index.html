@@ -417,7 +417,7 @@ body.bg-dark .dropdown-menu {
     
     
         <div id="lcd-container">
-            <h1 id="h1" class="text-center">Countdown to FRC 2023-24 World Champs</h1>
+            <h1 id="h1" class="text-center">Countdown Until We're Back On Einsteins</h1>
                 <div id="countdown" class="countdown-container">
                   <div class="group">
                     <div class="unit">
@@ -1098,7 +1098,7 @@ document.getElementById("teamHighlight").addEventListener("change", highlightCel
 
         function getTimeRemaining() {
             const now = new Date();
-            const nextKickoffDate = new Date("2024-04-17T07:00:00");
+            const nextKickoffDate = new Date("2024-04-20T07:00:00");
             let delta = Math.abs(nextKickoffDate - now) / 1000;
 
             const days = Math.floor(delta / 86400);
@@ -1352,7 +1352,13 @@ function showSuccessAlert(message) {
             element.classList.add('bg-dark');
             element.classList.remove('bg-light');
         });
+      document.querySelectorAll('.custom-select').forEach(element => {
+                  element.classList.add('bg-dark');
+                  element.classList.remove('bg-white');
+                });
     }
+
+    
 
     // Function to remove dark mode
     function removeDarkMode() {
@@ -1366,6 +1372,10 @@ function showSuccessAlert(message) {
             element.classList.add('bg-light');
             element.classList.remove('bg-dark');
         });
+        document.querySelectorAll('.custom-select').forEach(element => {
+                  element.classList.add('bg-white');
+                  element.classList.remove('bg-dark');
+                });
     }
 
     // Check local storage and apply dark mode if enabled
@@ -1391,6 +1401,7 @@ function showSuccessAlert(message) {
         }
     });
 });
+
 
             </script>
             

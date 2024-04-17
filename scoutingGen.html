@@ -611,6 +611,10 @@ $('#uploadButton').click(function() {
               element.classList.add('bg-dark');
               element.classList.remove('bg-white');
             });
+            document.querySelectorAll('.form-control').forEach(element => {
+      element.classList.add('bg-dark');
+      element.classList.remove('bg-white');
+    });
           }
         
           // Function to remove dark mode classes
@@ -623,6 +627,10 @@ $('#uploadButton').click(function() {
               element.classList.add('bg-white');
               element.classList.remove('bg-dark');
             });
+            document.querySelectorAll('.form-control').forEach(element => {
+      element.classList.remove('bg-dark');
+      element.classList.add('bg-white');
+    });
           }
         
           // Initialize dark mode from local storage
