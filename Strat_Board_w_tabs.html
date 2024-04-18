@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Robort</title>
   <script src="jquery-3.3.1.slim.min.js"></script>
@@ -12,13 +13,21 @@
     </div>
 </header> -->
   <style>
-  body, nav, header, .navbar, #footer, a, #backgroundImage {
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-body {
-  display: none;
-}
-   /* body {
+    body,
+    nav,
+    header,
+    .navbar,
+    #footer,
+    a,
+    #backgroundImage {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body {
+      display: none;
+    }
+
+    /* body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0px;
@@ -28,27 +37,27 @@ body {
     align-items: center;
   } */
 
-  h1 {
-    margin: 0;
-  }
+    h1 {
+      margin: 0;
+    }
 
-  h2 {
-    margin:0;
-  }
+    h2 {
+      margin: 0;
+    }
 
-  header {
-    width: 100%;
-    display: block;
-    /* unicode-bidi: isolate; */
-    background-color: #007bff;
-    color: #ffffff;
-    padding: 20px;
-    padding-top: 20px;
-    margin-bottom: 0px;
-}
-  
+    header {
+      width: 100%;
+      display: block;
+      /* unicode-bidi: isolate; */
+      background-color: #007bff;
+      color: #ffffff;
+      padding: 20px;
+      padding-top: 20px;
+      margin-bottom: 0px;
+    }
 
-  /* .container {
+
+    /* .container {
     border-radius: 10px;
     max-width: 800px;
     margin: auto;
@@ -56,48 +65,57 @@ body {
     text-align: center;
   } */
 
-  
 
-  .controls {
-  display: flex;
-  flex-direction: column; /* Stack controls vertically */
-  align-items: center; /* Align controls in the middle */
-  width: 100%; /* Use full width to manage spacing better */
-  gap: 15px; /* Space out the individual controls */
-}
 
-  select, button, input {
-    padding: 10px;
-    margin-right: 5px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-    transition: border-color 0.3s;
-  }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      /* Stack controls vertically */
+      align-items: center;
+      /* Align controls in the middle */
+      width: 100%;
+      /* Use full width to manage spacing better */
+      gap: 15px;
+      /* Space out the individual controls */
+    }
 
-  button {
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-    border: none;
-  }
+    select,
+    button,
+    input {
+      padding: 10px;
+      margin-right: 5px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+      transition: border-color 0.3s;
+    }
 
-  button:hover {
-    background-color: #45a049;
-  }
-  #backgroundImage {
-    /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
-  }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
 
-  #autoCanvas {
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #backgroundImage {
+      /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
+    }
+
+    #autoCanvas {
       width: 100%;
       /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
       background-image: url("images/crescendo_feild.png");
       background-size: contain;
       border: 1px solid #000;
-      width: 1152; /* Adjust based on your actual need */
-      height: 498; /* Adjust based on your actual need */
+      width: 1152;
+      /* Adjust based on your actual need */
+      height: 498;
+      /* Adjust based on your actual need */
     }
 
     #teleopCanvas {
@@ -106,152 +124,190 @@ body {
       background-image: url("images/crescendo_feild.png");
       background-size: contain;
       border: 1px solid #000;
-      width: 1152; /* Adjust based on your actual need */
-      height: 498; /* Adjust based on your actual need */
+      width: 1152;
+      /* Adjust based on your actual need */
+      height: 498;
+      /* Adjust based on your actual need */
     }
 
-  select:focus, button:focus, input:focus {
-    border-color: #4CAF50;
-    outline: none;
-  }
+    select:focus,
+    button:focus,
+    input:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
 
-  #eventCodeInput {
-  background-color: #ae83e3;  /* Adjust the color to your preference */
-  padding: 5px 10px;          /* Adds padding inside the span for better visibility */
-  border-radius: 5px;         /* Optional: adds rounded corners */
-  margin-top: 10px;           /* Adds space above the span */
-  display: inline-block;      /* Makes the span respect padding and margin */
-}
+    #eventCodeInput {
+      background-color: #ae83e3;
+      /* Adjust the color to your preference */
+      padding: 5px 10px;
+      /* Adds padding inside the span for better visibility */
+      border-radius: 5px;
+      /* Optional: adds rounded corners */
+      margin-top: 10px;
+      /* Adds space above the span */
+      display: inline-block;
+      /* Makes the span respect padding and margin */
+    }
 
-  #newOptionContainer {
-    margin-bottom: 20px;
-    background-color: #ffffff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  #button-container {
-  display: flex;
-  justify-content: space-around; /* Space out buttons evenly */
-  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
-  gap: 20px; /* Space between buttons when they wrap */
-  width: 80%; /* Adjust based on your layout needs */
-  margin-top: 10px; /* Add some space above the button container */
-}
+    #newOptionContainer {
+      margin-bottom: 20px;
+      background-color: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-#button-container button {
-  flex: 1; /* Allow buttons to grow and fill the space */
-  margin: 0 5px; /* Add margin on the sides */
-  min-width: 180px; /* Minimum width for buttons to maintain readability */
-}
+    #button-container {
+      display: flex;
+      justify-content: space-around;
+      /* Space out buttons evenly */
+      flex-wrap: wrap;
+      /* Allow buttons to wrap on smaller screens */
+      gap: 20px;
+      /* Space between buttons when they wrap */
+      width: 80%;
+      /* Adjust based on your layout needs */
+      margin-top: 10px;
+      /* Add some space above the button container */
+    }
 
-#other-button-container {
-  display: flex;
-  justify-content: space-around; /* Space out buttons evenly */
-  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
-  gap: 50px; /* Space between buttons when they wrap */
-  width: 80%; /* Adjust based on your layout needs */
-  margin-top: 10px; /* Add some space above the button container */
-}
+    #button-container button {
+      flex: 1;
+      /* Allow buttons to grow and fill the space */
+      margin: 0 5px;
+      /* Add margin on the sides */
+      min-width: 180px;
+      /* Minimum width for buttons to maintain readability */
+    }
 
-#manualTeamEntry div {
-  display: flex;
-  justify-content: center;
-  gap: 10px; /* Space between input fields */
-}
+    #other-button-container {
+      display: flex;
+      justify-content: space-around;
+      /* Space out buttons evenly */
+      flex-wrap: wrap;
+      /* Allow buttons to wrap on smaller screens */
+      gap: 50px;
+      /* Space between buttons when they wrap */
+      width: 80%;
+      /* Adjust based on your layout needs */
+      margin-top: 10px;
+      /* Add some space above the button container */
+    }
 
-#manualTeamEntry {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px; /* Space between rows */
-}
+    #manualTeamEntry div {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      /* Space between input fields */
+    }
 
-#switchTabs {
-  background-color: hsl(206, 100%, 61%);
-  /* background-color: #ff6161; */
-}
+    #manualTeamEntry {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      /* Space between rows */
+    }
 
-#clear {
-   background-color: #ff6161;
-}
+    #switchTabs {
+      background-color: hsl(206, 100%, 61%);
+      font-size: 25px;
 
-#matchSelect-label {
-  font-size: 30px;
-  font-weight: 600;
-}
+      padding: 0;
+      /* background-color: #ff6161; */
+    }
 
-#matchSelect-container {
-  margin-top: 20px; /* Adds some spacing above the dropdown on smaller screens */
-}
+    #clear {
+      background-color: #ff6161;
+      font-size: 25px;
+      padding: 0px;
+    }
 
-@media (max-width: 768px) {
-  .container h2 {
-    text-align: center; /* Center-align the heading on smaller screens */
-    margin-bottom: 20px; /* Adds more space between the heading and the dropdown */
-  }
+    #matchSelect-label {
+      font-size: 30px;
+      font-weight: 600;
+    }
 
-  #matchSelect-container {
-    text-align: center; /* Center-align the dropdown for a balanced look */
-  }
+    #matchSelect-container {
+      margin-top: 20px;
+      /* Adds some spacing above the dropdown on smaller screens */
+    }
 
-  #matchSelect {
-    width: 100%; /* Ensures the select element uses full width available */
-  }
-}
+    @media (max-width: 768px) {
+      .container h2 {
+        text-align: center;
+        /* Center-align the heading on smaller screens */
+        margin-bottom: 20px;
+        /* Adds more space between the heading and the dropdown */
+      }
+
+      #matchSelect-container {
+        text-align: center;
+        /* Center-align the dropdown for a balanced look */
+      }
+
+      #matchSelect {
+        width: 100%;
+        /* Ensures the select element uses full width available */
+      }
+    }
 
 
-  .eventAndDirections {
-    display: flex;
-  }
+    .eventAndDirections {
+      display: flex;
+    }
 
-  .button {
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  outline: none;
-  color: #fff;
-  background-color: #4CAF50;
-  border: none;
-  border-radius: 5px;
-  /* box-shadow: 0 9px #999; */
-}
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      outline: none;
+      color: #fff;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 5px;
+      /* box-shadow: 0 9px #999; */
+    }
 
-.button:hover {background-color: #45a049}
+    .button:hover {
+      background-color: #45a049
+    }
 
-.button:active {
-  background-color: #3e8e41;
-  /* box-shadow: 0 5px #666; */
-  /* transform: translateY(4px); */
-}
+    .button:active {
+      background-color: #3e8e41;
+      /* box-shadow: 0 5px #666; */
+      /* transform: translateY(4px); */
+    }
 
-/* Additional styling for file input to make it invisible */
-#uploadMatchData {
-  display: none;
-}
+    /* Additional styling for file input to make it invisible */
+    #uploadMatchData {
+      display: none;
+    }
 
 
 
     /* Adjust the .controls container to stack its children vertically */
     .controls {
       flex-direction: column;
-      align-items: center; /* Align items for a centered layout */
+      align-items: center;
+      /* Align items for a centered layout */
     }
 
-    
+
 
     .brand_con a {
       font-weight: 100;
       color: rgba(0, 0, 0, .9);
     }
+
     /* .container {
         max-width: 1170px;
         margin: 20px;
@@ -271,887 +327,934 @@ body {
         flex-direction: column;
       }
     }
+
     /* Dark Mode Toggle Switch Styles */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 80px;
-  height: 34px;
-  margin: 10px;
-}
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 80px;
+      height: 34px;
+      margin: 10px;
+    }
 
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
+    .color_indi {
+      transition: all 0.3s ease;
+      box-shadow: none;
 
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: background-color .4s;
-  border-radius: 34px;
-}
+    }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: transform .4s;
-  border-radius: 50%;
-}
+    #tabLabel {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50px;
+      /* Adjust based on your design */
+    }
 
-input:checked + .slider {
-  background-color: #555; /* Dark mode slider color */
-}
+    #toggleEraser {
+      font-size: 25px;
+      padding: 2px;
+    }
 
-input:checked + .slider:before {
-  transform: translateX(46px); /* Slide to the right */
-}
 
-.icon {
-  color: #fff;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 20px;
-  transition: opacity 0.4s; /* Smooth transition for opacity */
-}
 
-.sun {
-  left: 10px;
-  opacity: 0; /* Start hidden */
-}
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
 
-.moon {
-  right: 10px;
-  opacity: 1; /* Start visible */
-}
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: background-color .4s;
+      border-radius: 34px;
+    }
 
-input:checked + .slider .sun {
-  opacity: 1; /* Fade in when dark mode is on */
-}
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: transform .4s;
+      border-radius: 50%;
+    }
 
-input:checked + .slider .moon {
-  opacity: 0; /* Fade out when dark mode is on */
-}
+    input:checked+.slider {
+      background-color: #555;
+      /* Dark mode slider color */
+    }
 
-input:not(:checked) + .slider .sun {
-  opacity: 0; /* Remain hidden when light mode is on */
-}
+    input:checked+.slider:before {
+      transform: translateX(46px);
+      /* Slide to the right */
+    }
 
-input:not(:checked) + .slider .moon {
-  opacity: 1; /* Remain visible when light mode is on */
-}
+    .icon {
+      color: #fff;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      transition: opacity 0.4s;
+      /* Smooth transition for opacity */
+    }
 
-/* Styles for dark and light modes */
-.bg-dark, .navbar-dark, .card {
-  background-color: #343a40 !important; /* Dark gray background */
-  color: #f8f9fa !important; /* Light text for readability */
-}
+    .sun {
+      left: 10px;
+      opacity: 0;
+      /* Start hidden */
+    }
 
-.bg-light, .navbar-light, .card {
-  background-color: #f8f9fa !important; /* Light gray background */
-  color: #343a40 !important; /* Dark text for readability */
-}
+    .moon {
+      right: 10px;
+      opacity: 1;
+      /* Start visible */
+    }
 
-/* Enhanced specific selectors for navbar in dark mode */
-.navbar-dark {
-  background-color: #343a40 !important; /* Dark gray background */
-  color: #f8f9fa !important; /* Light text for readability */
-}
+    input:checked+.slider .sun {
+      opacity: 1;
+      /* Fade in when dark mode is on */
+    }
 
-.navbar-dark .navbar-nav .nav-link,
-.navbar-dark .navbar-brand {
-  color: #f8f9fa !important; /* Ensure navbar text colors are adjusted for dark mode */
-}
+    input:checked+.slider .moon {
+      opacity: 0;
+      /* Fade out when dark mode is on */
+    }
 
-.navbar-dark .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-}
+    input:not(:checked)+.slider .sun {
+      opacity: 0;
+      /* Remain hidden when light mode is on */
+    }
 
+    input:not(:checked)+.slider .moon {
+      opacity: 1;
+      /* Remain visible when light mode is on */
+    }
+
+    /* Styles for dark and light modes */
+    .bg-dark,
+    .navbar-dark,
+    .card {
+      background-color: #343a40 !important;
+      /* Dark gray background */
+      color: #f8f9fa !important;
+      /* Light text for readability */
+    }
+
+    .bg-light,
+    .navbar-light,
+    .card {
+      background-color: #f8f9fa !important;
+      /* Light gray background */
+      color: #343a40 !important;
+      /* Dark text for readability */
+    }
+
+    /* Enhanced specific selectors for navbar in dark mode */
+    .navbar-dark {
+      background-color: #343a40 !important;
+      /* Dark gray background */
+      color: #f8f9fa !important;
+      /* Light text for readability */
+    }
+
+    .navbar-dark .navbar-nav .nav-link,
+    .navbar-dark .navbar-brand {
+      color: #f8f9fa !important;
+      /* Ensure navbar text colors are adjusted for dark mode */
+    }
+
+    .navbar-dark .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+
+    .color_con {
+      flex: 1;
+    }
   </style>
 </head>
+
 <body>
 
   <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-5">
     <div class="container">
-        <a class="navbar-brand" href="./index.html">Robort</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="./index.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./Team_List_element.html">Teams</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Scouting
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="./Strat_Board_w_tabs.html">Canvas</a>
-                      <a class="dropdown-item" href="./scoutingGen.html">Scouting Generator</a>
-                  </div>
-              </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./Checklist.html">Pre Match Checklist</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./2423_Features.html">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Config_tab.html">Configure</a>
-                </li>
-            </ul>
-            <label class="switch">
-              <input type="checkbox" id="darkModeToggle">
-              <span class="slider round">
-                <span class="icon sun">🌞</span> <!-- Sun icon -->
-                <span class="icon moon">🌜</span> <!-- Moon icon -->
-              </span>
-            </label>        
-        </div>
-    </div>
-</nav>
-  
-
-<div class="controls">
-  
-  <div class="container">
-    <div class="row align-items-center"> <!-- Ensure vertical alignment is centered -->
-      <div class="col-sm-12 col-md-6">
-        <h2>Current Event Code From <span id="storeOrConfig"></span>: <span id="eventCodeInput"></span></h2>
-      </div>
-      <div class="col-sm-12 col-md-6">
-        <div id="matchSelect-container" class="form-group">
-          <label for="matchSelect" id="matchSelect-label">Select a match</label>
-          <select id="matchSelect" class="form-control"></select>
-        </div>
+      <a class="navbar-brand" href="./index.html">Robort</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="./index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./Team_List_element.html">Teams</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Scouting
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="./Strat_Board_w_tabs.html">Canvas</a>
+              <a class="dropdown-item" href="./scoutingGen.html">Scouting Generator</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./Checklist.html">Pre Match Checklist</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./2423_Features.html">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="Config_tab.html">Configure</a>
+          </li>
+        </ul>
+        <label class="switch">
+          <input type="checkbox" id="darkModeToggle">
+          <span class="slider round">
+            <span class="icon sun">🌞</span> <!-- Sun icon -->
+            <span class="icon moon">🌜</span> <!-- Moon icon -->
+          </span>
+        </label>
       </div>
     </div>
-  </div>
-  
+  </nav>
 
-<div id="other-button-container">
-  
-  <button id="saveCanvas">Save Autonomous Canvas as PNG</button>
-  
-  <input type="file" id="uploadMatchData" style="display: none;" />
-  <label for="uploadMatchData" class="button">Upload Match Data</label>
-  
-  
-  <input type="file" id="fileInput" style="display: none;"/>
-  <button id="toggleDataInputMode">Switch to Manual Team Entry</button>
-  <div id="manualTeamEntry" style="display: none;">
-    <div>
-      <input type="text" id="blue1" placeholder="Blue Team 1">
-      <input type="text" id="blue2" placeholder="Blue Team 2">
-      <input type="text" id="blue3" placeholder="Blue Team 3">
+
+  <div class="controls">
+
+    <div class="container">
+      <div class="row align-items-center"> <!-- Ensure vertical alignment is centered -->
+        <div class="col-sm-12 col-md-6">
+          <h2>Current Event Code From <span id="storeOrConfig"></span>: <span id="eventCodeInput"></span></h2>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <div id="matchSelect-container" class="form-group">
+            <label for="matchSelect" id="matchSelect-label">Select a match</label>
+            <select id="matchSelect" class="form-control"></select>
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      <input type="text" id="red1" placeholder="Red Team 1">
-      <input type="text" id="red2" placeholder="Red Team 2">
-      <input type="text" id="red3" placeholder="Red Team 3">
+
+
+    <div id="other-button-container">
+
+      <button id="saveCanvas">Save Autonomous Canvas as PNG</button>
+
+      <input type="file" id="uploadMatchData" style="display: none;" />
+      <label for="uploadMatchData" class="button">Upload Match Data</label>
+
+
+      <input type="file" id="fileInput" style="display: none;" />
+      <button id="toggleDataInputMode">Switch to Manual Team Entry</button>
+      <div id="manualTeamEntry" style="display: none;">
+        <div>
+          <input type="text" id="blue1" placeholder="Blue Team 1">
+          <input type="text" id="blue2" placeholder="Blue Team 2">
+          <input type="text" id="blue3" placeholder="Blue Team 3">
+        </div>
+        <div>
+          <input type="text" id="red1" placeholder="Red Team 1">
+          <input type="text" id="red2" placeholder="Red Team 2">
+          <input type="text" id="red3" placeholder="Red Team 3">
+        </div>
+        <button id="submitManualTeams">Submit Teams</button>
+      </div>
+
     </div>
-    <button id="submitManualTeams">Submit Teams</button>
-  </div>
-  
-</div>
 
-<div id="button-container">
-  <button id="clear"onclick="clearCanvas()">Clear</button>
-  <button id="toggleEraser">Toggle Eraser</button>
-  <button onclick="switchTabs()"id="switchTabs">Switch Tabs</button>
-  
-</div>
+    <div id="button-container">
+      <button id="clear" onclick="clearCanvas()">Clear</button>
+      <button id="toggleEraser">Toggle Eraser</button>
+      <button onclick="switchTabs()" id="switchTabs">Switch Tabs</button>
 
-<!-- <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri"/> -->
+    </div>
 
-<h1 id="tabLabel">Autonomous</h1>
-<div id="backgroundImage">
-  <canvas id="autoCanvas" width="1536" height="664" style="display: show;"></canvas>
-  <canvas id="teleopCanvas" width="1536" height="664" style="display: none;"></canvas>
-</div>
+    <!-- <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri"/> -->
+
+    <h1 id="tabLabel">Autonomous</h1>
+    <button class="color_indi" id="topRect"
+      style="background-color: transparent; width: 70%; height: 100%; display: inline-block;"></button>
 
 
 
+    <div id="backgroundImage">
+      <canvas id="autoCanvas" width="1536" height="664" style="display: show;"></canvas>
+      <canvas id="teleopCanvas" width="1536" height="664" style="display: none;"></canvas>
+    </div>
 
-<script src="jquery-3.3.1.slim.min.js"></script>
- <script src="bootstrap.min.js"></script>
-  <script src="electron.js"></script>
-<script>
-
-
-  // import saveCanvas from "save-canvas-to-image";
-  
-  let isManualEntry = false;
-  let apiData = [];
-  
-  let eraserEnabled = false;
-
-  let selectedMatchKey = "";
-  let eventCode = '';
-
-//   document.getElementById('saveAutoCanvas').addEventListener('click', function() {
-//     const canvas = document.getElementById('teleopCanvas');
-//     const dataURL = canvas.toDataURL('image/png');
-//     const link = document.createElement('a');
-//     link.download = `autonomous-${selectedMatchKey}-canvas.png`;
-//     link.href = dataURL;
-//     link.click();
-// });
-
-// document.getElementById('saveAutoCanvas').addEventListener('click', function() {
-//     // Assume canvas size is constant, and we want to preserve it
-//     const canvas = document.getElementById('teleopCanvas');
-//     const ctx = canvas.getContext('2d');
-    
-//     // Background Image
-//     const backgroundImage = new Image();
-//     backgroundImage.src = "images/crescendo_feild.png"; // Ensure this path is correct
-
-//     backgroundImage.onload = () => {
-//         // Create a temporary canvas to draw the background and the existing content
-//         const tempCanvas = document.createElement('canvas');
-//         const tempCtx = tempCanvas.getContext('2d');
-
-//         tempCanvas.width = canvas.width;
-//         tempCanvas.height = canvas.height;
-
-//         // Draw the background on the temp canvas, scaled to fit
-//         tempCtx.drawImage(backgroundImage, 0, 0, tempCanvas.width, tempCanvas.height);
-
-//         // Now draw the original canvas content on top of the background
-//         tempCtx.drawImage(canvas, 0, 0);
-
-//         // Save the combined content from the temporary canvas
-//         const dataURL = tempCanvas.toDataURL('image/png');
-//         const link = document.createElement('a');
-//         link.download = `autonomous-${selectedMatchKey}-canvas.png`; // You can change the filename
-//         link.href = dataURL;
-//         link.click();
-//     };
-// });
-
-document.getElementById('toggleDataInputMode').addEventListener('click', function() {
-  isManualEntry = !isManualEntry;
-  document.getElementById('manualTeamEntry').style.display = isManualEntry ? "block" : "none";
-  document.getElementById('matchSelect').style.display = isManualEntry ? "none" : "block";
-  document.getElementById('matchSelect-container').style.display = isManualEntry ? "none" : "flex";
-  this.textContent = isManualEntry ? "Switch to API Data Entry" : "Switch to Manual Team Entry";
-});
-
-document.getElementById('submitManualTeams').addEventListener('click', function() {
-  const blueTeams = [
-    document.getElementById('blue1').value,
-    document.getElementById('blue2').value,
-    document.getElementById('blue3').value
-  ];
-  const redTeams = [
-    document.getElementById('red1').value,
-    document.getElementById('red2').value,
-    document.getElementById('red3').value
-  ];
-  
-  // Validate input (basic example, extend as needed)
-  if (blueTeams.some(team => team === "") || redTeams.some(team => team === "")) {
-    alert("Please fill in all team numbers.");
-    return;
-  }
-  
-  // Assuming drawTeams function can handle team numbers directly
-  clearCanvas();
-  drawTeams(blueTeams.map(team => `frc${team}`), bluePositions, 'blue');
-  drawTeams(redTeams.map(team => `frc${team}`), redPositions, 'red');
-});
+    <button class="color_indi" id="bottomRect"
+      style="background-color: transparent; width: 70%; height: 100%; display: inline-block; margin-bottom: 20px;"></button>
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-  updateSaveButton();
-    const uploadButton = document.getElementById('uploadMatchData');
-    const fileInput = document.getElementById('uploadMatchData');
 
-    uploadButton.addEventListener('click', function() {
-      fileInput.click(); // Trigger file input when upload button is clicked
-    });
-
-    fileInput.addEventListener('change', function(event) {
-      uploadData(event); // Call your existing function to handle file upload
-    });
-
-  }
-
-  
-  
-  ); 
-  document.getElementById('saveCanvas').addEventListener('click', function() {
-  const canvas = isAuto ? document.getElementById('autoCanvas') : document.getElementById('teleopCanvas');
-  const ctx = canvas.getContext('2d');
-  const backgroundImage = new Image();
-  const fileName = `${isAuto ? 'autonomous' : 'teleop'}-${selectedMatchKey}-canvas.png`; // Adjust file name based on the canvas type
-  backgroundImage.src = "images/crescendo_feild.png";
-  backgroundImage.onload = () => {
-        // Create a temporary canvas to draw the background and the existing content
-        const tempCanvas = document.createElement('canvas');
-        const tempCtx = tempCanvas.getContext('2d');
-
-        tempCanvas.width = canvas.width;
-        tempCanvas.height = canvas.height;
-
-        // Draw the background on the temp canvas, scaled to fit
-        tempCtx.drawImage(backgroundImage, 0, 0, tempCanvas.width, tempCanvas.height);
-
-        // Now draw the original canvas content on top of the background
-        tempCtx.drawImage(canvas, 0, 0);
-
-        // Save the combined content from the temporary canvas
-        const dataURL = tempCanvas.toDataURL('image/png');
-        const link = document.createElement('a');
-        link.download = `${fileName}-${selectedMatchKey}-canvas.png`; // You can change the filename
-        link.href = dataURL;
-        link.click();
-    };
-});
+    <script src="jquery-3.3.1.slim.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="electron.js"></script>
+    <script>
 
 
-  function uploadData(event) {
-  // apiData = [];
-  const file = event.target.files[0];
-  if (!file) {
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    clearPreviousData(); // Make sure this function fully resets the state as needed
-    const content = e.target.result;
-    try {
-      apiData = JSON.parse(content);
-      populateMatchSelect(apiData); // This should trigger a UI update to reflect the new data
-      // Optionally, clear and reset the canvas or other UI elements as needed here
-    } catch (err) {
-      console.error('Failed to parse uploaded file:', err);
-    }
-  };
-  reader.readAsText(file);
-}
+      // import saveCanvas from "save-canvas-to-image";
 
-  // document.getElementById('addOptionButton').addEventListener('click', function() {
-  //       const selectElement = document.getElementById('eventCodeInput');
-  //       const newOptionText = document.getElementById('newOptionText').value;
-  //       if (newOptionText.trim() !== '') { // Ensure the input is not empty or just whitespace
-  //           const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
-  //           selectElement.add(newOptionElement);
-  //           document.getElementById('newOptionText').value = ''; // Clear the input field after adding
-  //       }
-  //   });
+      let isManualEntry = false;
+      let apiData = [];
+
+      let eraserEnabled = false;
+
+      let selectedMatchKey = "";
+      let eventCode = '';
+
+      //   document.getElementById('saveAutoCanvas').addEventListener('click', function() {
+      //     const canvas = document.getElementById('teleopCanvas');
+      //     const dataURL = canvas.toDataURL('image/png');
+      //     const link = document.createElement('a');
+      //     link.download = `autonomous-${selectedMatchKey}-canvas.png`;
+      //     link.href = dataURL;
+      //     link.click();
+      // });
+
+      // document.getElementById('saveAutoCanvas').addEventListener('click', function() {
+      //     // Assume canvas size is constant, and we want to preserve it
+      //     const canvas = document.getElementById('teleopCanvas');
+      //     const ctx = canvas.getContext('2d');
+
+      //     // Background Image
+      //     const backgroundImage = new Image();
+      //     backgroundImage.src = "images/crescendo_feild.png"; // Ensure this path is correct
+
+      //     backgroundImage.onload = () => {
+      //         // Create a temporary canvas to draw the background and the existing content
+      //         const tempCanvas = document.createElement('canvas');
+      //         const tempCtx = tempCanvas.getContext('2d');
+
+      //         tempCanvas.width = canvas.width;
+      //         tempCanvas.height = canvas.height;
+
+      //         // Draw the background on the temp canvas, scaled to fit
+      //         tempCtx.drawImage(backgroundImage, 0, 0, tempCanvas.width, tempCanvas.height);
+
+      //         // Now draw the original canvas content on top of the background
+      //         tempCtx.drawImage(canvas, 0, 0);
+
+      //         // Save the combined content from the temporary canvas
+      //         const dataURL = tempCanvas.toDataURL('image/png');
+      //         const link = document.createElement('a');
+      //         link.download = `autonomous-${selectedMatchKey}-canvas.png`; // You can change the filename
+      //         link.href = dataURL;
+      //         link.click();
+      //     };
+      // });
+
+      document.getElementById('toggleDataInputMode').addEventListener('click', function () {
+        isManualEntry = !isManualEntry;
+        document.getElementById('manualTeamEntry').style.display = isManualEntry ? "block" : "none";
+        document.getElementById('matchSelect').style.display = isManualEntry ? "none" : "block";
+        document.getElementById('matchSelect-container').style.display = isManualEntry ? "none" : "flex";
+        this.textContent = isManualEntry ? "Switch to API Data Entry" : "Switch to Manual Team Entry";
+      });
+
+      document.getElementById('submitManualTeams').addEventListener('click', function () {
+        const blueTeams = [
+          document.getElementById('blue1').value,
+          document.getElementById('blue2').value,
+          document.getElementById('blue3').value
+        ];
+        const redTeams = [
+          document.getElementById('red1').value,
+          document.getElementById('red2').value,
+          document.getElementById('red3').value
+        ];
+
+        // Validate input (basic example, extend as needed)
+        if (blueTeams.some(team => team === "") || redTeams.some(team => team === "")) {
+          alert("Please fill in all team numbers.");
+          return;
+        }
+
+        // Assuming drawTeams function can handle team numbers directly
+        clearCanvas();
+        drawTeams(blueTeams.map(team => `frc${team}`), bluePositions, 'blue');
+        drawTeams(redTeams.map(team => `frc${team}`), redPositions, 'red');
+      });
 
 
 
-document.getElementById('toggleEraser').addEventListener('click', function() {
-  eraserEnabled = !eraserEnabled;
-  if (isAuto) {
-        ctx = ctxAuto;
-        canvas = canvasAuto
-      } else {
-        ctx = ctxTeleop
-        canvas = canvasTeleop
+      document.addEventListener('DOMContentLoaded', function () {
+        updateSaveButton();
+        const uploadButton = document.getElementById('uploadMatchData');
+        const fileInput = document.getElementById('uploadMatchData');
+
+        uploadButton.addEventListener('click', function () {
+          fileInput.click(); // Trigger file input when upload button is clicked
+        });
+
+        fileInput.addEventListener('change', function (event) {
+          uploadData(event); // Call your existing function to handle file upload
+        });
+
       }
-  if (eraserEnabled) {
-    // Activate eraser mode
-    ctx.globalCompositeOperation = 'destination-out';
-    this.textContent = 'Switch to Pen'; // Change the button text accordingly
-  } else {
-    // Back to drawing mode
-    ctx.globalCompositeOperation = 'source-over';
-    this.textContent = 'Toggle Eraser';
-  }
-});
-  window.addEventListener("load", onPageLoad)
-    const canvasAuto = document.getElementById('autoCanvas');
-    const canvasTeleop = document.getElementById('teleopCanvas');
-    const ctxAuto = canvasAuto.getContext('2d');
-    const ctxTeleop = canvasTeleop.getContext('2d');
-    const tabLabel = document.getElementById('tabLabel')
-    const matchSelect = document.getElementById('matchSelect');
-    let ApiDataUploaded = localStorage.getItem('ApiDataUploaded')
-    let matches = [];
-    let drawing = false;
-    let drawColor = 'black';
-    let teamPositions = [];
-  
-    const bluePositions = [{x: 70, y: 150}, {x: 70, y: 380}, {x: 70, y: 500}];
-    const redPositions = [{x: 1400, y: 500}, {x: 1400, y: 380}, {x: 1400, y: 150}];
-    const teamColors = {
-      blue: ['#07f7df', '#075bf7', '#AD00FF'],
-      red: ['#FF00A5', '#f76707', '#f7c707']
-    };
-  
-    setupCanvas();
 
 
-    function onPageLoad() {
-      let isAuto = true;
+
+      );
+      document.getElementById('saveCanvas').addEventListener('click', function () {
+        const canvas = isAuto ? document.getElementById('autoCanvas') : document.getElementById('teleopCanvas');
+        const ctx = canvas.getContext('2d');
+        const backgroundImage = new Image();
+        const fileName = `${isAuto ? 'autonomous' : 'teleop'}-${selectedMatchKey}-canvas.png`; // Adjust file name based on the canvas type
+        backgroundImage.src = "images/crescendo_feild.png";
+        backgroundImage.onload = () => {
+          // Create a temporary canvas to draw the background and the existing content
+          const tempCanvas = document.createElement('canvas');
+          const tempCtx = tempCanvas.getContext('2d');
+
+          tempCanvas.width = canvas.width;
+          tempCanvas.height = canvas.height;
+
+          // Draw the background on the temp canvas, scaled to fit
+          tempCtx.drawImage(backgroundImage, 0, 0, tempCanvas.width, tempCanvas.height);
+
+          // Now draw the original canvas content on top of the background
+          tempCtx.drawImage(canvas, 0, 0);
+
+          // Save the combined content from the temporary canvas
+          const dataURL = tempCanvas.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.download = `${fileName}-${selectedMatchKey}-canvas.png`; // You can change the filename
+          link.href = dataURL;
+          link.click();
+        };
+      });
+
+
+      function uploadData(event) {
+        // apiData = [];
+        const file = event.target.files[0];
+        if (!file) {
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          clearPreviousData(); // Make sure this function fully resets the state as needed
+          const content = e.target.result;
+          try {
+            apiData = JSON.parse(content);
+            populateMatchSelect(apiData); // This should trigger a UI update to reflect the new data
+            // Optionally, clear and reset the canvas or other UI elements as needed here
+          } catch (err) {
+            console.error('Failed to parse uploaded file:', err);
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      // document.getElementById('addOptionButton').addEventListener('click', function() {
+      //       const selectElement = document.getElementById('eventCodeInput');
+      //       const newOptionText = document.getElementById('newOptionText').value;
+      //       if (newOptionText.trim() !== '') { // Ensure the input is not empty or just whitespace
+      //           const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
+      //           selectElement.add(newOptionElement);
+      //           document.getElementById('newOptionText').value = ''; // Clear the input field after adding
+      //       }
+      //   });
+
+
+
+      document.getElementById('toggleEraser').addEventListener('click', function () {
+        eraserEnabled = !eraserEnabled;
+        if (isAuto) {
+          ctx = ctxAuto;
+          canvas = canvasAuto
+        } else {
+          ctx = ctxTeleop
+          canvas = canvasTeleop
+        }
+        if (eraserEnabled) {
+          // Activate eraser mode
+          ctx.globalCompositeOperation = 'destination-out';
+          this.textContent = 'Switch to Pen'; // Change the button text accordingly
+        } else {
+          // Back to drawing mode
+          ctx.globalCompositeOperation = 'source-over';
+          this.textContent = 'Toggle Eraser';
+        }
+      });
+      window.addEventListener("load", onPageLoad)
+      const canvasAuto = document.getElementById('autoCanvas');
+      const canvasTeleop = document.getElementById('teleopCanvas');
+      const ctxAuto = canvasAuto.getContext('2d');
+      const ctxTeleop = canvasTeleop.getContext('2d');
+      const tabLabel = document.getElementById('tabLabel')
+      const matchSelect = document.getElementById('matchSelect');
+      let ApiDataUploaded = localStorage.getItem('ApiDataUploaded')
+      let matches = [];
+      let drawing = false;
+      let drawColor = 'black';
+      let teamPositions = [];
+
+      const bluePositions = [{ x: 70, y: 150 }, { x: 70, y: 380 }, { x: 70, y: 500 }];
+      const redPositions = [{ x: 1400, y: 500 }, { x: 1400, y: 380 }, { x: 1400, y: 150 }];
+      const teamColors = {
+        blue: ['#07f7df', '#075bf7', '#AD00FF'],
+        red: ['#FF00A5', '#f76707', '#f7c707']
+      };
+
+      setupCanvas();
+
+
+      function onPageLoad() {
+        let isAuto = true;
         switchTabs();
-    }
-
-    function switchTabs() {
-  if (canvasAuto.style.display !== "none") {
-    canvasTeleop.style.display = "block";
-    canvasAuto.style.display = "none";
-    isAuto = false; // Update to reflect the current canvas
-    tabLabel.textContent = "Teleop";
-  } else {
-    canvasTeleop.style.display = "none";
-    canvasAuto.style.display = "block";
-    isAuto = true; // Update to reflect the current canvas
-    tabLabel.textContent = "Autonomous";
-  }
-  updateSaveButton(); // Update the save button's label and functionality
-}
-
-function updateSaveButton() {
-  const saveButton = document.getElementById('saveCanvas');
-  if (isAuto) {
-    saveButton.textContent = 'Save Autonomous Canvas as PNG';
-  } else {
-    saveButton.textContent = 'Save Teleop Canvas as PNG';
-  }
-}
-
-
-    function setupCanvas() {
-      // Mouse Events
-      canvasAuto.addEventListener('mousedown', startDrawing);
-      canvasAuto.addEventListener('mouseup', stopDrawing);
-      canvasAuto.addEventListener('mouseout', stopDrawing);
-      canvasAuto.addEventListener('mousemove', drawMouse);
-
-      // Touch Events
-      canvasAuto.addEventListener('touchstart', startDrawingTouch, false);
-      canvasAuto.addEventListener('touchend', stopDrawingTouch, false);
-      canvasAuto.addEventListener('touchcancel', stopDrawingTouch, false);
-      canvasAuto.addEventListener('touchmove', drawTouch, false);
-
-      canvasTeleop.addEventListener('mousedown', startDrawing);
-      canvasTeleop.addEventListener('mouseup', stopDrawing);
-      canvasTeleop.addEventListener('mouseout', stopDrawing);
-      canvasTeleop.addEventListener('mousemove', drawMouse);
-
-      // Touch Events
-      canvasTeleop.addEventListener('touchstart', startDrawingTouch, false);
-      canvasTeleop.addEventListener('touchend', stopDrawingTouch, false);
-      canvasTeleop.addEventListener('touchcancel', stopDrawingTouch, false);
-      canvasTeleop.addEventListener('touchmove', drawTouch, false);
-    }
-  
-    function startDrawing(e) {
-      if (isAuto){
-        canvas = canvasAuto;
-      } else {
-        canvs = canvasTeleop;
       }
-      drawing = true;
-      var offsetX = e.offsetX || e.touches[0].clientX - canvas.getBoundingClientRect().left;
-      var offsetY = e.offsetY || e.touches[0].clientY - canvas.getBoundingClientRect().top;
-      checkTeamClick(offsetX, offsetY);
-      // Prevents the mouse down from having an additional side effect, such as starting a selection
-      e.preventDefault();
-    }
 
-    function stopDrawing() {
-      if (drawing) {
-        drawing = false;
+      function switchTabs() {
+        if (canvasAuto.style.display !== "none") {
+          canvasTeleop.style.display = "block";
+          canvasAuto.style.display = "none";
+          isAuto = false; // Update to reflect the current canvas
+          tabLabel.textContent = "Teleop";
+        } else {
+          canvasTeleop.style.display = "none";
+          canvasAuto.style.display = "block";
+          isAuto = true; // Update to reflect the current canvas
+          tabLabel.textContent = "Autonomous";
+        }
+        updateSaveButton(); // Update the save button's label and functionality
       }
-      if (isAuto) {
-        ctxAuto.beginPath();
-      } else {
-        ctxTeleop.beginPath();
-      }
-    }
 
-    function drawMouse(e) {
-      if (drawing) {
-        var offsetX = e.offsetX;
-        var offsetY = e.offsetY;
-        draw(offsetX, offsetY);
+      function updateSaveButton() {
+        const saveButton = document.getElementById('saveCanvas');
+        if (isAuto) {
+          saveButton.textContent = 'Save Autonomous Canvas as PNG';
+        } else {
+          saveButton.textContent = 'Save Teleop Canvas as PNG';
+        }
       }
-    }
 
-     function startDrawingTouch(e) {
-      if (e.touches.length == 1) { // Only track one finger
-        startDrawing(e);
+
+      function setupCanvas() {
+        // Mouse Events
+        canvasAuto.addEventListener('mousedown', startDrawing);
+        canvasAuto.addEventListener('mouseup', stopDrawing);
+        canvasAuto.addEventListener('mouseout', stopDrawing);
+        canvasAuto.addEventListener('mousemove', drawMouse);
+
+        // Touch Events
+        canvasAuto.addEventListener('touchstart', startDrawingTouch, false);
+        canvasAuto.addEventListener('touchend', stopDrawingTouch, false);
+        canvasAuto.addEventListener('touchcancel', stopDrawingTouch, false);
+        canvasAuto.addEventListener('touchmove', drawTouch, false);
+
+        canvasTeleop.addEventListener('mousedown', startDrawing);
+        canvasTeleop.addEventListener('mouseup', stopDrawing);
+        canvasTeleop.addEventListener('mouseout', stopDrawing);
+        canvasTeleop.addEventListener('mousemove', drawMouse);
+
+        // Touch Events
+        canvasTeleop.addEventListener('touchstart', startDrawingTouch, false);
+        canvasTeleop.addEventListener('touchend', stopDrawingTouch, false);
+        canvasTeleop.addEventListener('touchcancel', stopDrawingTouch, false);
+        canvasTeleop.addEventListener('touchmove', drawTouch, false);
       }
-    }
 
-    function drawTouch(e) {
-      if (isAuto) {
+      function startDrawing(e) {
+        if (isAuto) {
+          canvas = canvasAuto;
+        } else {
+          canvs = canvasTeleop;
+        }
+        drawing = true;
+        var offsetX = e.offsetX || e.touches[0].clientX - canvas.getBoundingClientRect().left;
+        var offsetY = e.offsetY || e.touches[0].clientY - canvas.getBoundingClientRect().top;
+        checkTeamClick(offsetX, offsetY);
+        // Prevents the mouse down from having an additional side effect, such as starting a selection
+        e.preventDefault();
+      }
+
+      function stopDrawing() {
         if (drawing) {
-        var touch = e.touches[0];
-        var offsetX = touch.clientX - canvasAuto.getBoundingClientRect().left;
-        var offsetY = touch.clientY - canvasAuto.getBoundingClientRect().top;
-        draw(offsetX, offsetY);
+          drawing = false;
+        }
+        if (isAuto) {
+          ctxAuto.beginPath();
+        } else {
+          ctxTeleop.beginPath();
+        }
       }
-      } else {
+
+      function drawMouse(e) {
         if (drawing) {
-          var touch = e.touches[0];
-          var offsetX = touch.clientX - canvasTeleop.getBoundingClientRect().left;
-          var offsetY = touch.clientY - canvasTeleop.getBoundingClientRect().top;
+          var offsetX = e.offsetX;
+          var offsetY = e.offsetY;
           draw(offsetX, offsetY);
         }
       }
-      e.preventDefault(); // Prevent scrolling when touching the canvas
-    }
 
-    function stopDrawingTouch() {
-      stopDrawing();
-    }
-
-    function draw(x, y) {
-      if (isAuto) {
-        ctx = ctxAuto;
-        canvas = canvasAuto
-      } else {
-        ctx = ctxTeleop
-        canvas = canvasTeleop
-      }
-  // Adjust drawing logic to support erasing
-  ctx.lineWidth = eraserEnabled ? 50 : 4; // You might want a larger lineWidth for erasing
-  ctx.lineCap = 'round';
-  ctx.strokeStyle = eraserEnabled ? 'rgba(0,0,0,1)' : drawColor; // Use the background color or fully opaque color for erasing
-
-  const scale = 1536 / canvas.clientWidth;
-      const scaleX = scale * x;
-      const scaleY = scale * y;
-      ctx.lineTo(scaleX, scaleY);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(scaleX, scaleY);
-
-  
-}
-  
-  
-    function fetchMatches() {
-      const eventCode = localStorage.getItem('eventCode');
-      document.getElementById('eventCodeInput').textContent = eventCode;
-      console.log(eventCode)
-      const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
-      fetch(webhookEndpoint, {
-        method: "GET",
-        headers: {
-          "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
-        },
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Invalid Event Code');
+      function startDrawingTouch(e) {
+        if (e.touches.length == 1) { // Only track one finger
+          startDrawing(e);
         }
-        return response.json();
-      })
-      .then(data => {
-        matches = data;
-        apiData = data;
-        populateMatchSelect(data);
-        apiData = JSON.stringify(apiData)
-        localStorage.setItem('ApiDataUploaded', apiData)
-        apiData = data
-        document.getElementById('storeOrConfig').textContent = "Config"
-      })
-      .catch(error => {
-        if(ApiDataUploaded != null || ApiDataUploaded != "" || ApiDataUploaded != "[]") {
-          apiData = JSON.parse(ApiDataUploaded);
-          populateMatchSelect(apiData);
-          selectedMatchKey = matchSelect.value;
-          console.log(selectedMatchKey)
-          const selectedMatch = apiData.find(match => match.key === selectedMatchKey);
-          const match = apiData.find(m => m.key === selectedMatchKey);
-          eventCodeStored = match.event_key
-          console.log(`eventCodeStored = ${eventCodeStored}`)
-          document.getElementById('storeOrConfig').textContent = "Local Storage"
-          document.getElementById('eventCodeInput').textContent = `${eventCodeStored}`
+      }
 
-
+      function drawTouch(e) {
+        if (isAuto) {
+          if (drawing) {
+            var touch = e.touches[0];
+            var offsetX = touch.clientX - canvasAuto.getBoundingClientRect().left;
+            var offsetY = touch.clientY - canvasAuto.getBoundingClientRect().top;
+            draw(offsetX, offsetY);
+          }
         } else {
-        console.error('Error fetching matches:', error)
+          if (drawing) {
+            var touch = e.touches[0];
+            var offsetX = touch.clientX - canvasTeleop.getBoundingClientRect().left;
+            var offsetY = touch.clientY - canvasTeleop.getBoundingClientRect().top;
+            draw(offsetX, offsetY);
+          }
+        }
+        e.preventDefault(); // Prevent scrolling when touching the canvas
       }
-      });
-    }
-  
-    function populateMatchSelect(matches) {
-      matchSelect.innerHTML = '';
-      
-      // Sort matches by their match number
-      matches.sort((a, b) => {
-        let compLevelA = a.comp_level + a.set_number.toString().padStart(3, '0') + a.match_number.toString().padStart(3, '0');
-        let compLevelB = b.comp_level + b.set_number.toString().padStart(3, '0') + b.match_number.toString().padStart(3, '0');
-        return compLevelA.localeCompare(compLevelB);
-      });
 
-      matches.forEach(match => {
-        const option = document.createElement('option');
-        option.value = match.key;
-        option.textContent = `${match.comp_level.toUpperCase()} Match ${match.match_number}`;
-        matchSelect.appendChild(option);
-      });
-    }
-  
-    function displayTeamsForSelectedMatch() {
-      selectedMatchKey = matchSelect.value;
-      const selectedMatch = apiData.find(match => match.key === selectedMatchKey);
-      const match = apiData.find(m => m.key === selectedMatchKey);
-      console.log(match)
-      if (!match) {
-        return;
+      function stopDrawingTouch() {
+        stopDrawing();
       }
-      if (!selectedMatch) {
-    console.error('Selected match not found');
-    return;
-  }
 
-      clearCanvas();
-      console.log("cleared canvas")
-      teamPositions = []; // Reset team positions
-  
-      drawTeams(match.alliances.blue.team_keys, bluePositions, 'blue');
-      drawTeams(match.alliances.red.team_keys, redPositions, 'red');
-    }
+      function draw(x, y) {
+        if (isAuto) {
+          ctx = ctxAuto;
+          canvas = canvasAuto
+        } else {
+          ctx = ctxTeleop
+          canvas = canvasTeleop
+        }
+        // Adjust drawing logic to support erasing
+        ctx.lineWidth = eraserEnabled ? 50 : 4; // You might want a larger lineWidth for erasing
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = eraserEnabled ? 'rgba(0,0,0,1)' : drawColor; // Use the background color or fully opaque color for erasing
 
-    const uploadInput = document.getElementById('uploadMatchData');
+        const scale = 1536 / canvas.clientWidth;
+        const scaleX = scale * x;
+        const scaleY = scale * y;
+        ctx.lineTo(scaleX, scaleY);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(scaleX, scaleY);
+
+
+      }
+
+
+      function fetchMatches() {
+        const eventCode = localStorage.getItem('eventCode');
+        document.getElementById('eventCodeInput').textContent = eventCode;
+        console.log(eventCode)
+        const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
+        fetch(webhookEndpoint, {
+          method: "GET",
+          headers: {
+            "X-TBA-Auth-Key": "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV",
+          },
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Invalid Event Code');
+            }
+            return response.json();
+          })
+          .then(data => {
+            matches = data;
+            apiData = data;
+            populateMatchSelect(data);
+            apiData = JSON.stringify(apiData)
+            localStorage.setItem('ApiDataUploaded', apiData)
+            apiData = data
+            document.getElementById('storeOrConfig').textContent = "Config"
+          })
+          .catch(error => {
+            if (ApiDataUploaded != null || ApiDataUploaded != "" || ApiDataUploaded != "[]") {
+              apiData = JSON.parse(ApiDataUploaded);
+              populateMatchSelect(apiData);
+              selectedMatchKey = matchSelect.value;
+              console.log(selectedMatchKey)
+              const selectedMatch = apiData.find(match => match.key === selectedMatchKey);
+              const match = apiData.find(m => m.key === selectedMatchKey);
+              eventCodeStored = match.event_key
+              console.log(`eventCodeStored = ${eventCodeStored}`)
+              document.getElementById('storeOrConfig').textContent = "Local Storage"
+              document.getElementById('eventCodeInput').textContent = `${eventCodeStored}`
+
+
+            } else {
+              console.error('Error fetching matches:', error)
+            }
+          });
+      }
+
+      function populateMatchSelect(matches) {
+        matchSelect.innerHTML = '';
+
+        // Sort matches by their match number
+        matches.sort((a, b) => {
+          let compLevelA = a.comp_level + a.set_number.toString().padStart(3, '0') + a.match_number.toString().padStart(3, '0');
+          let compLevelB = b.comp_level + b.set_number.toString().padStart(3, '0') + b.match_number.toString().padStart(3, '0');
+          return compLevelA.localeCompare(compLevelB);
+        });
+
+        matches.forEach(match => {
+          const option = document.createElement('option');
+          option.value = match.key;
+          option.textContent = `${match.comp_level.toUpperCase()} Match ${match.match_number}`;
+          matchSelect.appendChild(option);
+        });
+      }
+
+      function displayTeamsForSelectedMatch() {
+        selectedMatchKey = matchSelect.value;
+        const selectedMatch = apiData.find(match => match.key === selectedMatchKey);
+        const match = apiData.find(m => m.key === selectedMatchKey);
+        console.log(match)
+        if (!match) {
+          return;
+        }
+        if (!selectedMatch) {
+          console.error('Selected match not found');
+          return;
+        }
+
+        clearCanvas();
+        console.log("cleared canvas")
+        teamPositions = []; // Reset team positions
+
+        drawTeams(match.alliances.blue.team_keys, bluePositions, 'blue');
+        drawTeams(match.alliances.red.team_keys, redPositions, 'red');
+      }
+
+      const uploadInput = document.getElementById('uploadMatchData');
       uploadInput.addEventListener('change', uploadData);
 
-    
 
-    function clearPreviousData() {
-    // Clear the global data variable
-    apiData = [];
-    }
-  
-    function drawTeams(teamKeys, positions, alliance) {
-      if (isAuto) {
-        ctx = ctxAuto
-      } else {
-        ctx = ctxTeleop
+
+      function clearPreviousData() {
+        // Clear the global data variable
+        apiData = [];
       }
-  ctx.font = '40px Arial'; // Ensure font size is set before measuring text
-  const padding = 10; // Padding around the text for the outline box
 
-  teamKeys.forEach((key, index) => {
-    clearCanvas()
-    const teamNumber = key.replace('frc', '');
-    const position = positions[index];
-    const color = teamColors[alliance][index];
-
-    const textMetrics = ctx.measureText(teamNumber);
-    const textWidth = textMetrics.width;
-    const rectHeight = 50; // Example height of clickable area
-    const rectY = position.y - 40; // Adjust based on font size and desired box size
-
-    // Draw the team number and background
-    ctx.fillStyle = color;
-    ctx.fillRect(position.x - (padding / 2), rectY, textWidth + padding, rectHeight);
-    ctx.fillStyle = 'black';
-    ctx.fillText(teamNumber, position.x, position.y);
-
-    // Store positions for click detection
-    teamPositions.push({
-      x: position.x - (padding / 2),
-      y: rectY,
-      width: textWidth + padding, 
-      height: rectHeight,
-      color: color,
-      text: teamNumber
-    });
-  });
-}
-
-  
-    function drawText(text, x, y, color, index, alliance) {
-      if (isAuto) {
-        ctx = ctxAuto
-      } else {
-        ctx = ctxTeleop
-      }
-    // Calculate text width for background and click detection area
-    ctx.font = '40px Arial'; // Ensure font size is set before measuring text
-    const textMetrics = ctx.measureText(text);
-    const textWidth = textMetrics.width;
-    const padding = 10; // Padding around the text for the outline box
-
-    // Adjust position for the rectangle to be centered on the text if necessary
-    const rectX = x - padding / 2;
-    const rectY = y - 40; // Adjust based on font size and desired box size
-    const rectWidth = textWidth + padding;
-    const rectHeight = 50;
-
-    // Draw the colored background rectangle
-    ctx.fillStyle = color;
-    ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
-
-    // Draw the team number text on top
-    ctx.fillStyle = 'black'; // Contrast color for text
-    ctx.fillText(text, x, y);
-  
-    document.getElementById('tabLabel').style.backgroundColor = "blue"
-
-    // Update the teamPositions array for click detection
-    teamPositions.push({
-      x: rectX,
-      y: rectY,
-      width: rectWidth,
-      height: rectHeight,
-      color: color, // Assign the drawing color for when the area is clicked
-    });
-  }
-
-  function checkTeamClick(x, y) {
-    let scale, scaledX, scaledY, colorFound = false;
-
-    if (isAuto) {
-        ctx = ctxAuto;
-        canvas = canvasAuto;
-    } else {
-        ctx = ctxTeleop;
-        canvas = canvasTeleop;
-    }
-
-    if (!eraserEnabled) {
-        teamPositions.forEach(team => {
-            // Convert canvas-relative coordinates to the scaled drawing coordinates
-            scale = canvas.offsetWidth / canvas.width;
-            scaledX = x / scale;
-            scaledY = y / scale;
-
-            // Check if the click is within the bounds of a team's clickable area
-            if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
-                drawColor = team.color; // Set the drawing color to the team's color
-                colorFound = true; // Indicate that a color was found based on user click
-                // console.log("Selected color:", team.color); // Logging for verification
-            }
-        });
-
-        // If a team's color was found, update the tabLabel's background color
-        if (colorFound) {
-            // document.getElementById('tabLabel').style.backgroundColor = drawColor;
-            canvas.style.border = "20px solid " + drawColor;
-            canvas.style.borderRadius = "10px";
-        }
-    }
-}
-
-
-  
-function clearCanvas() {
-  
-  if (isAuto) {
-    ctx = ctxAuto
-    canvas = canvasAuto
-  } else {
-    ctx = ctxTeleop
-    canvas = canvasTeleop
-  }
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-   ctx.globalCompositeOperation = 'source-over';
-  // After clearing, redraw the team number boxes
-  teamPositions.forEach(team => {
-    drawTeamNumberBox(team.x, team.y, team.width, team.height, team.color, team.text);
-  });
-}
-
-function drawTeamNumberBox(x, y, width, height, color, text) {
-  ctx.fillStyle = color;
-  // Draw rectangle for team number background
-  ctx.fillRect(x, y, width, height);
-  ctx.fillStyle = 'black'; // Assuming text color is always black
-  // Adjustments for text positioning within the rectangle if needed
-  ctx.font = '40px Arial'; // Ensure this matches the initial drawing's font
-  // Calculate the y position to vertically center the text in the rectangle
-  const textY = y + height / 2 + ctx.measureText(text).actualBoundingBoxAscent / 2;
-  ctx.fillText(text, x + (width / 2) - (ctx.measureText(text).width / 2), textY); // Center the text inside the rectangle
-}
-
-  
-    matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
-    fetchMatches();
-  </script>  
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const toggle = document.getElementById('darkModeToggle');
-      const body = document.body;
-      const navbar = document.querySelector('.navbar'); // Select the navbar element
-      const teleopCanvas = document.getElementById('teleopCanvas');
-      const autoCanvas = document.getElementById('autoCanvas');
-
-    
-      // Function to apply dark mode classes
-      function enableDarkMode() {
-        body.classList.add('bg-dark');
-        body.classList.remove('bg-light');
-        navbar.classList.add('navbar-dark');
-        navbar.classList.remove('navbar-light', 'bg-white');
-        autoCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')"
-        teleopCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')"
-        document.querySelectorAll('.navbar').forEach(element => {
-          element.classList.add('bg-dark');
-          element.classList.remove('bg-white');
-        });
-        document.querySelectorAll('.form-control').forEach(element => {
-      element.classList.add('bg-dark');
-      element.classList.remove('bg-white');
-    });
-      }
-    
-      // Function to remove dark mode classes
-      function disableDarkMode() {
-        body.classList.add('bg-light');
-        body.classList.remove('bg-dark');
-        navbar.classList.add('navbar-light');
-        navbar.classList.remove('navbar-dark', 'bg-dark');
-        autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')"
-        teleopCanvas.style.backgroundImage = "url('images/crescendo_feild.png')"
-        document.querySelectorAll('.navbar').forEach(element => {
-          element.classList.add('bg-white');
-          element.classList.remove('bg-dark');
-        });
-        document.querySelectorAll('.form-control').forEach(element => {
-      element.classList.remove('bg-dark');
-      element.classList.add('bg-white');
-    });
-      }
-    
-      // Initialize dark mode from local storage
-      if (localStorage.getItem('darkMode') === 'true') {
-        enableDarkMode();
-        toggle.checked = true;
-      } else {
-        disableDarkMode();
-      }
-      body.style.display = 'block';
-      // Toggle dark mode on change
-      toggle.addEventListener('change', function() {
-        if (this.checked) {
-          localStorage.setItem('darkMode', 'true');
-          enableDarkMode();
+      function drawTeams(teamKeys, positions, alliance) {
+        if (isAuto) {
+          ctx = ctxAuto
         } else {
-          localStorage.setItem('darkMode', 'false');
+          ctx = ctxTeleop
+        }
+        ctx.font = '40px Arial'; // Ensure font size is set before measuring text
+        const padding = 10; // Padding around the text for the outline box
+
+        teamKeys.forEach((key, index) => {
+          clearCanvas()
+          const teamNumber = key.replace('frc', '');
+          const position = positions[index];
+          const color = teamColors[alliance][index];
+
+          const textMetrics = ctx.measureText(teamNumber);
+          const textWidth = textMetrics.width;
+          const rectHeight = 50; // Example height of clickable area
+          const rectY = position.y - 40; // Adjust based on font size and desired box size
+
+          // Draw the team number and background
+          ctx.fillStyle = color;
+          ctx.fillRect(position.x - (padding / 2), rectY, textWidth + padding, rectHeight);
+          ctx.fillStyle = 'black';
+          ctx.fillText(teamNumber, position.x, position.y);
+
+          // Store positions for click detection
+          teamPositions.push({
+            x: position.x - (padding / 2),
+            y: rectY,
+            width: textWidth + padding,
+            height: rectHeight,
+            color: color,
+            text: teamNumber
+          });
+        });
+      }
+
+
+      function drawText(text, x, y, color, index, alliance) {
+        if (isAuto) {
+          ctx = ctxAuto
+        } else {
+          ctx = ctxTeleop
+        }
+        // Calculate text width for background and click detection area
+        ctx.font = '40px Arial'; // Ensure font size is set before measuring text
+        const textMetrics = ctx.measureText(text);
+        const textWidth = textMetrics.width;
+        const padding = 10; // Padding around the text for the outline box
+
+        // Adjust position for the rectangle to be centered on the text if necessary
+        const rectX = x - padding / 2;
+        const rectY = y - 40; // Adjust based on font size and desired box size
+        const rectWidth = textWidth + padding;
+        const rectHeight = 50;
+
+        // Draw the colored background rectangle
+        ctx.fillStyle = color;
+        ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
+
+        // Draw the team number text on top
+        ctx.fillStyle = 'black'; // Contrast color for text
+        ctx.fillText(text, x, y);
+
+        document.getElementById('tabLabel').style.backgroundColor = "blue"
+
+        // Update the teamPositions array for click detection
+        teamPositions.push({
+          x: rectX,
+          y: rectY,
+          width: rectWidth,
+          height: rectHeight,
+          color: color, // Assign the drawing color for when the area is clicked
+        });
+      }
+
+      function checkTeamClick(x, y) {
+        const canvasRect = canvas.getBoundingClientRect();
+        let scaleWidth = canvas.width / canvasRect.width;
+        let scaleHeight = canvas.height / canvasRect.height;
+
+        let scaledX = x * scaleWidth;
+        let scaledY = y * scaleHeight;
+        let colorFound = false;
+
+        teamPositions.forEach(team => {
+          if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
+            drawColor = team.color;
+            colorFound = true;
+            console.log(drawColor)
+            document.getElementById('topRect').style.backgroundColor = drawColor;
+            document.getElementById('bottomRect').style.backgroundColor = drawColor;
+          }
+        });
+
+        if (!colorFound) {
+          console.log("Click was outside of team areas.");
+          // document.getElementById('topRect').style.backgroundColor = "transparent";
+          // document.getElementById('bottomRect').style.backgroundColor = "transparent";
+        }
+      }
+
+
+
+      function clearCanvas() {
+
+        if (isAuto) {
+          ctx = ctxAuto
+          canvas = canvasAuto
+        } else {
+          ctx = ctxTeleop
+          canvas = canvasTeleop
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = 'source-over';
+        // After clearing, redraw the team number boxes
+        teamPositions.forEach(team => {
+          drawTeamNumberBox(team.x, team.y, team.width, team.height, team.color, team.text);
+        });
+      }
+
+      function drawTeamNumberBox(x, y, width, height, color, text) {
+        ctx.fillStyle = color;
+        // Draw rectangle for team number background
+        ctx.fillRect(x, y, width, height);
+        ctx.fillStyle = 'black'; // Assuming text color is always black
+        // Adjustments for text positioning within the rectangle if needed
+        ctx.font = '40px Arial'; // Ensure this matches the initial drawing's font
+        // Calculate the y position to vertically center the text in the rectangle
+        const textY = y + height / 2 + ctx.measureText(text).actualBoundingBoxAscent / 2;
+        ctx.fillText(text, x + (width / 2) - (ctx.measureText(text).width / 2), textY); // Center the text inside the rectangle
+      }
+
+
+      matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
+      fetchMatches();
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const toggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        const navbar = document.querySelector('.navbar'); // Select the navbar element
+        const teleopCanvas = document.getElementById('teleopCanvas');
+        const autoCanvas = document.getElementById('autoCanvas');
+
+
+        // Function to apply dark mode classes
+        function enableDarkMode() {
+          body.classList.add('bg-dark');
+          body.classList.remove('bg-light');
+          navbar.classList.add('navbar-dark');
+          navbar.classList.remove('navbar-light', 'bg-white');
+          autoCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')"
+          teleopCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')"
+          document.querySelectorAll('.navbar').forEach(element => {
+            element.classList.add('bg-dark');
+            element.classList.remove('bg-white');
+          });
+          document.querySelectorAll('.form-control').forEach(element => {
+            element.classList.add('bg-dark');
+            element.classList.remove('bg-white');
+          });
+        }
+
+        // Function to remove dark mode classes
+        function disableDarkMode() {
+          body.classList.add('bg-light');
+          body.classList.remove('bg-dark');
+          navbar.classList.add('navbar-light');
+          navbar.classList.remove('navbar-dark', 'bg-dark');
+          autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')"
+          teleopCanvas.style.backgroundImage = "url('images/crescendo_feild.png')"
+          document.querySelectorAll('.navbar').forEach(element => {
+            element.classList.add('bg-white');
+            element.classList.remove('bg-dark');
+          });
+          document.querySelectorAll('.form-control').forEach(element => {
+            element.classList.remove('bg-dark');
+            element.classList.add('bg-white');
+          });
+        }
+
+        // Initialize dark mode from local storage
+        if (localStorage.getItem('darkMode') === 'true') {
+          enableDarkMode();
+          toggle.checked = true;
+        } else {
           disableDarkMode();
         }
+        body.style.display = 'block';
+        // Toggle dark mode on change
+        toggle.addEventListener('change', function () {
+          if (this.checked) {
+            localStorage.setItem('darkMode', 'true');
+            enableDarkMode();
+          } else {
+            localStorage.setItem('darkMode', 'false');
+            disableDarkMode();
+          }
+        });
       });
-    });
     </script>
 </body>
+
 </html>
