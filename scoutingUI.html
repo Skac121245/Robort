@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRC Scouting App - Autonomous Mode</title>
+    <style>
+        #field {
+            width: 100%;
+            /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
+            background-image: url("images/crescendo_feild.png");
+            background-size: contain;
+            border: 1px solid #000;
+            width: 1152px;
+            /* Adjust based on your actual need */
+            height: 498px;
+            /* Adjust based on your actual need */
+            position: relative;
+            left: 25%;
+        }
+
+        .position-btn,
+        .driver-station-btn {
+            position: absolute;
+            background-color: rgba(0, 123, 255, 0.5);
+            /* Semi-transparent blue */
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .position-btn:hover,
+        .driver-station-btn:hover {
+            background-color: rgba(0, 123, 255, 0.8);
+        }
+
+        .driver-station-btn {
+            left: 1%;
+        }
+
+        #info {
+            margin-top: 20px;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        .position-btn.red,
+        .driver-station-btn.red {
+            background-color: rgba(255, 0, 0, 0.5);
+            /* Semi-transparent red */
+        }
+
+        .position-btn.red:hover,
+        .driver-station-btn.red:hover {
+            background-color: rgba(255, 0, 0, 0.8);
+        }
+
+        #notesContainer .note-btn {
+            background-color: rgba(0, 200, 150, 0.5);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #notesContainer .note-btn:hover {
+            background-color: rgba(0, 200, 150, 0.8);
+        }
+
+        #noteOutcome button {
+            margin: 0 5px;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #noteOutcome button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="info">
+        <label for="sideToggle">Toggle Side:</label>
+        <input type="checkbox" id="sideToggle" onchange="toggleSide()">
+        <input type="number" id="matchNumber" placeholder="Match Number">
+        <input type="number" id="teamNumber" placeholder="Team Number">
+        <button onclick="startScouting()">Start Scouting</button>
+    </div>
+    <div id="field">
+        <button class="driver-station-btn" style="top: 18%;">Driver Station 1</button>
+        <button class="driver-station-btn" style="top: 53%;">Driver Station 2</button>
+        <button class="driver-station-btn" style="top: 72%;">Driver Station 3</button>
+
+        <button class="position-btn" style="top: 20%; left: 15%;">Position 1</button>
+        <button class="position-btn" style="top: 35%; left: 20%;">Position 2</button>
+        <button class="position-btn" style="top: 50%; left: 15%;">Position 3</button>
+        <button class="position-btn" style="top: 70%; left: 15%;">Position 4</button>
+        <div id="notesContainer" style="display: none; position: relative; width: 100%; height: 100%;">
+            <!-- Example note buttons, position these as needed -->
+            <button class="note-btn" style="position: absolute; top: 20%; left: 23%;"
+                onclick="noteAction('Note 1')">Note
+                1</button>
+            <button class="note-btn" style="position: absolute; top: 35%; left: 23%;"
+                onclick="noteAction('Note 2')">Note
+                2</button>
+            <button class="note-btn" style="position: absolute; top: 50%; left: 23%;"
+                onclick="noteAction('Note 3')">Note
+                3</button>
+            <button class="note-btn" style="position: absolute; top: 16%; left: 47%;"
+                onclick="noteAction('Note 1')">Note
+                4</button>
+            <button class="note-btn" style="position: absolute; top: 33%; left: 47%;"
+                onclick="noteAction('Note 1')">Note
+                5</button>
+            <button class="note-btn" style="position: absolute; top: 50%; left: 47%;"
+                onclick="noteAction('Note 1')">Note
+                6</button>
+            <button class="note-btn" style="position: absolute; top: 67%; left: 47%;"
+                onclick="noteAction('Note 1')">Note
+                7</button>
+            <button class="note-btn" style="position: absolute; top: 85%; left: 47%;"
+                onclick="noteAction('Note 1')">Note
+                8</button>
+            <button class="note-btn" style="position: absolute; top: 20%; left: 71%;"
+                onclick="noteAction('Note 1')">Note
+                9</button>
+            <button class="note-btn" style="position: absolute; top: 35%; left: 71%;"
+                onclick="noteAction('Note 1')">Note
+                10</button>
+            <button class="note-btn" style="position: absolute; top: 50%; left: 71%;"
+                onclick="noteAction('Note 1')">Note
+                11</button>
+            <!-- Add more note buttons as required -->
+        </div>
+    </div>
+    <div id="noteOutcome"
+        style="display: none; padding-top:20px; position: absolute;  left: 50%; transform: translateX(-50%);">
+        <button onclick="saveNoteOutcome('scored')">Scored</button>
+        <button onclick="saveNoteOutcome('missed')">Missed</button>
+        <button onclick="saveNoteOutcome('not picked up')">Not Picked Up</button>
+        <button onclick="saveNoteOutcome('another team got it')">Another Team Got It</button>
+    </div>
+    <script>
+        document.querySelectorAll('.position-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const position = this.innerText;
+                selectPosition(position);
+            });
+        });
+
+        function toggleSide() {
+            const isChecked = document.getElementById('sideToggle').checked;
+            const maxLeft = 78; // Maximum left percentage for red side
+            const minLeft = 15; // Minimum left percentage for blue side
+
+            // Calculate new positions for driver stations
+            const driverStationPositions = {
+                "Driver Station 1": "72%", // DS 1 becomes DS 3
+                "Driver Station 2": "53%", // DS 2 remains DS 2
+                "Driver Station 3": "18%"  // DS 3 becomes DS 1
+            };
+
+            document.querySelectorAll('.position-btn, .driver-station-btn').forEach(button => {
+                if (isChecked) {
+                    // Change to red side
+                    if (button.classList.contains('driver-station-btn')) {
+                        button.style.top = driverStationPositions[button.innerText]; // Update top position based on mapping
+                    }
+                    const currentLeft = parseInt(button.style.left, 10);
+                    const newLeft = maxLeft - (currentLeft - minLeft);
+                    button.style.left = `${newLeft}%`;
+                    button.classList.add('red');
+                } else {
+                    // Change to blue side (reverse operation for driver stations)
+                    const driverStationReversePositions = {
+                        "Driver Station 1": "18%", // DS 3 goes back to DS 1
+                        "Driver Station 2": "53%", // DS 2 remains DS 2
+                        "Driver Station 3": "72%"  // DS 1 goes back to DS 3
+                    };
+                    if (button.classList.contains('driver-station-btn')) {
+                        button.style.top = driverStationReversePositions[button.innerText];
+                    }
+                    const currentLeft = parseInt(button.style.left, 10);
+                    const newLeft = minLeft + (maxLeft - currentLeft);
+                    button.style.left = `${newLeft}%`;
+                    button.classList.remove('red');
+                }
+            });
+        }
+
+        document.querySelectorAll('.driver-station-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const driverStation = this.innerText;
+                selectDriverStation(driverStation);
+            });
+        });
+
+        function selectDriverStation(driverStation) {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+            scoutingData.driverStation = driverStation;
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+            checkSelections();
+        }
+
+        function selectPosition(position) {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+            scoutingData.robotPosition = position;
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+            checkSelections();
+        }
+
+        function checkSelections() {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+            if (scoutingData.driverStation && scoutingData.robotPosition) {
+                // Hide position and driver station buttons
+                document.querySelectorAll('.position-btn, .driver-station-btn').forEach(button => {
+                    button.style.display = 'none';
+                });
+                // Show notes container
+                document.getElementById('notesContainer').style.display = 'block';
+            }
+        }
+
+        function noteAction(note) {
+            console.log('Note action for:', note);
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+            if (!scoutingData.notes) {
+                scoutingData.notes = [];
+                scoutingData.noteOutcomes = [];
+            }
+            scoutingData.notes.push(note);
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+            // Show the note outcome options
+            document.getElementById('noteOutcome').style.display = 'block';
+            // Store the current note globally or in the session for outcome processing
+            sessionStorage.setItem('currentNote', note);
+        }
+
+        function saveNoteOutcome(outcome) {
+            const note = sessionStorage.getItem('currentNote');
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+            // Append the outcome to the corresponding note
+            if (!scoutingData.noteOutcomes) {
+                scoutingData.noteOutcomes = [];
+            }
+            scoutingData.noteOutcomes.push({ note: note, outcome: outcome });
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+            // Hide the outcome buttons until the next note is selected
+            document.getElementById('noteOutcome').style.display = 'none';
+        }
+
+        function startScouting() {
+            const matchNumber = document.getElementById('matchNumber').value;
+            const teamNumber = document.getElementById('teamNumber').value;
+            if (matchNumber && teamNumber) {
+                const scoutingData = {
+                    matchNumber: matchNumber,
+                    teamNumber: teamNumber,
+                    actions: []
+                };
+                sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+                alert('Scouting started!');
+            } else {
+                alert('Please enter both match and team numbers.');
+            }
+        }
+    </script>
+</body>
+
+</html>
