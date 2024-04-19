@@ -16,6 +16,10 @@
             height: 100%;
             overflow: hidden;
         }
+        body {
+            background-color: #343a40;
+            display: block;
+        }
 
         #sidebar {
             background: #fff;
@@ -88,7 +92,12 @@
     transition: left 0.5s ease-in-out, top 0.5s ease-in-out;
 }
 
-    </style>
+  </style>
+<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    document.body.style.display = "none"; // Hide body as soon as DOM is ready but not fully loaded
+                });
+            </script>
 </head>
 <body>
     <button id="sidebarToggle" class="btn btn-secondary position-fixed" style="top: 50px; left: calc(200px + 10px);">Toggle Sidebar</button>
@@ -239,6 +248,10 @@
 }
         
     </script>
-    
+     <script>
+        window.onload = function() {
+            document.body.style.display = "block"; // Show body when everything is loaded
+        };
+    </script>
 </body>
 </html>

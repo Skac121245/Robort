@@ -24,7 +24,8 @@
     }
 
     body {
-      display: none;
+      background-color: #343a40;
+      display: block;
     }
 
     /* body {
@@ -480,12 +481,17 @@
     .color_con {
       flex: 1;
     }
-  </style>
+</style>
+<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    document.body.style.display = "none"; // Hide body as soon as DOM is ready but not fully loaded
+                });
+            </script>
 </head>
 
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-5">
+  <nav class="navbar navbar-expand-lg shadow-sm mb-5">
     <div class="container">
       <a class="navbar-brand" href="./index.html">Robort</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -1255,6 +1261,11 @@
         });
       });
     </script>
+     <script>
+      window.onload = function() {
+          document.body.style.display = "block"; // Show body when everything is loaded
+      };
+  </script>
 </body>
 
 </html>

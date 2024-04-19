@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FRC Scouting Page</title>
+
 <link rel="stylesheet" href="jquery-ui.css">
 <link href="bootstrap.min.css" rel="stylesheet">
 
@@ -17,9 +18,12 @@
 <!-- And then Bootstrap -->
 <script src="bootstrap.min.js"></script>
 <script>window.jQuery.fn.modal || document.write('<script src="bootstrap.min.js"><\/script>')</script>
+
+<!-- <script src="xlsx.full.min.js"></script> -->
 <style>
     body {
-        display: none;
+        background-color: #343a40;
+        display: block;
     }
     body, nav, header, .navbar, #footer {
       transition: background-color 0.3s ease, color 0.3s ease;
@@ -125,7 +129,7 @@ input:not(:checked) + .slider .moon {
 }
 
 /* Styles for dark and light modes */
-.bg-dark, .navbar-dark, .card {
+.bg-dark, .navbar-dark {
   background-color: #343a40 !important; /* Dark gray background */
   color: #f8f9fa !important; /* Light text for readability */
 }
@@ -169,9 +173,14 @@ body.bg-dark .dropdown-menu {
     background-color:  #343a40 !important; /* Light gray background */
 }
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.body.style.display = "none"; // Hide body as soon as DOM is ready but not fully loaded
+    });
+</script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+    <nav class="navbar navbar-expand-lg shadow-sm mb-4">
         <div class="container">
             <a class="navbar-brand" href="./index.html">Robort</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -246,7 +255,7 @@ body.bg-dark .dropdown-menu {
         Exclude Teams
     </button>
     <!-- Export to Excel button -->
-<button type="button" id="exportExcel" class="btn btn-success" style="display:none;">Export to Excel</button>
+<!-- <button type="button" id="exportExcel" class="btn btn-success" style="display:none;">Export to Excel</button> -->
 <!-- Print button -->
 <button type="button" id="printButton" class="btn btn-secondary" style="display:none;" onclick="printTable()">Print</button>
 <div class="form-group">
@@ -291,7 +300,7 @@ body.bg-dark .dropdown-menu {
     </div>
   </div>
 
-<script src="xlsx.full.min.js"></script>
+
 <script>
     function collectTeams(matches) {
     var teams = [];
@@ -667,16 +676,21 @@ $('#uploadButton').click(function() {
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="excludeTeamInput">Exclude Teams:</label>
+                    <label for="excludeTeamInput" style="color: #343a40">Exclude Teams:</label>
                     <input type="text" class="form-control" id="excludeTeamInput" placeholder="Enter team number">
                 </div>
                 <div class="form-group">
-                    <label>Excluded Teams:</label>
-                    <ul id="exclusionList"></ul>
+                    <label style="color: #343a40">Excluded Teams:</label>
+                    <ul id="exclusionList" style="color: #343a40"></ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
 </body>
+<script>
+    window.onload = function() {
+        document.body.style.display = "block"; // Show body when everything is loaded
+    };
+</script>
 </html>

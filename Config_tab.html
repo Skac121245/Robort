@@ -12,7 +12,8 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 body {
-    display: none;
+    background-color: #343a40;
+    display: block;
 }
         .disabled-form {
     pointer-events: none; /* Disables interactions */
@@ -126,7 +127,7 @@ input:not(:checked) + .slider .moon {
 
 
 /* Base styles for light mode */
-.bg-light, .navbar-light, .card {
+.bg-light, .navbar-light {
   background-color: #f8f9fa !important; /* Light gray background */
   color: #343a40 !important; /* Dark text for readability */
 }
@@ -173,12 +174,17 @@ body.bg-dark .dropdown-item:hover {
 body.bg-dark .dropdown-menu {
     background-color:  #343a40 !important; /* Light gray background */
 }
-    </style>
+  </style>
+<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    document.body.style.display = "none"; // Hide body as soon as DOM is ready but not fully loaded
+                });
+            </script>
 </head>
 
-<body class="bg-light">
+<body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+    <nav class="navbar navbar-expand-lg shadow-sm mb-4">
         <div class="container">
             <a class="navbar-brand" href="./index.html">Robort</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -238,7 +244,7 @@ body.bg-dark .dropdown-menu {
                         <form id="eventCodeForm">
                             <div class="form-group">
                                 <label for="eventCode">What is the code for the event you are at?</label>
-                                <input type="text" id="eventCode" name="eventCode" class="form-control" required>
+                                <input type="text" id="eventCode" name="eventCode" class="form-control bg-dark" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Save Just Event Code</button>
                         </form>
@@ -258,32 +264,32 @@ body.bg-dark .dropdown-menu {
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="teamNumber">What is your team number?</label>
-                                    <input type="number" id="teamNumber" name="teamNumber" class="form-control">
+                                    <input type="number" id="teamNumber" name="teamNumber" class="form-control bg-dark">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="robotName">What is the name of your robot?</label>
-                                    <input type="text" id="robotName" name="robotName" class="form-control">
+                                    <input type="text" id="robotName" name="robotName" class="form-control bg-dark">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="dim_w_bump">What are your dimensions WITH bumpers? (inches)</label>
-                                <input type="text" id="dim_w_bump" name="dim_w_bump" class="form-control" placeholder="Example: X-dimension by Y-dimension">
+                                <input type="text" id="dim_w_bump" name="dim_w_bump" class="form-control bg-dark" placeholder="Example: X-dimension by Y-dimension">
                             </div>
                             <div class="form-group">
                                 <label for="dim_wout_bump">What are your dimensions WITHOUT bumpers? (inches)</label>
-                                <input type="text" id="dim_wout_bump" name="dim_wout_bump" class="form-control" placeholder="Example: X-dimension by Y-dimension">
+                                <input type="text" id="dim_wout_bump" name="dim_wout_bump" class="form-control bg-dark" placeholder="Example: X-dimension by Y-dimension">
                             </div>
                             <div class="form-group">
                                 <label for="drive_train">What is your type of Drivetrain?</label>
-                                <input type="text" id="drive_train" name="drive_train" class="form-control">
+                                <input type="text" id="drive_train" name="drive_train" class="form-control bg-dark">
                             </div>
                             <div class="form-group">
                                 <label for="weight">What is your robot weight? (LBS)</label>
-                                <input type="number" id="weight" name="weight" class="form-control">
+                                <input type="number" id="weight" name="weight" class="form-control bg-dark">
                             </div>
                             <div class="form-group">
                                 <label>Intake Style</label>
-                                <select id="intake_sty" class="form-control">
+                                <select id="intake_sty" class="form-control bg-dark">
                                     <option value="Under the bumper">Under the bumper</option>
                                     <option value="Over bumper">Over bumper</option>
                                     <option value="Talk to a team member, it's hard to explain">Something Else</option>
@@ -325,35 +331,35 @@ body.bg-dark .dropdown-menu {
                         <form id="teleopForm">
                             <div class="form-group">
                                 <label>Ground</label>
-                                <select id="ground" class="form-control">
+                                <select id="ground" class="form-control bg-dark">
                                     <option value="Yes">YES</option>
                                     <option value="No">NO</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Source</label>
-                                <select id="source" class="form-control">
+                                <select id="source" class="form-control bg-dark">
                                     <option value="Yes">YES</option>
                                     <option value="No">NO</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Speaker</label>
-                                <select id="speaker" class="form-control">
+                                <select id="speaker" class="form-control bg-dark">
                                     <option value="Yes">YES</option>
                                     <option value="No">NO</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Can you shoot from distance?</label>
-                                <select id="distance_shoot" class="form-control">
+                                <select id="distance_shoot" class="form-control bg-dark">
                                     <option value="Yes">YES</option>
                                     <option value="No">NO</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Amp</label>
-                                <select id="amp" class="form-control">
+                                <select id="amp" class="form-control bg-dark">
                                     <option value="Yes">YES</option>
                                     <option value="No">NO</option>
                                 </select>
@@ -375,14 +381,14 @@ body.bg-dark .dropdown-menu {
                         <form id="endGameForm">
                             <div class="form-group">
                                 <label>Can you climb?</label>
-                                <select id="climb" class="form-control">
+                                <select id="climb" class="form-control bg-dark">
                                     <option value="Yes">YES</option>
                                     <option value="No">NO</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Can you climb, not from the center? (Harmony)</label>
-                                <select id="harmony" class="form-control">
+                                <select id="harmony" class="form-control bg-dark">
                                     <option value="Yes">YES</option>
                                     <option value="It's possible">It's possible</option>
                                     <option value="No">NO</option>
@@ -670,6 +676,11 @@ body.bg-dark .dropdown-menu {
   });
 });
 
+    </script>
+     <script>
+        window.onload = function() {
+            document.body.style.display = "block"; // Show body when everything is loaded
+        };
     </script>
 </body>
 </html>
