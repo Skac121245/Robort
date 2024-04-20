@@ -118,9 +118,7 @@
       background-size: contain;
       border: 1px solid #000;
       width: 1152;
-      /* Adjust based on your actual need */
       height: 498;
-      /* Adjust based on your actual need */
     }
 
     #teleopCanvas {
@@ -130,9 +128,7 @@
       background-size: contain;
       border: 1px solid #000;
       width: 1152;
-      /* Adjust based on your actual need */
       height: 498;
-      /* Adjust based on your actual need */
     }
 
     select:focus,
@@ -144,7 +140,6 @@
 
     #eventCodeInput {
       background-color: #ae83e3;
-      /* Adjust the color to your preference */
       padding: 5px 10px;
       /* Adds padding inside the span for better visibility */
       border-radius: 5px;
@@ -176,7 +171,6 @@
       gap: 20px;
       /* Space between buttons when they wrap */
       width: 80%;
-      /* Adjust based on your layout needs */
       margin-top: 10px;
       /* Add some space above the button container */
     }
@@ -199,7 +193,6 @@
       gap: 50px;
       /* Space between buttons when they wrap */
       width: 80%;
-      /* Adjust based on your layout needs */
       margin-top: 10px;
       /* Add some space above the button container */
     }
@@ -353,7 +346,6 @@
       justify-content: center;
       align-items: center;
       height: 50px;
-      /* Adjust based on your design */
     }
 
     #toggleEraser {
@@ -739,7 +731,6 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
           document.getElementById('red3').value
         ];
 
-        // Validate input (basic example, extend as needed)
         if (blueTeams.some(team => team === "") || redTeams.some(team => team === "")) {
           alert("Please fill in all team numbers.");
           return;
@@ -814,7 +805,6 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
           try {
             apiData = JSON.parse(content);
             populateMatchSelect(apiData); // This should trigger a UI update to reflect the new data
-            // Optionally, clear and reset the canvas or other UI elements as needed here
           } catch (err) {
             console.error('Failed to parse uploaded file:', err);
           }
