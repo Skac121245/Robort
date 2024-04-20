@@ -39,14 +39,11 @@
             box-shadow: 0 0.45rem 0.25rem rgba(0,0,0,0.075);
         }
 
-        .checklist-item {
-            margin-bottom: 10px;
-        }
-
         .checklist-item label {
             font-size: 1.125rem;
             font-weight: bold;
             margin-left: 10px;
+            margin-bottom: -10px;
         }
 
         .form-control {
@@ -424,8 +421,6 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
             </div>
         </div>
     </div>
-<script src="jquery-3.3.1.slim.min.js"></script>
- <script src="bootstrap.min.js"></script>
   <script src="electron.js"></script>
 
     <script>
@@ -439,25 +434,47 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
             function renderChecklist(items) {
                 checklistContainer.innerHTML = '';
                 items.forEach((item, index) => {
-                    const div = document.createElement('div');
-                    div.className = 'checklist-item form-check';
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.id = 'check-' + index;
-                    checkbox.className = 'form-check-input';
-                    const label = document.createElement('label');
-                    label.htmlFor = 'check-' + index;
-                    label.className = 'form-check-label';
-                    label.textContent = typeof item === 'object' ? item.text : item;
-                    div.appendChild(checkbox);
-                    div.appendChild(label);
-                    checklistContainer.appendChild(div);
-                // Listener to update localStorage when an item is checked/unchecked
+    const div = document.createElement('div');
+    div.className = 'checklist-item form-check';
+
+    let content;
+    if (typeof item === 'string') {
+        content = item;
+    } else if (item && typeof item.text === 'string') { // Ensure item and item.text are valid
+        content = item.text;
+    } else {
+        console.error('Invalid item:', item);
+        return; // Skip this iteration if item is not valid
+    }
+
+    // Now that you've validated content, it's safe to use trim and other methods
+    if (content.trim().startsWith('#')) {
+        div.innerHTML = parseMarkdown(content);
+        div.classList.remove('form-check'); // Headers do not need form-check class
+    } else {
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = 'check-' + index;
+        checkbox.className = 'form-check-input';
+
+        const label = document.createElement('label');
+        label.htmlFor = 'check-' + index;
+        label.innerHTML = parseMarkdown(content);
+
+        div.appendChild(checkbox);
+        div.appendChild(label);
+
+        // Ensure checkbox event listener only adds if the checkbox exists
         checkbox.addEventListener('change', () => {
-            checklistItems[index].checked = checkbox.checked; // Update the 'checked' state
-            localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems)); // Save updated list
+            if (typeof checklistItems[index] === 'object') { // Safeguard
+                checklistItems[index].checked = checkbox.checked;
+            }
+            localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems));
         });
-    });
+    }
+    checklistContainer.appendChild(div);
+});
+
             }
 
             document.getElementById('confirmClear').addEventListener('click', function() {
@@ -480,11 +497,16 @@ function loadChecklist() {
 addItemForm.addEventListener('submit', function(e) {
     e.preventDefault();
     const newItems = newItemsInput.value.split(',');
-    checklistItems = checklistItems.concat(newItems.filter(item => item.trim() !== '')); // Filter out any empty strings
+    newItems.forEach(item => {
+        if (item.trim() !== '') { // Ensure item is a string and not empty
+            checklistItems.push(item.trim()); // Add to checklist
+        }
+    });
     localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems)); // Save updated list to localStorage
     renderChecklist(checklistItems);
     newItemsInput.value = '';
 });
+
 
 
             const downloadChecklistButton = document.getElementById('downloadChecklist');
@@ -504,16 +526,21 @@ addItemForm.addEventListener('submit', function(e) {
     const fileReader = new FileReader();
     fileReader.onload = function() {
         try {
-            const contents = JSON.parse(fileReader.result);
-            checklistItems = contents;
-            renderChecklist(checklistItems);
-            localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems));
-            showSuccessAlert('Upload success!');
-        } catch (error) {
-            console.error("Error parsing uploaded file as JSON:", error);
-            // Show error modal instead of alert
-            showErrorModal("Upload failed: The file is not a valid JSON.");
-        }
+    const contents = JSON.parse(fileReader.result);
+    if (Array.isArray(contents)) {
+        // Handle array of strings or objects
+        checklistItems = contents.map(item => typeof item === 'string' ? { text: item, checked: false } : item);
+    } else {
+        // Handle other data formats or show an error
+        throw new Error('Unsupported file format');
+    }
+    renderChecklist(checklistItems);
+    localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems));
+    showSuccessAlert('Upload success!');
+} catch (error) {
+    console.error("Error parsing uploaded file as JSON:", error);
+    showErrorModal("Upload failed: The file is not a valid JSON.");
+}
     };
     if (e.target.files[0]) {
         fileReader.readAsText(e.target.files[0]);
@@ -552,6 +579,12 @@ function showErrorModal(errorMessage) {
         }, 500); // Match the CSS transition duration
     }, 3000); // Visible duration before starting fade-out
 }
+
+function parseMarkdown(text) {
+    const converter = new showdown.Converter();
+    return converter.makeHtml(text);
+}
+
     </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -610,7 +643,7 @@ function showErrorModal(errorMessage) {
         }
       });
     });
-    document.getElementById('roborte').addEventListener('click', function() {
+     document.getElementById('roborte').addEventListener('click', function() {
     $('#aboutModal').modal('show');
 });
 
