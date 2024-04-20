@@ -44,7 +44,18 @@
             font-weight: bold;
             margin-left: 10px;
             margin-bottom: -10px;
+            cursor: pointer;
         }
+
+        .checklist-item label.strikethrough {
+    text-decoration: line-through;
+}
+.checklist-item .header-label{
+    margin-left: -1px;  /* Specific override for header labels */
+    margin-bottom: 1px;
+ 
+}
+
 
         .form-control {
             border-radius: 0.25rem;
@@ -234,6 +245,9 @@ body .bg-dark #patch-notes h3, #patch-notes p, #patch-notes a {
 
 body .bg-light #patch-notes, #aboutTabsContent {
     color: #343a40 !important; /* Sets the text color for all content within the patch-notes container */
+}
+div.modal-body, h5#clearModalLabel.modal-title, h5#errorModalLabel.modal-title {
+    color: #343a40 !important; 
 }
 
 body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
@@ -438,6 +452,7 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
     div.className = 'checklist-item form-check';
 
     let content;
+    
     if (typeof item === 'string') {
         content = item;
     } else if (item && typeof item.text === 'string') { // Ensure item and item.text are valid
@@ -449,8 +464,26 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
 
     // Now that you've validated content, it's safe to use trim and other methods
     if (content.trim().startsWith('#')) {
-        div.innerHTML = parseMarkdown(content);
-        div.classList.remove('form-check'); // Headers do not need form-check class
+        const label = document.createElement('label');
+    label.innerHTML = parseMarkdown(content);
+    label.className = 'header-label';  // Add a class for styling and targeting
+    div.classList.remove('form-check'); // Headers do not need form-check class
+    div.appendChild(label);
+
+    // Bind mouseover and mouseout only to the label
+    label.addEventListener('mouseover', function() {
+        this.classList.add('strikethrough');
+    });
+    label.addEventListener('mouseout', function() {
+        this.classList.remove('strikethrough');
+    });
+
+    // Click event to remove the header
+    label.addEventListener('click', function() {
+        checklistItems.splice(index, 1);
+        localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems));
+        renderChecklist(checklistItems);
+    });
     } else {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -463,6 +496,22 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
 
         div.appendChild(checkbox);
         div.appendChild(label);
+// After creating and appending the label to the div
+label.addEventListener('mouseover', function() {
+    this.classList.add('strikethrough'); 
+});
+label.addEventListener('mouseout', function() {
+    this.classList.remove('strikethrough'); 
+});
+
+
+// Add click event listener to remove item
+label.addEventListener('click', function() {
+    checklistItems.splice(index, 1); // Remove the item from the array
+    localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems)); // Update local storage
+    renderChecklist(checklistItems); // Re-render the checklist
+});
+
 
         // Ensure checkbox event listener only adds if the checkbox exists
         checkbox.addEventListener('change', () => {
