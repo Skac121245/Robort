@@ -83,6 +83,19 @@
         #noteOutcome button:hover {
             background-color: #45a049;
         }
+
+        #teleopContainer button {
+            margin: 10px;
+            padding: 8px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #teleopContainer button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
@@ -93,6 +106,7 @@
         <input type="number" id="matchNumber" placeholder="Match Number">
         <input type="number" id="teamNumber" placeholder="Team Number">
         <button onclick="startScouting()">Start Scouting</button>
+        <button onclick="startTeleop()">Start Teleop</button>
     </div>
     <div id="field">
         <button class="driver-station-btn" style="top: 18%;">Driver Station 1</button>
@@ -103,6 +117,20 @@
         <button class="position-btn" style="top: 35%; left: 20%;">Position 2</button>
         <button class="position-btn" style="top: 50%; left: 15%;">Position 3</button>
         <button class="position-btn" style="top: 70%; left: 15%;">Position 4</button>
+        <div id="teleopContainer" style="display: none; position: absolute; width: 100%; ">
+            <button id="groundPickupButton"
+                style="position:absolute; top: 50px; left: 41%; width: 200px; height: 419px;"
+                onclick="logAction('Ground Pickup')">Ground Pickup</button>
+            <button id="sourceButton"
+                style="position:absolute; top: 390px; left: 75%; width: 100px; height: 50px; rotate: -30deg;"
+                onclick="logAction('Source')">Source</button>
+
+            <div id="additionalActions" style="display: none;">
+                <button onclick="logAction('Speaker')">Speaker</button>
+                <button onclick="logAction('Amp')">Amp</button>
+                <button onclick="logAction('Pass')">Pass</button>
+            </div>
+        </div>
         <div id="notesContainer" style="display: none; position: relative; width: 100%; height: 100%;">
             <!-- Example note buttons, position these as needed -->
             <button class="note-btn" style="position: absolute; top: 20%; left: 23%;"
@@ -234,7 +262,7 @@
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
             if (!scoutingData.notes) {
                 scoutingData.notes = [];
-                scoutingData.noteOutcomes = [];
+                scoutingData.autoActions = [];
             }
             scoutingData.notes.push(note);
             sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
@@ -249,10 +277,10 @@
             const note = sessionStorage.getItem('currentNote');
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
             // Append the outcome to the corresponding note
-            if (!scoutingData.noteOutcomes) {
-                scoutingData.noteOutcomes = [];
+            if (!scoutingData.autoActions) {
+                scoutingData.autoActions = [];
             }
-            scoutingData.noteOutcomes.push({ note: note, outcome: outcome });
+            scoutingData.autoActions.push({ note: note, outcome: outcome });
             sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
 
             // Hide the outcome buttons until the next note is selected
@@ -274,6 +302,83 @@
                 alert('Please enter both match and team numbers.');
             }
         }
+
+        function startTeleop() {
+            // Hide all note buttons and show Teleop actions
+            document.getElementById('notesContainer').style.display = 'none';
+            document.getElementById('noteOutcome').style.display = 'none'; // Hide outcomes if visible
+            document.getElementById('teleopContainer').style.display = 'block';
+
+
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+            scoutingData.teleopActions = [];
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+        }
+
+        function logAction(action) {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+
+            // Check if the action is a pickup (Ground Pickup or Source)
+            if (action === 'Ground Pickup' || action === 'Source') {
+                // Store the pickup action directly to teleopActions with a placeholder for shot/place
+                scoutingData.teleopActions.push({ pickup: action, shot_place: null });
+
+                // Temporarily store the index of this action to link with its corresponding shot/place
+                scoutingData.currentActionIndex = scoutingData.teleopActions.length - 1;
+
+                // Show additional options for what happens after the pickup
+                showAdditionalActions();
+            } else {
+                // If it's a shot/place action (Speaker, Amp, Pass), pair it with the last recorded pickup
+                if (typeof scoutingData.currentActionIndex !== 'undefined') {
+                    // Access the current action object and update it with the shot/place action
+                    scoutingData.teleopActions[scoutingData.currentActionIndex].shot_place = action;
+
+                    // Clear the temporary index after updating to prepare for the next series of actions
+                    delete scoutingData.currentActionIndex;
+
+                    // After logging a shot/place, revert to showing the initial pickup options
+                    hideAdditionalActions();
+                }
+            }
+
+            // Save the updated scouting data back to sessionStorage
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+            console.log(action + ' action logged.');
+        }
+
+
+        function showAdditionalActions() {
+            // Hide initial Teleop buttons and show additional actions
+            document.getElementById('groundPickupButton').style.display = 'none';
+            document.getElementById('sourceButton').style.display = 'none';
+            document.getElementById('additionalActions').style.display = 'block';
+        }
+
+
+        function hideAdditionalActions() {
+            // Hide additional actions and show initial Teleop buttons again
+            document.getElementById('additionalActions').style.display = 'none';
+            document.getElementById('groundPickupButton').style.display = 'inline';
+            document.getElementById('sourceButton').style.display = 'inline';
+        }
+
+        function logTeleopAction(action) {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+            if (!scoutingData.teleopActions) {
+                scoutingData.teleopActions = [];
+            }
+            scoutingData.teleopActions.push(action);
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+            // Hide additional actions and show initial Teleop buttons again
+            document.getElementById('additionalActions').style.display = 'none';
+            document.getElementById('groundPickupButton').style.display = 'inline';
+            document.getElementById('sourceButton').style.display = 'inline';
+
+            console.log(action + ' action logged in Teleop.');
+        }
+
     </script>
 </body>
 
