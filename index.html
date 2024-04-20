@@ -1472,11 +1472,10 @@ function loadGitHubReleases() {
                 if (release.body !== null) { // Only display if there's a description
                     const markdownHTML = converter.makeHtml(release.body);
                     const releaseDiv = document.createElement('div');
-                    let downloadUrl = release.assets.length >= 3 ? release.assets[2].browser_download_url : "#";
                     releaseDiv.innerHTML = `
                         <h3>${release.tag_name}</h3>
                         <div>${markdownHTML}</div>
-                        <a href="${downloadUrl}" target="_blank">Download</a>
+                        <a href="${release.html_url}" target="_blank">View on GitHub</a>
                         <hr>`;
                     container.appendChild(releaseDiv);
                 }

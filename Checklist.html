@@ -7,7 +7,11 @@
     <script src="jquery-3.3.1.slim.min.js"></script>
     <script src="bootstrap.min.js"></script>
     <link href="bootstrap.min.css" rel="stylesheet">
+    <script src="showdown.min.js"></script>
     <style>
+          #aboutTabsContent > .tab-pane {
+    padding-top: 20px; /* Add space above the content in each tab */
+}
   body, nav, header, .navbar, #footer, a {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -223,6 +227,23 @@ body.bg-dark .dropdown-item:hover {
   color: #343a40 !important; /* Dark text for readability */
 }
 
+body .bg-dark #patch-notes, #aboutTabsContent {
+    color: #f8f9fa !important; /* Sets the text color for all content within the patch-notes container */
+}
+
+body .bg-dark #patch-notes h3, #patch-notes p, #patch-notes a {
+    color: inherit !important; /* Ensures that headers, paragraphs, and links inherit the same color */
+}
+
+body .bg-light #patch-notes, #aboutTabsContent {
+    color: #343a40 !important; /* Sets the text color for all content within the patch-notes container */
+}
+
+body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
+    color: inherit !important; /* Ensures that headers, paragraphs, and links inherit the same color */
+}
+
+
 /* Enhanced specific selectors for navbar in dark mode */
 .navbar-dark {
   background-color: #343a40 !important; /* Dark gray background */
@@ -238,6 +259,10 @@ body.bg-dark .dropdown-item:hover {
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
+.nav-link.active {
+  color: #343a40 !important;
+}
+
     </style>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -248,7 +273,7 @@ body.bg-dark .dropdown-item:hover {
 <body>
     <nav class="navbar navbar-expand-lg shadow-sm mb-4">
         <div class="container">
-            <a class="navbar-brand" href="./index.html">Robort</a>
+            <a class="navbar-brand" href="#" id="roborte">Robort</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -365,6 +390,40 @@ body.bg-dark .dropdown-item:hover {
         </div>
     </div>
 </div>
+    <!-- About the Project Modal -->
+    <div id="aboutModal" class="modal text-center modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="aboutTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="true">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="patch-notes-tab" data-toggle="tab" href="#patch-notes" role="tab" aria-controls="patch-notes" aria-selected="false">Patch Notes</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="aboutTabsContent">
+                        <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
+                            <h2>Robort</h2>
+                            <h4>The ultimate in FRC competition gear</h4>
+                            <h5>Co-developed by Ben Skraly and Toba Banjo</h5>
+                            <p>Whether you're preparing to scout a heated match, sharing information about your team, or analyzing other robots, Robort has got you covered. Complete with modular design and accessible systems, it's the best tool both on and off the field.</p>
+                            <span>&copy; <script>document.write(new Date().getFullYear());</script> Watertown High School Robotics</span>
+                        </div>
+                        <div class="tab-pane fade" id="patch-notes" role="tabpanel" aria-labelledby="patch-notes-tab">
+                            <!-- Patch notes will be populated here by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 <script src="jquery-3.3.1.slim.min.js"></script>
  <script src="bootstrap.min.js"></script>
   <script src="electron.js"></script>
@@ -551,6 +610,40 @@ function showErrorModal(errorMessage) {
         }
       });
     });
+    document.getElementById('roborte').addEventListener('click', function() {
+    $('#aboutModal').modal('show');
+});
+
+// Fetch and display GitHub release notes with markdown parsing and specific download link
+function loadGitHubReleases() {
+    const apiUrl = 'https://api.github.com/repos/skac121245/Robort/releases';
+    const converter = new showdown.Converter(); // Initialize markdown converter
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('patch-notes');
+            container.innerHTML = ''; // Clear existing content
+            data.forEach(release => {
+                if (release.body !== null) { // Only display if there's a description
+                    const markdownHTML = converter.makeHtml(release.body);
+                    const releaseDiv = document.createElement('div');
+                    releaseDiv.innerHTML = `
+                        <h3>${release.tag_name}</h3>
+                        <div>${markdownHTML}</div>
+                        <a href="${release.html_url}" target="_blank">View on GitHub</a>
+                        <hr>`;
+                    container.appendChild(releaseDiv);
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching GitHub releases:', error));
+}
+
+
+
+document.getElementById('patch-notes-tab').addEventListener('click', function() {
+    loadGitHubReleases();
+});
     </script>
      <script>
         window.onload = function() {
