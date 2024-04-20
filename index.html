@@ -305,6 +305,28 @@ input:not(:checked) + .slider .moon {
     color: inherit; /* Ensures that headers, paragraphs, and links inherit the same color */
 }
 
+#matchesTableContainer.drag-over {
+    position: relative;
+}
+
+#matchesTableContainer.drag-over::after {
+    content: '';  
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 123, 255, 0.5); /* Semi-transparent blue overlay */
+    color: white;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+
+
 /* Styles for dark and light modes */
 .bg-dark, .navbar-dark, .card{
   background-color: #343a40 !important; /* Dark gray background */
@@ -354,6 +376,11 @@ body.bg-dark .dropdown-menu {
 .navbar-dark .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
+
+div.modal-body, #warningModalLabel.modal-title {
+    color: #343a40 !important; 
+}
+
          </style>
              <script>
                 document.addEventListener("DOMContentLoaded", function() {
@@ -1194,7 +1221,7 @@ document.getElementById("teamHighlight").addEventListener("change", highlightCel
                 seconds
             };
         }
-
+        let timeinterval; 
         function updateCountdown() {
             const t = getTimeRemaining();
 
@@ -1230,7 +1257,7 @@ document.getElementById("teamHighlight").addEventListener("change", highlightCel
         }
 
     updateCountdown();
-        const timeinterval = setInterval(updateCountdown, 1000);
+    timeinterval = setInterval(updateCountdown, 1000);
  
 
         document.body.addEventListener('keyup', (function() {
@@ -1489,6 +1516,37 @@ function loadGitHubReleases() {
 document.getElementById('patch-notes-tab').addEventListener('click', function() {
     loadGitHubReleases();
 });
+
+function setupDragAndDrop() {
+    const matchesTableContainer = document.getElementById('matchesTableContainer');
+
+    matchesTableContainer.addEventListener('dragover', (event) => {
+        event.preventDefault(); // Prevent default to allow drop
+        matchesTableContainer.classList.add('drag-over');
+    });
+
+    matchesTableContainer.addEventListener('dragleave', (event) => {
+        event.preventDefault();
+        // Check if the dragleave event is actually leaving the container, not just the child elements
+        if (!matchesTableContainer.contains(event.relatedTarget)) {
+            matchesTableContainer.classList.remove('drag-over');
+        }
+    });
+
+    matchesTableContainer.addEventListener('drop', (event) => {
+        event.preventDefault(); // Prevent default action (open as link for some elements)
+        matchesTableContainer.classList.remove('drag-over');
+        // Process the files
+        const files = event.dataTransfer.files;
+        if (files.length > 0) {
+            const fileInput = document.getElementById('uploadMatchData');
+            fileInput.files = files;
+            uploadData({ target: { files: files } });
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', setupDragAndDrop);
 
             </script>
             
