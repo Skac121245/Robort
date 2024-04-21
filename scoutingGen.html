@@ -668,7 +668,7 @@ function exportTableToExcel(tableID){
     var eventCode = $('#eventCode').val(); // Get the event code from the input
     var filename = `ScoutingList_${eventCode}`; // Create filename with event code
     let table = document.getElementById(tableID);
-    let workbook = XLSX.utils.table_to_book(table);
+    let workbook = XLSX.utils.table_to_book(table, {raw: true, sheet: "Sheet 1"});
     XLSX.writeFile(workbook, `${filename}.xlsx`);
 }
 
