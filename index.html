@@ -704,6 +704,9 @@ div.modal-body, #warningModalLabel.modal-title {
                     <li class="nav-item">
                         <a class="nav-link" id="patch-notes-tab" data-toggle="tab" href="#patch-notes" role="tab" aria-controls="patch-notes" aria-selected="false">Patch Notes</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="feedback-tab" data-toggle="tab" href="#feedback" role="tab" aria-controls="feedback" aria-selected="false">Feedback</a>
+                    </li>
                 </ul>
                 <div class="tab-content" id="aboutTabsContent">
                     <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
@@ -716,6 +719,68 @@ div.modal-body, #warningModalLabel.modal-title {
                     <div class="tab-pane fade" id="patch-notes" role="tabpanel" aria-labelledby="patch-notes-tab">
                         <!-- Patch notes will be populated here by JavaScript -->
                     </div>
+                    <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
+                        <form id="feedbackForm">
+                            <div class="form-group">
+                                <label for="feedbackType">Select Feedback Type:</label>
+                                <select class="form-control" id="feedbackType" onchange="toggleFeedbackForm()">
+                                    <option value="feature">Feature Suggestion</option>
+                                    <option value="bug">Bug Report</option>
+                                </select>
+                            </div>
+                            <!-- Feature Suggestion Form -->
+                            <div id="featureForm" style="display: block;">
+                                <div class="form-group">
+                                    <label>Feature Area: <label style="color:red">*</label></label>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="featureArea" id="statistics" value="Statistics/Data">
+                                            <label class="form-check-label" for="statistics">Statistics/Data</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="featureArea" id="scouting" value="Scouting">
+                                            <label class="form-check-label" for="scouting">Scouting</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="featureArea" id="quality" value="Quality of Life">
+                                            <label class="form-check-label" for="quality">Quality of Life</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="featureArea" id="other" value="Other">
+                                            <label class="form-check-label" for="other">Other</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="featureDescription">Description:</label>
+                                    <textarea class="form-control" id="featureDescription" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <!-- Bug Report Form -->
+                            <div id="bugForm" style="display: none;">
+                                <div class="form-group">
+                                    <label for="bugTitle">Title:</label>
+                                    <input type="text" class="form-control" id="bugTitle">
+                                </div>
+                                <div class="form-group">
+                                    <label for="bugSummary">Issue Summary:</label>
+                                    <textarea class="form-control" id="bugSummary" rows="2"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bugSteps">Steps to Reproduce:</label>
+                                    <textarea class="form-control" id="bugSteps" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bugResults">Expected vs. Actual Results:</label>
+                                    <textarea class="form-control" id="bugResults" rows="2"></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>                    
+                  </div>
+              </div>
+          </div>
                 </div>
             </div>
         </div>
@@ -1549,6 +1614,71 @@ function setupDragAndDrop() {
 
 document.addEventListener('DOMContentLoaded', setupDragAndDrop);
 
+document.getElementById('feedbackForm').addEventListener('submit', async function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+    const feedbackType = document.getElementById('feedbackType').value;
+    let postData = {
+        username: "Robort Feedback Bot",
+        embeds: [],
+    };
+
+    if (feedbackType === 'feature') {
+        const area = document.querySelector('input[name="featureArea"]:checked').value;
+        const description = document.getElementById('featureDescription').value;
+        postData.embeds.push({
+            title: "Feature Suggestion",
+            fields: [
+                { name: "Area", value: area, inline: true },
+                { name: "Description", value: description }
+            ],
+            color: 65280  // Green
+        });
+    } else {
+        const title = document.getElementById('bugTitle').value;
+        const summary = document.getElementById('bugSummary').value;
+        const steps = document.getElementById('bugSteps').value;
+        const results = document.getElementById('bugResults').value;
+        postData.embeds.push({
+            title: "Bug Report: " + title,
+            fields: [
+                { name: "Summary", value: summary },
+                { name: "Steps to Reproduce", value: steps },
+                { name: "Expected vs. Actual Results", value: results }
+            ],
+            color: 16711680  // Red
+        });
+    }
+
+    try {
+        const response = await fetch('https://discord.com/api/webhooks/1231365349476405268/lX0MXxHO2zwQPnNxEiuConQ8Sf47Qwq4EDrE8mLV8pctu3c63VQBjnsjAwlGLK2DPeLm', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData)
+        });
+        if (response.ok) {
+            alert('Feedback submitted successfully!');
+            document.getElementById('feedbackForm').reset();  // Reset the form after successful submission
+        } else {
+            alert('Failed to submit feedback. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error submitting feedback:', error);
+        alert('Error submitting feedback. Please check your network connection and try again.');
+    }
+});
+
+function toggleFeedbackForm() {
+    const feedbackType = document.getElementById('feedbackType').value;
+    if (feedbackType === 'feature') {
+        document.getElementById('featureForm').style.display = 'block';
+        document.getElementById('bugForm').style.display = 'none';
+    } else {
+        document.getElementById('featureForm').style.display = 'none';
+        document.getElementById('bugForm').style.display = 'block';
+    }
+}
             </script>
             
             <script>
