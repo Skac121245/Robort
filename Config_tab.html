@@ -191,6 +191,14 @@ body.bg-dark .dropdown-menu {
   color: #343a40 !important;
 }
 
+.autoItem {
+    margin-bottom: 20px; /* Adds more space between each auto item */
+}
+
+#autoNamesContainer {
+    margin-bottom: 30px; /* Adds more space between the container of autos and the next content block */
+}
+
   </style>
 <script>
                 document.addEventListener("DOMContentLoaded", function() {
@@ -323,7 +331,7 @@ body.bg-dark .dropdown-menu {
             <div class="col-lg-6 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        Add Auto Names and Pictures
+                        Auto Names and Pictures
                     </div>
                     <div class="card-body">
                         <form id="autoNamesForm">
@@ -332,7 +340,6 @@ body.bg-dark .dropdown-menu {
                             </div>
                             <div class="button-wrapper">
                             <button type="button" id="addAutoName" class="btn btn-info mb-2">Add Auto Name</button>
-                            <button type="submit" class="btn btn-primary">Save</button>
                             </div>
                         </form>
                     </div>
@@ -521,7 +528,7 @@ body.bg-dark .dropdown-menu {
     
         document.addEventListener('DOMContentLoaded', (event) => {
             document.getElementById('addAutoName').addEventListener('click', addAutoNameField);
-            document.getElementById('autoNamesForm').addEventListener('submit', saveAutoNamesAndImages);
+            // document.getElementById('autoNamesForm').addEventListener('submit', saveAutoNamesAndImages);
     
             document.getElementById('eventCodeForm').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -578,63 +585,157 @@ body.bg-dark .dropdown-menu {
         });
     
         function addAutoNameField() {
-            const container = document.getElementById('autoNamesContainer');
-            const uniqueId = Date.now();
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'autoItem';
-            itemDiv.innerHTML = `
-                <input type="text" placeholder="Auto Name" name="autoNames[]" class="form-control mb-2">
-                <input type="file" accept="image/*" name="autoImages[]" id="file-${uniqueId}" style="display: none;">
-                <label for="file-${uniqueId}" class="btn btn-secondary">Upload Image</label>
-                <img id="preview-${uniqueId}" style="display: none; max-width: 100%; height: auto;" class="img-thumbnail mt-2"/>
-            `;
-            container.appendChild(itemDiv);
+    const container = document.getElementById('autoNamesContainer');
+    const uniqueId = Date.now();  // Using current timestamp as a simple unique ID
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'autoItem';
+    itemDiv.id = 'auto-' + uniqueId;
+    itemDiv.innerHTML = `
+        <input type="text" placeholder="Auto Name" id="name-${uniqueId}" class="form-control mb-2">
+        <button type="button" onclick="removeAuto('${uniqueId}')" class="btn btn-danger">Remove</button>
+        <button type="button" onclick="changeImage('${uniqueId}')" class="btn btn-secondary">Change Image</button>
+        <button type="button" onclick="saveChanges('${uniqueId}')" id="save-${uniqueId}" class="btn btn-success" style="display: none;">Save Changes</button>
+        <br><img id="preview-${uniqueId}" src="" style="max-width: 100%; height: auto;" class="img-thumbnail mt-2"/>
+    `;
+    container.appendChild(itemDiv);
+}
+
+
+       document.addEventListener('DOMContentLoaded', function() {
+    const autos = JSON.parse(localStorage.getItem('autos')) || [];
+    displayExistingAutos(autos);
+});
+
+
+function displayExistingAutos(autos) {
+    const container = document.getElementById('autoNamesContainer');
+    autos.forEach(auto => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'autoItem';
+        itemDiv.id = 'auto-' + auto.id;
+        itemDiv.innerHTML = `
+            <input type="text" value="${auto.name}" id="name-${auto.id}" class="form-control mb-2"/>
+            <button type="button" onclick="removeAuto('${auto.id}')" class="btn btn-danger">Remove</button>
+            <button type="button" onclick="changeImage('${auto.id}')" class="btn btn-secondary">Change Image</button>
+            <button type="button" onclick="saveChanges('${auto.id}')" id="save-${auto.id}" class="btn btn-success" style="display: none;">Save Changes</button>
+            <br><img id="preview-${auto.id}" src="${auto.image}" style="max-width: 100%; height: auto;" class="img-thumbnail mt-2"/>
+        `;
+        container.appendChild(itemDiv);
+
+        // Ensure the element exists before adding an event listener
+        const nameInput = document.getElementById(`name-${auto.id}`);
+        const saveButton = document.getElementById(`save-${auto.id}`);
+        if (nameInput && saveButton) {
+            nameInput.addEventListener('input', function() {
+                saveButton.style.display = 'inline'; // Show the save button when there are changes
+            });
+        } else {
+            console.error('Error: Save button or name input field not found for auto ID', auto.id);
+        }
+    });
+}
+
+
+        // function saveAutoNamesAndImages(e) {
+        //     e.preventDefault();
+        //     const autoNamesInputs = document.querySelectorAll('input[type="text"][name="autoNames[]"]');
+        //     const autoImagesInputs = document.querySelectorAll('input[type="file"][name="autoImages[]"]');
+        //     const autosData = [];
     
-            document.getElementById(`file-${uniqueId}`).addEventListener('change', function (e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        document.getElementById(`preview-${uniqueId}`).src = e.target.result;
-                        document.getElementById(`preview-${uniqueId}`).style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
+        //     autoNamesInputs.forEach((input, index) => {
+        //         const fileInput = autoImagesInputs[index];
+        //         const file = fileInput.files[0];
+        //         if (file) {
+        //             const reader = new FileReader();
+        //             reader.onloadend = function() {
+        //                 autosData.push({ name: input.value, image: reader.result });
+        //                 if (autosData.length === autoNamesInputs.length) {
+        //                     localStorage.setItem('autos', JSON.stringify(autosData));
+        //                     alert('Auto names and images saved to localStorage.');
+        //                 }
+        //             };
+        //             reader.readAsDataURL(file);
+        //         } else {
+        //             autosData.push({ name: input.value, image: '' });
+        //             if (autosData.length === autoNamesInputs.length) {
+        //                 localStorage.setItem('autos', JSON.stringify(autosData));
+        //                 alert('Auto names and images saved to localStorage.');
+        //             }
+        //         }
+        //     });
+    
+        //     if (autoNamesInputs.length === 0) {
+        //         alert('Please add at least one auto name and image.');
+        //     }
+        // }
+
+        function removeAuto(autoId) {
+    console.log('Attempting to remove auto with ID:', autoId);
+    const autoElement = document.getElementById(`auto-${autoId}`);
+    console.log('Element found:', autoElement);
+
+    if (autoElement) {
+        autoElement.remove();  // Remove the auto element from the DOM
+        const autos = JSON.parse(localStorage.getItem('autos')) || [];
+        const remainingAutos = autos.filter(auto => auto.id !== autoId);
+        localStorage.setItem('autos', JSON.stringify(remainingAutos));
+        alert('Auto removed successfully.');
+    } else {
+        alert('Failed to remove auto. Auto not found.');
+    }
+}
+
+
+
+function changeImage(autoId) {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.onchange = e => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const preview = document.getElementById(`preview-${autoId}`);
+                if (preview) {
+                    preview.src = event.target.result;
+                    document.getElementById(`save-${autoId}`).style.display = 'inline'; // Show save button
                 }
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    fileInput.click();
+}
+
+
+function saveChanges(autoId) {
+    const nameInput = document.getElementById(`name-${autoId}`);
+    const previewImage = document.getElementById(`preview-${autoId}`);
+
+    if (nameInput && previewImage) {
+        const autos = JSON.parse(localStorage.getItem('autos')) || [];
+        const autoIndex = autos.findIndex(auto => auto.id === autoId);
+
+        if (autoIndex !== -1) {
+            autos[autoIndex].name = nameInput.value;
+            autos[autoIndex].image = previewImage.src;  // Ensure this captures the new image
+        } else {
+            // If auto doesn't exist, add it new
+            autos.push({
+                id: autoId,
+                name: nameInput.value,
+                image: previewImage.src
             });
         }
-    
-        function saveAutoNamesAndImages(e) {
-            e.preventDefault();
-            const autoNamesInputs = document.querySelectorAll('input[type="text"][name="autoNames[]"]');
-            const autoImagesInputs = document.querySelectorAll('input[type="file"][name="autoImages[]"]');
-            const autosData = [];
-    
-            autoNamesInputs.forEach((input, index) => {
-                const fileInput = autoImagesInputs[index];
-                const file = fileInput.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onloadend = function() {
-                        autosData.push({ name: input.value, image: reader.result });
-                        if (autosData.length === autoNamesInputs.length) {
-                            localStorage.setItem('autos', JSON.stringify(autosData));
-                            alert('Auto names and images saved to localStorage.');
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    autosData.push({ name: input.value, image: '' });
-                    if (autosData.length === autoNamesInputs.length) {
-                        localStorage.setItem('autos', JSON.stringify(autosData));
-                        alert('Auto names and images saved to localStorage.');
-                    }
-                }
-            });
-    
-            if (autoNamesInputs.length === 0) {
-                alert('Please add at least one auto name and image.');
-            }
-        }
+        localStorage.setItem('autos', JSON.stringify(autos));
+        alert('Changes have been saved successfully.');
+    } else {
+        alert('Failed to find auto data fields.');
+    }
+}
+
+
 
 //         document.addEventListener('DOMContentLoaded', function() {
 //     const form = document.getElementById('eventCodeForm');
