@@ -388,7 +388,7 @@
 
         function getTimeRemaining() {
             const now = new Date();
-            const nextKickoffDate = new Date("2024-04-17T07:00:00");
+            const nextKickoffDate = new Date();
             let delta = Math.abs(nextKickoffDate - now) / 1000;
 
             const days = Math.floor(delta / 86400);
@@ -458,7 +458,7 @@
                     spread: 70,
                     origin: { y: 0.6 }
                 });
-                document.getElementById('h1').innerHTML = "FRC Kickoff is here! Good luck teams!";
+                document.getElementById('h1').innerHTML = "The 2024 Competition Season has concluded! See you next year!";
                 
             }
         }
