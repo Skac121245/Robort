@@ -102,6 +102,7 @@
 <body>
     <div id="info">
         <label for="sideToggle">Toggle Side:</label>
+        <button onclick="downloadSessionStorageData()">Download Data</button>
         <input type="checkbox" id="sideToggle" onchange="toggleSide()">
         <input type="number" id="matchNumber" placeholder="Match Number">
         <input type="number" id="teamNumber" placeholder="Team Number">
@@ -126,9 +127,9 @@
                 onclick="logAction('Source')">Source</button>
 
             <div id="additionalActions" style="display: none;">
-                <button onclick="logAction('Speaker')">Speaker</button>
-                <button onclick="logAction('Amp')">Amp</button>
-                <button onclick="logAction('Pass')">Pass</button>
+                <button style="position:absolute; top: 130px; left: 10%; width: 100px; height:100px; opacity: 60%;" onclick="logAction('Speaker')">Speaker</button>
+                <button style="position:absolute; top: 0px; left: 16%; width: 100px; height:50px; opacity: 60%;" onclick="logAction('Amp')">Amp</button>
+                <button style="position:absolute; top: 80px; left: 25%; width: 100px; height:100px; opacity: 60%;" onclick="logAction('Pass')">Pass</button>
             </div>
         </div>
         <div id="notesContainer" style="display: none; position: relative; width: 100%; height: 100%;">
@@ -230,6 +231,28 @@
                 selectDriverStation(driverStation);
             });
         });
+
+        function downloadSessionStorageData() {
+    // Retrieve the scouting data from session storage
+    const data = sessionStorage.getItem('scoutingData');
+    if (data) {
+        // Create a blob from the data
+        const blob = new Blob([data], { type: 'application/json' });
+
+        // Create an anchor element and use it to trigger the download
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `scoutingData.json`; // The file name of the downloaded file
+        a.style.display = 'none'; 
+
+        // Append the anchor to the body, click it, and then remove it
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } else {
+        alert('No data to download!');
+    }
+}
 
         function selectDriverStation(driverStation) {
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
