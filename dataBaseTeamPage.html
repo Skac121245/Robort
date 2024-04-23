@@ -10,9 +10,10 @@
             margin: 20px;
         }
         #teamDisplay {
-            display: show;
+            display: none;
             margin-top: 20px;
             font-size: 24px;
+            justify-content: center;
 
         }
     </style>
@@ -27,7 +28,7 @@
             fileReader.onload = function() {
                 const data = JSON.parse(fileReader.result);
                 document.getElementById('teamDisplay').textContent = data.teamNumber;
-                document.getElementById('teamDisplay').style.display = 'block';
+                document.getElementById('teamDisplay').style.display = 'flex';
                 document.getElementById('uploadButton').style.display = 'none';
             };
             fileReader.readAsText(event.target.files[0]);
