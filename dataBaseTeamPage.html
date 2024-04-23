@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON File Upload</title>
+    <style>
+        #uploadButton {
+            display: block;
+            margin: 20px;
+        }
+        #teamDisplay {
+            display: show;
+            margin-top: 20px;
+            font-size: 24px;
+
+        }
+    </style>
+</head>
+<body>
+    <input type="file" id="uploadButton" accept=".json">
+    <h1 id="teamDisplay"></h1>
+
+    <script>
+        document.getElementById('uploadButton').addEventListener('change', function(event) {
+            const fileReader = new FileReader();
+            fileReader.onload = function() {
+                const data = JSON.parse(fileReader.result);
+                document.getElementById('teamDisplay').textContent = data.teamNumber;
+                document.getElementById('teamDisplay').style.display = 'block';
+                document.getElementById('uploadButton').style.display = 'none';
+            };
+            fileReader.readAsText(event.target.files[0]);
+        });
+    </script>
+</body>
+</html>
