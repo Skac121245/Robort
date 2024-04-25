@@ -25,32 +25,25 @@
         h1, h2, .container {
             text-align: center;
         }
-
         #field_image {
-            width: 100%;
-            /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
             background-image: url("images/crescendo_feild.png");
             background-size: contain;
             border: 1px solid #000;
             width: 1152px;
-            /* Adjust based on your actual need */
             height: 498px;
-            /* Adjust based on your actual need */
             display: flex;
-            /* justify-content: center; */
         }
-        
-
         #notesContainer .note-btn {
-            display: inline;
+            /* display: inline;  */
             background-color: rgba(0, 200, 150, 0.5);
             border: none;
             color: white;
             padding: 8px 16px;
             cursor: pointer;
             transition: background-color 0.3s;
+            position: absolute;
+            opacity: 60%;
         }
-        
     </style>
 </head>
 <body>
@@ -61,31 +54,40 @@
     <div id="autoContainer" class="container hidden">
         <h3>Autonomous Phase</h3>
         <div id="field_image">
-            <div id="notesContainer" style="display: flex; position: relative; width: 100%; height: 100%;">
-                <!-- Example note buttons, position these as needed -->
-            <button id="Note 1" class="note-btn" style="display: none; position: absolute; top: 20%; left: 23%;">Note
+            <div id="notesContainer" style="position: relative; width: 100%; height: 100%;">
+            <button id='Note 1' class="note-btn" style="display: none; position: absolute; top: 20%; left: 23%;"
+                onclick="noteAction('Note 1')">Note
                 1</button>
-            <button id="Note 2" class="note-btn" style="display: none; position: absolute; top: 35%; left: 23%;">Note
+            <button id='Note 2' class="note-btn" style="display: none; position: absolute; top: 35%; left: 23%;"
+                onclick="noteAction('Note 2')">Note
                 2</button>
-            <button id="Note 3" class="note-btn" style="display: none; position: absolute; top: 50%; left: 23%;">Note
+            <button id='Note 3' class="note-btn" style="display: none; position: absolute; top: 50%; left: 23%;"
+                onclick="noteAction('Note 3')">Note
                 3</button>
-            <button id="Note 4" class="note-btn" style="display: none; position: absolute; top: 16%; left: 47%;">Note
+            <button id='Note 4' class="note-btn" style="display: none; position: absolute; top: 16%; left: 47%;"
+                onclick="noteAction('Note 4')">Note
                 4</button>
-            <button id="Note 5" class="note-btn" style="display: none; position: absolute; top: 33%; left: 47%;">Note
+            <button id='Note 5' class="note-btn" style="display: none; position: absolute; top: 33%; left: 47%;"
+                onclick="noteAction('Note 5')">Note
                 5</button>
-            <button id="Note 6" class="note-btn" style="display: none; position: absolute; top: 50%; left: 47%;">Note
+            <button id='Note 6' class="note-btn" style="display: none; position: absolute; top: 50%; left: 47%;"
+                onclick="noteAction('Note 6')">Note
                 6</button>
-            <button id="Note 7" class="note-btn" style="display: none; position: absolute; top: 67%; left: 47%;">Note
+            <button id='Note 7' class="note-btn" style="display: none; position: absolute; top: 67%; left: 47%;"
+                onclick="noteAction('Note 7')">Note
                 7</button>
-            <button id="Note 8" class="note-btn" style="display: none; position: absolute; top: 85%; left: 47%;">Note
+            <button id='Note 8' class="note-btn" style="display: none; position: absolute; top: 85%; left: 47%;"
+                onclick="noteAction('Note 8')">Note
                 8</button>
-            <button id="Note 9" class="note-btn" style="display: none; position: absolute; top: 20%; left: 71%;">Note
+            <button id='Note 9' class="note-btn" style="display: none; position: absolute; top: 20%; left: 71%;"
+                onclick="noteAction('Note 9')">Note
                 9</button>
-            <button id="Note 10" class="note-btn" style="display: none; position: absolute; top: 35%; left: 71%;">Note
+            <button id='Note 10' class="note-btn" style="display: none; position: absolute; top: 35%; left: 71%;"
+                onclick="noteAction('Note 10')">Note
                 10</button>
-            <button id="Note 11" class="note-btn" style="display: none; position: absolute; top: 50%; left: 71%;">Note
+            <button id='Note 11' class="note-btn" style="display: none; position: absolute; top: 50%; left: 71%;"
+                onclick="noteAction('Note 11')">Note
                 11</button>
-                <!-- Add more note buttons as required -->
             </div>
         </div>
         <ul id="autoActionsList"></ul>
@@ -103,7 +105,6 @@
     </div>
 
     <script>
-        const data = [];
         document.getElementById('uploadButton').addEventListener('change', function(event) {
             const fileReader = new FileReader();
             fileReader.onload = function() {
@@ -114,37 +115,22 @@
                 document.getElementById('matchNumber').classList.remove('hidden');
                 document.getElementById('uploadButton').classList.add('hidden');
 
-                // Populate Autonomous actions
-                const autoActionsList = document.getElementById('autoActionsList');
-                data.autoActions.forEach(action => {
-                    let listItem = document.createElement('li');
-                    listItem.textContent = action.note + ": " + action.outcome;
-                    autoActionsList.appendChild(listItem);
-                    console.log(action.note)
-                    showNotebox(action.note);
-
+                // Populate note buttons
+                const notesContainer = document.getElementById('notesContainer');
+                const positions = [
+                    {top: '20%', left: '23%'}, {top: '35%', left: '23%'}, {top: '50%', left: '23%'},
+                    {top: '16%', left: '47%'}, {top: '33%', left: '47%'}, {top: '50%', left: '47%'},
+                    {top: '67%', left: '47%'}, {top: '85%', left: '47%'}, {top: '20%', left: '71%'},
+                    {top: '35%', left: '71%'}, {top: '50%', left: '71%'}
+                ];
+                data.notes.forEach((note) => {
+                    console.log(note)
+                    document.getElementById(note).style.display = "inline"
                 });
                 document.getElementById('autoContainer').classList.remove('hidden');
-
-                // Populate Teleoperated actions
-                const teleopActionsList = document.getElementById('teleopActionsList');
-                data.teleopActions.forEach(action => {
-                    let listItem = document.createElement('li');
-                    listItem.textContent = "Pickup: " + action.pickup + ", Shot/Place: " + action.shot_place;
-                    teleopActionsList.appendChild(listItem);
-                });
-                document.getElementById('teleopContainer').classList.remove('hidden');
-
-                // Display Endgame actions
-                document.getElementById('endgameAction').textContent = "Endgame Action: " + data.endgameAction;
-                document.getElementById('endgameContainer').classList.remove('hidden');
             };
             fileReader.readAsText(event.target.files[0]);
         });
-
-        function showNotebox(note) {
-            
-        }
     </script>
 </body>
 </html>
