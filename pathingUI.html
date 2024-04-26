@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FRC Match Strategy Planner</title>
+  <style>
+    body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .controls {
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  select, button, input {
+    padding: 10px;
+    margin-right: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    transition: border-color 0.3s;
+  }
+
+  button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    border: none;
+  }
+
+  button:hover {
+    background-color: #45a049;
+  }
+
+  #strategyCanvas {
+      width: 100%;
+      /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
+      background-image: url('images/crescendo_feild.png');
+      background-size: contain;
+      border: 1px solid #000;
+      width: 1152px; /* Adjust based on your actual need */
+      height: 498px; /* Adjust based on your actual need */
+    }
+
+    .container {
+        display: flex;
+        gap: 200px;
+    }
+
+  </style>
+</head>
+<body>
+<div class="container">
+    <button style="width: 200px; height: 50px; font-size: 25px;" onclick="clearCanvas()">Clear</button>
+    <button id="saveCanvas" style="width: 200px; height: 50px; font-size: 25px;" onclick="saveCanvas()">Save Path PNG</button>
+    <button style="width: 200px; height: 50px; font-size: 25px;"  id="toggleEraser">Toggle Eraser</button>
+</div>
+
+  <canvas id="strategyCanvas" width="1536px" height="664px"></canvas>
+
+  <div class="container">
+    <button style="width: 200px; height: 50px; font-size: 25px; rotate: 180deg;" onclick="clearCanvas()">Clear</button>
+    <button id="saveCanvas" style="width: 200px; height: 50px; font-size: 25px; rotate: 180deg;" onclick="saveCanvas()">Save Path PNG</button>
+    <button style="width: 200px; height: 50px; font-size: 25px; rotate: 180deg;"  id="toggleEraser">Toggle Eraser</button>
+</div>
+
+
+<script>
+  const scoutingData = sessionStorage.getItem('scoutingData')
+  let eraserEnabled = false;
+
+document.getElementById('toggleEraser').addEventListener('click', function() {
+  eraserEnabled = !eraserEnabled;
+  if (eraserEnabled) {
+    // Activate eraser mode
+    ctx.globalCompositeOperation = 'destination-out';
+    this.textContent = 'Switch to Pen'; // Change the button text accordingly
+  } else {
+    // Back to drawing mode
+    ctx.globalCompositeOperation = 'source-over';
+    this.textContent = 'Toggle Eraser';
+  }
+});
+    const canvas = document.getElementById('strategyCanvas');
+    const ctx = canvas.getContext('2d');
+    const matchSelect = document.getElementById('matchSelect');
+    let matches = [];
+    let drawing = false;
+    let drawColor = 'black';
+    let teamPositions = [];
+  
+    const bluePositions = [{x: 70, y: 150}, {x: 70, y: 380}, {x: 70, y: 500}];
+    const redPositions = [{x: 1400, y: 500}, {x: 1400, y: 380}, {x: 1400, y: 150}];
+    const teamColors = {
+      blue: ['#07f7df', '#075bf7', '#7307f7'],
+      red: ['#f70707', '#f76707', '#f7c707']
+    };
+  
+    setupCanvas();
+  
+    function setupCanvas() {
+      // Mouse Events
+      canvas.addEventListener('mousedown', startDrawing);
+      canvas.addEventListener('mouseup', stopDrawing);
+      canvas.addEventListener('mouseout', stopDrawing);
+      canvas.addEventListener('mousemove', drawMouse);
+
+      // Touch Events
+      canvas.addEventListener('touchstart', startDrawingTouch, false);
+      canvas.addEventListener('touchend', stopDrawingTouch, false);
+      canvas.addEventListener('touchcancel', stopDrawingTouch, false);
+      canvas.addEventListener('touchmove', drawTouch, false);
+    }
+  
+    function startDrawing(e) {
+      drawing = true;
+      var offsetX = e.offsetX || e.touches[0].clientX - canvas.getBoundingClientRect().left;
+      var offsetY = e.offsetY || e.touches[0].clientY - canvas.getBoundingClientRect().top;
+      checkTeamClick(offsetX, offsetY);
+      // Prevents the mouse down from having an additional side effect, such as starting a selection
+      e.preventDefault();
+    }
+
+    function stopDrawing() {
+      if (drawing) {
+        drawing = false;
+        ctx.beginPath();
+      }
+    }
+
+    function drawMouse(e) {
+      if (drawing) {
+        var offsetX = e.offsetX;
+        var offsetY = e.offsetY;
+        draw(offsetX, offsetY);
+      }
+    }
+
+     function startDrawingTouch(e) {
+      if (e.touches.length == 1) { // Only track one finger
+        startDrawing(e);
+      }
+    }
+
+    function drawTouch(e) {
+      if (drawing) {
+        var touch = e.touches[0];
+        var offsetX = touch.clientX - canvas.getBoundingClientRect().left;
+        var offsetY = touch.clientY - canvas.getBoundingClientRect().top;
+        draw(offsetX, offsetY);
+      }
+      e.preventDefault(); // Prevent scrolling when touching the canvas
+    }
+
+    function stopDrawingTouch() {
+      stopDrawing();
+    }
+
+    function draw(x, y) {
+  // Adjust drawing logic to support erasing
+  ctx.lineWidth = eraserEnabled ? 50 : 4; // You might want a larger lineWidth for erasing
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = eraserEnabled ? 'rgba(0,0,0,1)' : drawColor; // Use the background color or fully opaque color for erasing
+
+  const scale = 1536 / canvas.clientWidth;
+      const scaleX = scale * x;
+      const scaleY = scale * y;
+      ctx.lineTo(scaleX, scaleY);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(scaleX, scaleY);
+    }
+  
+  
+    function displayTeamsForSelectedMatch() {
+      const selectedMatchKey = matchSelect.value;
+      const match = matches.find(m => m.key === selectedMatchKey);
+      if (!match) return;
+      clearCanvas();
+      teamPositions = []; // Reset team positions
+  
+      drawTeams(match.alliances.blue.team_keys, bluePositions, 'blue');
+      drawTeams(match.alliances.red.team_keys, redPositions, 'red');
+    }
+  
+    function drawTeams(teamKeys, positions, alliance) {
+  ctx.font = '40px Arial'; // Ensure font size is set before measuring text
+  const padding = 10; // Padding around the text for the outline box
+
+  teamKeys.forEach((key, index) => {
+    const teamNumber = key.replace('frc', '');
+    const position = positions[index];
+    const color = teamColors[alliance][index];
+
+    const textMetrics = ctx.measureText(teamNumber);
+    const textWidth = textMetrics.width;
+    const rectHeight = 50; // Example height of clickable area
+    const rectY = position.y - 40; // Adjust based on font size and desired box size
+
+    // Draw the team number and background
+    ctx.fillStyle = color;
+    ctx.fillRect(position.x - (padding / 2), rectY, textWidth + padding, rectHeight);
+    ctx.fillStyle = 'black';
+    ctx.fillText(teamNumber, position.x, position.y);
+
+    // Store positions for click detection
+    teamPositions.push({
+      x: position.x - (padding / 2),
+      y: rectY,
+      width: textWidth + padding,
+      height: rectHeight,
+      color: color
+    });
+  });
+}
+
+function saveCanvas() {
+        const matchNumber = scoutingData.matchNumber;
+        const teamNumber = scoutingData.teamNumber;
+        const canvas = document.getElementById('strategyCanvas');
+        const ctx = canvas.getContext('2d');
+        const backgroundImage = new Image();
+        backgroundImage.src = "images/crescendo_feild.png";
+        backgroundImage.onload = () => {
+          // Create a temporary canvas to draw the background and the existing content
+          const tempCanvas = document.createElement('canvas');
+          const tempCtx = tempCanvas.getContext('2d');
+
+          tempCanvas.width = canvas.width;
+          tempCanvas.height = canvas.height;
+
+          // Draw the background on the temp canvas, scaled to fit
+          tempCtx.drawImage(backgroundImage, 0, 0, tempCanvas.width, tempCanvas.height);
+
+          // Now draw the original canvas content on top of the background
+          tempCtx.drawImage(canvas, 0, 0);
+
+          // Save the combined content from the temporary canvas
+          const dataURL = tempCanvas.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.download = `Match${matchNumber}_${teamNumber}_path.png`; // You can change the filename
+          link.href = dataURL;
+          link.click();
+        };
+      };
+
+  
+    function drawText(text, x, y, color, index, alliance) {
+    // Calculate text width for background and click detection area
+    ctx.font = '40px Arial'; // Ensure font size is set before measuring text
+    const textMetrics = ctx.measureText(text);
+    const textWidth = textMetrics.width;
+    const padding = 10; // Padding around the text for the outline box
+
+    // Adjust position for the rectangle to be centered on the text if necessary
+    const rectX = x - padding / 2;
+    const rectY = y - 40; // Adjust based on font size and desired box size
+    const rectWidth = textWidth + padding;
+    const rectHeight = 50;
+
+    // Draw the colored background rectangle
+    ctx.fillStyle = color;
+    ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
+
+    // Draw the team number text on top
+    ctx.fillStyle = 'black'; // Contrast color for text
+    ctx.fillText(text, x, y);
+
+    // Update the teamPositions array for click detection
+    teamPositions.push({
+      x: rectX,
+      y: rectY,
+      width: rectWidth,
+      height: rectHeight,
+      color: color // Assign the drawing color for when the area is clicked
+    });
+  }
+
+  function checkTeamClick(x, y) {
+    if (!eraserEnabled) {
+      teamPositions.forEach(team => {
+        // Convert canvas-relative coordinates to the scaled drawing coordinates
+        const scale = canvas.offsetWidth / canvas.width;
+        const scaledX = x / scale;
+        const scaledY = y / scale;
+    
+        // Check if the click is within the bounds of a team's clickable area
+        if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
+          drawColor = team.color; // Set the drawing color to the team's color
+        }
+      });
+    }
+}
+
+  
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  
+  </script>  
+</body>
+</html>
