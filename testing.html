@@ -72,6 +72,51 @@
             font-weight: 900;
             font-size: 13px;
         }
+
+        .driver-station-btnB{
+            position: absolute;
+            background-color: rgba(0, 123, 255, 0.5);
+            /* Semi-transparent blue */
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            height: 50px;
+        }
+
+         .driver-station-btnR{
+            position: absolute;
+            background-color: rgba(255, 65, 65, 0.6);
+            /* Semi-transparent blue */
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .position-btnB{
+            position: absolute;
+            background-color: rgba(0, 123, 255, 0.5);
+            /* Semi-transparent blue */
+            border: none;
+            color: black;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .position-btnR{
+            position: absolute;
+            background-color: rgba(255, 65, 65, 0.6);
+            /* Semi-transparent blue */
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
     </style>
 </head>
 <body>
@@ -95,7 +140,8 @@
                 <button id="Position 6" class="position-btnR" style="display: none; position: absolute; top: 35%; left: 75%;">Position 6</button>
                 <button id="Position 7" class="position-btnR" style="display: none; position: absolute; top: 50%; left: 78%;">Position 7</button>
                 <button id="Position 8" class="position-btnR" style="display: none; position: absolute; top: 70%; left: 78%;">Position 8</button>
-        
+
+              
             <button id='Note 1' class="note-btn" style="display: none; position: absolute; top: 20%; left: 23%;"
                 onclick="noteAction('Note 1')">Note
                 1</button>
@@ -136,7 +182,17 @@
 
     <div id="teleopContainer" class="container hidden">
         <h3>Teleoperated Phase</h3>
-        <div id="field_image"></div>
+        <div id="field_image">
+<div class="driver-btns" style="position: relative; width: 100%; height: 100%;">
+    <button id="Driver Station 1 BLUE" class="driver-station-btnB" style="position: absolute; display: none; top: 18%; left: 0px; width:120px;">Driver Station 1 BLUE</button>
+    <button id="Driver Station 2 BLUE" class="driver-station-btnB" style="position: absolute; display: none; top: 53%; left: 0px; width:120px;">Driver Station 2 BLUE</button>
+    <button id="Driver Station 3 BLUE" class="driver-station-btnB" style="position: absolute; display: none; top: 72%; left: 0px; width: 120px;">Driver Station 3 BLUE</button>
+
+    <button id="Driver Station 3 RED" class="driver-station-btnR" style="position: absolute; display: none; top: 18%; left: 90%;">Driver Station 3 RED</button>
+    <button id="Driver Station 2 RED" class="driver-station-btnR" style="position: absolute; display: none; top: 53%; left: 90%;">Driver Station 2 RED</button>
+    <button id="Driver Station 1 RED" class="driver-station-btnR" style="position: absolute; display: none; top: 72%; left: 90%;">Driver Station 1 RED</button>
+</div>
+        </div>
         <ul id="teleopActionsList"></ul>
     </div>
 
@@ -182,6 +238,9 @@
                 });
                 document.getElementById(data.robotPosition).style.display = "inline"
                 document.getElementById('autoContainer').classList.remove('hidden');
+                document.getElementById('teleopContainer').classList.remove('hidden');
+                console.log(data.driverStation)
+                document.getElementById(data.driverStation).style.display = 'inline'
             };
             fileReader.readAsText(event.target.files[0]);
         });
