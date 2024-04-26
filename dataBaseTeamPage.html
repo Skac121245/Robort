@@ -37,12 +37,40 @@
             /* display: inline;  */
             background-color: rgba(0, 200, 150, 0.5);
             border: none;
-            color: white;
+            color: black;
             padding: 8px 16px;
             cursor: pointer;
             transition: background-color 0.3s;
             position: absolute;
             opacity: 60%;
+           
+        }
+
+        .position-btnB{
+            position: absolute;
+            background-color: rgba(0, 123, 255, 0.5);
+            /* Semi-transparent blue */
+            border: none;
+            color: black;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .position-btnR{
+            position: absolute;
+            background-color: rgba(255, 65, 65, 0.6);
+            /* Semi-transparent blue */
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #note-btn {
+            font-weight: 900;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -54,7 +82,20 @@
     <div id="autoContainer" class="container hidden">
         <h3>Autonomous Phase</h3>
         <div id="field_image">
+
+            
             <div id="notesContainer" style="position: relative; width: 100%; height: 100%;">
+
+                <button id="Position 1" class="position-btnB" style="display: none; position: absolute; top: 20%; left: 15%;">Position 1</button>
+                <button id="Position 2" class="position-btnB" style="display: none; position: absolute; top: 35%; left: 18%;">Position 2</button>
+                <button id="Position 3" class="position-btnB" style="display: none; position: absolute; top: 50%; left: 15%;">Position 3</button>
+                <button id="Position 4" class="position-btnB" style="display: none; position: absolute; top: 70%; left: 15%;">Position 4</button>
+        
+                <button id="Position 5" class="position-btnR" style="display: none; position: absolute; top: 20%; left: 78%;">Position 5</button>
+                <button id="Position 6" class="position-btnR" style="display: none; position: absolute; top: 35%; left: 75%;">Position 6</button>
+                <button id="Position 7" class="position-btnR" style="display: none; position: absolute; top: 50%; left: 78%;">Position 7</button>
+                <button id="Position 8" class="position-btnR" style="display: none; position: absolute; top: 70%; left: 78%;">Position 8</button>
+        
             <button id='Note 1' class="note-btn" style="display: none; position: absolute; top: 20%; left: 23%;"
                 onclick="noteAction('Note 1')">Note
                 1</button>
@@ -106,6 +147,7 @@
 
     <script>
         document.getElementById('uploadButton').addEventListener('change', function(event) {
+            const x = 0
             const fileReader = new FileReader();
             fileReader.onload = function() {
                 const data = JSON.parse(fileReader.result);
@@ -123,10 +165,22 @@
                     {top: '67%', left: '47%'}, {top: '85%', left: '47%'}, {top: '20%', left: '71%'},
                     {top: '35%', left: '71%'}, {top: '50%', left: '71%'}
                 ];
-                data.notes.forEach((note) => {
-                    console.log(note)
-                    document.getElementById(note).style.display = "inline"
+                data.autoActions.forEach((note, index) => {
+                    index = index + 1
+                    const note_button = document.getElementById(note.note)
+                    note_button.style.display = "inline"
+                    note_button.innerHTML = "Note " + index + "(" + note.outcome + ")";
+                    if (note.outcome === "scored") {
+                        note_button.style.backgroundColor = "green"
+                    } else if (note.outcome === "missed") {
+                        note_button.style.backgroundColor = "red"
+                    } else if (note.outcome === "not picked up") {
+                        note_button.style.backgroundColor = "yellow"
+                    }  else if (note.outcome === "another team got it") {
+                        note_button.style.backgroundColor = "brown"
+                    } 
                 });
+                document.getElementById(data.robotPosition).style.display = "inline"
                 document.getElementById('autoContainer').classList.remove('hidden');
             };
             fileReader.readAsText(event.target.files[0]);

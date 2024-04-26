@@ -9,15 +9,21 @@
         #field {
             width: 100%;
             /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
-            background-image: url("images/crescendo_feild.png");
+            /* background-image: url("images/crescendo_feild.png"); */
             background-size: contain;
-            border: 1px solid #000;
+            /* border: 1px solid #000; */
             width: 1152px;
             /* Adjust based on your actual need */
             height: 498px;
             /* Adjust based on your actual need */
-            position: relative;
-            left: 25%;
+            position: fixed;
+            right: 20px;
+            
+        }
+
+        iframe {
+            position: fixed;
+            right: 20px;
         }
 
         #position-btn-p1, #position-btn-p2, #position-btn-p3, #position-btn-p4,
@@ -107,6 +113,10 @@
         #teleopContainer button:hover {
             background-color: #0056b3;
         }
+
+        #endgameOutcome {
+            width:420px;
+        }
     </style>
 </head>
 
@@ -120,119 +130,123 @@
         <button onclick="startTeleop()">Start Teleop</button>
         <button onclick="startEndgame()">Start Endgame</button>
         <button onclick="downloadSessionStorageData()">Download Data</button>
+        <button onclick="rotateField()">Rotate Field</button>
     </div>
+    <iframe id="field-canvas" src="pathingUI.html" width="1155px" height="601px" style="z-index: 0;"></iframe>
     <div id="field">
-        <button id="driver-station-btn-1" class="driver-station-btn" style="top: 18%; width:120px;">Driver Station 1 BLUE</button>
-        <button id="driver-station-btn-2" class="driver-station-btn" style="top: 53%; width:120px;">Driver Station 2 BLUE</button>
-        <button id="driver-station-btn-3" class="driver-station-btn" style="top: 72%; width: 120px;">Driver Station 3 BLUE</button>
+        <button id="driver-station-btn-1" class="driver-station-btn" style="top: 26%; width:120px;">Driver Station 1 BLUE</button>
+        <button id="driver-station-btn-2" class="driver-station-btn" style="top: 60%; width:120px;">Driver Station 2 BLUE</button>
+        <button id="driver-station-btn-3" class="driver-station-btn" style="top: 80%; width: 120px;">Driver Station 3 BLUE</button>
 
-        <button id="driver-station-btn-6" class="driver-station-btn" style="top: 18%; left: 90%;">Driver Station 3 RED</button>
-        <button id="driver-station-btn-5" class="driver-station-btn" style="top: 53%; left: 90%;">Driver Station 2 RED</button>
-        <button id="driver-station-btn-4" class="driver-station-btn" style="top: 72%; left: 90%;">Driver Station 1 RED</button>
+        <button id="driver-station-btn-6" class="driver-station-btn" style="top: 26%; left: 90%;">Driver Station 3 RED</button>
+        <button id="driver-station-btn-5" class="driver-station-btn" style="top: 60%; left: 90%;">Driver Station 2 RED</button>
+        <button id="driver-station-btn-4" class="driver-station-btn" style="top: 80%; left: 90%;">Driver Station 1 RED</button>
 
-        <button id="position-btn-p1" class="position-btn" style="top: 20%; left: 15%;">Position 1</button>
-        <button id="position-btn-p2" class="position-btn" style="top: 35%; left: 18%;">Position 2</button>
-        <button id="position-btn-p3" class="position-btn" style="top: 50%; left: 15%;">Position 3</button>
-        <button id="position-btn-p4" class="position-btn" style="top: 70%; left: 15%;">Position 4</button>
+        <button id="position-btn-p1" class="position-btn" style="top: 28%; left: 15%;">Position 1</button>
+        <button id="position-btn-p2" class="position-btn" style="top: 45%; left: 18%;">Position 2</button>
+        <button id="position-btn-p3" class="position-btn" style="top: 62%; left: 15%;">Position 3</button>
+        <button id="position-btn-p4" class="position-btn" style="top: 82%; left: 15%;">Position 4</button>
 
-        <button id="position-btn-p5" class="position-btn" style="top: 20%; left: 78%;">Position 5</button>
-        <button id="position-btn-p6" class="position-btn" style="top: 35%; left: 75%;">Position 6</button>
-        <button id="position-btn-p7" class="position-btn" style="top: 50%; left: 78%;">Position 7</button>
-        <button id="position-btn-p8" class="position-btn" style="top: 70%; left: 78%;">Position 8</button>
-
-
-        <div id="teleopContainer" style="display: none; position: absolute; width: 100%; ">
-            <button id="groundPickupButton1" class="groundPickupButton"
-                style="background-color:green; position:absolute; top: 45px; left: 40.5%; width: 200px; height: 120px; opacity: 60%;"
-                onclick="logAction('Ground Pickup 1')">Ground Pickup 1</button>
-
-            <button id="groundPickupButton2" class="groundPickupButton"
-                style="background-color:green; position:absolute; top: 190px; left: 40.5%; width: 200px; height: 120px; opacity: 60%;"
-                onclick="logAction('Ground Pickup 2')">Ground Pickup 2</button>
-
-            <button id="groundPickupButton3" class="groundPickupButton"
-                style="background-color:green; position:absolute; top: 340px; left: 40.5%; width: 200px; height: 120px; opacity: 60%;"
-                onclick="logAction('Ground Pickup 3')">Ground Pickup 3</button>
-
-            <button id="sourceButton"
-                style="position:absolute; top: 390px; left: 75%; width: 100px; height: 50px; rotate: -30deg; opacity: 60%;"
-                onclick="logAction('Source BLUE')">Source</button>
-            <button id="sourceButton2"
-                style=" background-color:red; position:absolute; top: 390px; left: 15%; width: 100px; height: 50px; rotate: 30deg; opacity: 60%;"
-                onclick="logAction('Source RED')">Source</button>
-
-            <div id="additionalActions" style="display: none;">
-                <button style="position:absolute; top: 130px; left: 10%; width: 100px; height:100px; opacity: 60%;"
-                    onclick="logAction('Speaker')">Speaker</button>
-                <button style="position:absolute; top: 0px; left: 16%; width: 100px; height:50px; opacity: 60%;"
-                    onclick="logAction('Amp')">Amp</button>
-                <button style="position:absolute; top: 80px; left: 25%; width: 100px; height:100px; opacity: 60%;"
-                    onclick="logAction('Pass')">Pass</button>
-            </div>
-
-            <div id="endgameContainer" style="display: none; text-align: center;">
-                <button style="position:absolute; top: 300px; left: 25%; width: 100px; height:50px; opacity: 60%;" onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
-                <button style="position:absolute; top: 160px; left: 25%; width: 100px; height:50px; opacity: 60%;" onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
-                <button style="position:absolute; top: 225px; left: 38%; width: 100px; height:50px; opacity: 60%;" onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
-                <button style="background-color:green; position:absolute; top: 80px; left: 25%; width: 100px; height:50px; opacity: 60%;" onclick="logEndgameAction('None')">None</button>
-
-                <button style="position:absolute; top: 300px; left: 63%; width: 100px; height:50px; opacity: 60%;" onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
-                <button style="position:absolute; top: 160px; left: 63%; width: 100px; height:50px; opacity: 60%;" onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
-                <button style="position:absolute; top: 225px; left: 51%; width: 100px; height:50px; opacity: 60%;" onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
-
-                <div id="endgameOutcome" style="display: none; text-align: center;">
-                    <button onclick="saveEndgameOutcome('Park')">Park</button>
-                    <button onclick="saveEndgameOutcome('Climb')">Climb</button>
-                    <button onclick="saveEndgameOutcome('Harmony')">Harmony</button>
-                    <button onclick="saveEndgameOutcome('Trap')">Trap</button>
-                    <button onclick="saveEndgameOutcome('None')">None</button>
-
-                </div>
-            </div>
+        <button id="position-btn-p5" class="position-btn" style="top: 28%; left: 78%;">Position 5</button>
+        <button id="position-btn-p6" class="position-btn" style="top: 45%; left: 75%;">Position 6</button>
+        <button id="position-btn-p7" class="position-btn" style="top: 62%; left: 78%;">Position 7</button>
+        <button id="position-btn-p8" class="position-btn" style="top: 82%; left: 78%;">Position 8</button>
 
 
-
-        </div>
+       
         <div id="notesContainer" style="display: none; position: relative; width: 100%; height: 100%;">
             <!-- Example note buttons, position these as needed -->
-            <button class="note-btn" style="position: absolute; top: 20%; left: 23%;"
+            <button class="note-btn" style="position: absolute; top: 31%; left: 23%;"
                 onclick="noteAction('Note 1')">Note
                 1</button>
-            <button class="note-btn" style="position: absolute; top: 35%; left: 23%;"
+            <button class="note-btn" style="position: absolute; top: 46%; left: 23%;"
                 onclick="noteAction('Note 2')">Note
                 2</button>
-            <button class="note-btn" style="position: absolute; top: 50%; left: 23%;"
+            <button class="note-btn" style="position: absolute; top: 61%; left: 23%;"
                 onclick="noteAction('Note 3')">Note
                 3</button>
-            <button class="note-btn" style="position: absolute; top: 16%; left: 47%;"
+            <button class="note-btn" style="position: absolute; top: 26.5%; left: 46.5%;"
                 onclick="noteAction('Note 4')">Note
                 4</button>
-            <button class="note-btn" style="position: absolute; top: 33%; left: 47%;"
+            <button class="note-btn" style="position: absolute; top: 43.5%; left: 46.5%;"
                 onclick="noteAction('Note 5')">Note
                 5</button>
-            <button class="note-btn" style="position: absolute; top: 50%; left: 47%;"
+            <button class="note-btn" style="position: absolute; top: 60.5%; left: 46.5%;"
                 onclick="noteAction('Note 6')">Note
                 6</button>
-            <button class="note-btn" style="position: absolute; top: 67%; left: 47%;"
+            <button class="note-btn" style="position: absolute; top: 77.5%; left: 46.5%;"
                 onclick="noteAction('Note 7')">Note
                 7</button>
-            <button class="note-btn" style="position: absolute; top: 85%; left: 47%;"
+            <button class="note-btn" style="position: absolute; top: 95.5%; left: 46.5%;"
                 onclick="noteAction('Note 8')">Note
                 8</button>
-            <button class="note-btn" style="position: absolute; top: 20%; left: 71%;"
+            <button class="note-btn" style="position: absolute; top: 31%; left: 70.5%;"
                 onclick="noteAction('Note 9')">Note
                 9</button>
-            <button class="note-btn" style="position: absolute; top: 35%; left: 71%;"
+            <button class="note-btn" style="position: absolute; top: 46%; left: 70.5%;"
                 onclick="noteAction('Note 10')">Note
                 10</button>
-            <button class="note-btn" style="position: absolute; top: 50%; left: 71%;"
+            <button class="note-btn" style="position: absolute; top: 61%; left: 70.5%;"
                 onclick="noteAction('Note 11')">Note
                 11</button>
             <!-- Add more note buttons as required -->
         </div>
     </div>
+
+
+    <div id="teleopContainer" style="display: none; position: absolute; width: 100%; ">
+        <button id="groundPickupButton1" class="groundPickupButton"
+            style="font-size:20px; background-color:green; position:absolute; top: 600px; left: 510px; width: 200px; height: 120px; opacity: 60%;"
+            onclick="logAction('Ground Pickup 1')">Ground Pickup 1</button>
+
+        <button id="groundPickupButton2" class="groundPickupButton"
+            style="font-size:20px; background-color:green; position:absolute; top: 745px; left: 510px; width: 200px; height: 120px; opacity: 60%;"
+            onclick="logAction('Ground Pickup 2')">Ground Pickup 2</button>
+
+        <button id="groundPickupButton3" class="groundPickupButton"
+            style="font-size:20px; background-color:green; position:absolute; top: 890px; left: 510px; width: 200px; height: 120px; opacity: 60%;"
+            onclick="logAction('Ground Pickup 3')">Ground Pickup 3</button>
+
+        <button id="sourceButton"
+            style="font-size:30px;  position:absolute; top: 600px; left: 800px; width: 400px; height: 410px; opacity: 60%;"
+            onclick="logAction('Source BLUE')">Source</button>
+        <button id="sourceButton2"
+            style=" font-size:30px; background-color:red; position:absolute; top: 600px; left: 20px; width: 400px; height: 410px; opacity: 60%;"
+            onclick="logAction('Source RED')">Source</button>
+
+        <div id="additionalActions" style="display: none;">
+            <button style="font-size:30px; position:absolute; top: 600px; left: 20px; width: 350px; height:410px; opacity: 60%;"
+                onclick="logAction('Speaker')">Speaker</button>
+            <button style="font-size:30px; position:absolute; top: 600px; left: 435px; width: 350px; height:410px; opacity: 60%;"
+                onclick="logAction('Amp')">Amp</button>
+            <button style="font-size:30px; position:absolute; top: 600px; left: 850px; width: 350px; height:410px; opacity: 60%;"
+                onclick="logAction('Pass')">Pass</button>
+        </div>
+
+        <div id="endgameContainer" style="display: none; text-align: center;">
+            <button style="font-size:20px; position:absolute; top: 810px; left: 20px; width: 200px; height:200px; opacity: 60%;" onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
+            <button style="font-size:20px; position:absolute; top: 600px; left: 20px; width: 200px; height:200px; opacity: 60%;" onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
+            <button style="font-size:20px; position:absolute; top: 705px; left: 230px; width: 200px; height:200px; opacity: 60%;" onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
+            <button style="font-size:20px; background-color:green; position:absolute; top: 600px; left: 390px; width: 100px; height:50px; opacity: 60%;" onclick="logEndgameAction('None')">None</button>
+
+            <button style="font-size:20px; position:absolute; top: 600px; left: 670px; width: 200px; height:200px; opacity: 60%;" onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
+            <button style="font-size:20px; position:absolute; top: 810px; left: 670px; width: 200px; height:200px; opacity: 60%;" onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
+            <button style="font-size:20px; position:absolute; top: 705px; left: 460px; width: 200px; height:200px; opacity: 60%;" onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
+
+            <div id="endgameOutcome" style="position:absolute; top: 955px; left: 242px; display: none; text-align: center;">
+                <button onclick="saveEndgameOutcome('Park')">Park</button>
+                <button onclick="saveEndgameOutcome('Climb')">Climb</button>
+                <button onclick="saveEndgameOutcome('Harmony')">Harmony</button>
+                <button onclick="saveEndgameOutcome('Trap')">Trap</button>
+
+            </div>
+        </div>
+
+
+
+    </div>
     <div id="noteOutcome"
-        style="display: none; padding-top:20px; position: absolute;  left: 50%; transform: translateX(-50%);">
+        style="display: none; padding-top:20px; position: fixed;  top: 600px; right: 360px; ">
         <button onclick="saveNoteOutcome('scored')">Scored</button>
         <button onclick="saveNoteOutcome('missed')">Missed</button>
         <button onclick="saveNoteOutcome('not picked up')">Not Picked Up</button>
@@ -394,6 +408,7 @@
 
         function startTeleop() {
             // Hide all note buttons and show Teleop actions
+            document.getElementById('field').style.display = "none"
             document.getElementById('notesContainer').style.display = 'none';
             document.getElementById('noteOutcome').style.display = 'none'; // Hide outcomes if visible
             document.getElementById('teleopContainer').style.display = 'block';
@@ -519,6 +534,19 @@
             // Hide the endgameOutcome buttons and the endgame action buttons
             document.getElementById('endgameOutcome').style.display = 'none';
             document.getElementById('endgameContainer').style.display = 'none';
+        }
+
+        let x = 0
+
+        function rotateField() {
+            console.log(x)
+            if (x % 2 < 1) {
+                document.getElementById('field-canvas').style.rotate = "180deg"
+                x = x + 1
+            } else {
+                document.getElementById('field-canvas').style.rotate = "0deg"
+                x = x + 1
+            }
         }
 
     </script>
