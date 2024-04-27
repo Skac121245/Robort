@@ -104,19 +104,187 @@
         #teleopContainer button {
             margin: 10px;
             padding: 8px 20px;
-            background-color: #007bff;
+            /* background-color: #007bff; */
             color: white;
             border: none;
             cursor: pointer;
         }
 
         #teleopContainer button:hover {
-            background-color: #0056b3;
+            /* background-color: #0056b3; */
         }
 
         #endgameOutcome {
             width:420px;
         }
+
+        #groundPickupButton1{
+            top: 600px;
+            left: 510px;
+        }
+
+        #groundPickupButton2{
+            top: 745px; 
+            left: 510px;
+        }
+
+        #groundPickupButton3 {
+            top: 890px; 
+            left: 510px; 
+        }
+
+        #sourceButton {
+            top: 600px; 
+            left: 800px;
+            width: 400px;
+            height: 410px;
+            background-color: blue; 
+        }
+
+        #sourceButton2 {
+            top: 600px; 
+            left: 20px; 
+            width: 400px;
+            height: 410px; 
+            background-color:red; 
+        }
+
+        #speaker {
+            top: 600px; 
+            left: 20px; 
+            width: 350px; 
+            height:410px;
+            background-color: blue;
+        }
+
+        #amp {
+            top: 600px; 
+            left: 435px; 
+            width: 350px; 
+            height:410px;
+            background-color: blue;
+        }
+
+        #pass {
+            top: 600px; 
+            left: 850px; 
+            width: 350px; 
+            height:410px; 
+            background-color: blue;
+        }
+
+        #StageRightBLUE {
+            background-color: blue;top: 810px; left: 20px; width: 200px; height:200px; 
+        }
+
+        #StageLeftBLUE {
+            background-color: blue; top: 600px; left: 20px; width: 200px; height:200px; 
+        }
+
+        #CenterStageBLUE {
+            background-color: blue;top: 705px; left: 230px; width: 200px; height:200px; 
+        }
+
+        #None {
+            top: 600px; left: 390px; width: 100px; height:50px; 
+        }
+
+        #StageRightRED {
+            top: 600px; left: 670px; width: 200px; height:200px; 
+        }
+
+        #StageLeftRED {
+            top: 810px; left: 670px; width: 200px; height:200px; 
+        }
+
+        #CenterStageRED {
+            top: 705px; left: 460px; width: 200px; height:200px;
+        }
+
+        @media (max-width: 1800px) {
+        #groundPickupButton1{
+            top: 50px;
+            left: 230px;
+        }
+
+        #groundPickupButton2{
+            top: 195px;
+            left: 230px;
+        }
+
+        #groundPickupButton3 {
+            top: 340px; 
+            left: 230px; 
+        }
+
+        #sourceButton {
+            top: 50px; 
+            left: 10px; 
+            width: 200px;
+            height: 195px; 
+            background-color: blue;
+        }
+
+        #sourceButton2 {
+            top: 265px; 
+            left: 10px; 
+            width: 200px;
+            height: 195px;
+            background-color:red;  
+        }
+
+        #speaker {
+            top: 50px; 
+            left: 20px; 
+            width: 200px; 
+            height: 150px;
+            background-color: blue;
+        }
+
+        #amp {
+            top: 210px; 
+            left: 100px;
+            width: 200px; 
+            height:150px;
+            background-color: blue;
+        }
+
+        #pass {
+            top: 370px; 
+            left: 20px; 
+            width: 200px; 
+            height:150px; 
+            background-color: blue;
+        }
+
+        #StageRightBLUE {
+            top: 470px; left: 20px; width: 200px; height:200px; 
+        }
+
+        #StageLeftBLUE {
+            top: 260px; left: 20px; width: 200px; height:200px; 
+        }
+
+        #CenterStageBLUE {
+            top: 365px; left: 230px; width: 200px; height:200px; 
+        }
+
+        #None {
+            top: 600px; left: 300px; width: 100px; height:50px; 
+        }
+
+        #StageRightRED {
+            background-color:red; top: 150px; left: 230px; width: 200px; height:200px; 
+        }
+
+        #StageLeftRED {
+            background-color:red;top: -60px; left: 230px; width: 200px; height:200px; 
+        }
+
+        #CenterStageRED {
+            background-color:red;top: 50px; left: 20px; width: 200px; height:200px;
+        }
+    }
     </style>
 </head>
 
@@ -196,48 +364,50 @@
 
     <div id="teleopContainer" style="display: none; position: absolute; width: 100%; ">
         <button id="groundPickupButton1" class="groundPickupButton"
-            style="font-size:20px; background-color:green; position:absolute; top: 600px; left: 510px; width: 200px; height: 120px; opacity: 60%;"
+            style="font-size:20px; background-color:green; position:absolute;  width: 200px; height: 120px; opacity: 60%;"
             onclick="logAction('Ground Pickup 1')">Ground Pickup 1</button>
 
         <button id="groundPickupButton2" class="groundPickupButton"
-            style="font-size:20px; background-color:green; position:absolute; top: 745px; left: 510px; width: 200px; height: 120px; opacity: 60%;"
+            style="font-size:20px; background-color:green; position:absolute; width: 200px; height: 120px; opacity: 60%;"
             onclick="logAction('Ground Pickup 2')">Ground Pickup 2</button>
 
         <button id="groundPickupButton3" class="groundPickupButton"
-            style="font-size:20px; background-color:green; position:absolute; top: 890px; left: 510px; width: 200px; height: 120px; opacity: 60%;"
+            style="font-size:20px; background-color:green; position:absolute; width: 200px; height: 120px; opacity: 60%;"
             onclick="logAction('Ground Pickup 3')">Ground Pickup 3</button>
 
         <button id="sourceButton"
-            style="font-size:30px;  position:absolute; top: 600px; left: 800px; width: 400px; height: 410px; opacity: 60%;"
+            style="font-size:30px;  position:absolute; opacity: 60%;"
             onclick="logAction('Source BLUE')">Source</button>
         <button id="sourceButton2"
-            style=" font-size:30px; background-color:red; position:absolute; top: 600px; left: 20px; width: 400px; height: 410px; opacity: 60%;"
+            style=" font-size:30px; background-color:red; position:absolute; opacity: 60%;"
             onclick="logAction('Source RED')">Source</button>
 
         <div id="additionalActions" style="display: none;">
-            <button style="font-size:30px; position:absolute; top: 600px; left: 20px; width: 350px; height:410px; opacity: 60%;"
+            <button id="speaker" style="font-size:30px; position:absolute;  opacity: 60%;"
                 onclick="logAction('Speaker')">Speaker</button>
-            <button style="font-size:30px; position:absolute; top: 600px; left: 435px; width: 350px; height:410px; opacity: 60%;"
+            <button id="amp" style="font-size:30px; position:absolute;  opacity: 60%;"
                 onclick="logAction('Amp')">Amp</button>
-            <button style="font-size:30px; position:absolute; top: 600px; left: 850px; width: 350px; height:410px; opacity: 60%;"
+            <button id="pass" style="font-size:30px; position:absolute; opacity: 60%;"
                 onclick="logAction('Pass')">Pass</button>
         </div>
 
         <div id="endgameContainer" style="display: none; text-align: center;">
-            <button style="font-size:20px; position:absolute; top: 810px; left: 20px; width: 200px; height:200px; opacity: 60%;" onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
-            <button style="font-size:20px; position:absolute; top: 600px; left: 20px; width: 200px; height:200px; opacity: 60%;" onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
-            <button style="font-size:20px; position:absolute; top: 705px; left: 230px; width: 200px; height:200px; opacity: 60%;" onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
-            <button style="font-size:20px; background-color:green; position:absolute; top: 600px; left: 390px; width: 100px; height:50px; opacity: 60%;" onclick="logEndgameAction('None')">None</button>
+            <button id="StageRightBLUE" style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
+            <button id="StageLeftBLUE"style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
+            <button id="CenterStageBLUE"style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
+            <button id="None"style="font-size:20px; background-color:green; position:absolute; opacity: 60%;" onclick="logEndgameAction('None')">None</button>
 
-            <button style="font-size:20px; position:absolute; top: 600px; left: 670px; width: 200px; height:200px; opacity: 60%;" onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
-            <button style="font-size:20px; position:absolute; top: 810px; left: 670px; width: 200px; height:200px; opacity: 60%;" onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
-            <button style="font-size:20px; position:absolute; top: 705px; left: 460px; width: 200px; height:200px; opacity: 60%;" onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
+            <button id="StageRightRED" style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
+            <button id="StageLeftRED" style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
+            <button id="CenterStageRED" style="font-size:20px; position:absolute;  opacity: 60%;" onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
 
-            <div id="endgameOutcome" style="position:absolute; top: 955px; left: 242px; display: none; text-align: center;">
-                <button onclick="saveEndgameOutcome('Park')">Park</button>
-                <button onclick="saveEndgameOutcome('Climb')">Climb</button>
-                <button onclick="saveEndgameOutcome('Harmony')">Harmony</button>
-                <button onclick="saveEndgameOutcome('Trap')">Trap</button>
+            <div id="endgameOutcome" style="width:600px; position:absolute; top: 620px; left: 450px; display: none; text-align: center;">
+                <button style="background-color: blue;" onclick="saveEndgameOutcome('Park')">Park</button>
+                <button style="background-color: blue;" onclick="saveEndgameOutcome('Climb')">Climb</button>
+                <button style="background-color: blue;" onclick="saveEndgameOutcome('Harmony')">Harmony</button>
+                <button style="background-color: blue;" onclick="saveEndgameOutcome('Trap')">Trap</button>
+                <button style="background-color: blue;" onclick="saveEndgameOutcome('None')">None</button>
+
 
             </div>
         </div>
@@ -246,7 +416,7 @@
 
     </div>
     <div id="noteOutcome"
-        style="display: none; padding-top:20px; position: fixed;  top: 600px; right: 360px; ">
+        style="display: none; padding-top:20px; position: fixed;  top: 660px; right: 360px; ">
         <button onclick="saveNoteOutcome('scored')">Scored</button>
         <button onclick="saveNoteOutcome('missed')">Missed</button>
         <button onclick="saveNoteOutcome('not picked up')">Not Picked Up</button>

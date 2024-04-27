@@ -121,6 +121,7 @@
 </head>
 <body>
     <input type="file" id="uploadButton" accept=".json">
+    <input type="file" id="uploadBackground" accept="image/png" class="hidden">
     <h1 id="teamDisplay" class="hidden"></h1>
     <h2 id="matchNumber" class="hidden"></h2>
 
@@ -244,6 +245,18 @@
             };
             fileReader.readAsText(event.target.files[0]);
         });
+
+        document.getElementById('uploadBackground').addEventListener('change', function(event) {
+            const fileReader = new FileReader();
+            fileReader.onload = function() {
+                const teleopField = document.querySelector('#teleopContainer #field_image');
+                teleopField.style.backgroundImage = `url(${fileReader.result})`;
+            };
+            fileReader.readAsDataURL(event.target.files[0]);
+        });
+
+        document.getElementById('teleopContainer').classList.remove('hidden');
+        document.getElementById('uploadBackground').classList.remove('hidden');
     </script>
 </body>
 </html>
