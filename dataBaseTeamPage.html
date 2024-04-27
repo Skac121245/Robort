@@ -128,6 +128,10 @@
         }
 
         #teleopContainer {
+            display: none;
+        }
+
+        .flex {
             display: flex;
         }
 
@@ -342,6 +346,8 @@
                 document.getElementById(data.robotPosition).style.display = "inline"
                 document.getElementById('autoContainer').classList.remove('hidden');
                 document.getElementById('teleopContainer').classList.remove('hidden');
+                document.getElementById('teleopContainer').style.display = "flex"
+
                 console.log(data.driverStation)
                 document.getElementById(data.driverStation).style.display = 'inline'
                 document.getElementById("numOfCycles").textContent = teleopCycleCounter;
