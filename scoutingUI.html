@@ -201,7 +201,17 @@
             top: 705px; left: 460px; width: 200px; height:200px;
         }
 
+        #miss {
+            top: 705px; left: 460px; width: 100px; height:50px; background-color: #45a049;
+        }
+
         @media (max-width: 1800px) {
+
+        #miss {
+            top: 100px; left: 300px; width: 100px; height:50px; background-color: #45a049;
+
+        }
+
         #groundPickupButton1{
             top: 50px;
             left: 230px;
@@ -385,6 +395,8 @@
         <div id="additionalActions" style="display: none;">
             <button id="speaker" style="font-size:30px; position:absolute;  opacity: 60%;"
                 onclick="logAction('Speaker')">Speaker</button>
+            <button id="miss" style="font-size:30px; position:absolute;  opacity: 90%;"
+                onclick="logAction('Miss')">Miss</button>
             <button id="amp" style="font-size:30px; position:absolute;  opacity: 60%;"
                 onclick="logAction('Amp')">Amp</button>
             <button id="pass" style="font-size:30px; position:absolute; opacity: 60%;"

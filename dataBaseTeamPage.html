@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,23 +9,30 @@
         body {
             font-family: Arial, sans-serif;
         }
+
         .container {
             margin: 20px;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 8px;
         }
+
         .hidden {
             display: none;
         }
+
         img {
             width: 100%;
             max-width: 600px;
             height: auto;
         }
-        h1, h2, .container {
+
+        h1,
+        h2,
+        .container {
             text-align: center;
         }
+
         #field_image {
             background-image: url("images/crescendo_feild.png");
             background-size: contain;
@@ -33,6 +41,7 @@
             height: 498px;
             display: flex;
         }
+
         #notesContainer .note-btn {
             /* display: inline;  */
             background-color: rgba(0, 200, 150, 0.5);
@@ -43,10 +52,10 @@
             transition: background-color 0.3s;
             position: absolute;
             opacity: 60%;
-           
+
         }
 
-        .position-btnB{
+        .position-btnB {
             position: absolute;
             background-color: rgba(0, 123, 255, 0.5);
             /* Semi-transparent blue */
@@ -57,7 +66,7 @@
             transition: background-color 0.3s;
         }
 
-        .position-btnR{
+        .position-btnR {
             position: absolute;
             background-color: rgba(255, 65, 65, 0.6);
             /* Semi-transparent blue */
@@ -73,7 +82,7 @@
             font-size: 13px;
         }
 
-        .driver-station-btnB{
+        .driver-station-btnB {
             position: absolute;
             background-color: rgba(0, 123, 255, 0.5);
             /* Semi-transparent blue */
@@ -85,7 +94,7 @@
             height: 50px;
         }
 
-         .driver-station-btnR{
+        .driver-station-btnR {
             position: absolute;
             background-color: rgba(255, 65, 65, 0.6);
             /* Semi-transparent blue */
@@ -96,7 +105,7 @@
             transition: background-color 0.3s;
         }
 
-        .position-btnB{
+        .position-btnB {
             position: absolute;
             background-color: rgba(0, 123, 255, 0.5);
             /* Semi-transparent blue */
@@ -107,7 +116,7 @@
             transition: background-color 0.3s;
         }
 
-        .position-btnR{
+        .position-btnR {
             position: absolute;
             background-color: rgba(255, 65, 65, 0.6);
             /* Semi-transparent blue */
@@ -117,8 +126,21 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
+        #teleopContainer {
+            display: flex;
+        }
+
+        .stats {
+            flex: 1;
+            margin: 10px;
+            border-radius: 8px;
+            border-color: #000;
+            border-width: 4px;
+        }
     </style>
 </head>
+
 <body>
     <input type="file" id="uploadButton" accept=".json">
     <input type="file" id="uploadBackground" accept="image/png" class="hidden">
@@ -129,70 +151,109 @@
         <h3>Autonomous Phase</h3>
         <div id="field_image">
 
-            
+
             <div id="notesContainer" style="position: relative; width: 100%; height: 100%;">
 
-                <button id="Position 1" class="position-btnB" style="display: none; position: absolute; top: 20%; left: 15%;">Position 1</button>
-                <button id="Position 2" class="position-btnB" style="display: none; position: absolute; top: 35%; left: 18%;">Position 2</button>
-                <button id="Position 3" class="position-btnB" style="display: none; position: absolute; top: 50%; left: 15%;">Position 3</button>
-                <button id="Position 4" class="position-btnB" style="display: none; position: absolute; top: 70%; left: 15%;">Position 4</button>
-        
-                <button id="Position 5" class="position-btnR" style="display: none; position: absolute; top: 20%; left: 78%;">Position 5</button>
-                <button id="Position 6" class="position-btnR" style="display: none; position: absolute; top: 35%; left: 75%;">Position 6</button>
-                <button id="Position 7" class="position-btnR" style="display: none; position: absolute; top: 50%; left: 78%;">Position 7</button>
-                <button id="Position 8" class="position-btnR" style="display: none; position: absolute; top: 70%; left: 78%;">Position 8</button>
+                <button id="Position 1" class="position-btnB"
+                    style="display: none; position: absolute; top: 20%; left: 15%;">Position 1</button>
+                <button id="Position 2" class="position-btnB"
+                    style="display: none; position: absolute; top: 35%; left: 18%;">Position 2</button>
+                <button id="Position 3" class="position-btnB"
+                    style="display: none; position: absolute; top: 50%; left: 15%;">Position 3</button>
+                <button id="Position 4" class="position-btnB"
+                    style="display: none; position: absolute; top: 70%; left: 15%;">Position 4</button>
 
-              
-            <button id='Note 1' class="note-btn" style="display: none; position: absolute; top: 20%; left: 23%;"
-                onclick="noteAction('Note 1')">Note
-                1</button>
-            <button id='Note 2' class="note-btn" style="display: none; position: absolute; top: 35%; left: 23%;"
-                onclick="noteAction('Note 2')">Note
-                2</button>
-            <button id='Note 3' class="note-btn" style="display: none; position: absolute; top: 50%; left: 23%;"
-                onclick="noteAction('Note 3')">Note
-                3</button>
-            <button id='Note 4' class="note-btn" style="display: none; position: absolute; top: 16%; left: 47%;"
-                onclick="noteAction('Note 4')">Note
-                4</button>
-            <button id='Note 5' class="note-btn" style="display: none; position: absolute; top: 33%; left: 47%;"
-                onclick="noteAction('Note 5')">Note
-                5</button>
-            <button id='Note 6' class="note-btn" style="display: none; position: absolute; top: 50%; left: 47%;"
-                onclick="noteAction('Note 6')">Note
-                6</button>
-            <button id='Note 7' class="note-btn" style="display: none; position: absolute; top: 67%; left: 47%;"
-                onclick="noteAction('Note 7')">Note
-                7</button>
-            <button id='Note 8' class="note-btn" style="display: none; position: absolute; top: 85%; left: 47%;"
-                onclick="noteAction('Note 8')">Note
-                8</button>
-            <button id='Note 9' class="note-btn" style="display: none; position: absolute; top: 20%; left: 71%;"
-                onclick="noteAction('Note 9')">Note
-                9</button>
-            <button id='Note 10' class="note-btn" style="display: none; position: absolute; top: 35%; left: 71%;"
-                onclick="noteAction('Note 10')">Note
-                10</button>
-            <button id='Note 11' class="note-btn" style="display: none; position: absolute; top: 50%; left: 71%;"
-                onclick="noteAction('Note 11')">Note
-                11</button>
+                <button id="Position 5" class="position-btnR"
+                    style="display: none; position: absolute; top: 20%; left: 78%;">Position 5</button>
+                <button id="Position 6" class="position-btnR"
+                    style="display: none; position: absolute; top: 35%; left: 75%;">Position 6</button>
+                <button id="Position 7" class="position-btnR"
+                    style="display: none; position: absolute; top: 50%; left: 78%;">Position 7</button>
+                <button id="Position 8" class="position-btnR"
+                    style="display: none; position: absolute; top: 70%; left: 78%;">Position 8</button>
+
+
+                <button id='Note 1' class="note-btn" style="display: none; position: absolute; top: 20%; left: 23%;"
+                    onclick="noteAction('Note 1')">Note
+                    1</button>
+                <button id='Note 2' class="note-btn" style="display: none; position: absolute; top: 35%; left: 23%;"
+                    onclick="noteAction('Note 2')">Note
+                    2</button>
+                <button id='Note 3' class="note-btn" style="display: none; position: absolute; top: 50%; left: 23%;"
+                    onclick="noteAction('Note 3')">Note
+                    3</button>
+                <button id='Note 4' class="note-btn" style="display: none; position: absolute; top: 16%; left: 47%;"
+                    onclick="noteAction('Note 4')">Note
+                    4</button>
+                <button id='Note 5' class="note-btn" style="display: none; position: absolute; top: 33%; left: 47%;"
+                    onclick="noteAction('Note 5')">Note
+                    5</button>
+                <button id='Note 6' class="note-btn" style="display: none; position: absolute; top: 50%; left: 47%;"
+                    onclick="noteAction('Note 6')">Note
+                    6</button>
+                <button id='Note 7' class="note-btn" style="display: none; position: absolute; top: 67%; left: 47%;"
+                    onclick="noteAction('Note 7')">Note
+                    7</button>
+                <button id='Note 8' class="note-btn" style="display: none; position: absolute; top: 85%; left: 47%;"
+                    onclick="noteAction('Note 8')">Note
+                    8</button>
+                <button id='Note 9' class="note-btn" style="display: none; position: absolute; top: 20%; left: 71%;"
+                    onclick="noteAction('Note 9')">Note
+                    9</button>
+                <button id='Note 10' class="note-btn" style="display: none; position: absolute; top: 35%; left: 71%;"
+                    onclick="noteAction('Note 10')">Note
+                    10</button>
+                <button id='Note 11' class="note-btn" style="display: none; position: absolute; top: 50%; left: 71%;"
+                    onclick="noteAction('Note 11')">Note
+                    11</button>
             </div>
         </div>
         <ul id="autoActionsList"></ul>
     </div>
 
     <div id="teleopContainer" class="container hidden">
-        <h3>Teleoperated Phase</h3>
-        <div id="field_image">
-<div class="driver-btns" style="position: relative; width: 100%; height: 100%;">
-    <button id="Driver Station 1 BLUE" class="driver-station-btnB" style="position: absolute; display: none; top: 18%; left: 0px; width:120px;">Driver Station 1 BLUE</button>
-    <button id="Driver Station 2 BLUE" class="driver-station-btnB" style="position: absolute; display: none; top: 53%; left: 0px; width:120px;">Driver Station 2 BLUE</button>
-    <button id="Driver Station 3 BLUE" class="driver-station-btnB" style="position: absolute; display: none; top: 72%; left: 0px; width: 120px;">Driver Station 3 BLUE</button>
+        <div class="teleop_title">
+            <h1>T</h1>
+            <h1>E</h1>
+            <h1>L</h1>
+            <h1>E</h1>
+            <h1>O</h1>
+            <h1>P</h1>
+        </div>
 
-    <button id="Driver Station 3 RED" class="driver-station-btnR" style="position: absolute; display: none; top: 18%; left: 90%;">Driver Station 3 RED</button>
-    <button id="Driver Station 2 RED" class="driver-station-btnR" style="position: absolute; display: none; top: 53%; left: 90%;">Driver Station 2 RED</button>
-    <button id="Driver Station 1 RED" class="driver-station-btnR" style="position: absolute; display: none; top: 72%; left: 90%;">Driver Station 1 RED</button>
-</div>
+        <div class="stats" >
+            <h3>Stats</h3>
+            <h4>Out of Auto: <span id="outOfAuto"></span></h4>
+            <h4># of Cycles: <span id="numOfCycles"></span></h4>
+            <h4># of Notes attempted scored: <span id="noteAttemps"></span></h4>
+            <h4># of Notes Scored: <span id="notesScored"></span></h4>
+            <h4>Ratio of notes scored to notes shot: <span id="ratio"></span></h4>
+            <h4># in SPEAKER: <span id="speakerNotes"></span></h4>
+            <h4># in AMP: <span id="ampNotes"></span></h4>
+            <h4># PASSED: <span id="passNotes"></span></h4>
+            <h4># MISSED: <span id="missNotes"></span></h4>
+
+
+        </div>
+        <div id="field_image">
+            <div class="driver-btns" style="position: relative; width: 100%; height: 100%;">
+                <button id="Driver Station 1 BLUE" class="driver-station-btnB"
+                    style="position: absolute; display: none; top: 18%; left: 0px; width:120px;">Driver Station 1
+                    BLUE</button>
+                <button id="Driver Station 2 BLUE" class="driver-station-btnB"
+                    style="position: absolute; display: none; top: 53%; left: 0px; width:120px;">Driver Station 2
+                    BLUE</button>
+                <button id="Driver Station 3 BLUE" class="driver-station-btnB"
+                    style="position: absolute; display: none; top: 72%; left: 0px; width: 120px;">Driver Station 3
+                    BLUE</button>
+
+                <button id="Driver Station 3 RED" class="driver-station-btnR"
+                    style="position: absolute; display: none; top: 18%; left: 90%;">Driver Station 3 RED</button>
+                <button id="Driver Station 2 RED" class="driver-station-btnR"
+                    style="position: absolute; display: none; top: 53%; left: 90%;">Driver Station 2 RED</button>
+                <button id="Driver Station 1 RED" class="driver-station-btnR"
+                    style="position: absolute; display: none; top: 72%; left: 90%;">Driver Station 1 RED</button>
+            </div>
         </div>
         <ul id="teleopActionsList"></ul>
     </div>
@@ -203,10 +264,10 @@
     </div>
 
     <script>
-        document.getElementById('uploadButton').addEventListener('change', function(event) {
+        document.getElementById('uploadButton').addEventListener('change', function (event) {
             const x = 0
             const fileReader = new FileReader();
-            fileReader.onload = function() {
+            fileReader.onload = function () {
                 const data = JSON.parse(fileReader.result);
                 document.getElementById('teamDisplay').textContent = "Team " + data.teamNumber;
                 document.getElementById('matchNumber').textContent = "Match #" + data.matchNumber;
@@ -217,10 +278,10 @@
                 // Populate note buttons
                 const notesContainer = document.getElementById('notesContainer');
                 const positions = [
-                    {top: '20%', left: '23%'}, {top: '35%', left: '23%'}, {top: '50%', left: '23%'},
-                    {top: '16%', left: '47%'}, {top: '33%', left: '47%'}, {top: '50%', left: '47%'},
-                    {top: '67%', left: '47%'}, {top: '85%', left: '47%'}, {top: '20%', left: '71%'},
-                    {top: '35%', left: '71%'}, {top: '50%', left: '71%'}
+                    { top: '20%', left: '23%' }, { top: '35%', left: '23%' }, { top: '50%', left: '23%' },
+                    { top: '16%', left: '47%' }, { top: '33%', left: '47%' }, { top: '50%', left: '47%' },
+                    { top: '67%', left: '47%' }, { top: '85%', left: '47%' }, { top: '20%', left: '71%' },
+                    { top: '35%', left: '71%' }, { top: '50%', left: '71%' }
                 ];
                 data.autoActions.forEach((note, index) => {
                     index = index + 1
@@ -233,22 +294,73 @@
                         note_button.style.backgroundColor = "red"
                     } else if (note.outcome === "not picked up") {
                         note_button.style.backgroundColor = "yellow"
-                    }  else if (note.outcome === "another team got it") {
+                    } else if (note.outcome === "another team got it") {
                         note_button.style.backgroundColor = "brown"
-                    } 
+                    }
                 });
+        
+                let teleopCycleCounter = 0
+                let teleopNoteCounter = 0
+                let teleopNoteScore = 0
+                let teleopSpeaker = 0
+                let teleopAmp = 0
+                let teleopPass = 0
+                let teleopMiss = 0
+
+
+
+                data.teleopActions.forEach((cycle, index) => {
+                     if (cycle.pickup === "Ground Pickup 1" || cycle.pickup === "Ground Pickup 2" || cycle.pickup === "Ground Pickup 3") {
+                        teleopCycleCounter = teleopCycleCounter + 0.5
+                     } else {
+                        teleopCycleCounter = teleopCycleCounter + 1
+                     }
+                     
+                     if (index == 0){
+                        document.getElementById('outOfAuto').textContent = cycle.pickup;
+                     } 
+                        if (cycle.shot_place != null || cycle.shot_place != "" || cycle.shot_place != undefined) {
+                            teleopNoteCounter = teleopNoteCounter + 1
+                        }
+                        if (cycle.shot_place === "Speaker" || cycle.shot_place === "Amp" || cycle.shot_place === "Pass" ) {
+                            teleopNoteScore = teleopNoteScore + 1
+                        }
+                        if (cycle.shot_place === "Speaker"){
+                            teleopSpeaker = teleopSpeaker + 1
+                        }
+                        if (cycle.shot_place === "Amp"){
+                            teleopAmp = teleopAmp + 1
+                        }
+                        if (cycle.shot_place === "Pass"){
+                            teleopPass = teleopPass + 1
+                        }
+                        if (cycle.shot_place === "Miss"){
+                            teleopMiss = teleopMiss + 1
+                        }
+                     
+                })
                 document.getElementById(data.robotPosition).style.display = "inline"
                 document.getElementById('autoContainer').classList.remove('hidden');
                 document.getElementById('teleopContainer').classList.remove('hidden');
                 console.log(data.driverStation)
                 document.getElementById(data.driverStation).style.display = 'inline'
+                document.getElementById("numOfCycles").textContent = teleopCycleCounter;
+                document.getElementById("noteAttemps").textContent = teleopNoteCounter;
+                document.getElementById("notesScored").textContent = teleopNoteScore;
+                document.getElementById("ratio").textContent = teleopNoteScore + "/" + teleopNoteCounter;
+                document.getElementById("speakerNotes").textContent = teleopSpeaker;
+                document.getElementById("ampNotes").textContent = teleopAmp;
+                document.getElementById("passNotes").textContent = teleopPass;
+                document.getElementById("missNotes").textContent = teleopMiss;
+
+
             };
             fileReader.readAsText(event.target.files[0]);
         });
 
-        document.getElementById('uploadBackground').addEventListener('change', function(event) {
+        document.getElementById('uploadBackground').addEventListener('change', function (event) {
             const fileReader = new FileReader();
-            fileReader.onload = function() {
+            fileReader.onload = function () {
                 const teleopField = document.querySelector('#teleopContainer #field_image');
                 teleopField.style.backgroundImage = `url(${fileReader.result})`;
             };
@@ -259,4 +371,5 @@
         document.getElementById('uploadBackground').classList.remove('hidden');
     </script>
 </body>
+
 </html>
