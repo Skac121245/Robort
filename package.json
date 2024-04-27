@@ -33,6 +33,7 @@
     "jspdf": "^2.5.1",
     "save-canvas-to-image": "^0.1.1",
     "sqlite-electron": "^3.0.5",
+    "sqlite3": "^5.1.7",
     "update-electron-app": "^3.0.0"
   },
   "browser": {
