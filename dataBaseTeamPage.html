@@ -40,6 +40,7 @@
             width: 1152px;
             height: 498px;
             display: flex;
+            margin: 20px;
         }
 
         #notesContainer .note-btn {
@@ -142,6 +143,36 @@
             border-color: #000;
             border-width: 4px;
         }
+
+        #StageRightBLUE {
+            background-color:blue; top: 270px; left: 300px; width: 100px; height:50px; position: relative; 
+        }
+
+        #StageLeftBLUE {
+            background-color:blue; top: 180px; left: 200px; width: 100px; height:50px; position: relative; 
+        }
+
+        #CenterStageBLUE {
+            background-color:blue; top: 230px; left: 230px; width: 100px; height:50px; position: relative;
+        }
+
+        #None {
+            top: 230px; left: 210px; width: 100px; height:50px; position: relative; 
+        }
+
+        #StageRightRED {
+            background-color:red; top: 270px; left: 340px; width: 100px; height:50px; position: relative; 
+        }
+
+        #StageLeftRED {
+            background-color:red;top: 180px; left: 230px; width: 100px; height:50px; position: relative; 
+        }
+
+        #CenterStageRED {
+            background-color:red;top: 230px; left: 20px; width: 100px; height:50px; position: relative;
+        }
+    
+
     </style>
 </head>
 
@@ -152,7 +183,12 @@
     <h2 id="matchNumber" class="hidden"></h2>
 
     <div id="autoContainer" class="container hidden">
-        <h3>Autonomous Phase</h3>
+        <div class="auto_title">
+            <h1>A</h1>
+            <h1>U</h1>
+            <h1>T</h1>
+            <h1>O</h1>
+        </div>
         <div id="field_image">
 
 
@@ -236,8 +272,6 @@
             <h4># in AMP: <span id="ampNotes"></span></h4>
             <h4># PASSED: <span id="passNotes"></span></h4>
             <h4># MISSED: <span id="missNotes"></span></h4>
-
-
         </div>
         <div id="field_image">
             <div class="driver-btns" style="position: relative; width: 100%; height: 100%;">
@@ -263,8 +297,28 @@
     </div>
 
     <div id="endgameContainer" class="container hidden">
-        <h3>Endgame Phase</h3>
-        <p id="endgameAction"></p>
+        <div class="endgame_title">
+            <h1>E</h1>
+            <h1>N</h1>
+            <h1>D</h1>
+            <h1>G</h1>
+            <h1>A</h1>
+            <h1>M</h1>
+            <h1>E</h1>
+        </div>
+
+        <div id="field_image">
+            <div class="endgame">
+                <button id="StageRightBLUE" style="font-size:20px; opacity: 60%;" onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
+                <button id="StageLeftBLUE"style="font-size:20px; opacity: 60%;" onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
+                <button id="CenterStageBLUE"style="font-size:20px; opacity: 60%;" onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
+                <button id="None"style="font-size:20px; background-color:green; opacity: 60%;" onclick="logEndgameAction('None')">None</button>
+    
+                <button id="StageRightRED" style="font-size:20px;  opacity: 60%;" onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
+                <button id="StageLeftRED" style="font-size:20px;  opacity: 60%;" onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
+                <button id="CenterStageRED" style="font-size:20px;   opacity: 60%;" onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -343,10 +397,78 @@
                         }
                      
                 })
+
+                let endgameAction = ""
+                let endgameOutcome = ""
+
+                data.endgameActions.forEach((action) => {
+                    endgameAction = action.action
+                    endgameOutcome = action.outcome
+                    if (endgameAction === "Stage Right BLUE") {
+                        document.getElementById("StageRightRED").style.display = "none"
+                        document.getElementById("StageLeftBLUE").style.display = "none"
+                        document.getElementById("CenterStageBLUE").style.display = "none"
+                        document.getElementById("StageLeftRED").style.display = "none"
+                        document.getElementById("CenterStageRED").style.display = "none"
+                        document.getElementById("None").style.display = "none"
+                    }
+                    if (endgameAction === "Stage Left BLUE") {
+                        document.getElementById("StageRightRED").style.display = "none"
+                        document.getElementById("StageLeftBLUE").style.display = "none"
+                        document.getElementById("CenterStageBLUE").style.display = "none"
+                        document.getElementById("StageRightBLUE").style.display = "none"
+                        document.getElementById("CenterStageRED").style.display = "none"
+                        document.getElementById("None").style.display = "none"
+                    }
+                    if (endgameAction === "Center Stage BLUE") {
+                        document.getElementById("StageRightRED").style.display = "none"
+                        document.getElementById("StageLeftBLUE").style.display = "none"
+                        document.getElementById("StageLeftRED").style.display = "none"
+                        document.getElementById("StageRightBLUE").style.display = "none"
+                        document.getElementById("CenterStageRED").style.display = "none"
+                        document.getElementById("None").style.display = "none"
+                    }
+                    if (endgameAction === "Stage Right RED") {
+                        document.getElementById("StageRightBLUE").style.display = "none"
+                        document.getElementById("StageLeftBLUE").style.display = "none"
+                        document.getElementById("CenterStageBLUE").style.display = "none"
+                        document.getElementById("StageLeftRED").style.display = "none"
+                        document.getElementById("CenterStageRED").style.display = "none"
+                        document.getElementById("None").style.display = "none"
+                    }
+                    if (endgameAction === "Stage Left RED") {
+                        document.getElementById("StageRightRED").style.display = "none"
+                        document.getElementById("StageLeftBLUE").style.display = "none"
+                        document.getElementById("CenterStageBLUE").style.display = "none"
+                        document.getElementById("StageRightBLUE").style.display = "none"
+                        document.getElementById("CenterStageRED").style.display = "none"
+                        document.getElementById("None").style.display = "none"
+                    }
+                    if (endgameAction === "Center Stage RED") {
+                        document.getElementById("StageRightRED").style.display = "none"
+                        document.getElementById("StageLeftBLUE").style.display = "none"
+                        document.getElementById("CenterStageBLUE").style.display = "none"
+                        document.getElementById("StageRightBLUE").style.display = "none"
+                        document.getElementById("StageLeftRED").style.display = "none"
+                        document.getElementById("None").style.display = "none"
+                    }
+                    if (endgameAction === "None") {
+                        document.getElementById("StageRightRED").style.display = "none"
+                        document.getElementById("StageLeftBLUE").style.display = "none"
+                        document.getElementById("CenterStageBLUE").style.display = "none"
+                        document.getElementById("StageRightBLUE").style.display = "none"
+                        document.getElementById("StageLeftRED").style.display = "none"
+                        document.getElementById("CenterStageRED").style.display = "none"
+                    }
+
+                })
                 document.getElementById(data.robotPosition).style.display = "inline"
                 document.getElementById('autoContainer').classList.remove('hidden');
+                document.getElementById('autoContainer').style.display = "flex"
                 document.getElementById('teleopContainer').classList.remove('hidden');
                 document.getElementById('teleopContainer').style.display = "flex"
+                document.getElementById('endgameContainer').classList.remove('hidden');
+                document.getElementById('endgameContainer').style.display = "flex"
 
                 console.log(data.driverStation)
                 document.getElementById(data.driverStation).style.display = 'inline'
@@ -358,6 +480,9 @@
                 document.getElementById("ampNotes").textContent = teleopAmp;
                 document.getElementById("passNotes").textContent = teleopPass;
                 document.getElementById("missNotes").textContent = teleopMiss;
+
+
+
 
 
             };
