@@ -8,10 +8,11 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            width: 100%;
         }
 
         .container {
-            margin: 20px;
+            margin: 0px;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 8px;
@@ -177,8 +178,8 @@
 </head>
 
 <body>
-    <input type="file" id="uploadButton" accept=".json">
-    <input type="file" id="uploadBackground" accept="image/png" class="hidden">
+    <!-- <input type="file" id="uploadButton" accept=".json">
+    <input type="file" id="uploadBackground" accept="image/png" class="hidden"> -->
     <h1 id="teamDisplay" class="hidden"></h1>
     <h2 id="matchNumber" class="hidden"></h2>
 
@@ -322,16 +323,16 @@
     </div>
 
     <script>
-        document.getElementById('uploadButton').addEventListener('change', function (event) {
             const x = 0
-            const fileReader = new FileReader();
-            fileReader.onload = function () {
-                const data = JSON.parse(fileReader.result);
+            // const fileReader = new FileReader();
+            // fileReader.onload = function () {
+            function updateUI(data) {
+                // data = JSON.parse(data)
                 document.getElementById('teamDisplay').textContent = "Team " + data.teamNumber;
                 document.getElementById('matchNumber').textContent = "Match #" + data.matchNumber;
                 document.getElementById('teamDisplay').classList.remove('hidden');
                 document.getElementById('matchNumber').classList.remove('hidden');
-                document.getElementById('uploadButton').classList.add('hidden');
+                // document.getElementById('uploadButton').classList.add('hidden');
 
                 // Populate note buttons
                 const notesContainer = document.getElementById('notesContainer');
@@ -481,25 +482,58 @@
                 document.getElementById("passNotes").textContent = teleopPass;
                 document.getElementById("missNotes").textContent = teleopMiss;
 
+            }
 
 
+        //     };
+        //     fileReader.readAsText(event.target.files[0]);
+
+        // document.getElementById('uploadBackground').addEventListener('change', function (event) {
+        //     const fileReader = new FileReader();
+        //     fileReader.onload = function () {
+        //         const teleopField = document.querySelector('#teleopContainer #field_image');
+        //         teleopField.style.backgroundImage = `url(${fileReader.result})`;
+        //     };
+        //     fileReader.readAsDataURL(event.target.files[0]);
+        // });
+
+        function loadJsonData(filePath) {
+        fetch(filePath)
+            .then(response => response.json())
+            .then(data => {
+                dataGen = data
+                console.log(dataGen)
+                updateUI(dataGen); // Call a function to update the UI with fetched data
+            })
+            .catch(error => {
+                console.log(data)
+                console.error('Error loading the JSON file:', error);
+                alert('Failed to load data: ' + error.message);
+            });
+    }
 
 
-            };
-            fileReader.readAsText(event.target.files[0]);
-        });
+         const urlParams = new URLSearchParams(window.location.search);
+         const filePath = urlParams.get('file');
+         let dataGen = [];
+         console.log(filePath)
 
-        document.getElementById('uploadBackground').addEventListener('change', function (event) {
-            const fileReader = new FileReader();
-            fileReader.onload = function () {
-                const teleopField = document.querySelector('#teleopContainer #field_image');
-                teleopField.style.backgroundImage = `url(${fileReader.result})`;
-            };
-            fileReader.readAsDataURL(event.target.files[0]);
-        });
+         if (filePath && !filePath.includes('._')) {
+    console.log('Loading data from:', filePath);
+    loadJsonData(filePath);
+} 
+
+
+    // document.addEventListener('DOMContentLoaded', () => {
+    //     const urlParams = new URLSearchParams(window.location.search);
+    //     const filePath = urlParams.get('file');
+    //     if (filePath) {
+    //         loadJsonData(filePath);
+    //     }
+    // });
 
         document.getElementById('teleopContainer').classList.remove('hidden');
-        document.getElementById('uploadBackground').classList.remove('hidden');
+        // document.getElementById('uploadBackground').classList.remove('hidden');
     </script>
 </body>
 
