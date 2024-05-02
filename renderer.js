@@ -4,6 +4,14 @@ document.getElementById('openFolder').addEventListener('click', () => {
     ipcRenderer.send('open-folder-dialog');
 });
 
+function loadMatchFiles(matchIdentifier) {
+    ipcRenderer.send('request-match-files', matchIdentifier);
+}
+
+ipcRenderer.on('match-files-response', (event, files) => {
+    displayMatchFiles(files);
+});
+
 ipcRenderer.on('json-files-data', (event, files) => {
     const displayArea = document.getElementById('fileDisplayArea');
     displayArea.innerHTML = ''; // Clear existing content before adding new
@@ -20,3 +28,12 @@ ipcRenderer.on('json-files-data', (event, files) => {
         displayArea.appendChild(section);
     });
 });
+
+function displayMatchFiles(files) {
+    files.forEach(file => {
+        // Assume 'file' contains paths to both JSON and PNG
+        const jsonPath = file.json;
+        const pngPath = file.png;
+        // Display logic goes here
+    });
+}

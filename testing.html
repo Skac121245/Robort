@@ -1,249 +1,737 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robotics Match Viewer</title>
+    <title>FRC Scouting App - Autonomous Mode</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            margin: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-        }
-        .hidden {
-            display: none;
-        }
-        img {
+        #field {
             width: 100%;
-            max-width: 600px;
-            height: auto;
+            /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
+            /* background-image: url("images/crescendo_feild.png"); */
+            background-size: contain;
+            /* border: 1px solid #000; */
+            width: 1152px;
+            /* Adjust based on your actual need */
+            height: 498px;
+            /* Adjust based on your actual need */
+            position: fixed;
+            right: 20px;
+            
         }
-        h1, h2, .container {
+
+        iframe {
+            position: fixed;
+            right: 20px;
+        }
+
+        #position-btn-p1, #position-btn-p2, #position-btn-p3, #position-btn-p4,
+        #driver-station-btn-1, #driver-station-btn-2, #driver-station-btn-3 {
+            position: absolute;
+            background-color: rgba(0, 123, 255, 0.5);
+            /* Semi-transparent blue */
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #position-btn-p5, #position-btn-p6, #position-btn-p7, #position-btn-p8, #driver-station-btn-4, #driver-station-btn-5, #driver-station-btn-6 {
+            position: absolute;
+            background-color: rgba(255, 65, 65, 0.6);
+            /* Semi-transparent blue */
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .position-btn:hover,
+        .driver-station-btn:hover {
+            background-color: rgba(0, 123, 255, 0.8);
+        }
+
+        .driver-station-btn {
+            left: 1%;
+        }
+
+        #info {
+            margin-top: 20px;
+            padding-bottom: 20px;
             text-align: center;
         }
-        #field_image {
-            background-image: url("images/crescendo_feild.png");
-            background-size: contain;
-            border: 1px solid #000;
-            width: 1152px;
-            height: 498px;
-            display: flex;
+
+        .position-btn.red,
+        .driver-station-btn.red {
+            background-color: rgba(255, 0, 0, 0.5);
+            /* Semi-transparent red */
         }
+
+        .position-btn.red:hover,
+        .driver-station-btn.red:hover {
+            background-color: rgba(255, 0, 0, 0.8);
+        }
+
         #notesContainer .note-btn {
-            /* display: inline;  */
             background-color: rgba(0, 200, 150, 0.5);
             border: none;
-            color: black;
+            color: white;
             padding: 8px 16px;
             cursor: pointer;
             transition: background-color 0.3s;
-            position: absolute;
-            opacity: 60%;
-           
         }
 
-        .position-btnB{
-            position: absolute;
-            background-color: rgba(0, 123, 255, 0.5);
-            /* Semi-transparent blue */
-            border: none;
-            color: black;
-            padding: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        #notesContainer .note-btn:hover {
+            background-color: rgba(0, 200, 150, 0.8);
         }
 
-        .position-btnR{
-            position: absolute;
-            background-color: rgba(255, 65, 65, 0.6);
-            /* Semi-transparent blue */
-            border: none;
+        #noteOutcome button {
+            margin: 0 5px;
+            padding: 8px 16px;
+            background-color: #4CAF50;
             color: white;
-            padding: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        #note-btn {
-            font-weight: 900;
-            font-size: 13px;
-        }
-
-        .driver-station-btnB{
-            position: absolute;
-            background-color: rgba(0, 123, 255, 0.5);
-            /* Semi-transparent blue */
             border: none;
+            cursor: pointer;
+        }
+
+        #noteOutcome button:hover {
+            background-color: #45a049;
+        }
+
+        #teleopContainer button {
+            margin: 10px;
+            padding: 8px 20px;
+            /* background-color: #007bff; */
             color: white;
-            padding: 10px;
+            border: none;
             cursor: pointer;
-            transition: background-color 0.3s;
-            height: 50px;
         }
 
-         .driver-station-btnR{
-            position: absolute;
-            background-color: rgba(255, 65, 65, 0.6);
-            /* Semi-transparent blue */
-            border: none;
-            color: white;
-            padding: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        #teleopContainer button:hover {
+            /* background-color: #0056b3; */
         }
 
-        .position-btnB{
-            position: absolute;
-            background-color: rgba(0, 123, 255, 0.5);
-            /* Semi-transparent blue */
-            border: none;
-            color: black;
-            padding: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        #endgameOutcome {
+            width:420px;
         }
 
-        .position-btnR{
-            position: absolute;
-            background-color: rgba(255, 65, 65, 0.6);
-            /* Semi-transparent blue */
-            border: none;
-            color: white;
-            padding: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        #groundPickupButton1{
+            top: 600px;
+            left: 510px;
         }
+
+        #groundPickupButton2{
+            top: 745px; 
+            left: 510px;
+        }
+
+        #groundPickupButton3 {
+            top: 890px; 
+            left: 510px; 
+        }
+
+        #sourceButton {
+            top: 600px; 
+            left: 800px;
+            width: 400px;
+            height: 410px;
+            background-color: blue; 
+        }
+
+        #sourceButton2 {
+            top: 600px; 
+            left: 20px; 
+            width: 400px;
+            height: 410px; 
+            background-color:red; 
+        }
+
+        #speaker {
+            top: 600px; 
+            left: 20px; 
+            width: 350px; 
+            height:410px;
+            background-color: blue;
+        }
+
+        #amp {
+            top: 600px; 
+            left: 435px; 
+            width: 350px; 
+            height:410px;
+            background-color: blue;
+        }
+
+        #pass {
+            top: 600px; 
+            left: 850px; 
+            width: 350px; 
+            height:410px; 
+            background-color: blue;
+        }
+
+        #StageRightBLUE {
+            background-color: blue;top: 810px; left: 20px; width: 200px; height:200px; 
+        }
+
+        #StageLeftBLUE {
+            background-color: blue; top: 600px; left: 20px; width: 200px; height:200px; 
+        }
+
+        #CenterStageBLUE {
+            background-color: blue;top: 705px; left: 230px; width: 200px; height:200px; 
+        }
+
+        #None {
+            top: 600px; left: 390px; width: 100px; height:50px; 
+        }
+
+        #StageRightRED {
+            top: 600px; left: 670px; width: 200px; height:200px; 
+        }
+
+        #StageLeftRED {
+            top: 810px; left: 670px; width: 200px; height:200px; 
+        }
+
+        #CenterStageRED {
+            top: 705px; left: 460px; width: 200px; height:200px;
+        }
+
+        #miss {
+            top: 705px; left: 460px; width: 100px; height:50px; background-color: #45a049;
+        }
+
+        @media (max-width: 1800px) {
+
+        #miss {
+            top: 100px; left: 300px; width: 100px; height:50px; background-color: #45a049;
+
+        }
+
+        #groundPickupButton1{
+            top: 50px;
+            left: 230px;
+        }
+
+        #groundPickupButton2{
+            top: 195px;
+            left: 230px;
+        }
+
+        #groundPickupButton3 {
+            top: 340px; 
+            left: 230px; 
+        }
+
+        #sourceButton {
+            top: 50px; 
+            left: 10px; 
+            width: 200px;
+            height: 195px; 
+            background-color: blue;
+        }
+
+        #sourceButton2 {
+            top: 265px; 
+            left: 10px; 
+            width: 200px;
+            height: 195px;
+            background-color:red;  
+        }
+
+        #speaker {
+            top: 50px; 
+            left: 20px; 
+            width: 200px; 
+            height: 150px;
+            background-color: blue;
+        }
+
+        #amp {
+            top: 210px; 
+            left: 100px;
+            width: 200px; 
+            height:150px;
+            background-color: blue;
+        }
+
+        #pass {
+            top: 370px; 
+            left: 20px; 
+            width: 200px; 
+            height:150px; 
+            background-color: blue;
+        }
+
+        #StageRightBLUE {
+            top: 470px; left: 20px; width: 200px; height:200px; 
+        }
+
+        #StageLeftBLUE {
+            top: 260px; left: 20px; width: 200px; height:200px; 
+        }
+
+        #CenterStageBLUE {
+            top: 365px; left: 230px; width: 200px; height:200px; 
+        }
+
+        #None {
+            top: 600px; left: 300px; width: 100px; height:50px; 
+        }
+
+        #StageRightRED {
+            background-color:red; top: 150px; left: 230px; width: 200px; height:200px; 
+        }
+
+        #StageLeftRED {
+            background-color:red;top: -60px; left: 230px; width: 200px; height:200px; 
+        }
+
+        #CenterStageRED {
+            background-color:red;top: 50px; left: 20px; width: 200px; height:200px;
+        }
+    }
     </style>
 </head>
+
 <body>
-    <input type="file" id="uploadButton" accept=".json">
-    <h1 id="teamDisplay" class="hidden"></h1>
-    <h2 id="matchNumber" class="hidden"></h2>
+    <div id="info">
+        <!-- <label for="sideToggle">Toggle Side:</label> -->
+        <!-- <input type="checkbox" id="sideToggle" onchange="toggleSide()"> -->
+        <input type="number" id="matchNumber" placeholder="Match Number">
+        <input type="number" id="teamNumber" placeholder="Team Number">
+        <button onclick="startScouting()">Start Scouting</button>
+        <button onclick="startTeleop()">Start Teleop</button>
+        <button onclick="startEndgame()">Start Endgame</button>
+        <button onclick="downloadSessionStorageData()">Download Data</button>
+        <button onclick="rotateField()">Rotate Field</button>
+    </div>
+    <iframe id="field-canvas" src="pathingUI.html" width="1155px" height="601px" style="z-index: 0;"></iframe>
+    <div id="field">
+        <button id="driver-station-btn-1" class="driver-station-btn" style="top: 26%; width:120px;">Driver Station 1 BLUE</button>
+        <button id="driver-station-btn-2" class="driver-station-btn" style="top: 60%; width:120px;">Driver Station 2 BLUE</button>
+        <button id="driver-station-btn-3" class="driver-station-btn" style="top: 80%; width: 120px;">Driver Station 3 BLUE</button>
 
-    <div id="autoContainer" class="container hidden">
-        <h3>Autonomous Phase</h3>
-        <div id="field_image">
+        <button id="driver-station-btn-6" class="driver-station-btn" style="top: 26%; left: 90%;">Driver Station 3 RED</button>
+        <button id="driver-station-btn-5" class="driver-station-btn" style="top: 60%; left: 90%;">Driver Station 2 RED</button>
+        <button id="driver-station-btn-4" class="driver-station-btn" style="top: 80%; left: 90%;">Driver Station 1 RED</button>
 
-            
-            <div id="notesContainer" style="position: relative; width: 100%; height: 100%;">
+        <button id="position-btn-p1" class="position-btn" style="top: 28%; left: 15%;">Position 1</button>
+        <button id="position-btn-p2" class="position-btn" style="top: 45%; left: 18%;">Position 2</button>
+        <button id="position-btn-p3" class="position-btn" style="top: 62%; left: 15%;">Position 3</button>
+        <button id="position-btn-p4" class="position-btn" style="top: 82%; left: 15%;">Position 4</button>
 
-                <button id="Position 1" class="position-btnB" style="display: none; position: absolute; top: 20%; left: 15%;">Position 1</button>
-                <button id="Position 2" class="position-btnB" style="display: none; position: absolute; top: 35%; left: 18%;">Position 2</button>
-                <button id="Position 3" class="position-btnB" style="display: none; position: absolute; top: 50%; left: 15%;">Position 3</button>
-                <button id="Position 4" class="position-btnB" style="display: none; position: absolute; top: 70%; left: 15%;">Position 4</button>
-        
-                <button id="Position 5" class="position-btnR" style="display: none; position: absolute; top: 20%; left: 78%;">Position 5</button>
-                <button id="Position 6" class="position-btnR" style="display: none; position: absolute; top: 35%; left: 75%;">Position 6</button>
-                <button id="Position 7" class="position-btnR" style="display: none; position: absolute; top: 50%; left: 78%;">Position 7</button>
-                <button id="Position 8" class="position-btnR" style="display: none; position: absolute; top: 70%; left: 78%;">Position 8</button>
+        <button id="position-btn-p5" class="position-btn" style="top: 28%; left: 78%;">Position 5</button>
+        <button id="position-btn-p6" class="position-btn" style="top: 45%; left: 75%;">Position 6</button>
+        <button id="position-btn-p7" class="position-btn" style="top: 62%; left: 78%;">Position 7</button>
+        <button id="position-btn-p8" class="position-btn" style="top: 82%; left: 78%;">Position 8</button>
 
-              
-            <button id='Note 1' class="note-btn" style="display: none; position: absolute; top: 20%; left: 23%;"
+
+       
+        <div id="notesContainer" style="display: none; position: relative; width: 100%; height: 100%;">
+            <!-- Example note buttons, position these as needed -->
+            <button class="note-btn" style="position: absolute; top: 31%; left: 23%;"
                 onclick="noteAction('Note 1')">Note
                 1</button>
-            <button id='Note 2' class="note-btn" style="display: none; position: absolute; top: 35%; left: 23%;"
+            <button class="note-btn" style="position: absolute; top: 46%; left: 23%;"
                 onclick="noteAction('Note 2')">Note
                 2</button>
-            <button id='Note 3' class="note-btn" style="display: none; position: absolute; top: 50%; left: 23%;"
+            <button class="note-btn" style="position: absolute; top: 61%; left: 23%;"
                 onclick="noteAction('Note 3')">Note
                 3</button>
-            <button id='Note 4' class="note-btn" style="display: none; position: absolute; top: 16%; left: 47%;"
+            <button class="note-btn" style="position: absolute; top: 26.5%; left: 46.5%;"
                 onclick="noteAction('Note 4')">Note
                 4</button>
-            <button id='Note 5' class="note-btn" style="display: none; position: absolute; top: 33%; left: 47%;"
+            <button class="note-btn" style="position: absolute; top: 43.5%; left: 46.5%;"
                 onclick="noteAction('Note 5')">Note
                 5</button>
-            <button id='Note 6' class="note-btn" style="display: none; position: absolute; top: 50%; left: 47%;"
+            <button class="note-btn" style="position: absolute; top: 60.5%; left: 46.5%;"
                 onclick="noteAction('Note 6')">Note
                 6</button>
-            <button id='Note 7' class="note-btn" style="display: none; position: absolute; top: 67%; left: 47%;"
+            <button class="note-btn" style="position: absolute; top: 77.5%; left: 46.5%;"
                 onclick="noteAction('Note 7')">Note
                 7</button>
-            <button id='Note 8' class="note-btn" style="display: none; position: absolute; top: 85%; left: 47%;"
+            <button class="note-btn" style="position: absolute; top: 95.5%; left: 46.5%;"
                 onclick="noteAction('Note 8')">Note
                 8</button>
-            <button id='Note 9' class="note-btn" style="display: none; position: absolute; top: 20%; left: 71%;"
+            <button class="note-btn" style="position: absolute; top: 31%; left: 70.5%;"
                 onclick="noteAction('Note 9')">Note
                 9</button>
-            <button id='Note 10' class="note-btn" style="display: none; position: absolute; top: 35%; left: 71%;"
+            <button class="note-btn" style="position: absolute; top: 46%; left: 70.5%;"
                 onclick="noteAction('Note 10')">Note
                 10</button>
-            <button id='Note 11' class="note-btn" style="display: none; position: absolute; top: 50%; left: 71%;"
+            <button class="note-btn" style="position: absolute; top: 61%; left: 70.5%;"
                 onclick="noteAction('Note 11')">Note
                 11</button>
+            <!-- Add more note buttons as required -->
+        </div>
+    </div>
+
+
+    <div id="teleopContainer" style="display: none; position: absolute; width: 100%; ">
+        <button id="groundPickupButton1" class="groundPickupButton"
+            style="font-size:20px; background-color:green; position:absolute;  width: 200px; height: 120px; opacity: 60%;"
+            onclick="logAction('Ground Pickup 1')">Ground Pickup 1</button>
+
+        <button id="groundPickupButton2" class="groundPickupButton"
+            style="font-size:20px; background-color:green; position:absolute; width: 200px; height: 120px; opacity: 60%;"
+            onclick="logAction('Ground Pickup 2')">Ground Pickup 2</button>
+
+        <button id="groundPickupButton3" class="groundPickupButton"
+            style="font-size:20px; background-color:green; position:absolute; width: 200px; height: 120px; opacity: 60%;"
+            onclick="logAction('Ground Pickup 3')">Ground Pickup 3</button>
+
+        <button id="sourceButton"
+            style="font-size:30px;  position:absolute; opacity: 60%;"
+            onclick="logAction('Source BLUE')">Source</button>
+        <button id="sourceButton2"
+            style=" font-size:30px; background-color:red; position:absolute; opacity: 60%;"
+            onclick="logAction('Source RED')">Source</button>
+
+        <div id="additionalActions" style="display: none;">
+            <button id="speaker" style="font-size:30px; position:absolute;  opacity: 60%;"
+                onclick="logAction('Speaker')">Speaker</button>
+            <button id="miss" style="font-size:30px; position:absolute;  opacity: 90%;"
+                onclick="logAction('Miss')">Miss</button>
+            <button id="amp" style="font-size:30px; position:absolute;  opacity: 60%;"
+                onclick="logAction('Amp')">Amp</button>
+            <button id="pass" style="font-size:30px; position:absolute; opacity: 60%;"
+                onclick="logAction('Pass')">Pass</button>
+        </div>
+
+        <div id="endgameContainer" style="display: none; text-align: center;">
+            <button id="StageRightBLUE" style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
+            <button id="StageLeftBLUE"style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
+            <button id="CenterStageBLUE"style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
+            <button id="None"style="font-size:20px; background-color:green; position:absolute; opacity: 60%;" onclick="logEndgameAction('None')">None</button>
+
+            <button id="StageRightRED" style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
+            <button id="StageLeftRED" style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
+            <button id="CenterStageRED" style="font-size:20px; position:absolute;  opacity: 60%;" onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
+
+            <div id="endgameOutcome" style="width:600px; position:absolute; top: 620px; left: 450px; display: none; text-align: center;">
+                <button style="background-color: blue;" onclick="saveEndgameOutcome('Park')">Park</button>
+                <button style="background-color: blue;" onclick="saveEndgameOutcome('Climb')">Climb</button>
+                <button style="background-color: blue;" onclick="saveEndgameOutcome('Harmony')">Harmony</button>
+                <button style="background-color: blue;" onclick="saveEndgameOutcome('Trap')">Trap</button>
+                <button style="background-color: blue;" onclick="saveEndgameOutcome('None')">None</button>
+
+
             </div>
         </div>
-        <ul id="autoActionsList"></ul>
+
+
+
     </div>
-
-    <div id="teleopContainer" class="container hidden">
-        <h3>Teleoperated Phase</h3>
-        <div id="field_image">
-<div class="driver-btns" style="position: relative; width: 100%; height: 100%;">
-    <button id="Driver Station 1 BLUE" class="driver-station-btnB" style="position: absolute; display: none; top: 18%; left: 0px; width:120px;">Driver Station 1 BLUE</button>
-    <button id="Driver Station 2 BLUE" class="driver-station-btnB" style="position: absolute; display: none; top: 53%; left: 0px; width:120px;">Driver Station 2 BLUE</button>
-    <button id="Driver Station 3 BLUE" class="driver-station-btnB" style="position: absolute; display: none; top: 72%; left: 0px; width: 120px;">Driver Station 3 BLUE</button>
-
-    <button id="Driver Station 3 RED" class="driver-station-btnR" style="position: absolute; display: none; top: 18%; left: 90%;">Driver Station 3 RED</button>
-    <button id="Driver Station 2 RED" class="driver-station-btnR" style="position: absolute; display: none; top: 53%; left: 90%;">Driver Station 2 RED</button>
-    <button id="Driver Station 1 RED" class="driver-station-btnR" style="position: absolute; display: none; top: 72%; left: 90%;">Driver Station 1 RED</button>
-</div>
-        </div>
-        <ul id="teleopActionsList"></ul>
+    <div id="noteOutcome"
+        style="display: none; padding-top:20px; position: fixed;  top: 660px; right: 360px; ">
+        <button onclick="saveNoteOutcome('scored')">Scored</button>
+        <button onclick="saveNoteOutcome('missed')">Missed</button>
+        <button onclick="saveNoteOutcome('not picked up')">Not Picked Up</button>
+        <button onclick="saveNoteOutcome('another team got it')">Another Team Got It</button>
     </div>
-
-    <div id="endgameContainer" class="container hidden">
-        <h3>Endgame Phase</h3>
-        <p id="endgameAction"></p>
-    </div>
-
     <script>
-        document.getElementById('uploadButton').addEventListener('change', function(event) {
-            const x = 0
-            const fileReader = new FileReader();
-            fileReader.onload = function() {
-                const data = JSON.parse(fileReader.result);
-                document.getElementById('teamDisplay').textContent = "Team " + data.teamNumber;
-                document.getElementById('matchNumber').textContent = "Match #" + data.matchNumber;
-                document.getElementById('teamDisplay').classList.remove('hidden');
-                document.getElementById('matchNumber').classList.remove('hidden');
-                document.getElementById('uploadButton').classList.add('hidden');
-
-                // Populate note buttons
-                const notesContainer = document.getElementById('notesContainer');
-                const positions = [
-                    {top: '20%', left: '23%'}, {top: '35%', left: '23%'}, {top: '50%', left: '23%'},
-                    {top: '16%', left: '47%'}, {top: '33%', left: '47%'}, {top: '50%', left: '47%'},
-                    {top: '67%', left: '47%'}, {top: '85%', left: '47%'}, {top: '20%', left: '71%'},
-                    {top: '35%', left: '71%'}, {top: '50%', left: '71%'}
-                ];
-                data.autoActions.forEach((note, index) => {
-                    index = index + 1
-                    const note_button = document.getElementById(note.note)
-                    note_button.style.display = "inline"
-                    note_button.innerHTML = "Note " + index + "(" + note.outcome + ")";
-                    if (note.outcome === "scored") {
-                        note_button.style.backgroundColor = "green"
-                    } else if (note.outcome === "missed") {
-                        note_button.style.backgroundColor = "red"
-                    } else if (note.outcome === "not picked up") {
-                        note_button.style.backgroundColor = "yellow"
-                    }  else if (note.outcome === "another team got it") {
-                        note_button.style.backgroundColor = "brown"
-                    } 
-                });
-                document.getElementById(data.robotPosition).style.display = "inline"
-                document.getElementById('autoContainer').classList.remove('hidden');
-                document.getElementById('teleopContainer').classList.remove('hidden');
-                console.log(data.driverStation)
-                document.getElementById(data.driverStation).style.display = 'inline'
-            };
-            fileReader.readAsText(event.target.files[0]);
+        document.querySelectorAll('.position-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const position = this.innerText;
+                selectPosition(position);
+            });
         });
+
+        function toggleSide() {
+            const isChecked = document.getElementById('sideToggle').checked;
+            const maxLeft = 78; // Maximum left percentage for red side
+            const minLeft = 15; // Minimum left percentage for blue side
+
+            // Calculate new positions for driver stations
+            const driverStationPositions = {
+                "Driver Station 1": "72%", // DS 1 becomes DS 3
+                "Driver Station 2": "53%", // DS 2 remains DS 2
+                "Driver Station 3": "18%"  // DS 3 becomes DS 1
+            };
+
+            document.querySelectorAll('.position-btn, .driver-station-btn').forEach(button => {
+                if (isChecked) {
+                    // Change to red side
+                    if (button.classList.contains('driver-station-btn')) {
+                        button.style.top = driverStationPositions[button.innerText]; // Update top position based on mapping
+                    }
+                    const currentLeft = parseInt(button.style.left, 10);
+                    const newLeft = maxLeft - (currentLeft - minLeft);
+                    button.style.left = `${newLeft}%`;
+                    button.classList.add('red');
+                } else {
+                    // Change to blue side (reverse operation for driver stations)
+                    const driverStationReversePositions = {
+                        "Driver Station 1": "18%", // DS 3 goes back to DS 1
+                        "Driver Station 2": "53%", // DS 2 remains DS 2
+                        "Driver Station 3": "72%"  // DS 1 goes back to DS 3
+                    };
+                    if (button.classList.contains('driver-station-btn')) {
+                        button.style.top = driverStationReversePositions[button.innerText];
+                    }
+                    const currentLeft = parseInt(button.style.left, 10);
+                    const newLeft = minLeft + (maxLeft - currentLeft);
+                    button.style.left = `${newLeft}%`;
+                    button.classList.remove('red');
+                }
+            });
+        }
+
+        document.querySelectorAll('.driver-station-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const driverStation = this.innerText;
+                selectDriverStation(driverStation);
+            });
+        });
+
+        function downloadSessionStorageData() {
+            // Retrieve the scouting data from session storage
+            const scoutingData = sessionStorage.getItem('scoutingData');
+            if (scoutingData) {
+                const data = JSON.parse(scoutingData);
+                const matchNumber = data.matchNumber;
+                const teamNumber = data.teamNumber;
+                const filename = `Match${matchNumber}_${teamNumber}_ScoutingData.json`;
+
+                // Create a blob from the data
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+
+                // Create an anchor element and use it to trigger the download
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = filename;
+                a.style.display = 'none';
+
+                // Append the anchor to the body, click it, and then remove it
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } else {
+                alert('No scouting data available to download!');
+            }
+        }
+
+        function selectDriverStation(driverStation) {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+            scoutingData.driverStation = driverStation;
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+            checkSelections();
+        }
+
+        function selectPosition(position) {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+            scoutingData.robotPosition = position;
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+            checkSelections();
+        }
+
+        function checkSelections() {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+            if (scoutingData.driverStation && scoutingData.robotPosition) {
+                // Hide position and driver station buttons
+                document.querySelectorAll('.position-btn, .driver-station-btn').forEach(button => {
+                    button.style.display = 'none';
+                });
+                // Show notes container
+                document.getElementById('notesContainer').style.display = 'block';
+            }
+        }
+
+        function noteAction(note) {
+            console.log('Note action for:', note);
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+            if (!scoutingData.notes) {
+                scoutingData.notes = [];
+                scoutingData.autoActions = [];
+            }
+            scoutingData.notes.push(note);
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+            // Show the note outcome options
+            document.getElementById('noteOutcome').style.display = 'block';
+            // Store the current note globally or in the session for outcome processing
+            sessionStorage.setItem('currentNote', note);
+        }
+
+        function saveNoteOutcome(outcome) {
+            const note = sessionStorage.getItem('currentNote');
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+            // Append the outcome to the corresponding note
+            if (!scoutingData.autoActions) {
+                scoutingData.autoActions = [];
+            }
+            scoutingData.autoActions.push({ note: note, outcome: outcome });
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+            // Hide the outcome buttons until the next note is selected
+            document.getElementById('noteOutcome').style.display = 'none';
+        }
+
+        function startScouting() {
+            const matchNumber = document.getElementById('matchNumber').value;
+            const teamNumber = document.getElementById('teamNumber').value;
+            if (matchNumber && teamNumber) {
+                const scoutingData = {
+                    matchNumber: matchNumber,
+                    teamNumber: teamNumber,
+                    actions: []
+                };
+                sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+                alert('Scouting started!');
+            } else {
+                alert('Please enter both match and team numbers.');
+            }
+        }
+
+        function startTeleop() {
+            // Hide all note buttons and show Teleop actions
+            document.getElementById('field').style.display = "none"
+            document.getElementById('notesContainer').style.display = 'none';
+            document.getElementById('noteOutcome').style.display = 'none'; // Hide outcomes if visible
+            document.getElementById('teleopContainer').style.display = 'block';
+
+
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+            scoutingData.teleopActions = [];
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+        }
+
+        function logAction(action) {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+
+            // Check if the action is a pickup (Ground Pickup or Source)
+            if (action === 'Ground Pickup' || action === 'Source BLUE' || action === 'Source RED' || action === 'Ground Pickup 1' || action === 'Ground Pickup 2' || action === 'Ground Pickup 3') {
+                // Store the pickup action directly to teleopActions with a placeholder for shot/place
+                scoutingData.teleopActions.push({ pickup: action, shot_place: null });
+
+                // Temporarily store the index of this action to link with its corresponding shot/place
+                scoutingData.currentActionIndex = scoutingData.teleopActions.length - 1;
+
+                // Show additional options for what happens after the pickup
+                showAdditionalActions();
+            } else {
+                // If it's a shot/place action (Speaker, Amp, Pass), pair it with the last recorded pickup
+                if (typeof scoutingData.currentActionIndex !== 'undefined') {
+                    // Access the current action object and update it with the shot/place action
+                    scoutingData.teleopActions[scoutingData.currentActionIndex].shot_place = action;
+
+                    // Clear the temporary index after updating to prepare for the next series of actions
+                    delete scoutingData.currentActionIndex;
+
+                    // After logging a shot/place, revert to showing the initial pickup options
+                    hideAdditionalActions();
+                }
+            }
+
+            // Save the updated scouting data back to sessionStorage
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+            console.log(action + ' action logged.');
+        }
+
+
+        function showAdditionalActions() {
+            // Hide initial Teleop buttons and show additional actions
+            document.getElementById('groundPickupButton1').style.display = 'none';
+            document.getElementById('groundPickupButton2').style.display = 'none';
+            document.getElementById('groundPickupButton3').style.display = 'none';
+
+            document.getElementById('sourceButton').style.display = 'none';
+            document.getElementById('sourceButton2').style.display = 'none';
+            document.getElementById('additionalActions').style.display = 'block';
+        }
+
+
+        function hideAdditionalActions() {
+            // Hide additional actions and show initial Teleop buttons again
+            document.getElementById('additionalActions').style.display = 'none';
+            document.getElementById('groundPickupButton1').style.display = 'inline';
+            document.getElementById('groundPickupButton2').style.display = 'inline';
+            document.getElementById('groundPickupButton3').style.display = 'inline';
+
+            document.getElementById('sourceButton').style.display = 'inline';
+            document.getElementById('sourceButton2').style.display = 'inline';
+
+        }
+
+        function logTeleopAction(action) {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+            if (!scoutingData.teleopActions) {
+                scoutingData.teleopActions = [];
+            }
+            scoutingData.teleopActions.push(action);
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+            // Hide additional actions and show initial Teleop buttons again
+            document.getElementById('additionalActions').style.display = 'none';
+            document.getElementById('groundPickupButton').style.display = 'inline';
+            document.getElementById('sourceButton').style.display = 'inline';
+
+            console.log(action + ' action logged in Teleop.');
+        }
+
+        function startEndgame() {
+            // Show endgame buttons
+            document.getElementById('endgameContainer').style.display = 'block';
+            document.getElementById('additionalActions').style.display = 'none';
+            document.getElementById('groundPickupButton1').style.display = 'none';
+            document.getElementById('groundPickupButton2').style.display = 'none';
+            document.getElementById('groundPickupButton3').style.display = 'none';
+
+            document.getElementById('sourceButton').style.display = 'none';
+            document.getElementById('sourceButton2').style.display = 'none';
+        
+
+            // Hide the "Start Endgame" button to prevent multiple endgame starts
+            document.querySelector('button[onclick="startEndgame()"]').style.display = 'none';
+        }
+
+        function logEndgameAction(action) {
+            // Store the endgame action and show the secondary buttons
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
+            scoutingData.endgameAction = action;
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+            console.log(action + ' endgame action logged.');
+
+            // Show the secondary endgame outcome buttons
+            document.getElementById('endgameOutcome').style.display = 'block';
+        }
+
+        function saveEndgameOutcome(outcome) {
+            // Retrieve the endgame action and append the outcome to it
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
+            const endgameAction = scoutingData.endgameAction || {};
+            scoutingData.endgameActions = scoutingData.endgameActions || [];
+            scoutingData.endgameActions.push({ action: endgameAction, outcome: outcome });
+
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+            console.log(endgameAction + ' endgame action outcome logged as ' + outcome + '.');
+
+            // Hide the endgameOutcome buttons and the endgame action buttons
+            document.getElementById('endgameOutcome').style.display = 'none';
+            document.getElementById('endgameContainer').style.display = 'none';
+        }
+
+        let x = 0
+
+        function rotateField() {
+            console.log(x)
+            if (x % 2 < 1) {
+                document.getElementById('field-canvas').style.rotate = "180deg"
+                x = x + 1
+            } else {
+                document.getElementById('field-canvas').style.rotate = "0deg"
+                x = x + 1
+            }
+        }
+
     </script>
 </body>
+
 </html>

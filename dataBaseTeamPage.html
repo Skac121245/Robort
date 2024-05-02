@@ -498,19 +498,25 @@
         // });
 
         function loadJsonData(filePath) {
-        fetch(filePath)
-            .then(response => response.json())
-            .then(data => {
-                dataGen = data
-                console.log(dataGen)
-                updateUI(dataGen); // Call a function to update the UI with fetched data
-            })
-            .catch(error => {
-                console.log(data)
-                console.error('Error loading the JSON file:', error);
-                alert('Failed to load data: ' + error.message);
-            });
-    }
+    fetch(filePath)
+        .then(response => response.json())
+        .then(data => {
+            updateUI(data); // Update the UI with the fetched data
+
+            // Assuming the PNG file has the same name as the JSON file but with a .png extension
+            const imagePath = filePath.replace('.json', '.png');
+
+            // Set the background image for the field_image
+            const fieldImage = document.getElementById('field_image');
+            fieldImage.style.backgroundImage = `url(${imagePath})`;
+            fieldImage.style.backgroundSize = 'contain';
+            fieldImage.style.backgroundRepeat = 'no-repeat';
+        })
+        .catch(error => {
+            console.error('Error loading the JSON file:', error);
+            alert('Failed to load data: ' + error.message);
+        });
+}
 
 
          const urlParams = new URLSearchParams(window.location.search);

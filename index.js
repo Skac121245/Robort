@@ -49,6 +49,33 @@ ipcMain.on('open-folder-dialog', (event) => {
     });
 });
 
+ipcMain.on('request-match-files', (event, matchIdentifier) => {
+  const directoryPath = '/path/to/your/files'; // Set the directory path appropriately
+  fs.readdir(directoryPath, (err, files) => {
+      if (err) {
+          console.log('Error reading files:', err);
+          event.reply('match-files-response', []);
+          return;
+      }
+
+      // Filter and group files based on the sixth character
+      const groupedFiles = files.reduce((acc, filename) => {
+          const baseName = path.basename(filename);
+          if (baseName[5] === matchIdentifier) { // Check if the sixth character matches
+              const ext = path.extname(filename);
+              if (ext === '.json') {
+                  acc.json = path.join(directoryPath, filename);
+              } else if (ext === '.png') {
+                  acc.png = path.join(directoryPath, filename);
+              }
+          }
+          return acc;
+      }, {json: '', png: ''});
+
+      event.reply('match-files-response', groupedFiles);
+  });
+});
+
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
 });

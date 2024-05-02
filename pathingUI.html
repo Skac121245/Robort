@@ -80,7 +80,7 @@
 
 
 <script>
-  const scoutingData = sessionStorage.getItem('scoutingData')
+  
   let eraserEnabled = false;
 
 document.getElementById('toggleEraser').addEventListener('click', function() {
@@ -229,8 +229,10 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
 }
 
 function saveCanvas() {
+  const scoutingData = sessionStorage.getItem('scoutingData')
         const matchNumber = scoutingData.matchNumber;
         const teamNumber = scoutingData.teamNumber;
+        console.log("match# " + matchNumber + " " + "team# " + teamNumber)
         const canvas = document.getElementById('strategyCanvas');
         const ctx = canvas.getContext('2d');
         const backgroundImage = new Image();
@@ -252,7 +254,7 @@ function saveCanvas() {
           // Save the combined content from the temporary canvas
           const dataURL = tempCanvas.toDataURL('image/png');
           const link = document.createElement('a');
-          link.download = `Match${matchNumber}_${teamNumber}_path.png`; // You can change the filename
+          link.download = `Match${sessionStorage.getItem('scoutingData').matchNumber}_${sessionStorage.getItem('scoutingData').teamNumber}_ScoutingData.png`; // You can change the filename
           link.href = dataURL;
           link.click();
         };
