@@ -44,6 +44,16 @@
             margin: 20px;
         }
 
+        #field_image_auto {
+            background-image: url("images/crescendo_feild.png");
+            background-size: contain;
+            border: 1px solid #000;
+            width: 1152px;
+            height: 498px;
+            display: flex;
+            margin: 20px;
+        }
+
         #notesContainer .note-btn {
             /* display: inline;  */
             background-color: rgba(0, 200, 150, 0.5);
@@ -274,7 +284,7 @@
             <h4># PASSED: <span id="passNotes"></span></h4>
             <h4># MISSED: <span id="missNotes"></span></h4>
         </div>
-        <div id="field_image">
+        <div id="field_image_auto">
             <div class="driver-btns" style="position: relative; width: 100%; height: 100%;">
                 <button id="Driver Station 1 BLUE" class="driver-station-btnB"
                     style="position: absolute; display: none; top: 18%; left: 0px; width:120px;">Driver Station 1
@@ -507,10 +517,11 @@
             const imagePath = filePath.replace('.json', '.png');
 
             // Set the background image for the field_image
-            const fieldImage = document.getElementById('field_image');
-            fieldImage.style.backgroundImage = `url(${imagePath})`;
-            fieldImage.style.backgroundSize = 'contain';
-            fieldImage.style.backgroundRepeat = 'no-repeat';
+            const fieldImageA = document.getElementById('field_image_auto');
+            fieldImageA.style.backgroundImage = `url(${imagePath})`;
+            fieldImageA.style.backgroundSize = 'contain';
+            fieldImageA.style.backgroundRepeat = 'repeat-y';
+
         })
         .catch(error => {
             console.error('Error loading the JSON file:', error);
