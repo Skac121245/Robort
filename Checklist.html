@@ -7,13 +7,17 @@
     <script src="jquery-3.3.1.slim.min.js"></script>
     <script src="bootstrap.min.js"></script>
     <link href="bootstrap.min.css" rel="stylesheet">
+    <script src="showdown.min.js"></script>
     <style>
+          #aboutTabsContent > .tab-pane {
+    padding-top: 20px; /* Add space above the content in each tab */
+}
   body, nav, header, .navbar, #footer, a {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
         body {
-            background-color: #f8f9fa;
-            display: none;
+            background-color: #343a40;
+            display: block;
         }
 
         nav {
@@ -35,15 +39,23 @@
             box-shadow: 0 0.45rem 0.25rem rgba(0,0,0,0.075);
         }
 
-        .checklist-item {
-            margin-bottom: 10px;
-        }
-
         .checklist-item label {
             font-size: 1.125rem;
             font-weight: bold;
             margin-left: 10px;
+            margin-bottom: -10px;
+            cursor: pointer;
         }
+
+        .checklist-item label.strikethrough {
+    text-decoration: line-through;
+}
+.checklist-item .header-label{
+    margin-left: -1px;  /* Specific override for header labels */
+    margin-bottom: 1px;
+ 
+}
+
 
         .form-control {
             border-radius: 0.25rem;
@@ -84,8 +96,8 @@
 
 /* Ensure uniform size and margin for buttons and labels */
 .button-wrapper label {
-    margin: 0; /* Override default margins if necessary */
-    height: 38px; /* Adjust based on your design needs */
+    margin: 0; 
+    height: 38px; 
     display: inline-flex; /* Align text and icons within buttons/labels */
     align-items: center; /* Center items vertically inside the button/label */
     justify-content: center; /* Center items horizontally inside the button/label */
@@ -223,6 +235,26 @@ body.bg-dark .dropdown-item:hover {
   color: #343a40 !important; /* Dark text for readability */
 }
 
+body .bg-dark #patch-notes, #aboutTabsContent {
+    color: #f8f9fa !important; /* Sets the text color for all content within the patch-notes container */
+}
+
+body .bg-dark #patch-notes h3, #patch-notes p, #patch-notes a {
+    color: inherit !important; /* Ensures that headers, paragraphs, and links inherit the same color */
+}
+
+body .bg-light #patch-notes, #aboutTabsContent {
+    color: #343a40 !important; /* Sets the text color for all content within the patch-notes container */
+}
+div.modal-body, h5#clearModalLabel.modal-title, h5#errorModalLabel.modal-title {
+    color: #343a40 !important; 
+}
+
+body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
+    color: inherit !important; /* Ensures that headers, paragraphs, and links inherit the same color */
+}
+
+
 /* Enhanced specific selectors for navbar in dark mode */
 .navbar-dark {
   background-color: #343a40 !important; /* Dark gray background */
@@ -238,12 +270,21 @@ body.bg-dark .dropdown-item:hover {
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
+.nav-link.active {
+  color: #343a40 !important;
+}
+
     </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.body.style.display = "none"; // Hide body as soon as DOM is ready but not fully loaded
+    });
+</script>  
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+    <nav class="navbar navbar-expand-lg shadow-sm mb-4">
         <div class="container">
-            <a class="navbar-brand" href="./index.html">Robort</a>
+            <a class="navbar-brand" href="#" id="roborte">Robort</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -360,8 +401,102 @@ body.bg-dark .dropdown-item:hover {
         </div>
     </div>
 </div>
-<script src="jquery-3.3.1.slim.min.js"></script>
- <script src="bootstrap.min.js"></script>
+    <!-- About the Project Modal -->
+    <div id="aboutModal" class="modal text-center modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="aboutTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="true">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="patch-notes-tab" data-toggle="tab" href="#patch-notes" role="tab" aria-controls="patch-notes" aria-selected="false">Patch Notes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="feedback-tab" data-toggle="tab" href="#feedback" role="tab" aria-controls="feedback" aria-selected="false">Feedback</a>
+                        </li>    
+                    </ul>
+                    <div class="tab-content" id="aboutTabsContent">
+                        <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
+                            <h2>Robort</h2>
+                            <h4>The ultimate in FRC competition gear</h4>
+                            <h5>Co-developed by Ben Skraly and Toba Banjo</h5>
+                            <p>Whether you're preparing to scout a heated match, sharing information about your team, or analyzing other robots, Robort has got you covered. Complete with modular design and accessible systems, it's the best tool both on and off the field.</p>
+                            <span>&copy; <script>document.write(new Date().getFullYear());</script> Watertown High School Robotics</span>
+                        </div>
+                        <div class="tab-pane fade" id="patch-notes" role="tabpanel" aria-labelledby="patch-notes-tab">
+                            <!-- Patch notes will be populated here by JavaScript -->
+                        </div>
+                        <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
+                            <form id="feedbackForm">
+                                <div class="form-group">
+                                    <label for="feedbackType">Select Feedback Type:</label>
+                                    <select class="form-control" id="feedbackType" onchange="toggleFeedbackForm()">
+                                        <option value="feature">Feature Suggestion</option>
+                                        <option value="bug">Bug Report</option>
+                                    </select>
+                                </div>
+                                <!-- Feature Suggestion Form -->
+                                <div id="featureForm" style="display: block;">
+                                    <div class="form-group">
+                                        <label>Feature Area: <label style="color:red">*</label></label>
+                                        <div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="featureArea" id="statistics" value="Statistics/Data">
+                                                <label class="form-check-label" for="statistics">Statistics/Data</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="featureArea" id="scouting" value="Scouting">
+                                                <label class="form-check-label" for="scouting">Scouting</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="featureArea" id="quality" value="Quality of Life">
+                                                <label class="form-check-label" for="quality">Quality of Life</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="featureArea" id="other" value="Other">
+                                                <label class="form-check-label" for="other">Other</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="featureDescription">Description:</label>
+                                        <textarea class="form-control" id="featureDescription" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <!-- Bug Report Form -->
+                                <div id="bugForm" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="bugTitle">Title:</label>
+                                        <input type="text" class="form-control" id="bugTitle">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bugSummary">Issue Summary:</label>
+                                        <textarea class="form-control" id="bugSummary" rows="2"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bugSteps">Steps to Reproduce:</label>
+                                        <textarea class="form-control" id="bugSteps" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bugResults">Expected vs. Actual Results:</label>
+                                        <textarea class="form-control" id="bugResults" rows="2"></textarea>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
   <script src="electron.js"></script>
 
     <script>
@@ -375,25 +510,82 @@ body.bg-dark .dropdown-item:hover {
             function renderChecklist(items) {
                 checklistContainer.innerHTML = '';
                 items.forEach((item, index) => {
-                    const div = document.createElement('div');
-                    div.className = 'checklist-item form-check';
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.id = 'check-' + index;
-                    checkbox.className = 'form-check-input';
-                    const label = document.createElement('label');
-                    label.htmlFor = 'check-' + index;
-                    label.className = 'form-check-label';
-                    label.textContent = typeof item === 'object' ? item.text : item;
-                    div.appendChild(checkbox);
-                    div.appendChild(label);
-                    checklistContainer.appendChild(div);
-                // Listener to update localStorage when an item is checked/unchecked
-        checkbox.addEventListener('change', () => {
-            checklistItems[index].checked = checkbox.checked; // Update the 'checked' state
-            localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems)); // Save updated list
-        });
+    const div = document.createElement('div');
+    div.className = 'checklist-item form-check';
+
+    let content;
+    
+    if (typeof item === 'string') {
+        content = item;
+    } else if (item && typeof item.text === 'string') { // Ensure item and item.text are valid
+        content = item.text;
+    } else {
+        console.error('Invalid item:', item);
+        return; // Skip this iteration if item is not valid
+    }
+
+    // Now that you've validated content, it's safe to use trim and other methods
+    if (content.trim().startsWith('#')) {
+        const label = document.createElement('label');
+    label.innerHTML = parseMarkdown(content);
+    label.className = 'header-label';  // Add a class for styling and targeting
+    div.classList.remove('form-check'); // Headers do not need form-check class
+    div.appendChild(label);
+
+    // Bind mouseover and mouseout only to the label
+    label.addEventListener('mouseover', function() {
+        this.classList.add('strikethrough');
     });
+    label.addEventListener('mouseout', function() {
+        this.classList.remove('strikethrough');
+    });
+
+    // Click event to remove the header
+    label.addEventListener('click', function() {
+        checklistItems.splice(index, 1);
+        localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems));
+        renderChecklist(checklistItems);
+    });
+    } else {
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = 'check-' + index;
+        checkbox.className = 'form-check-input';
+
+        const label = document.createElement('label');
+        label.htmlFor = 'check-' + index;
+        label.innerHTML = parseMarkdown(content);
+
+        div.appendChild(checkbox);
+        div.appendChild(label);
+// After creating and appending the label to the div
+label.addEventListener('mouseover', function() {
+    this.classList.add('strikethrough'); 
+});
+label.addEventListener('mouseout', function() {
+    this.classList.remove('strikethrough'); 
+});
+
+
+// Add click event listener to remove item
+label.addEventListener('click', function() {
+    checklistItems.splice(index, 1); // Remove the item from the array
+    localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems)); // Update local storage
+    renderChecklist(checklistItems); // Re-render the checklist
+});
+
+
+        // Ensure checkbox event listener only adds if the checkbox exists
+        checkbox.addEventListener('change', () => {
+            if (typeof checklistItems[index] === 'object') { // Safeguard
+                checklistItems[index].checked = checkbox.checked;
+            }
+            localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems));
+        });
+    }
+    checklistContainer.appendChild(div);
+});
+
             }
 
             document.getElementById('confirmClear').addEventListener('click', function() {
@@ -416,11 +608,16 @@ function loadChecklist() {
 addItemForm.addEventListener('submit', function(e) {
     e.preventDefault();
     const newItems = newItemsInput.value.split(',');
-    checklistItems = checklistItems.concat(newItems.filter(item => item.trim() !== '')); // Filter out any empty strings
+    newItems.forEach(item => {
+        if (item.trim() !== '') { // Ensure item is a string and not empty
+            checklistItems.push(item.trim()); // Add to checklist
+        }
+    });
     localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems)); // Save updated list to localStorage
     renderChecklist(checklistItems);
     newItemsInput.value = '';
 });
+
 
 
             const downloadChecklistButton = document.getElementById('downloadChecklist');
@@ -440,16 +637,21 @@ addItemForm.addEventListener('submit', function(e) {
     const fileReader = new FileReader();
     fileReader.onload = function() {
         try {
-            const contents = JSON.parse(fileReader.result);
-            checklistItems = contents;
-            renderChecklist(checklistItems);
-            localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems));
-            showSuccessAlert('Upload success!');
-        } catch (error) {
-            console.error("Error parsing uploaded file as JSON:", error);
-            // Show error modal instead of alert
-            showErrorModal("Upload failed: The file is not a valid JSON.");
-        }
+    const contents = JSON.parse(fileReader.result);
+    if (Array.isArray(contents)) {
+        // Handle array of strings or objects
+        checklistItems = contents.map(item => typeof item === 'string' ? { text: item, checked: false } : item);
+    } else {
+        // Handle other data formats or show an error
+        throw new Error('Unsupported file format');
+    }
+    renderChecklist(checklistItems);
+    localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems));
+    showSuccessAlert('Upload success!');
+} catch (error) {
+    console.error("Error parsing uploaded file as JSON:", error);
+    showErrorModal("Upload failed: The file is not a valid JSON.");
+}
     };
     if (e.target.files[0]) {
         fileReader.readAsText(e.target.files[0]);
@@ -488,6 +690,12 @@ function showErrorModal(errorMessage) {
         }, 500); // Match the CSS transition duration
     }, 3000); // Visible duration before starting fade-out
 }
+
+function parseMarkdown(text) {
+    const converter = new showdown.Converter();
+    return converter.makeHtml(text);
+}
+
     </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -546,6 +754,112 @@ function showErrorModal(errorMessage) {
         }
       });
     });
+     document.getElementById('roborte').addEventListener('click', function() {
+    $('#aboutModal').modal('show');
+});
+
+// Fetch and display GitHub release notes with markdown parsing and specific download link
+function loadGitHubReleases() {
+    const apiUrl = 'https://api.github.com/repos/skac121245/Robort/releases';
+    const converter = new showdown.Converter(); // Initialize markdown converter
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('patch-notes');
+            container.innerHTML = ''; // Clear existing content
+            data.forEach(release => {
+                if (release.body !== null) { // Only display if there's a description
+                    const markdownHTML = converter.makeHtml(release.body);
+                    const releaseDiv = document.createElement('div');
+                    releaseDiv.innerHTML = `
+                        <h3>${release.tag_name}</h3>
+                        <div>${markdownHTML}</div>
+                        <a href="${release.html_url}" target="_blank">View on GitHub</a>
+                        <hr>`;
+                    container.appendChild(releaseDiv);
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching GitHub releases:', error));
+}
+
+
+
+document.getElementById('patch-notes-tab').addEventListener('click', function() {
+    loadGitHubReleases();
+});
+
+document.getElementById('feedbackForm').addEventListener('submit', async function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+    const feedbackType = document.getElementById('feedbackType').value;
+    let postData = {
+        username: "Robort Feedback Bot",
+        embeds: [],
+    };
+
+    if (feedbackType === 'feature') {
+        const area = document.querySelector('input[name="featureArea"]:checked').value;
+        const description = document.getElementById('featureDescription').value;
+        postData.embeds.push({
+            title: "Feature Suggestion",
+            fields: [
+                { name: "Area", value: area, inline: true },
+                { name: "Description", value: description }
+            ],
+            color: 65280  // Green
+        });
+    } else {
+        const title = document.getElementById('bugTitle').value;
+        const summary = document.getElementById('bugSummary').value;
+        const steps = document.getElementById('bugSteps').value;
+        const results = document.getElementById('bugResults').value;
+        postData.embeds.push({
+            title: "Bug Report: " + title,
+            fields: [
+                { name: "Summary", value: summary },
+                { name: "Steps to Reproduce", value: steps },
+                { name: "Expected vs. Actual Results", value: results }
+            ],
+            color: 16711680  // Red
+        });
+    }
+
+    try {
+        const response = await fetch('https://discord.com/api/webhooks/1231365349476405268/lX0MXxHO2zwQPnNxEiuConQ8Sf47Qwq4EDrE8mLV8pctu3c63VQBjnsjAwlGLK2DPeLm', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData)
+        });
+        if (response.ok) {
+            alert('Feedback submitted successfully!');
+            document.getElementById('feedbackForm').reset();  // Reset the form after successful submission
+        } else {
+            alert('Failed to submit feedback. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error submitting feedback:', error);
+        alert('Error submitting feedback. Please check your network connection and try again.');
+    }
+});
+
+function toggleFeedbackForm() {
+    const feedbackType = document.getElementById('feedbackType').value;
+    if (feedbackType === 'feature') {
+        document.getElementById('featureForm').style.display = 'block';
+        document.getElementById('bugForm').style.display = 'none';
+    } else {
+        document.getElementById('featureForm').style.display = 'none';
+        document.getElementById('bugForm').style.display = 'block';
+    }
+}
+
+    </script>
+     <script>
+        window.onload = function() {
+            document.body.style.display = "block"; // Show body when everything is loaded
+        };
     </script>
 </body>
 </html>

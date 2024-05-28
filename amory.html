@@ -14,8 +14,9 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
         body {
-            background-color: #f8f9fa; /* Lighter shade */
+            background-color: #343a40; /* Lighter shade */
             color: #212529; /* Bootstrap default font color */
+            display: block; 
         }
 
         .container, .photo-description, .footer-content {
@@ -183,7 +184,7 @@ body.bg-dark .dropdown-menu {
         </div>
     </header>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -304,5 +305,10 @@ body.bg-dark .dropdown-menu {
           });
         });
         </script>
+                    <script>
+                           window.onload = function() {
+                               document.body.style.display = "block"; // Show body when everything is loaded
+                           };
+                       </script>
 </body>
 </html>

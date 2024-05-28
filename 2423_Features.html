@@ -13,9 +13,9 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
         body {
-            background-color: #f8f9fa; /* Lighter shade */
+            background-color: #343a40; /* Lighter shade */
             color: #212529; /* Bootstrap default font color */
-            display:none;
+            display:block;
         }
         header, .hamburger-menu .bar, nav {
             transition: all 0s ease; /* Smooth transition for all */
@@ -42,7 +42,7 @@
         }
         .section {
             width: 30%;
-            background-color: #ffffff;
+            background-color: #343a40;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin: 0 10px;
@@ -64,7 +64,7 @@
             padding: 8px 12px;
             border: 2px solid #007bff;
             border-radius: 5px;
-            background-color: #f4f4f4;
+            background-color: #343a40;
             font-family: Arial, sans-serif;
             color: #333;
             cursor: pointer;
@@ -243,7 +243,12 @@ body.bg-dark .dropdown-item:hover {
 body.bg-dark .dropdown-menu {
     background-color:  #343a40 !important; /* Light gray background */
 }
-    </style>
+  </style>
+<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    document.body.style.display = "none"; // Hide body as soon as DOM is ready but not fully loaded
+                });
+            </script>
 </head>
 <body>
     <div class="hamburger-menu">  
@@ -259,7 +264,7 @@ body.bg-dark .dropdown-menu {
         </div>
     </header>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -615,6 +620,11 @@ body.bg-dark .dropdown-menu {
             }
           });
         });
-        </script>
+      </script>
+ <script>
+        window.onload = function() {
+            document.body.style.display = "block"; // Show body when everything is loaded
+        };
+    </script>
 </body>
 </html>

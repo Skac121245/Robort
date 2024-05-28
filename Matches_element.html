@@ -311,11 +311,10 @@ function highlightCells() {
   // Check if the current page is loaded inside an iframe
   if (window.location !== window.parent.location) {
     // It's loaded within an iframe
-    // Apply CSS styles or classes here as needed
     // For example, increase the font size for td elements
     var styleSheet = document.createElement("style")
     styleSheet.type = "text/css"
-    styleSheet.innerText = 'td { font-size: 20px; }'; // Adjust the font size as needed
+    styleSheet.innerText = 'td { font-size: 20px; }';
     document.head.appendChild(styleSheet);
   }
 }

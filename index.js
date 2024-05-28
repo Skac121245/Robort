@@ -1,6 +1,8 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { updateElectronApp } = require('update-electron-app')
 const fs = require('fs');
 const path = require('path');
+updateElectronApp()
 
 let mainWindow;
 
