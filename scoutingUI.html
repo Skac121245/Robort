@@ -5,6 +5,203 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRC Scouting App - Autonomous Mode</title>
+    <link href="bootstrap.min.css" rel="stylesheet">
+<script src="jquery-3.3.1.slim.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<style>
+    #aboutTabsContent > .tab-pane {
+        padding-top: 20px; /* Add space above the content in each tab */
+    }
+
+    body, nav, header, .navbar, #footer, a, th {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body {
+        background-color: #343a40;
+        display: block;
+    }
+    .table-responsive {
+        margin: 20px 0;
+    }
+    .custom-table th {
+        background-color: #e9ecef;
+    }
+    .custom-button {
+        margin: 10px;
+    }
+    .event-code {
+        font-size: 24px;
+        font-weight: bold;
+        color: #007bff;
+    }
+    .info-modal-content {
+        padding: 20px;
+        border-radius: 5px;
+        background-color: #ffffff;
+        box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    }
+
+    /* Dark Mode Toggle Switch Styles */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 80px;
+        height: 34px;
+        margin: 10px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: background-color .4s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: transform .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: #555; /* Dark mode slider color */
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(46px); /* Slide to the right */
+    }
+
+    .icon {
+        color: #fff;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px;
+        transition: opacity 0.4s; /* Smooth transition for opacity */
+    }
+
+    .sun {
+        left: 10px;
+        opacity: 0; /* Start hidden */
+    }
+
+    .moon {
+        right: 10px;
+        opacity: 1; /* Start visible */
+    }
+
+    input:checked + .slider .sun {
+        opacity: 1; /* Fade in when dark mode is on */
+    }
+
+    input:checked + .slider .moon {
+        opacity: 0; /* Fade out when dark mode is on */
+    }
+
+    input:not(:checked) + .slider .sun {
+        opacity: 0; /* Remain hidden when light mode is on */
+    }
+
+    input:not(:checked) + .slider .moon {
+        opacity: 1; /* Remain visible when light mode is on */
+    }
+
+    body .bg-dark #patch-notes, #aboutTabsContent {
+        color: #f8f9fa !important; /* Sets the text color for all content within the patch-notes container */
+    }
+
+    body .bg-dark #patch-notes h3, #patch-notes p, #patch-notes a {
+        color: inherit !important; /* Ensures that headers, paragraphs, and links inherit the same color */
+    }
+
+    body .bg-light #patch-notes, #aboutTabsContent {
+        color: #343a40 !important; /* Sets the text color for all content within the patch-notes container */
+    }
+
+    body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
+        color: inherit !important; /* Ensures that headers, paragraphs, and links inherit the same color */
+    }
+
+    /* Styles for dark and light modes */
+    .bg-dark, .navbar-dark, .card {
+        background-color: #343a40 !important; /* Dark gray background */
+        color: #f8f9fa !important; /* Light text for readability */
+    }
+
+    body.bg-dark table {
+        background-color: #343a40; 
+        color: #f8f9fa; 
+    }
+
+    body.bg-dark th {
+        color: #343a40; 
+    }
+
+    .bg-light, .navbar-light, .card {
+        background-color: #f8f9fa !important; /* Light gray background */
+        color: #343a40 !important; /* Dark text for readability */
+    }
+
+    /* Enhanced specific selectors for navbar in dark mode */
+    .navbar-dark {
+        background-color: #343a40 !important; /* Dark gray background */
+        color: #f8f9fa !important; /* Light text for readability */
+    }
+
+    .navbar-dark .navbar-nav .nav-link,
+    .navbar-dark .navbar-brand {
+        color: #f8f9fa !important; /* Ensure navbar text colors are adjusted for dark mode */
+    }
+
+    .nav-link.active {
+        color: #343a40 !important;
+    }
+
+    .navbar-dark .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+
+    /* Dark mode styles for the modal */
+    .modal-content-dark {
+        background-color: #343a40 !important; /* Dark background */
+        color: #f8f9fa !important; /* Light text */
+    }
+    .modal-header-dark, .modal-footer-dark {
+        background-color: #495057 !important; /* Slightly lighter dark background for header and footer */
+    }
+    .modal-content-dark a {
+        color: #f8f9fa !important; /* Light text for readability */
+    }
+
+    body.bg-dark .dropdown-item {
+        background-color: #343a40 !important; /* Dark gray background */
+        color: #f8f9fa !important; /* Light text for readability */
+    }
+    body.bg-dark .dropdown-item:hover {
+        background-color: #f8f9fa !important; /* Light gray background */
+        color: #343a40 !important; /* Dark text for readability */
+    }
+    body.bg-dark .dropdown-menu {
+        background-color: #343a40 !important; /* Light gray background */
+    }
+</style>
     <style>
         #field {
             width: 100%;
@@ -311,22 +508,109 @@
         .button-link:hover {
             background-color: #0056b3;
         }
+
+        
+        .overlay {
+    position: fixed;
+    right: 20px;
+    top: 245px;
+    width: 1152px; /* Adjust based on your actual need */
+    height: 590px; /* Adjust based on your actual need */
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    pointer-events: all;
+}
+
+.overlay-text {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+
     </style>
 </head>
 
 <body>
-    <div id="info">
-        <a class="button-link" href="./index.html">Robort Home</a>
-        <!-- <label for="sideToggle">Toggle Side:</label> -->
-        <!-- <input type="checkbox" id="sideToggle" onchange="toggleSide()"> -->
-        <input type="number" id="matchNumber" placeholder="Match Number">
-        <input type="number" id="teamNumber" placeholder="Team Number">
-        <button onclick="startScouting()">Start Scouting</button>
-        <button onclick="startTeleop()">Start Teleop</button>
-        <button onclick="startEndgame()">Start Endgame</button>
-        <button onclick="downloadSessionStorageData()">Download Data</button>
-        <button onclick="rotateField()">Rotate Field</button>
+    <div id="overlay" class="overlay" style="display: none;">
+        <div class="overlay-text">Scouting Not Started</div>
+    </div>    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mb-5">
+        <div class="container">
+            <a class="navbar-brand" href="#" id="roborte">Robort</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./Team_List_element.html">Teams</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Scouting
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="./Strat_Board_w_tabs.html">Canvas</a>
+                            <a class="dropdown-item" href="./scoutingGen.html">Scouting Generator</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./Checklist.html">Pre Match Checklist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./2423_Features.html">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Config_tab.html">Configure</a>
+                    </li>
+                </ul>
+                <label class="switch">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="slider round">
+                        <span class="icon sun">🌞</span> <!-- Sun icon -->
+                        <span class="icon moon">🌜</span> <!-- Moon icon -->
+                    </span>
+                </label>
+            </div>
+        </div>
+    </nav>
+    <div id="info" class="container">
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            <input type="number" class="form-control mb-2" id="matchNumber" placeholder="Match Number">
+        </div>
+        <div class="col-auto">
+            <input type="number" class="form-control mb-2" id="teamNumber" placeholder="Team Number">
+        </div>
+        <div class="col-auto">
+            <button id="startScoutingButton" class="btn btn-primary mb-2" onclick="startScouting()">Start Scouting</button>
+        </div>
+        <div class="col-auto">
+            <button id="startTeleopButton" class="btn btn-secondary mb-2" onclick="startTeleop()" style="display:none;">Start Teleop</button>
+        </div>
+        <div class="col-auto">
+            <button id="startEndgameButton" class="btn btn-danger mb-2" onclick="startEndgame()" style="display:none;">Start Endgame</button>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-info mb-2" onclick="downloadSessionStorageData()">Download Data</button>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-warning mb-2" onclick="rotateField()">Rotate Field</button>
+        </div>
     </div>
+</div>
+
+    
     <iframe id="field-canvas" src="pathingUI.html" width="1155px" height="601px" style="z-index: 0;"></iframe>
     <div id="field">
         <button id="driver-station-btn-1" class="driver-station-btn" style="top: 26%; width:120px;">Driver Station 1 BLUE</button>
@@ -452,6 +736,8 @@
         <button onclick="saveNoteOutcome('another team got it')">Another Team Got It</button>
     </div>
     <script>
+
+
         document.querySelectorAll('.position-btn').forEach(button => {
             button.addEventListener('click', function () {
                 const position = this.innerText;
@@ -549,7 +835,8 @@
 
         function checkSelections() {
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
-            if (scoutingData.driverStation && scoutingData.robotPosition) {
+            // if (scoutingData.driverStation && scoutingData.robotPosition) {
+             if (scoutingData.robotPosition) {
                 // Hide position and driver station buttons
                 document.querySelectorAll('.position-btn, .driver-station-btn').forEach(button => {
                     button.style.display = 'none';
@@ -589,34 +876,61 @@
             document.getElementById('noteOutcome').style.display = 'none';
         }
 
-        function startScouting() {
-            const matchNumber = document.getElementById('matchNumber').value;
-            const teamNumber = document.getElementById('teamNumber').value;
-            if (matchNumber && teamNumber) {
-                const scoutingData = {
-                    matchNumber: matchNumber,
-                    teamNumber: teamNumber,
-                    actions: []
-                };
-                sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
-                alert('Scouting started!');
-            } else {
-                alert('Please enter both match and team numbers.');
-            }
-        }
+       function startScouting() {
+    const matchNumber = document.getElementById('matchNumber').value;
+    const teamNumber = document.getElementById('teamNumber').value;
+    const startScoutingButton = document.getElementById('startScoutingButton');
 
-        function startTeleop() {
-            // Hide all note buttons and show Teleop actions
-            document.getElementById('field').style.display = "none"
-            document.getElementById('notesContainer').style.display = 'none';
-            document.getElementById('noteOutcome').style.display = 'none'; // Hide outcomes if visible
-            document.getElementById('teleopContainer').style.display = 'block';
-
-
-            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
-            scoutingData.teleopActions = [];
+    if (startScoutingButton.innerText === 'Start Scouting') {
+        if (matchNumber && teamNumber) {
+            const scoutingData = {
+                matchNumber: matchNumber,
+                teamNumber: teamNumber,
+                actions: []
+            };
             sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+            alert('Scouting started!');
+            document.getElementById('startTeleopButton').style.display = 'inline-block';
+            startScoutingButton.innerText = 'Stop Scouting';
+            document.getElementById('overlay').style.display = 'none';
+        } else {
+            alert('Please enter both match and team numbers.');
         }
+    } else {
+        // Stop scouting functionality
+        sessionStorage.removeItem('scoutingData');
+        alert('Scouting stopped!');
+        document.getElementById('startTeleopButton').style.display = 'none';
+        document.getElementById('startEndgameButton').style.display = 'none';
+        startScoutingButton.innerText = 'Start Scouting';
+        document.getElementById('overlay').style.display = 'flex';
+        resetInterface();
+    }
+}
+
+// Initially display the overlay
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('overlay').style.display = 'flex';
+});
+
+
+       function startTeleop() {
+    const startTeleopButton = document.getElementById('startTeleopButton');
+    const startEndgameButton = document.getElementById('startEndgameButton');
+
+    if (startTeleopButton.innerText === 'Start Teleop') {
+        document.getElementById('field').style.display = "none";
+        document.getElementById('notesContainer').style.display = 'none';
+        document.getElementById('noteOutcome').style.display = 'none';
+        document.getElementById('teleopContainer').style.display = 'block';
+        startTeleopButton.style.display = 'none';
+        startEndgameButton.style.display = 'inline-block';
+
+        const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+        scoutingData.teleopActions = [];
+        sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+    }
+}
 
         function logAction(action) {
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
@@ -692,20 +1006,37 @@
         }
 
         function startEndgame() {
-            // Show endgame buttons
-            document.getElementById('endgameContainer').style.display = 'block';
-            document.getElementById('additionalActions').style.display = 'none';
-            document.getElementById('groundPickupButton1').style.display = 'none';
-            document.getElementById('groundPickupButton2').style.display = 'none';
-            document.getElementById('groundPickupButton3').style.display = 'none';
+    const startEndgameButton = document.getElementById('startEndgameButton');
 
-            document.getElementById('sourceButton').style.display = 'none';
-            document.getElementById('sourceButton2').style.display = 'none';
+    if (startEndgameButton.innerText === 'Start Endgame') {
+        document.getElementById('endgameContainer').style.display = 'block';
+        document.getElementById('additionalActions').style.display = 'none';
+        document.getElementById('groundPickupButton1').style.display = 'none';
+        document.getElementById('groundPickupButton2').style.display = 'none';
+        document.getElementById('groundPickupButton3').style.display = 'none';
+        document.getElementById('sourceButton').style.display = 'none';
+        document.getElementById('sourceButton2').style.display = 'none';
+        startEndgameButton.style.display = 'none';
+    }
+}
 
-
-            // Hide the "Start Endgame" button to prevent multiple endgame starts
-            document.querySelector('button[onclick="startEndgame()"]').style.display = 'none';
-        }
+function resetInterface() {
+    document.getElementById('field').style.display = "block";
+    document.getElementById('notesContainer').style.display = 'none';
+    document.getElementById('noteOutcome').style.display = 'none';
+    document.getElementById('teleopContainer').style.display = 'none';
+    document.getElementById('endgameContainer').style.display = 'none';
+    document.getElementById('additionalActions').style.display = 'none';
+    document.getElementById('groundPickupButton1').style.display = 'inline';
+    document.getElementById('groundPickupButton2').style.display = 'inline';
+    document.getElementById('groundPickupButton3').style.display = 'inline';
+    document.getElementById('sourceButton').style.display = 'inline';
+    document.getElementById('sourceButton2').style.display = 'inline';
+    document.getElementById('matchNumber').value = '';
+    document.getElementById('teamNumber').value = '';
+    document.querySelectorAll('.position-btn').forEach(button => button.style.display = 'inline-block');
+    document.querySelectorAll('.driver-station-btn').forEach(button => button.style.display = 'inline-block');
+}
 
         function logEndgameAction(action) {
             // Store the endgame action and show the secondary buttons
@@ -748,6 +1079,69 @@
             }
         }
 
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+            const navbar = document.querySelector('.navbar'); // Select the navbar element
+    
+            // Function to apply dark mode classes including modal
+            function enableDarkMode() {
+                body.classList.add('bg-dark');
+                body.classList.remove('bg-light');
+                navbar.classList.add('navbar-dark');
+                navbar.classList.remove('navbar-light', 'bg-white');
+                document.querySelectorAll('.navbar').forEach(element => {
+                    element.classList.add('bg-dark');
+                    element.classList.remove('bg-white');
+                });
+                document.querySelectorAll('.modal-content').forEach(element => {
+                    if (!element.closest('#aboutModal')) {
+                        element.classList.add('modal-content-dark');
+                        element.classList.remove('modal-content-light');
+                    }
+                });
+            }
+    
+            // Function to remove dark mode classes including modal
+            function disableDarkMode() {
+                body.classList.add('bg-light');
+                body.classList.remove('bg-dark');
+                navbar.classList.add('navbar-light');
+                navbar.classList.remove('navbar-dark', 'bg-dark');
+                document.querySelectorAll('.navbar').forEach(element => {
+                    element.classList.add('bg-white');
+                    element.classList.remove('bg-dark');
+                });
+                document.querySelectorAll('.modal-content').forEach(element => {
+                    if (!element.closest('#aboutModal')) {
+                        element.classList.add('modal-content-light');
+                        element.classList.remove('modal-content-dark');
+                    }
+                });
+            }
+    
+            // Initialize dark mode from local storage
+            if (localStorage.getItem('darkMode') === 'true') {
+                enableDarkMode();
+                toggle.checked = true;
+            } else {
+                disableDarkMode();
+            }
+            body.style.display = 'block';
+    
+            // Toggle dark mode on change
+            toggle.addEventListener('change', function() {
+                if (this.checked) {
+                    localStorage.setItem('darkMode', 'true');
+                    enableDarkMode();
+                } else {
+                    localStorage.setItem('darkMode', 'false');
+                    disableDarkMode();
+                }
+            });
+        });
     </script>
 </body>
 
