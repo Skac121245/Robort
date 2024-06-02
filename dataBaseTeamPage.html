@@ -45,7 +45,6 @@
         }
 
         #field_image_auto {
-            background-image: url("images/crescendo_feild.png");
             background-size: contain;
             border: 1px solid #000;
             width: 1152px;
@@ -352,21 +351,23 @@
                     { top: '67%', left: '47%' }, { top: '85%', left: '47%' }, { top: '20%', left: '71%' },
                     { top: '35%', left: '71%' }, { top: '50%', left: '71%' }
                 ];
-                data.autoActions.forEach((note, index) => {
-                    index = index + 1
-                    const note_button = document.getElementById(note.note)
-                    note_button.style.display = "inline"
-                    note_button.innerHTML = "Note " + index + "(" + note.outcome + ")";
-                    if (note.outcome === "scored") {
-                        note_button.style.backgroundColor = "green"
-                    } else if (note.outcome === "missed") {
-                        note_button.style.backgroundColor = "red"
-                    } else if (note.outcome === "not picked up") {
-                        note_button.style.backgroundColor = "yellow"
-                    } else if (note.outcome === "another team got it") {
-                        note_button.style.backgroundColor = "brown"
-                    }
-                });
+                if(data.autoActions !== undefined) {
+                    data.autoActions.forEach((note, index) => {
+                        index = index + 1
+                        const note_button = document.getElementById(note.note)
+                        note_button.style.display = "inline"
+                        note_button.innerHTML = "Note " + index + "(" + note.outcome + ")";
+                        if (note.outcome === "scored") {
+                            note_button.style.backgroundColor = "green"
+                        } else if (note.outcome === "missed") {
+                            note_button.style.backgroundColor = "red"
+                        } else if (note.outcome === "not picked up") {
+                            note_button.style.backgroundColor = "yellow"
+                        } else if (note.outcome === "another team got it") {
+                            note_button.style.backgroundColor = "brown"
+                        }
+                    });
+                }
         
                 let teleopCycleCounter = 0
                 let teleopNoteCounter = 0
@@ -409,9 +410,23 @@
                      
                 })
 
+                const imagePath = filePath.replace('.json', '.png');
+
+                // Set the background image for the field_image
+                const fieldImageA = document.getElementById('field_image_auto');
+                console.log(imagePath)
+                if (imagePath !== undefined) {
+                    fieldImageA.style.backgroundImage = `url('${imagePath}')`;
+                } else {
+                    fieldImageA.style.backgroundImage = url('images/crescendo_feild.png');
+                }
+                fieldImageA.style.backgroundSize = 'contain';
+                fieldImageA.style.backgroundRepeat = 'repeat-y';
+
                 let endgameAction = ""
                 let endgameOutcome = ""
 
+                if(data.endgameActions !== undefined) {
                 data.endgameActions.forEach((action) => {
                     endgameAction = action.action
                     endgameOutcome = action.outcome
@@ -472,7 +487,14 @@
                         document.getElementById("CenterStageRED").style.display = "none"
                     }
 
-                })
+                })} else {
+                    document.getElementById("StageRightRED").style.display = "none"
+                        document.getElementById("StageLeftBLUE").style.display = "none"
+                        document.getElementById("CenterStageBLUE").style.display = "none"
+                        document.getElementById("StageRightBLUE").style.display = "none"
+                        document.getElementById("StageLeftRED").style.display = "none"
+                        document.getElementById("CenterStageRED").style.display = "none"
+                }
                 document.getElementById(data.robotPosition).style.display = "inline"
                 document.getElementById('autoContainer').classList.remove('hidden');
                 document.getElementById('autoContainer').style.display = "flex"
@@ -514,13 +536,16 @@
             updateUI(data); // Update the UI with the fetched data
 
             // Assuming the PNG file has the same name as the JSON file but with a .png extension
-            const imagePath = filePath.replace('.json', '.png');
 
-            // Set the background image for the field_image
-            const fieldImageA = document.getElementById('field_image_auto');
-            fieldImageA.style.backgroundImage = `url(${imagePath})`;
-            fieldImageA.style.backgroundSize = 'contain';
-            fieldImageA.style.backgroundRepeat = 'repeat-y';
+
+            // const imagePath = filePath.replace('.json', '.png');
+
+            // // Set the background image for the field_image
+            // const fieldImageA = document.getElementById('field_image_auto');
+            // fieldImageA.style.backgroundImage = `url(${imagePath})`;
+            // console.log(imagePath)
+            // fieldImageA.style.backgroundSize = 'contain';
+            // fieldImageA.style.backgroundRepeat = 'repeat-y';
 
         })
         .catch(error => {
