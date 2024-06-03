@@ -311,6 +311,25 @@
         .button-link:hover {
             background-color: #0056b3;
         }
+
+        #notesSection {
+            position: relative;
+            width: 400px;
+            padding: 10px;
+            box-sizing: border-box;
+            background: #f8f9fa; /* Light grey background for better visibility */
+            border-top: 1px solid #ccc; /* A subtle top border for visual separation */
+            top: 645px;
+            left: 1000px;
+        }
+
+        #notes {
+            position: relative;
+            width: 100%;
+            height: 80px;
+            padding: 5px;
+            box-sizing: border-box; /* Ensures padding does not add to the width */
+        }
     </style>
 </head>
 
@@ -327,7 +346,10 @@
         <button onclick="downloadSessionStorageData()">Download Data</button>
         <button onclick="rotateField()">Rotate Field</button>
     </div>
+    
     <iframe id="field-canvas" src="pathingUI.html" width="1155px" height="601px" style="z-index: 0;"></iframe>
+    
+   
     <div id="field">
         <button id="driver-station-btn-1" class="driver-station-btn" style="top: 26%; width:120px;">Driver Station 1 BLUE</button>
         <button id="driver-station-btn-2" class="driver-station-btn" style="top: 60%; width:120px;">Driver Station 2 BLUE</button>
@@ -389,6 +411,9 @@
     </div>
 
 
+
+   
+
     <div id="teleopContainer" style="display: none; position: absolute; width: 100%; ">
         <button id="groundPickupButton1" class="groundPickupButton"
             style="font-size:20px; background-color:green; position:absolute;  width: 200px; height: 120px; opacity: 60%;"
@@ -444,12 +469,16 @@
 
 
     </div>
+   
     <div id="noteOutcome"
         style="display: none; padding-top:20px; position: fixed;  top: 660px; right: 360px; ">
         <button onclick="saveNoteOutcome('scored')">Scored</button>
         <button onclick="saveNoteOutcome('missed')">Missed</button>
         <button onclick="saveNoteOutcome('not picked up')">Not Picked Up</button>
         <button onclick="saveNoteOutcome('another team got it')">Another Team Got It</button>
+    </div>
+    <div id="notesSection">
+        <textarea id="notes" placeholder="Enter your notes here..."></textarea>
     </div>
     <script>
         document.querySelectorAll('.position-btn').forEach(button => {
@@ -507,30 +536,26 @@
         });
 
         function downloadSessionStorageData() {
-            // Retrieve the scouting data from session storage
-            const scoutingData = sessionStorage.getItem('scoutingData');
-            if (scoutingData) {
-                const data = JSON.parse(scoutingData);
-                const matchNumber = data.matchNumber;
-                const teamNumber = data.teamNumber;
-                const filename = `Match${matchNumber}_${teamNumber}_ScoutingData.json`;
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+            const notes = document.getElementById('notes').value;
+            
+            scoutingData.notes = notes;
+            // scoutingData.push(notes);
+            // Adding notes directly to the scoutingData object
 
-                // Create a blob from the data
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-
-                // Create an anchor element and use it to trigger the download
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = filename;
-                a.style.display = 'none';
-
-                // Append the anchor to the body, click it, and then remove it
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } else {
+            if (!scoutingData) {
                 alert('No scouting data available to download!');
+                return;
             }
+
+            const blob = new Blob([JSON.stringify(scoutingData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'scoutingData.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
 
         function selectDriverStation(driverStation) {
