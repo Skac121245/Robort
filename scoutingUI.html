@@ -515,7 +515,7 @@
     right: 20px;
     top: 190px;
     width: 1160px; /* Adjust based on your actual need */
-    height: 610px; /* Adjust based on your actual need */
+    height: 630px; /* Adjust based on your actual need */
     background: rgba(0, 0, 0, 0.7);
     color: white;
     display: flex;
@@ -836,7 +836,7 @@
         function checkSelections() {
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
             // if (scoutingData.driverStation && scoutingData.robotPosition) {
-             if (scoutingData.robotPosition) {
+             if (scoutingData.robotPosition && scoutingData.driverStation) {
                 // Hide position and driver station buttons
                 document.querySelectorAll('.position-btn, .driver-station-btn').forEach(button => {
                     button.style.display = 'none';
