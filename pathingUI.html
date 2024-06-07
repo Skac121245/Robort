@@ -229,7 +229,9 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
 }
 
 function saveCanvas() {
-  const scoutingData = sessionStorage.getItem('scoutingData')
+  let scoutingData = sessionStorage.getItem('scoutingData')
+  console.log(scoutingData)
+  scoutingData = JSON.parse(scoutingData)
         const matchNumber = scoutingData.matchNumber;
         const teamNumber = scoutingData.teamNumber;
         console.log("match# " + matchNumber + " " + "team# " + teamNumber)
@@ -254,7 +256,7 @@ function saveCanvas() {
           // Save the combined content from the temporary canvas
           const dataURL = tempCanvas.toDataURL('image/png');
           const link = document.createElement('a');
-          link.download = `Match${sessionStorage.getItem('scoutingData').matchNumber}_${sessionStorage.getItem('scoutingData').teamNumber}_ScoutingData.png`; // You can change the filename
+          link.download = `Match${JSON.parse(sessionStorage.getItem('scoutingData')).matchNumber}_${JSON.parse(sessionStorage.getItem('scoutingData')).teamNumber}_ScoutingData.png`; // You can change the filename
           link.href = dataURL;
           link.click();
         };
