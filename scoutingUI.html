@@ -125,6 +125,15 @@
             /* background-color: #0056b3; */
         }
 
+        #teleopContainer {
+            position: relative;
+            /* Container needs to be relative */
+            width: 1152px;
+            height: 664px;
+            background-size: contain;
+        }
+
+
         /* #endgameOutcome {
             width:420px;
         }
@@ -451,15 +460,17 @@
         <button id="start" class="large-button" onclick="startScouting()">Start Scouting</button>
         <button id="teleopStart" class="large-button" onclick="startTeleop()">Start Teleop</button>
         <button id="endgameStart" class="large-button" onclick="startEndgame()">Start Endgame</button>
-        <button style="background-color: orange;" class="large-button" onclick="downloadSessionStorageData()">Download Data</button>
+        <button style="background-color: orange;" class="large-button" onclick="downloadSessionStorageData()">Download
+            Data</button>
         <button style="background-color: aqua;" class="large-button" onclick="rotateField()">Rotate Field</button>
-        <button id="reload"class="large-button" onclick="location.reload()">Reload Scouter</button>
+        <button id="reload" class="large-button" onclick="location.reload()">Reload Scouter</button>
     </div>
 
     <iframe id="field-canvas" src="pathingUI.html" width="1155px" height="601px" style="z-index: 0;"></iframe>
 
 
     <div id="field">
+
         <button id="driver-station-btn-1" class="driver-station-btn" style="top: 20%; width:120px;">Driver Station 1
             BLUE</button>
         <button id="driver-station-btn-2" class="driver-station-btn" style="top: 45%; width:120px;">Driver Station 2
@@ -529,7 +540,17 @@
 
 
 
-    <div id="teleopContainer" style="display: none; position: absolute; width: 100%; ">
+    <div id="teleopContainer" style="display: none; position: absolute; width: 100%; " ondrop="drop(event)"
+        ondragover="allowDrop(event)">
+        <img src="images/redMarker.png" id="defenseMarkerRED" draggable="true" ondragstart="drag(event)" width="50"
+            height="50" style="position: absolute; top: 0px; left: 50px;">
+
+        <img src="images/greenMarker.png" id="defenseMarkerGREEN" draggable="true" ondragstart="drag(event)" width="50"
+            height="50" style="position: absolute; top: 0px; left: 110px;">
+
+        <img src="images/purpleMarker.png" id="defenseMarkerPURPLE" draggable="true" ondragstart="drag(event)" width="50"
+            height="50" style="position: absolute; top: 0px; left: 170px;">
+
         <button id="groundPickupButton1" class="groundPickupButton"
             style="font-size:20px; background-color:green; position:absolute;  width: 200px; height: 120px; opacity: 60%;"
             onclick="logAction('Ground Pickup 1')">Ground Pickup 1</button>
@@ -608,7 +629,7 @@
             });
         });
 
-        
+
 
         function toggleSide() {
             const isChecked = document.getElementById('sideToggle').checked;
@@ -854,6 +875,32 @@
             document.querySelector('button[onclick="startEndgame()"]').style.display = 'none';
         }
 
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id); // Capture the id of the dragged element
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var marker = document.getElementById(data);
+            marker.style.left = ev.offsetX + 'px';
+            marker.style.top = ev.offsetY + 'px';
+            updateMarkerPosition(data, ev.offsetX, ev.offsetY); // Pass the marker's ID
+        }
+
+        function updateMarkerPosition(id, x, y) {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+            if (!scoutingData.defensePositions) {
+                scoutingData.defensePositions = {};
+            }
+            scoutingData.defensePositions[id] = { x: x, y: y }; // Store each marker's position by its ID
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+        }
+
         function logEndgameAction(action) {
             // Store the endgame action and show the secondary buttons
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
@@ -882,15 +929,15 @@
             document.getElementById('endgameContainer').style.display = 'none';
         }
 
-            localStorage.setItem("isRotate", "true")
-      
-        
+        localStorage.setItem("isRotate", "true")
+
+
         var isRotate = localStorage.getItem("isRotate") === "true"
 
-        
 
 
-        function rotateField() { 
+
+        function rotateField() {
             console.log(!isRotate)
             if (isRotate) {
                 localStorage.setItem("isRotate", "false")
