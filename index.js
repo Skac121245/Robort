@@ -5,6 +5,7 @@ const path = require('path');
 updateElectronApp()
 
 let mainWindow;
+let otherWindow;
 
 const getAllJsonFiles = (dirPath, arrayOfFiles = []) => {
     const files = fs.readdirSync(dirPath);
@@ -59,6 +60,10 @@ ipcMain.on('request-match-files', (event, matchIdentifier) => {
           event.reply('match-files-response', []);
           return;
       }
+
+ipcMain.on('update-background', (event, imagePath) => {
+        otherWindow.webContents.send('change-background', imagePath);
+    });
 
       // Filter and group files based on the sixth character
       const groupedFiles = files.reduce((acc, filename) => {

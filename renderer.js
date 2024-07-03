@@ -12,6 +12,10 @@ ipcRenderer.on('match-files-response', (event, files) => {
     displayMatchFiles(files);
 });
 
+ipcRenderer.on('change-background', (event, imagePath) => {
+    document.getElementById("field_image_auto").style.backgroundImage = `url('${imagePath}')`;
+});
+
 ipcRenderer.on('json-files-data', (event, files) => {
     const displayArea = document.getElementById('fileDisplayArea');
     displayArea.innerHTML = ''; // Clear existing content before adding new
@@ -31,9 +35,14 @@ ipcRenderer.on('json-files-data', (event, files) => {
 
 function displayMatchFiles(files) {
     files.forEach(file => {
-        // Assume 'file' contains paths to both JSON and PNG
         const jsonPath = file.json;
         const pngPath = file.png;
-        // Display logic goes here
+
+        fs.access(pngPath, fs.constants.F_OK, (err) => {
+            if (err) {
+                console.log(`PNG file does not exist: ${pngPath}, notifying main process.`);
+                ipcRenderer.send('update-background', '/images/crescendo_feild.png');
+            }
+        });
     });
 }

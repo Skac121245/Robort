@@ -784,6 +784,7 @@
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
             scoutingData.teleopActions = [];
             sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+            logScreenWidth()
         }
 
         function logAction(action) {
@@ -900,6 +901,14 @@
             scoutingData.defensePositions[id] = { x: x, y: y }; // Store each marker's position by its ID
             sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
         }
+
+        function logScreenWidth() {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
+            scoutingData.screenWidth = screen.width
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+        }
+
+
 
         function logEndgameAction(action) {
             // Store the endgame action and show the secondary buttons

@@ -22,11 +22,11 @@
             display: none;
         }
 
-        img {
+        /* img {
             width: 100%;
             max-width: 600px;
             height: auto;
-        }
+        } */
 
         h1,
         h2,
@@ -261,6 +261,10 @@
         <ul id="autoActionsList"></ul>
     </div>
 
+
+
+
+
     <div id="teleopContainer" class="container hidden">
         <div class="teleop_title">
             <h1>T</h1>
@@ -270,9 +274,9 @@
             <h1>O</h1>
             <h1>P</h1>
         </div>
-
-        <div class="stats" >
-            <h3>Stats</h3>
+            
+            <div class="stats" >
+                <h3>Stats</h3>
             <h4>Out of Auto: <span id="outOfAuto"></span></h4>
             <h4># of Cycles: <span id="numOfCycles"></span></h4>
             <h4># of Notes attempted scored: <span id="noteAttemps"></span></h4>
@@ -283,30 +287,44 @@
             <h4># PASSED: <span id="passNotes"></span></h4>
             <h4># MISSED: <span id="missNotes"></span></h4>
             <h4>NOTES: <span id="notesSection"></span></h4>
-
-        </div>
-        <div id="field_image_auto">
-            <div class="driver-btns" style="position: relative; width: 100%; height: 100%;">
-                <button id="Driver Station 1 BLUE" class="driver-station-btnB"
-                    style="position: absolute; display: none; top: 18%; left: 0px; width:120px;">Driver Station 1
-                    BLUE</button>
-                <button id="Driver Station 2 BLUE" class="driver-station-btnB"
-                    style="position: absolute; display: none; top: 53%; left: 0px; width:120px;">Driver Station 2
-                    BLUE</button>
-                <button id="Driver Station 3 BLUE" class="driver-station-btnB"
-                    style="position: absolute; display: none; top: 72%; left: 0px; width: 120px;">Driver Station 3
-                    BLUE</button>
-
-                <button id="Driver Station 3 RED" class="driver-station-btnR"
-                    style="position: absolute; display: none; top: 18%; left: 90%;">Driver Station 3 RED</button>
-                <button id="Driver Station 2 RED" class="driver-station-btnR"
-                    style="position: absolute; display: none; top: 53%; left: 90%;">Driver Station 2 RED</button>
-                <button id="Driver Station 1 RED" class="driver-station-btnR"
-                    style="position: absolute; display: none; top: 72%; left: 90%;">Driver Station 1 RED</button>
+            </div>
+            
+            <div id="field_image_auto">
+                <img src="images/redMarker.png" id="defenseMarkerRED"  width="50px"
+                height="50px" style="display: none;">
+                
+                <img src="images/greenMarker.png" id="defenseMarkerGREEN" width="50px"
+                height="50px" style="display: none;">
+                
+                <img src="images/purpleMarker.png" id="defenseMarkerPURPLE" width="50px"
+                height="50px" style="display: none;">
+                <div class="teleop_title">
+                    <div class="driver-btns" style="position: relative; width: 100%; height: 100%;">
+                        <button id="Driver Station 1 BLUE" class="driver-station-btnB"
+                        style="position: absolute; display: none; top: 18%; left: 0px; width:120px;">Driver Station 1
+                        BLUE</button>
+                        <button id="Driver Station 2 BLUE" class="driver-station-btnB"
+                        style="position: absolute; display: none; top: 53%; left: 0px; width:120px;">Driver Station 2
+                        BLUE</button>
+                        <button id="Driver Station 3 BLUE" class="driver-station-btnB"
+                        style="position: absolute; display: none; top: 72%; left: 0px; width: 120px;">Driver Station 3
+                        BLUE</button>
+                        
+                        <button id="Driver Station 3 RED" class="driver-station-btnR"
+                        style="position: absolute; display: none; top: 18%; left: 90%;">Driver Station 3 RED</button>
+                        <button id="Driver Station 2 RED" class="driver-station-btnR"
+                        style="position: absolute; display: none; top: 53%; left: 90%;">Driver Station 2 RED</button>
+                        <button id="Driver Station 1 RED" class="driver-station-btnR"
+                        style="position: absolute; display: none; top: 72%; left: 90%;">Driver Station 1 RED</button>
+                    </div>
+            
             </div>
         </div>
         <ul id="teleopActionsList"></ul>
-    </div>
+</div>
+
+
+
 
     <div id="endgameContainer" class="container hidden">
         <div class="endgame_title">
@@ -411,9 +429,73 @@
                         }
                      
                 })
+                // if (data.hasOwnProperty(defenseMarkerRED)) {
+                //     console.log(1)
+                //     let RedX = data.defensePositions.defenseMarkerRED.x
+                //     let calcedXRED = data.screenWidth - (RedX + 20) 
+                // } else {
+                //     let calcedXRED = 1153
+                // }
 
-                let RedX = data.defensePositions.defenseMarkerRED.x
-                console.log(RedX)
+                let calcedXRED = 1153
+                let calcedXGREEN = 1153
+                let calcedXPURPLE = 1153
+
+                
+                if (data.defensePositions && data.defensePositions.defenseMarkerPURPLE) {
+                    console.log(1)
+                    let PurpleX = data.defensePositions.defenseMarkerPURPLE.x
+                    calcedXPURPLE = data.screenWidth - (PurpleX + 20) 
+                } else {
+                    console.log(12)
+                    console.log(calcedXPURPLE)
+                }
+
+                if (data.defensePositions && data.defensePositions.defenseMarkerGREEN) {
+                    console.log(1)
+                    let GreenX = data.defensePositions.defenseMarkerGREEN.x
+                    calcedXGREEN = data.screenWidth - (GreenX + 20) 
+                } else {
+                    console.log(12)
+                    console.log(calcedXRED)
+                }
+                
+
+                if (data.defensePositions && data.defensePositions.defenseMarkerRED) {
+                    console.log(1)
+                    let RedX = data.defensePositions.defenseMarkerRED.x
+                    calcedXRED = data.screenWidth - (RedX + 20) 
+                } else {
+                    console.log(12)
+                    console.log(calcedXRED)
+                }
+
+                console.log(calcedXRED)
+                if (calcedXRED < 1152) {
+                    document.getElementById("defenseMarkerRED").style.display = "flex"
+                    document.getElementById("defenseMarkerRED").style.position = "relative"
+                    console.log(1)
+                    document.getElementById("defenseMarkerRED").style.left = `${calcedXRED}px`
+                    console.log(2)
+                    document.getElementById("defenseMarkerRED").style.top = `${data.defensePositions.defenseMarkerRED.y}px`
+                } 
+
+                if (calcedXPURPLE < 1152) {
+                    document.getElementById("defenseMarkerPURPLE").style.display = "flex"
+                    document.getElementById("defenseMarkerPURPLE").style.position = "relative"
+
+                    document.getElementById("defenseMarkerPURPLE").style.left = `${calcedXPURPLE}px`
+                    document.getElementById("defenseMarkerPURPLE").style.top = `${data.defensePositions.defenseMarkerPURPLE.y}px`
+                } 
+
+                if (calcedXGREEN < 1152) {
+                    document.getElementById("defenseMarkerGREEN").style.display = "flex"
+                    document.getElementById("defenseMarkerGREEN").style.position = "relative"
+
+                    document.getElementById("defenseMarkerGREEN").style.left = `${calcedXGREEN}px`
+                    document.getElementById("defenseMarkerGREEN").style.top = `${data.defensePositions.defenseMarkerGREEN.y}px`
+                } 
+                console.log(calcedXRED + "pixels calced")
 
                 const imagePath = filePath.replace('.json', '.png');
 
