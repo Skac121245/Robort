@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pit Scouter</title>
+    <script src="jquery-3.3.1.slim.min.js"></script>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <script src="showdown.min.js"></script>
+    <style>
+        body,
+        nav,
+        header,
+        .navbar,
+        #footer,
+        a,
+        #backgroundImage {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        form {
+            margin-left: 5%;
+            margin-right: 5%;
+            margin-top: 2.5%;
+        }
+
+        .sun {
+            left: 10px;
+            opacity: 0;
+        }
+
+        .moon {
+            right: 10px;
+            opacity: 1;
+        }
+
+        input:checked+.slider .sun {
+            opacity: 1;
+        }
+
+        input:checked+.slider .moon {
+            opacity: 0;
+        }
+
+        input:not(:checked)+.slider .sun {
+            opacity: 0;
+        }
+
+        input:not(:checked)+.slider .moon {
+            opacity: 1;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 80px;
+            height: 34px;
+            margin: 10px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: background-color .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: transform .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #555;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(46px);
+        }
+
+        .icon {
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            transition: opacity 0.4s;
+        }
+
+        .bg-dark,
+        .navbar-dark,
+        .card {
+            background-color: #343a40 !important;
+            color: #f8f9fa !important;
+        }
+
+        .bg-light,
+        .navbar-light,
+        .card {
+            background-color: #f8f9fa !important;
+            color: #343a40 !important;
+        }
+
+        .navbar-dark .navbar-nav .nav-link,
+        .navbar-dark .navbar-brand {
+            color: #f8f9fa !important;
+        }
+
+        .navbar-dark .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+        }
+
+        .dark-mode .form-control,
+        .dark-mode select {
+            background-color: #3a3f44;
+            color: #f8f9fa;
+            border: 1px solid #555;
+        }
+
+        .dark-mode .form-control::placeholder {
+            color: #b0b3b8;
+        }
+
+        .dark-mode .btn-primary {
+            background-color: #555;
+            border-color: #666;
+        }
+
+        .dark-mode .btn-primary:hover {
+            background-color: #666;
+            border-color: #777;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 id="displayTeamNumber"></h2>
+    <nav class="navbar navbar-expand-lg">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="./index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Team_List_element.html">Teams</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Scouting
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="./Strat_Board_w_tabs.html">Canvas</a>
+                        <a class="dropdown-item" href="./scoutingGen.html">Scouting Generator</a>
+                        <a class="dropdown-item" href="./scoutingUI.html">Live Scouter (WIP)</a>
+                        <a class="dropdown-item" href="./pitScouterFRONT.html">Pit Scouter</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Checklist.html">Pre Match Checklist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./2423_Features.html">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Config_tab.html">Configure</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="./SQLiteDemo.html">Database</a>
+                </li> -->
+                <!-- <li class="nav-item">
+                  <a class="nav-link" href="./scoutingUI.html">ScoutingUI</a>
+              </li> -->
+            </ul>
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider round">
+                    <span class="icon sun">🌞</span> <!-- Sun icon -->
+                    <span class="icon moon">🌜</span> <!-- Moon icon -->
+                </span>
+            </label>
+
+        </div>
+    </nav>
+    <form id="teamForm">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="teamNumber">What is your team number?</label>
+                <input type="number" id="teamNumber" name="teamNumber" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="robotName">Does your robot have a name?</label>
+                <input type="text" id="robotName" name="robotName" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dim_w_bump">What are your dimensions WITH bumpers? (inches)</label>
+            <input type="text" id="dim_w_bump" name="dim_w_bump" class="form-control"
+                placeholder="Example: X-dimension by Y-dimension">
+        </div>
+        <div class="form-group">
+            <label for="dim_wout_bump">What are your dimensions WITHOUT bumpers? (inches)</label>
+            <input type="text" id="dim_wout_bump" name="dim_wout_bump" class="form-control"
+                placeholder="Example: X-dimension by Y-dimension">
+        </div>
+        <div class="form-group">
+            <label for="drive_train">What is your type of Drivetrain?</label>
+            <input type="text" id="drive_train" name="drive_train" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="weight">What is your robot weight? (LBS)</label>
+            <input type="number" id="weight" name="weight" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Intake Style</label>
+            <select id="intake_sty" name="intake_sty" class="form-control">
+                <option value="Under the bumper">Under the bumper</option>
+                <option value="Over bumper">Over bumper</option>
+                <option value="Talk to a team member, it's hard to explain">Something Else</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Download File</button>
+    </form>
+
+    <script>
+        const homeTeamNumber = localStorage.getItem('teamNumber');
+
+        if (homeTeamNumber) {
+            document.getElementById('displayTeamNumber').textContent = `${homeTeamNumber}'s`;
+        }
+
+        document.getElementById('teamForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            const formData = new FormData(event.target);
+            const formObject = {};
+            formData.forEach((value, key) => {
+                formObject[key] = value;
+            });
+
+            const json = JSON.stringify(formObject, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const teamNumber = formObject.teamNumber
+            a.download = `${teamNumber}_PitScouting.json`;
+            console.log(json)
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url); // Clean up the URL object
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+    const toggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    const navbar = document.querySelector('.navbar');
+    const formControls = document.querySelectorAll('.form-control, select');
+    const submitButton = document.querySelector('.btn-primary');
+
+    // Function to apply dark mode classes
+    function enableDarkMode() {
+        body.classList.add('bg-dark', 'dark-mode');
+        body.classList.remove('bg-light');
+        navbar.classList.add('navbar-dark');
+        navbar.classList.remove('navbar-light', 'bg-white');
+        document.querySelectorAll('.navbar').forEach(element => {
+            element.classList.add('bg-dark');
+            element.classList.remove('bg-white');
+        });
+        formControls.forEach(control => {
+            control.classList.add('dark-mode');
+        });
+        submitButton.classList.add('dark-mode');
+    }
+
+    // Function to remove dark mode classes
+    function disableDarkMode() {
+        body.classList.add('bg-light');
+        body.classList.remove('bg-dark', 'dark-mode');
+        navbar.classList.add('navbar-light');
+        navbar.classList.remove('navbar-dark', 'bg-dark');
+        document.querySelectorAll('.navbar').forEach(element => {
+            if (!element.closest('#aboutModal')) {
+                element.classList.add('bg-white');
+                element.classList.remove('bg-dark');
+            }
+        });
+        formControls.forEach(control => {
+            control.classList.remove('dark-mode');
+        });
+        submitButton.classList.remove('dark-mode');
+    }
+
+    // Initialize dark mode from local storage
+    if (localStorage.getItem('darkMode') === 'true') {
+        enableDarkMode();
+        toggle.checked = true;
+    } else {
+        disableDarkMode();
+    }
+
+    // Toggle dark mode on change
+    toggle.addEventListener('change', function () {
+        if (this.checked) {
+            localStorage.setItem('darkMode', 'true');
+            enableDarkMode();
+        } else {
+            localStorage.setItem('darkMode', 'false');
+            disableDarkMode();
+        }
+    });
+});
+    </script>
+</body>
+
+</html>
