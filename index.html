@@ -808,6 +808,7 @@ div.modal-body, #warningModalLabel.modal-title {
           let isDataPresent = false;
           let ApiDataUploaded = localStorage.getItem('ApiDataUploaded');
           let clockText = localStorage.getItem('clockText')
+          let clockNumb = localStorage.getItem('clockNumb')
           let dataArray = [];
           let lastSelectedOption = "winningAlliance"; // Default option
         function setupCloseModalEvent() {
@@ -844,7 +845,7 @@ div.modal-body, #warningModalLabel.modal-title {
                 console.log(eventCode)
 });
 
-document.getElementById('clockTextSpan').innerHTML = undefined ? "Welcome to Robort!" :  clockText
+document.getElementById('clockTextSpan').innerHTML = null ? clockText :  "Welcome to Robort!"
  
         function setupWebhookSubscription(eventCode) {
             const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
@@ -1259,7 +1260,7 @@ document.getElementById("teamHighlight").addEventListener("change", highlightCel
 
         function getTimeRemaining() {
             const now = new Date();
-            const nextKickoffDate = new Date (`${localStorage.getItem("clockNumb")}`)            //new Date("2024-04-20T07:00:00");
+            const nextKickoffDate = new Date (``)            //new Date("2024-04-20T07:00:00");
             // const nextKickoffDate = new Date();
             let delta = Math.abs(nextKickoffDate - now) / 1000;
 
