@@ -381,6 +381,40 @@ div.modal-body, #warningModalLabel.modal-title {
     color: #343a40 !important; 
 }
 
+body.rainbow  {
+     margin-top: 0px;
+  margin-bottom: 50px;
+  text-align: center ;
+  font-family: sans-serif;
+  letter-spacing: 0.15rem;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: -4px 4px #ef3550,
+               -8px 8px #f48fb1,
+               -12px 12px #7e57c2,
+               -16px 16px #2196f3,
+               -20px 20px #26c6da,
+               -24px 24px #43a047,
+               -28px 28px #eeff41,
+               -32px 32px #f9a825,
+               -36px 36px #ff5722;
+
+background-image: linear-gradient(
+    175deg,
+    hsl(0deg 100% 52%) 0%,
+    hsl(28deg 100% 50%) 19%,
+    hsl(42deg 100% 50%) 38%,
+    hsl(66deg 100% 45%) 56%,
+    hsl(159deg 100% 46%) 76%,
+    hsl(239deg 100% 50%) 100%
+  );
+
+body.rainbow nav {
+    back
+}
+
+}
+
          </style>
              <script>
                 document.addEventListener("DOMContentLoaded", function() {
@@ -388,7 +422,7 @@ div.modal-body, #warningModalLabel.modal-title {
                 });
             </script>
 </head>
-<body>
+<body class="rainbow">
     
      <div id="emilyModal" class="modal" tabindex="-1" role="dialog" style="display: none;">
         <div class="modal-dialog" role="document">
@@ -1341,6 +1375,7 @@ document.getElementById("teamHighlight").addEventListener("change", highlightCel
     let sequence = '';
     const targetSequence = 'emily';
     const targetSequence2 = 'amory';
+    const targetSequence3 = 'gay';
     return function(event) {
         sequence += event.key.toLowerCase();
         if (sequence === targetSequence) {
@@ -1349,7 +1384,11 @@ document.getElementById("teamHighlight").addEventListener("change", highlightCel
         } else if (sequence === targetSequence2){
             sequence = '';
             window.location.replace("amory.html");
-        } else if (!targetSequence.startsWith(sequence) && !targetSequence2.startsWith(sequence)) {
+        } else if (sequence === targetSequence3) {
+
+}
+        
+        else if (!targetSequence.startsWith(sequence) && !targetSequence2.startsWith(sequence)) {
             // If the current sequence doesn't match the start of the target,
             // reset it to prevent incorrect partial matches.
             sequence = '';
