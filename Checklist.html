@@ -362,6 +362,7 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
         <input type="file" id="uploadChecklist">
         <input type="file" id="uploadChecklistInput" style="display: none;">
 <label for="uploadChecklistInput" class="btn btn-info upload-btn">Upload Checklist</label>
+<button id="itemRemovalToggle" class="btn btn-secondary">Enable Removal Mode</button>
 
     </div>
     <!-- Add Bootstrap Modal for Clear Confirmation -->
@@ -507,7 +508,14 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
             const addItemForm = document.getElementById('addItemForm');
             const newItemsInput = document.getElementById('newItems');
             let checklistItems = [];
+            let isRemovalMode = false;
             loadChecklist();
+            document.getElementById('itemRemovalToggle').addEventListener('click', function() {
+    isRemovalMode = !isRemovalMode;
+    this.textContent = isRemovalMode ? 'Disable Removal Mode' : 'Enable Removal Mode';
+    this.classList.toggle('btn-danger', isRemovalMode);
+    this.classList.toggle('btn-secondary', !isRemovalMode);
+});
 
             function renderChecklist(items) {
                 checklistContainer.innerHTML = '';
@@ -544,10 +552,13 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
 
     // Click event to remove the header
     label.addEventListener('click', function() {
-        checklistItems.splice(index, 1);
-        localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems));
-        renderChecklist(checklistItems);
-    });
+    if (isRemovalMode) {
+        checklistItems.splice(index, 1); // Remove the item from the array
+        localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems)); // Update local storage
+        renderChecklist(checklistItems); // Re-render the checklist
+    }
+});
+
     } else {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -562,20 +573,27 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
         div.appendChild(label);
 // After creating and appending the label to the div
 label.addEventListener('mouseover', function() {
+    if (isRemovalMode) {
     this.classList.add('strikethrough'); 
+}
 });
 label.addEventListener('mouseout', function() {
+    if (isRemovalMode) {
     this.classList.remove('strikethrough'); 
+    }
 });
 
 
 // Add click event listener to remove item
 label.addEventListener('click', function() {
-    checklistItems.splice(index, 1); // Remove the item from the array
-    localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems)); // Update local storage
-    renderChecklist(checklistItems); // Re-render the checklist
+    if (isRemovalMode) {
+        checklistItems.splice(index, 1); // Remove the item from the array
+        localStorage.setItem('preMatchChecklistItems', JSON.stringify(checklistItems)); // Update local storage
+        renderChecklist(checklistItems); // Re-render the checklist
+    }
 });
 
+ 
 
         // Ensure checkbox event listener only adds if the checkbox exists
         checkbox.addEventListener('change', () => {
