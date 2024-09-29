@@ -641,6 +641,9 @@ div.modal-body, #warningModalLabel.modal-title {
             <label for="uploadMatchData" class="btn btn-info">Upload Match Data</label>
         </div>
     </div>
+
+    <button id="autoScroll" class="btn btn-success">Auto Scroll the Page</button>
+
     <div class="col-12">
       <div class="text-center mb-3">
         <label for="teamHighlight" class="mr-2">Select a team to highlight:</label>
@@ -821,6 +824,50 @@ div.modal-body, #warningModalLabel.modal-title {
         closeModal();
     });
     setupCloseModalEvent();
+    const autoScrollButton = document.getElementById('autoScroll');
+    let isScrolling = false;
+    let scrollInterval;
+    let step = 1; // The amount by which you scroll each time
+    let currentHeight = window.scrollY;
+    let scrollDown = false; // Control the direction of the scroll
+
+    function scrollPage() {
+        const windowHeight = window.innerHeight;
+        const scrollHeight = document.body.scrollHeight;
+
+        // Check if it has reached the boundaries of the scroll
+        if (currentHeight + windowHeight >= scrollHeight || currentHeight <= 0) { //currentHeight + windowHeight >= scrollHeight
+            scrollDown = !scrollDown; // Reverse the scroll direction
+        }
+
+        if (scrollDown) {
+            currentHeight += step;
+            window.scrollTo(0, currentHeight);
+        } else {
+            currentHeight -= step;
+            window.scrollTo(0, currentHeight);
+        }
+    }
+
+    autoScrollButton.onclick = () => {
+        if (isScrolling) {
+            // Stop scrolling
+            clearInterval(scrollInterval);
+            isScrolling = false;
+        } else {
+            // Start scrolling
+            isScrolling = true;
+            scrollInterval = setInterval(scrollPage, 7); // Adjust timing as needed
+        }
+    };
+
+    // Stop the scrolling when clicking anywhere on the page
+    document.addEventListener('click', (event) => {
+        if (event.target !== autoScrollButton) {
+            clearInterval(scrollInterval);
+            isScrolling = false;
+        }
+    });
 });
     //         document.getElementById('addOptionButton').addEventListener('click', function() {
     //             const selectElement = document.getElementById('eventCode');
