@@ -216,6 +216,7 @@
             height: 50px;
             position: relative;
         }
+
     </style>
 </head>
 
@@ -370,6 +371,7 @@
 
         <div id="field_image">
             <div class="endgame">
+
                 <button id="StageRightBLUE" style="font-size:20px; opacity: 60%;"
                     onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
                 <button id="StageLeftBLUE" style="font-size:20px; opacity: 60%;"
@@ -385,6 +387,7 @@
                     onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
                 <button id="CenterStageRED" style="font-size:20px;   opacity: 60%;"
                     onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
+
             </div>
         </div>
     </div>
@@ -426,7 +429,19 @@
                         }
                     }
                 });
+
             }
+
+
+                let teleopCycleCounter = 0
+                let teleopNoteCounter = 0
+                let teleopNoteScore = 0
+                let teleopSpeaker = 0
+                let teleopAmp = 0
+                let teleopPass = 0
+                let teleopMiss = 0
+
+
 
             if (imagePath) {
                 fieldImageA.style.backgroundImage = `url('${imagePath}')`;
@@ -450,6 +465,7 @@
             // Process teleop actions
             if (data.teleopActions !== undefined) {
                 data.teleopActions.forEach((cycle, index) => {
+
                     if (
                         cycle.pickup === "Ground Pickup 1" ||
                         cycle.pickup === "Ground Pickup 2" ||
@@ -461,6 +477,7 @@
                     }
 
                     if (index === 0) {
+
                         document.getElementById('outOfAuto').textContent = cycle.pickup;
                     }
 
@@ -478,6 +495,7 @@
                         } else if (cycle.shot_place === "Miss") {
                             teleopMiss += 1;
                         }
+
                     }
                 });
             }
@@ -485,6 +503,7 @@
             // Field image dimensions
             const fieldWidth = 1152; // Width of your field image
             const fieldHeight = 498;  // Height of your field image
+
 
             // Calculate scaling factors
             const xScale = fieldWidth / data.screenWidth;

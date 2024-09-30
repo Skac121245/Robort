@@ -435,6 +435,11 @@ div.modal-body, #warningModalLabel.modal-title {
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="./Strat_Board_w_tabs.html">Canvas</a>
                         <a class="dropdown-item" href="./scoutingGen.html">Scouting Generator</a>
+                        <a class="dropdown-item" href="./scoutingUI.html">Live Scouter (WIP)</a>
+                        <a class="dropdown-item" href="./pitScouterFRONT.html">Pit Scouter</a>
+                        <a class="dropdown-item" href="./pitScouterBACK.html">Pit Scouter BACK</a>
+
+                        
                     </div>
                 </li>
                 <li class="nav-item">
@@ -446,12 +451,12 @@ div.modal-body, #warningModalLabel.modal-title {
                 <li class="nav-item">
                     <a class="nav-link" href="./Config_tab.html">Configure</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="./SQLiteDemo.html">Database</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./scoutingUI.html">ScoutingUI</a>
-            </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="./SQLiteDemo.html">Database</a>
+                </li> -->
+                <!-- <li class="nav-item">
+                  <a class="nav-link" href="./scoutingUI.html">ScoutingUI</a>
+              </li> -->
             </ul>
             <label class="switch">
                 <input type="checkbox" id="darkModeToggle">
@@ -636,6 +641,9 @@ div.modal-body, #warningModalLabel.modal-title {
             <label for="uploadMatchData" class="btn btn-info">Upload Match Data</label>
         </div>
     </div>
+
+    <button id="autoScroll" class="btn btn-success">Auto Scroll the Page</button>
+
     <div class="col-12">
       <div class="text-center mb-3">
         <label for="teamHighlight" class="mr-2">Select a team to highlight:</label>
@@ -816,6 +824,50 @@ div.modal-body, #warningModalLabel.modal-title {
         closeModal();
     });
     setupCloseModalEvent();
+    const autoScrollButton = document.getElementById('autoScroll');
+    let isScrolling = false;
+    let scrollInterval;
+    let step = 1; // The amount by which you scroll each time
+    let currentHeight = window.scrollY;
+    let scrollDown = false; // Control the direction of the scroll
+
+    function scrollPage() {
+        const windowHeight = window.innerHeight;
+        const scrollHeight = document.body.scrollHeight;
+
+        // Check if it has reached the boundaries of the scroll
+        if (currentHeight + windowHeight >= scrollHeight || currentHeight <= 0) { //currentHeight + windowHeight >= scrollHeight
+            scrollDown = !scrollDown; // Reverse the scroll direction
+        }
+
+        if (scrollDown) {
+            currentHeight += step;
+            window.scrollTo(0, currentHeight);
+        } else {
+            currentHeight -= step;
+            window.scrollTo(0, currentHeight);
+        }
+    }
+
+    autoScrollButton.onclick = () => {
+        if (isScrolling) {
+            // Stop scrolling
+            clearInterval(scrollInterval);
+            isScrolling = false;
+        } else {
+            // Start scrolling
+            isScrolling = true;
+            scrollInterval = setInterval(scrollPage, 7); // Adjust timing as needed
+        }
+    };
+
+    // Stop the scrolling when clicking anywhere on the page
+    document.addEventListener('click', (event) => {
+        if (event.target !== autoScrollButton) {
+            clearInterval(scrollInterval);
+            isScrolling = false;
+        }
+    });
 });
     //         document.getElementById('addOptionButton').addEventListener('click', function() {
     //             const selectElement = document.getElementById('eventCode');

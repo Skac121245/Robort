@@ -528,6 +528,8 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="./Strat_Board_w_tabs.html">Canvas</a>
               <a class="dropdown-item" href="./scoutingGen.html">Scouting Generator</a>
+              <a class="dropdown-item" href="./scoutingUI.html">Live Scouter (WIP)</a>
+              <a class="dropdown-item" href="./pitScouterFRONT.html">Pit Scouter</a>
             </div>
           </li>
           <li class="nav-item">
@@ -723,6 +725,8 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
 
 
       // import saveCanvas from "save-canvas-to-image";
+      let teamPositionsAuto = [];
+      let teamPositionsTeleop = [];
 
       let isManualEntry = false;
       let apiData = [];
@@ -946,7 +950,28 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
           tabLabel.textContent = "Autonomous";
         }
         updateSaveButton(); // Update the save button's label and functionality
+      
+        redrawTeamNumbers();
       }
+
+      function redrawTeamNumbers() {
+    // Use the current canvas context
+    let ctx = isAuto ? ctxAuto : ctxTeleop;
+    let teamPositions = isAuto ? teamPositionsAuto : teamPositionsTeleop;
+
+    // Redraw each team number stored in teamPositions
+    teamPositions.forEach(team => {
+        // Draw the colored background rectangle
+        ctx.fillStyle = team.color;
+        ctx.fillRect(team.x, team.y, team.width, team.height);
+
+        // Draw the team number text on top
+        ctx.fillStyle = 'black'; // Contrast color for text
+        ctx.font = '40px Arial';
+        ctx.fillText(team.text, team.x + (team.width - ctx.measureText(team.text).width) / 2, team.y + team.height - 10);
+    });
+}
+
 
       function updateSaveButton() {
         const saveButton = document.getElementById('saveCanvas');
@@ -1135,25 +1160,33 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
       }
 
       function displayTeamsForSelectedMatch() {
-        selectedMatchKey = matchSelect.value;
-        const selectedMatch = apiData.find(match => match.key === selectedMatchKey);
-        const match = apiData.find(m => m.key === selectedMatchKey);
-        console.log(match)
-        if (!match) {
-          return;
-        }
-        if (!selectedMatch) {
-          console.error('Selected match not found');
-          return;
-        }
+    selectedMatchKey = matchSelect.value;
+    const selectedMatch = apiData.find(match => match.key === selectedMatchKey);
+    if (!selectedMatch) {
+        console.error('Selected match not found');
+        return;
+    }
 
-        clearCanvas();
-        console.log("cleared canvas")
-        teamPositions = []; // Reset team positions
+    clearCanvas();
 
-        drawTeams(match.alliances.blue.team_keys, bluePositions, 'blue');
-        drawTeams(match.alliances.red.team_keys, redPositions, 'red');
-      }
+    // Clear teamPositions arrays
+    teamPositionsAuto = [];
+    teamPositionsTeleop = [];
+
+    // Draw teams on both canvases
+    const originalIsAuto = isAuto; // Store the original isAuto value
+
+    isAuto = true; // Set to auto canvas
+    drawTeams(selectedMatch.alliances.blue.team_keys, bluePositions, 'blue');
+    drawTeams(selectedMatch.alliances.red.team_keys, redPositions, 'red');
+
+    isAuto = false; // Set to teleop canvas
+    drawTeams(selectedMatch.alliances.blue.team_keys, bluePositions, 'blue');
+    drawTeams(selectedMatch.alliances.red.team_keys, redPositions, 'red');
+
+    isAuto = originalIsAuto; // Restore the original isAuto value
+}
+
 
       const uploadInput = document.getElementById('uploadMatchData');
       uploadInput.addEventListener('change', uploadData);
@@ -1166,42 +1199,40 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
       }
 
       function drawTeams(teamKeys, positions, alliance) {
-        if (isAuto) {
-          ctx = ctxAuto
-        } else {
-          ctx = ctxTeleop
-        }
-        ctx.font = '40px Arial'; // Ensure font size is set before measuring text
-        const padding = 10; // Padding around the text for the outline box
+    let ctx = isAuto ? ctxAuto : ctxTeleop;
+    let teamPositions = isAuto ? teamPositionsAuto : teamPositionsTeleop;
 
-        teamKeys.forEach((key, index) => {
-          clearCanvas()
-          const teamNumber = key.replace('frc', '');
-          const position = positions[index];
-          const color = teamColors[alliance][index];
+    ctx.font = '40px Arial'; // Ensure font size is set before measuring text
+    const padding = 10; // Padding around the text for the outline box
 
-          const textMetrics = ctx.measureText(teamNumber);
-          const textWidth = textMetrics.width;
-          const rectHeight = 50; // Example height of clickable area
-          const rectY = position.y - 40; // Adjust based on font size and desired box size
+    teamKeys.forEach((key, index) => {
+        const teamNumber = key.replace('frc', '');
+        const position = positions[index];
+        const color = teamColors[alliance][index];
 
-          // Draw the team number and background
-          ctx.fillStyle = color;
-          ctx.fillRect(position.x - (padding / 2), rectY, textWidth + padding, rectHeight);
-          ctx.fillStyle = 'black';
-          ctx.fillText(teamNumber, position.x, position.y);
+        const textMetrics = ctx.measureText(teamNumber);
+        const textWidth = textMetrics.width;
+        const rectHeight = 50; // Example height of clickable area
+        const rectY = position.y - 40; // Adjust based on font size and desired box size
 
-          // Store positions for click detection
-          teamPositions.push({
+        // Draw the team number and background
+        ctx.fillStyle = color;
+        ctx.fillRect(position.x - (padding / 2), rectY, textWidth + padding, rectHeight);
+        ctx.fillStyle = 'black';
+        ctx.fillText(teamNumber, position.x, position.y);
+
+        // Store positions for click detection
+        teamPositions.push({
             x: position.x - (padding / 2),
             y: rectY,
             width: textWidth + padding,
             height: rectHeight,
             color: color,
             text: teamNumber
-          });
         });
-      }
+    });
+}
+
 
 
       function drawText(text, x, y, color, index, alliance) {
@@ -1243,49 +1274,41 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
       }
 
       function checkTeamClick(x, y) {
-        const canvasRect = canvas.getBoundingClientRect();
-        let scaleWidth = canvas.width / canvasRect.width;
-        let scaleHeight = canvas.height / canvasRect.height;
+    const canvasRect = canvas.getBoundingClientRect();
+    let scaleWidth = canvas.width / canvasRect.width;
+    let scaleHeight = canvas.height / canvasRect.height;
 
-        let scaledX = x * scaleWidth;
-        let scaledY = y * scaleHeight;
-        let colorFound = false;
+    let scaledX = x * scaleWidth;
+    let scaledY = y * scaleHeight;
+    let colorFound = false;
 
-        teamPositions.forEach(team => {
-          if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
+    let teamPositions = isAuto ? teamPositionsAuto : teamPositionsTeleop;
+
+    teamPositions.forEach(team => {
+        if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
             drawColor = team.color;
             colorFound = true;
-            console.log(drawColor)
+            console.log(drawColor);
             document.getElementById('topRect').style.backgroundColor = drawColor;
             document.getElementById('bottomRect').style.backgroundColor = drawColor;
-          }
-        });
-
-        if (!colorFound) {
-          console.log("Click was outside of team areas.");
-          // document.getElementById('topRect').style.backgroundColor = "transparent";
-          // document.getElementById('bottomRect').style.backgroundColor = "transparent";
         }
-      }
+    });
+
+    if (!colorFound) {
+        console.log("Click was outside of team areas.");
+    }
+}
 
 
 
-      function clearCanvas() {
-
-        if (isAuto) {
-          ctx = ctxAuto
-          canvas = canvasAuto
-        } else {
-          ctx = ctxTeleop
-          canvas = canvasTeleop
-        }
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.globalCompositeOperation = 'source-over';
-        // After clearing, redraw the team number boxes
-        teamPositions.forEach(team => {
-          drawTeamNumberBox(team.x, team.y, team.width, team.height, team.color, team.text);
-        });
-      }
+function clearCanvas() {
+    let ctx = isAuto ? ctxAuto : ctxTeleop;
+    let canvas = isAuto ? canvasAuto : canvasTeleop;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.globalCompositeOperation = 'source-over';
+    // Redraw team numbers after clearing
+    redrawTeamNumbers();
+}
 
       function drawTeamNumberBox(x, y, width, height, color, text) {
         ctx.fillStyle = color;

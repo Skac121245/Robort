@@ -80,7 +80,7 @@
 
 
 <script>
-  
+
   let eraserEnabled = false;
 
 document.getElementById('toggleEraser').addEventListener('click', function() {
@@ -102,16 +102,16 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
     let drawing = false;
     let drawColor = 'black';
     let teamPositions = [];
-  
+
     const bluePositions = [{x: 70, y: 150}, {x: 70, y: 380}, {x: 70, y: 500}];
     const redPositions = [{x: 1400, y: 500}, {x: 1400, y: 380}, {x: 1400, y: 150}];
     const teamColors = {
       blue: ['#07f7df', '#075bf7', '#7307f7'],
       red: ['#f70707', '#f76707', '#f7c707']
     };
-  
+
     setupCanvas();
-  
+
     function setupCanvas() {
       // Mouse Events
       canvas.addEventListener('mousedown', startDrawing);
@@ -125,7 +125,7 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
       canvas.addEventListener('touchcancel', stopDrawingTouch, false);
       canvas.addEventListener('touchmove', drawTouch, false);
     }
-  
+
     function startDrawing(e) {
       drawing = true;
       var offsetX = e.offsetX || e.touches[0].clientX - canvas.getBoundingClientRect().left;
@@ -184,19 +184,19 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
       ctx.beginPath();
       ctx.moveTo(scaleX, scaleY);
     }
-  
-  
+
+
     function displayTeamsForSelectedMatch() {
       const selectedMatchKey = matchSelect.value;
       const match = matches.find(m => m.key === selectedMatchKey);
       if (!match) return;
       clearCanvas();
       teamPositions = []; // Reset team positions
-  
+
       drawTeams(match.alliances.blue.team_keys, bluePositions, 'blue');
       drawTeams(match.alliances.red.team_keys, redPositions, 'red');
     }
-  
+
     function drawTeams(teamKeys, positions, alliance) {
   ctx.font = '40px Arial'; // Ensure font size is set before measuring text
   const padding = 10; // Padding around the text for the outline box
@@ -262,7 +262,7 @@ function saveCanvas() {
         };
       };
 
-  
+
     function drawText(text, x, y, color, index, alliance) {
     // Calculate text width for background and click detection area
     ctx.font = '40px Arial'; // Ensure font size is set before measuring text
@@ -301,7 +301,7 @@ function saveCanvas() {
         const scale = canvas.offsetWidth / canvas.width;
         const scaledX = x / scale;
         const scaledY = y / scale;
-    
+
         // Check if the click is within the bounds of a team's clickable area
         if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
           drawColor = team.color; // Set the drawing color to the team's color
@@ -310,11 +310,11 @@ function saveCanvas() {
     }
 }
 
-  
+
     function clearCanvas() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
-  
+
   </script>  
 </body>
 </html>
