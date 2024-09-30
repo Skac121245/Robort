@@ -14,7 +14,7 @@
             /* border: 1px solid #000; */
             width: 1152px;
             /* Adjust based on your actual need */
-            height: 498px;
+            height: 664px;
             /* Adjust based on your actual need */
             position: fixed;
             right: 20px;
@@ -26,8 +26,13 @@
             right: 20px;
         }
 
-        #position-btn-p1, #position-btn-p2, #position-btn-p3, #position-btn-p4,
-        #driver-station-btn-1, #driver-station-btn-2, #driver-station-btn-3 {
+        #position-btn-p1,
+        #position-btn-p2,
+        #position-btn-p3,
+        #position-btn-p4,
+        #driver-station-btn-1,
+        #driver-station-btn-2,
+        #driver-station-btn-3 {
             position: absolute;
             background-color: rgba(0, 123, 255, 0.5);
             /* Semi-transparent blue */
@@ -38,7 +43,13 @@
             transition: background-color 0.3s;
         }
 
-        #position-btn-p5, #position-btn-p6, #position-btn-p7, #position-btn-p8, #driver-station-btn-4, #driver-station-btn-5, #driver-station-btn-6 {
+        #position-btn-p5,
+        #position-btn-p6,
+        #position-btn-p7,
+        #position-btn-p8,
+        #driver-station-btn-4,
+        #driver-station-btn-5,
+        #driver-station-btn-6 {
             position: absolute;
             background-color: rgba(255, 65, 65, 0.6);
             /* Semi-transparent blue */
@@ -114,7 +125,16 @@
             /* background-color: #0056b3; */
         }
 
-        #endgameOutcome {
+        #teleopContainer {
+            position: relative;
+            /* Container needs to be relative */
+            width: 1152px;
+            height: 664px;
+            background-size: contain;
+        }
+
+
+        /* #endgameOutcome {
             width:420px;
         }
 
@@ -203,113 +223,229 @@
 
         #miss {
             top: 705px; left: 460px; width: 100px; height:50px; background-color: #45a049;
-        }
+        } */
 
-        @media (max-width: 1800px) {
+        /* @media (max-width: 1800px) { */
 
         #miss {
-            top: 100px; left: 300px; width: 100px; height:50px; background-color: #45a049;
+            top: 100px;
+            left: 300px;
+            width: 100px;
+            height: 50px;
+            background-color: #45a049;
 
         }
 
-        #groundPickupButton1{
+        #groundPickupButton1 {
             top: 50px;
             left: 230px;
         }
 
-        #groundPickupButton2{
+        #groundPickupButton2 {
             top: 195px;
             left: 230px;
         }
 
         #groundPickupButton3 {
-            top: 340px; 
-            left: 230px; 
+            top: 340px;
+            left: 230px;
         }
 
         #sourceButton {
-            top: 50px; 
-            left: 10px; 
+            top: 50px;
+            left: 10px;
             width: 200px;
-            height: 195px; 
+            height: 195px;
             background-color: blue;
         }
 
         #sourceButton2 {
-            top: 265px; 
-            left: 10px; 
+            top: 265px;
+            left: 10px;
             width: 200px;
             height: 195px;
-            background-color:red;  
+            background-color: red;
         }
 
         #speaker {
-            top: 50px; 
-            left: 20px; 
-            width: 200px; 
+            top: 50px;
+            left: 20px;
+            width: 200px;
             height: 150px;
             background-color: blue;
         }
 
         #amp {
-            top: 210px; 
+            top: 210px;
             left: 100px;
-            width: 200px; 
-            height:150px;
+            width: 200px;
+            height: 150px;
             background-color: blue;
         }
 
         #pass {
-            top: 370px; 
-            left: 20px; 
-            width: 200px; 
-            height:150px; 
+            top: 370px;
+            left: 20px;
+            width: 200px;
+            height: 150px;
             background-color: blue;
         }
 
         #StageRightBLUE {
-            top: 470px; left: 20px; width: 200px; height:200px; 
+            background-color: blue;
+            top: 470px;
+            left: 20px;
+            width: 200px;
+            height: 200px;
         }
 
         #StageLeftBLUE {
-            top: 260px; left: 20px; width: 200px; height:200px; 
+            background-color: blue;
+            top: 260px;
+            left: 20px;
+            width: 200px;
+            height: 200px;
         }
 
         #CenterStageBLUE {
-            top: 365px; left: 230px; width: 200px; height:200px; 
+            background-color: blue;
+            top: 365px;
+            left: 230px;
+            width: 200px;
+            height: 200px;
         }
 
         #None {
-            top: 600px; left: 300px; width: 100px; height:50px; 
+            top: 600px;
+            left: 300px;
+            width: 100px;
+            height: 50px;
         }
 
         #StageRightRED {
-            background-color:red; top: 150px; left: 230px; width: 200px; height:200px; 
+            background-color: red;
+            top: 150px;
+            left: 230px;
+            width: 200px;
+            height: 200px;
         }
 
         #StageLeftRED {
-            background-color:red;top: -60px; left: 230px; width: 200px; height:200px; 
+            background-color: red;
+            top: -60px;
+            left: 230px;
+            width: 200px;
+            height: 200px;
         }
 
         #CenterStageRED {
-            background-color:red;top: 50px; left: 20px; width: 200px; height:200px;
+            background-color: red;
+            top: 50px;
+            left: 20px;
+            width: 200px;
+            height: 200px;
         }
-    }
-    .button-link {
+
+        /* } */
+        .button-link {
             display: inline-block;
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 1.5rem;
             color: white;
             background-color: #007bff;
             text-align: center;
             text-decoration: none;
             border-radius: 5px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.2s ease;
             /* margin-right: 50%; */
         }
 
         .button-link:hover {
             background-color: #0056b3;
+        }
+
+        #notesSection {
+            position: relative;
+            width: 400px;
+            padding: 10px;
+            box-sizing: border-box;
+            background: #f8f9fa;
+            /* Light grey background for better visibility */
+            border-top: 1px solid #ccc;
+            /* A subtle top border for visual separation */
+            top: 645px;
+            left: 1000px;
+        }
+
+        #notes {
+            position: relative;
+            width: 100%;
+            height: 80px;
+            padding: 5px;
+            box-sizing: border-box;
+            /* Ensures padding does not add to the width */
+        }
+
+        .large-button {
+            font-size: 1.5rem;
+            /* Increase the font size */
+            padding: 10px 20px;
+            /* Increase padding for a larger clickable area */
+            border-radius: 0.5rem;
+            /* Optional: rounded corners */
+            margin: 5px;
+            /* Optional: add some margin around the buttons */
+            transition: background-color 0.1s ease, transform 0.3s ease;
+            /* Optional: smooth transition effects */
+        }
+
+        .large-button:hover {
+            background-color: #007bff;
+            /* Change background color on hover */
+            color: #fff;
+            /* Change text color on hover */
+            /* transform: scale(1.05); */
+            /* Slightly increase the size on hover */
+        }
+
+        .large-input {
+            font-size: 1.5rem;
+            /* Increase the font size */
+            padding: 10px;
+            /* Increase padding for a larger clickable area */
+            border-radius: 0.5rem;
+            /* Optional: rounded corners */
+            margin: 5px;
+            /* Optional: add some margin around the inputs */
+            width: 10%;
+            /* Optional: make the input field full width */
+            box-sizing: border-box;
+            /* Include padding and border in the element's total width and height */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            /* Optional: smooth transition effects */
+        }
+
+        .large-input:focus {
+            border-color: #007bff;
+            /* Change border color on focus */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            /* Optional: add a glow effect on focus */
+        }
+
+        #endgameStart {
+            background-color: #007bff;
+        }
+
+        #teleopStart {
+            background-color: rgb(6, 206, 6);
+        }
+
+        #reload {
+            background-color: rgb(252, 39, 11);
+        }
+
+        #start {
+            background-color: rgb(217, 255, 0);
         }
     </style>
 </head>
@@ -319,69 +455,81 @@
         <a class="button-link" href="./index.html">Robort Home</a>
         <!-- <label for="sideToggle">Toggle Side:</label> -->
         <!-- <input type="checkbox" id="sideToggle" onchange="toggleSide()"> -->
-        <input type="number" id="matchNumber" placeholder="Match Number">
-        <input type="number" id="teamNumber" placeholder="Team Number">
-        <button onclick="startScouting()">Start Scouting</button>
-        <button onclick="startTeleop()">Start Teleop</button>
-        <button onclick="startEndgame()">Start Endgame</button>
-        <button onclick="downloadSessionStorageData()">Download Data</button>
-        <button onclick="rotateField()">Rotate Field</button>
+        <input type="number" id="matchNumber" class="large-input" placeholder="Match Number">
+        <input type="number" id="teamNumber" class="large-input" placeholder="Team Number">
+        <button id="start" class="large-button" onclick="startScouting()">Start Scouting</button>
+        <button id="teleopStart" class="large-button" onclick="startTeleop()">Start Teleop</button>
+        <button id="endgameStart" class="large-button" onclick="startEndgame()">Start Endgame</button>
+        <button style="background-color: orange;" class="large-button" onclick="downloadSessionStorageData()">Download
+            Data</button>
+        <button style="background-color: aqua;" class="large-button" onclick="rotateField()">Rotate Field</button>
+        <button id="reload" class="large-button" onclick="location.reload()">Reload Scouter</button>
     </div>
+
     <iframe id="field-canvas" src="pathingUI.html" width="1155px" height="601px" style="z-index: 0;"></iframe>
+
+
     <div id="field">
-        <button id="driver-station-btn-1" class="driver-station-btn" style="top: 26%; width:120px;">Driver Station 1 BLUE</button>
-        <button id="driver-station-btn-2" class="driver-station-btn" style="top: 60%; width:120px;">Driver Station 2 BLUE</button>
-        <button id="driver-station-btn-3" class="driver-station-btn" style="top: 80%; width: 120px;">Driver Station 3 BLUE</button>
 
-        <button id="driver-station-btn-6" class="driver-station-btn" style="top: 26%; left: 90%;">Driver Station 3 RED</button>
-        <button id="driver-station-btn-5" class="driver-station-btn" style="top: 60%; left: 90%;">Driver Station 2 RED</button>
-        <button id="driver-station-btn-4" class="driver-station-btn" style="top: 80%; left: 90%;">Driver Station 1 RED</button>
+        <button id="driver-station-btn-1" class="driver-station-btn" style="top: 20%; width:120px;">Driver Station 1
+            BLUE</button>
+        <button id="driver-station-btn-2" class="driver-station-btn" style="top: 45%; width:120px;">Driver Station 2
+            BLUE</button>
+        <button id="driver-station-btn-3" class="driver-station-btn" style="top: 60%; width: 120px;">Driver Station 3
+            BLUE</button>
 
-        <button id="position-btn-p1" class="position-btn" style="top: 28%; left: 15%;">Position 1</button>
-        <button id="position-btn-p2" class="position-btn" style="top: 45%; left: 18%;">Position 2</button>
-        <button id="position-btn-p3" class="position-btn" style="top: 62%; left: 15%;">Position 3</button>
-        <button id="position-btn-p4" class="position-btn" style="top: 82%; left: 15%;">Position 4</button>
+        <button id="driver-station-btn-6" class="driver-station-btn" style="top: 20%; left: 90%;">Driver Station 3
+            RED</button>
+        <button id="driver-station-btn-5" class="driver-station-btn" style="top: 45%; left: 90%;">Driver Station 2
+            RED</button>
+        <button id="driver-station-btn-4" class="driver-station-btn" style="top: 60%; left: 90%;">Driver Station 1
+            RED</button>
 
-        <button id="position-btn-p5" class="position-btn" style="top: 28%; left: 78%;">Position 5</button>
-        <button id="position-btn-p6" class="position-btn" style="top: 45%; left: 75%;">Position 6</button>
-        <button id="position-btn-p7" class="position-btn" style="top: 62%; left: 78%;">Position 7</button>
-        <button id="position-btn-p8" class="position-btn" style="top: 82%; left: 78%;">Position 8</button>
+        <button id="position-btn-p1" class="position-btn" style="top: 22%; left: 15%;">Position 1</button>
+        <button id="position-btn-p2" class="position-btn" style="top: 34%; left: 18%;">Position 2</button>
+        <button id="position-btn-p3" class="position-btn" style="top: 46%; left: 15%;">Position 3</button>
+        <button id="position-btn-p4" class="position-btn" style="top: 60%; left: 15%;">Position 4</button>
+
+        <button id="position-btn-p5" class="position-btn" style="top: 22%; left: 78%;">Position 5</button>
+        <button id="position-btn-p6" class="position-btn" style="top: 34%; left: 75%;">Position 6</button>
+        <button id="position-btn-p7" class="position-btn" style="top: 46%; left: 78%;">Position 7</button>
+        <button id="position-btn-p8" class="position-btn" style="top: 60%; left: 78%;">Position 8</button>
 
 
 
         <div id="notesContainer" style="display: none; position: relative; width: 100%; height: 100%;">
             <!-- Example note buttons, position these as needed -->
-            <button class="note-btn" style="position: absolute; top: 31%; left: 23%;"
+            <button id="n1" class="note-btn" style="position: absolute; top: 23%; left: 23%;"
                 onclick="noteAction('Note 1')">Note
                 1</button>
-            <button class="note-btn" style="position: absolute; top: 46%; left: 23%;"
+            <button id="n2" class="note-btn" style="position: absolute; top: 34%; left: 23%;"
                 onclick="noteAction('Note 2')">Note
                 2</button>
-            <button class="note-btn" style="position: absolute; top: 61%; left: 23%;"
+            <button id="n3" class="note-btn" style="position: absolute; top: 45%; left: 23%;"
                 onclick="noteAction('Note 3')">Note
                 3</button>
-            <button class="note-btn" style="position: absolute; top: 26.5%; left: 46.5%;"
+            <button id="n4" class="note-btn" style="position: absolute; top: 19.5%; left: 46.5%;"
                 onclick="noteAction('Note 4')">Note
                 4</button>
-            <button class="note-btn" style="position: absolute; top: 43.5%; left: 46.5%;"
+            <button id="n5" class="note-btn" style="position: absolute; top: 32.5%; left: 46.5%;"
                 onclick="noteAction('Note 5')">Note
                 5</button>
-            <button class="note-btn" style="position: absolute; top: 60.5%; left: 46.5%;"
+            <button id="n6" class="note-btn" style="position: absolute; top: 45.5%; left: 46.5%;"
                 onclick="noteAction('Note 6')">Note
                 6</button>
-            <button class="note-btn" style="position: absolute; top: 77.5%; left: 46.5%;"
+            <button id="n7" class="note-btn" style="position: absolute; top: 58.4%; left: 46.5%;"
                 onclick="noteAction('Note 7')">Note
                 7</button>
-            <button class="note-btn" style="position: absolute; top: 95.5%; left: 46.5%;"
+            <button id="n8" class="note-btn" style="position: absolute; top: 71%; left: 46.5%;"
                 onclick="noteAction('Note 8')">Note
                 8</button>
-            <button class="note-btn" style="position: absolute; top: 31%; left: 70.5%;"
+            <button id="n9" class="note-btn" style="position: absolute; top: 23%; left: 70.5%;"
                 onclick="noteAction('Note 9')">Note
                 9</button>
-            <button class="note-btn" style="position: absolute; top: 46%; left: 70.5%;"
+            <button id="n10" class="note-btn" style="position: absolute; top: 34%; left: 70.5%;"
                 onclick="noteAction('Note 10')">Note
                 10</button>
-            <button class="note-btn" style="position: absolute; top: 61%; left: 70.5%;"
+            <button id="n11" class="note-btn" style="position: absolute; top: 45%; left: 70.5%;"
                 onclick="noteAction('Note 11')">Note
                 11</button>
             <!-- Add more note buttons as required -->
@@ -389,7 +537,20 @@
     </div>
 
 
-    <div id="teleopContainer" style="display: none; position: absolute; width: 100%; ">
+
+
+
+    <!-- <div id="teleopContainer" style="display: none; position: absolute; width: 100%; "> ondrop="drop(event)" -->
+        <!--ondragover="allowDrop(event)">-->
+        <!-- <img src="images/redMarker.png" id="defenseMarkerRED" draggable="true" ondragstart="drag(event)" width="50"
+            height="50" style="position: absolute; top: 0px; left: 50px;">
+
+        <img src="images/greenMarker.png" id="defenseMarkerGREEN" draggable="true" ondragstart="drag(event)" width="50"
+            height="50" style="position: absolute; top: 0px; left: 110px;">
+
+        <img src="images/purpleMarker.png" id="defenseMarkerPURPLE" draggable="true" ondragstart="drag(event)" width="50"
+            height="50" style="position: absolute; top: 0px; left: 170px;"> -->
+
         <button id="groundPickupButton1" class="groundPickupButton"
             style="font-size:20px; background-color:green; position:absolute;  width: 200px; height: 120px; opacity: 60%;"
             onclick="logAction('Ground Pickup 1')">Ground Pickup 1</button>
@@ -402,11 +563,9 @@
             style="font-size:20px; background-color:green; position:absolute; width: 200px; height: 120px; opacity: 60%;"
             onclick="logAction('Ground Pickup 3')">Ground Pickup 3</button>
 
-        <button id="sourceButton"
-            style="font-size:30px;  position:absolute; opacity: 60%;"
+        <button id="sourceButton" style="font-size:30px;  position:absolute; opacity: 60%;"
             onclick="logAction('Source BLUE')">Source</button>
-        <button id="sourceButton2"
-            style=" font-size:30px; background-color:red; position:absolute; opacity: 60%;"
+        <button id="sourceButton2" style=" font-size:30px; background-color:red; position:absolute; opacity: 60%;"
             onclick="logAction('Source RED')">Source</button>
 
         <div id="additionalActions" style="display: none;">
@@ -421,16 +580,24 @@
         </div>
 
         <div id="endgameContainer" style="display: none; text-align: center;">
-            <button id="StageRightBLUE" style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
-            <button id="StageLeftBLUE"style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
-            <button id="CenterStageBLUE"style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
-            <button id="None"style="font-size:20px; background-color:green; position:absolute; opacity: 60%;" onclick="logEndgameAction('None')">None</button>
+            <button id="StageRightBLUE" style="font-size:20px; position:absolute; opacity: 60%;"
+                onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
+            <button id="StageLeftBLUE" style="font-size:20px; position:absolute; opacity: 60%;"
+                onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
+            <button id="CenterStageBLUE" style="font-size:20px; position:absolute; opacity: 60%;"
+                onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
+            <button id="None" style="font-size:20px; background-color:green; position:absolute; opacity: 60%;"
+                onclick="logEndgameAction('None')">None</button>
 
-            <button id="StageRightRED" style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
-            <button id="StageLeftRED" style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
-            <button id="CenterStageRED" style="font-size:20px; position:absolute;  opacity: 60%;" onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
+            <button id="StageRightRED" style="font-size:20px; position:absolute; opacity: 60%;"
+                onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
+            <button id="StageLeftRED" style="font-size:20px; position:absolute; opacity: 60%;"
+                onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
+            <button id="CenterStageRED" style="font-size:20px; position:absolute;  opacity: 60%;"
+                onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
 
-            <div id="endgameOutcome" style="width:600px; position:absolute; top: 620px; left: 450px; display: none; text-align: center;">
+            <div id="endgameOutcome"
+                style="width:600px; position:absolute; top: 620px; left: 450px; display: none; text-align: center;">
                 <button style="background-color: blue;" onclick="saveEndgameOutcome('Park')">Park</button>
                 <button style="background-color: blue;" onclick="saveEndgameOutcome('Climb')">Climb</button>
                 <button style="background-color: blue;" onclick="saveEndgameOutcome('Harmony')">Harmony</button>
@@ -443,13 +610,16 @@
 
 
 
-    </div>
-    <div id="noteOutcome"
-        style="display: none; padding-top:20px; position: fixed;  top: 660px; right: 360px; ">
+    <!-- </div> -->
+
+    <div id="noteOutcome" style="display: none; padding-top:20px; position: fixed;  top: 660px; right: 360px; ">
         <button onclick="saveNoteOutcome('scored')">Scored</button>
         <button onclick="saveNoteOutcome('missed')">Missed</button>
         <button onclick="saveNoteOutcome('not picked up')">Not Picked Up</button>
         <button onclick="saveNoteOutcome('another team got it')">Another Team Got It</button>
+    </div>
+    <div id="notesSection">
+        <textarea id="notes" placeholder="Enter your notes here..."></textarea>
     </div>
     <script>
         document.querySelectorAll('.position-btn').forEach(button => {
@@ -458,6 +628,8 @@
                 selectPosition(position);
             });
         });
+
+
 
         function toggleSide() {
             const isChecked = document.getElementById('sideToggle').checked;
@@ -507,30 +679,26 @@
         });
 
         function downloadSessionStorageData() {
-            // Retrieve the scouting data from session storage
-            const scoutingData = sessionStorage.getItem('scoutingData');
-            if (scoutingData) {
-                const data = JSON.parse(scoutingData);
-                const matchNumber = data.matchNumber;
-                const teamNumber = data.teamNumber;
-                const filename = `Match${matchNumber}_${teamNumber}_ScoutingData.json`;
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+            const notes = document.getElementById('notes').value;
 
-                // Create a blob from the data
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            scoutingData.notes = notes;
+            // scoutingData.push(notes);
+            // Adding notes directly to the scoutingData object
 
-                // Create an anchor element and use it to trigger the download
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = filename;
-                a.style.display = 'none';
-
-                // Append the anchor to the body, click it, and then remove it
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } else {
+            if (!scoutingData) {
                 alert('No scouting data available to download!');
+                return;
             }
+
+            const blob = new Blob([JSON.stringify(scoutingData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'scoutingData.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
 
         function selectDriverStation(driverStation) {
@@ -616,6 +784,8 @@
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
             scoutingData.teleopActions = [];
             sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+            logScreenWidth()
+            logScreenHeight()
         }
 
         function logAction(action) {
@@ -707,6 +877,46 @@
             document.querySelector('button[onclick="startEndgame()"]').style.display = 'none';
         }
 
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id); // Capture the id of the dragged element
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var marker = document.getElementById(data);
+            marker.style.left = ev.offsetX + 'px';
+            marker.style.top = ev.offsetY + 'px';
+            updateMarkerPosition(data, ev.offsetX, ev.offsetY); // Pass the marker's ID
+        }
+
+        function updateMarkerPosition(id, x, y) {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+            if (!scoutingData.defensePositions) {
+                scoutingData.defensePositions = {};
+            }
+            scoutingData.defensePositions[id] = { x: x, y: y }; // Store each marker's position by its ID
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+        }
+
+        function logScreenWidth() {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
+            scoutingData.screenWidth = screen.width
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+        }
+
+        function logScreenHeight() {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
+            scoutingData.screenHeight = screen.height
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+        }
+
+
+
         function logEndgameAction(action) {
             // Store the endgame action and show the secondary buttons
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
@@ -735,20 +945,193 @@
             document.getElementById('endgameContainer').style.display = 'none';
         }
 
-        let x = 0
+        localStorage.setItem("isRotate", "true")
+
+
+        var isRotate = localStorage.getItem("isRotate") === "true"
+
+
+
 
         function rotateField() {
-            console.log(x)
-            if (x % 2 < 1) {
+            console.log(!isRotate)
+            if (isRotate) {
+                localStorage.setItem("isRotate", "false")
                 document.getElementById('field-canvas').style.rotate = "180deg"
-                x = x + 1
+                document.getElementById('driver-station-btn-1').style.top = "62%"
+                document.getElementById('driver-station-btn-1').style.left = "90%"
+
+                document.getElementById('driver-station-btn-2').style.top = "37%"
+                document.getElementById('driver-station-btn-2').style.left = "90%"
+
+                document.getElementById('driver-station-btn-3').style.top = "24%"
+                document.getElementById('driver-station-btn-3').style.left = "90%"
+
+                document.getElementById('driver-station-btn-4').style.top = "24%"
+                document.getElementById('driver-station-btn-4').style.left = "0%"
+
+                document.getElementById('driver-station-btn-5').style.top = "37%"
+                document.getElementById('driver-station-btn-5').style.left = "0%"
+
+                document.getElementById('driver-station-btn-6').style.top = "62%"
+                document.getElementById('driver-station-btn-6').style.left = "0%"
+
+                //weoiugykbeilnvwefoi;jfnocwbep8ji;afnuopr39wejfpce98wjfocuo83qhp9wjo;d p9uqwoehjrcoiue
+
+                document.getElementById('position-btn-p1').style.top = "62%"
+                document.getElementById('position-btn-p1').style.left = "78%"
+
+                document.getElementById('position-btn-p2').style.top = "52%"
+                document.getElementById('position-btn-p2').style.left = "75%"
+
+                document.getElementById('position-btn-p3').style.top = "40%"
+                document.getElementById('position-btn-p3').style.left = "78%"
+
+                document.getElementById('position-btn-p4').style.top = "27%"
+                document.getElementById('position-btn-p4').style.left = "78%"
+
+                document.getElementById('position-btn-p5').style.top = "62%"
+                document.getElementById('position-btn-p5').style.left = "15%"
+
+                document.getElementById('position-btn-p6').style.top = "52%"
+                document.getElementById('position-btn-p6').style.left = "18%"
+
+                document.getElementById('position-btn-p7').style.top = "41%"
+                document.getElementById('position-btn-p7').style.left = "15%"
+
+                document.getElementById('position-btn-p8').style.top = "27%"
+                document.getElementById('position-btn-p8').style.left = "15%"
+
+                //asuidfghkaeyifbasdknasdfbolasfnausfiuawerfbhnyeruiklfgbwerubfiulqawef
+
+                document.getElementById('n1').style.top = "63%"
+                document.getElementById('n1').style.left = "70.5%"
+
+                document.getElementById('n2').style.top = "52%"
+                document.getElementById('n2').style.left = "70.5%"
+
+                document.getElementById('n3').style.top = "41%"
+                document.getElementById('n3').style.left = "70.5%"
+
+                document.getElementById('n4').style.top = "67%"
+                document.getElementById('n4').style.left = "46.5%"
+
+                document.getElementById('n5').style.top = "54%"
+                document.getElementById('n5').style.left = "46.5%"
+
+                document.getElementById('n6').style.top = "41%"
+                document.getElementById('n6').style.left = "46.5%"
+
+                document.getElementById('n7').style.top = "28%"
+                document.getElementById('n7').style.left = "46.5%"
+
+                document.getElementById('n8').style.top = "15%"
+                document.getElementById('n8').style.left = "46.5%"
+
+                document.getElementById('n9').style.top = "63%"
+                document.getElementById('n9').style.left = "23%"
+
+                document.getElementById('n10').style.top = "52%"
+                document.getElementById('n10').style.left = "23%"
+
+                document.getElementById('n11').style.top = "41%"
+                document.getElementById('n11').style.left = "23%"
+
+
+
             } else {
+                localStorage.setItem("isRotate", "true")
                 document.getElementById('field-canvas').style.rotate = "0deg"
-                x = x + 1
+                document.getElementById('driver-station-btn-1').style.top = "20%"
+                document.getElementById('driver-station-btn-1').style.left = "1%"
+
+                document.getElementById('driver-station-btn-2').style.top = "45%"
+                document.getElementById('driver-station-btn-2').style.left = "1%"
+
+                document.getElementById('driver-station-btn-3').style.top = "60%"
+                document.getElementById('driver-station-btn-3').style.left = "1%"
+
+                document.getElementById('driver-station-btn-4').style.top = "60%"
+                document.getElementById('driver-station-btn-4').style.left = "90%"
+
+                document.getElementById('driver-station-btn-5').style.top = "45%"
+                document.getElementById('driver-station-btn-5').style.left = "90%"
+
+                document.getElementById('driver-station-btn-6').style.top = "20%"
+                document.getElementById('driver-station-btn-6').style.left = "90%"
+
+                //hofiewfbiulfuewrnifniulnefeiwfnjersknjlenviwunrktejfohiuwgj54rtuwiljnrgiljnghkjbnf
+
+                document.getElementById('position-btn-p1').style.top = "22%"
+                document.getElementById('position-btn-p1').style.left = "15%"
+
+                document.getElementById('position-btn-p2').style.top = "34%"
+                document.getElementById('position-btn-p2').style.left = "18%"
+
+                document.getElementById('position-btn-p3').style.top = "46%"
+                document.getElementById('position-btn-p3').style.left = "15%"
+
+                document.getElementById('position-btn-p4').style.top = "60%"
+                document.getElementById('position-btn-p4').style.left = "15%"
+
+                document.getElementById('position-btn-p5').style.top = "22%"
+                document.getElementById('position-btn-p5').style.left = "78%"
+
+                document.getElementById('position-btn-p6').style.top = "34%"
+                document.getElementById('position-btn-p6').style.left = "75%"
+
+                document.getElementById('position-btn-p7').style.top = "46%"
+                document.getElementById('position-btn-p7').style.left = "78%"
+
+                document.getElementById('position-btn-p8').style.top = "60%"
+                document.getElementById('position-btn-p8').style.left = "78%"
+
+                //asfhwsruiflsdfhasdufhlsadfhuhwsfiwrhnfyioqwerukglfuqwerbhfliqwerf
+
+                document.getElementById('n1').style.top = "23%"
+                document.getElementById('n1').style.left = "23%"
+
+                document.getElementById('n2').style.top = "34%"
+                document.getElementById('n2').style.left = "23%"
+
+                document.getElementById('n3').style.top = "45%"
+                document.getElementById('n3').style.left = "23%"
+
+                document.getElementById('n4').style.top = "19.5%"
+                document.getElementById('n4').style.left = "46.5%"
+
+                document.getElementById('n5').style.top = "32.5%"
+                document.getElementById('n5').style.left = "46.5%"
+
+                document.getElementById('n6').style.top = "45.5%"
+                document.getElementById('n6').style.left = "46.5%"
+
+                document.getElementById('n7').style.top = "58.4%"
+                document.getElementById('n7').style.left = "46.5%"
+
+                document.getElementById('n8').style.top = "71%"
+                document.getElementById('n8').style.left = "46.5%"
+
+                document.getElementById('n9').style.top = "23%"
+                document.getElementById('n9').style.left = "70.5%"
+
+                document.getElementById('n10').style.top = "34%"
+                document.getElementById('n10').style.left = "70.5%"
+
+                document.getElementById('n11').style.top = "45%"
+                document.getElementById('n11').style.left = "70.5%"
+
+
+
             }
+
+            isRotate = localStorage.getItem("isRotate") === "true";
         }
 
     </script>
 </body>
 
 </html>
+
+</div>
+</div>

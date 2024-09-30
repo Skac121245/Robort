@@ -1384,25 +1384,7 @@ document.getElementById("teamHighlight").addEventListener("change", highlightCel
     timeinterval = setInterval(updateCountdown, 1000);
  
 
-        document.body.addEventListener('keyup', (function() {
-    let sequence = '';
-    const targetSequence = 'emily';
-    const targetSequence2 = 'amory';
-    return function(event) {
-        sequence += event.key.toLowerCase();
-        if (sequence === targetSequence) {
-            showModalAndConfetti();
-            sequence = ''; // Reset the sequence after showing the modal.
-        } else if (sequence === targetSequence2){
-            sequence = '';
-            window.location.replace("amory.html");
-        } else if (!targetSequence.startsWith(sequence) && !targetSequence2.startsWith(sequence)) {
-            // If the current sequence doesn't match the start of the target,
-            // reset it to prevent incorrect partial matches.
-            sequence = '';
-        }
-    };
-})());
+        
 
 function showModalAndConfetti() {
     const modal = document.getElementById('emilyModal');
@@ -1582,6 +1564,34 @@ function showSuccessAlert(message) {
                 });
     }
 
+    document.body.addEventListener('keyup', (function() {
+    let sequence = '';
+    const targetSequence = 'emily';
+    const targetSequence2 = 'amory';
+    const targetSequence3 = 'toba';
+    const targetSequence4 = 'ben';
+
+    return function(event) {
+        sequence += event.key.toLowerCase();
+        if (sequence === targetSequence) {
+            showModalAndConfetti();
+            sequence = ''; // Reset the sequence after showing the modal.
+        } else if (sequence === targetSequence2){
+            sequence = '';
+            window.location.replace("amory.html");
+        }else if (sequence === targetSequence3){
+            applyDarkMode();
+        }else if (sequence === targetSequence4) {
+            removeDarkMode();
+        }
+        else if (!targetSequence.startsWith(sequence) && !targetSequence2.startsWith(sequence) && !targetSequence3.startsWith(sequence) && !targetSequence4.startsWith(sequence)) {
+            // If the current sequence doesn't match the start of the target,
+            // reset it to prevent incorrect partial matches.
+            sequence = '';
+        }
+    };
+})());
+
     // Check local storage and apply dark mode if enabled
     let darkModeSetting = localStorage.getItem('darkMode');
     if (darkModeSetting === 'true') {
@@ -1609,6 +1619,8 @@ function showSuccessAlert(message) {
 document.getElementById('roborte').addEventListener('click', function() {
     $('#aboutModal').modal('show');
 });
+
+
 
 // Fetch and display GitHub release notes with markdown parsing and specific download link
 function loadGitHubReleases() {

@@ -22,11 +22,11 @@
             display: none;
         }
 
-        img {
+        /* img {
             width: 100%;
             max-width: 600px;
             height: auto;
-        }
+        } */
 
         h1,
         h2,
@@ -45,7 +45,7 @@
         }
 
         #field_image_auto {
-            background-image: url("images/crescendo_feild.png");
+            position: relative;
             background-size: contain;
             border: 1px solid #000;
             width: 1152px;
@@ -156,33 +156,66 @@
         }
 
         #StageRightBLUE {
-            background-color:blue; top: 270px; left: 300px; width: 100px; height:50px; position: relative; 
+            background-color: blue;
+            top: 270px;
+            left: 300px;
+            width: 100px;
+            height: 50px;
+            position: relative;
         }
 
         #StageLeftBLUE {
-            background-color:blue; top: 180px; left: 200px; width: 100px; height:50px; position: relative; 
+            background-color: blue;
+            top: 180px;
+            left: 200px;
+            width: 100px;
+            height: 50px;
+            position: relative;
         }
 
         #CenterStageBLUE {
-            background-color:blue; top: 230px; left: 230px; width: 100px; height:50px; position: relative;
+            background-color: blue;
+            top: 230px;
+            left: 230px;
+            width: 100px;
+            height: 50px;
+            position: relative;
         }
 
         #None {
-            top: 230px; left: 210px; width: 100px; height:50px; position: relative; 
+            top: 230px;
+            left: 210px;
+            width: 100px;
+            height: 50px;
+            position: relative;
         }
 
         #StageRightRED {
-            background-color:red; top: 270px; left: 340px; width: 100px; height:50px; position: relative; 
+            background-color: red;
+            top: 270px;
+            left: 340px;
+            width: 100px;
+            height: 50px;
+            position: relative;
         }
 
         #StageLeftRED {
-            background-color:red;top: 180px; left: 230px; width: 100px; height:50px; position: relative; 
+            background-color: red;
+            top: 180px;
+            left: 230px;
+            width: 100px;
+            height: 50px;
+            position: relative;
         }
 
         #CenterStageRED {
-            background-color:red;top: 230px; left: 20px; width: 100px; height:50px; position: relative;
+            background-color: red;
+            top: 230px;
+            left: 20px;
+            width: 100px;
+            height: 50px;
+            position: relative;
         }
-
 
     </style>
 </head>
@@ -262,6 +295,10 @@
         <ul id="autoActionsList"></ul>
     </div>
 
+
+
+
+
     <div id="teleopContainer" class="container hidden">
         <div class="teleop_title">
             <h1>T</h1>
@@ -272,7 +309,7 @@
             <h1>P</h1>
         </div>
 
-        <div class="stats" >
+        <div class="stats">
             <h3>Stats</h3>
             <h4>Out of Auto: <span id="outOfAuto"></span></h4>
             <h4># of Cycles: <span id="numOfCycles"></span></h4>
@@ -283,29 +320,43 @@
             <h4># in AMP: <span id="ampNotes"></span></h4>
             <h4># PASSED: <span id="passNotes"></span></h4>
             <h4># MISSED: <span id="missNotes"></span></h4>
+            <h4>NOTES: <span id="notesSection"></span></h4>
         </div>
-        <div id="field_image_auto">
-            <div class="driver-btns" style="position: relative; width: 100%; height: 100%;">
-                <button id="Driver Station 1 BLUE" class="driver-station-btnB"
-                    style="position: absolute; display: none; top: 18%; left: 0px; width:120px;">Driver Station 1
-                    BLUE</button>
-                <button id="Driver Station 2 BLUE" class="driver-station-btnB"
-                    style="position: absolute; display: none; top: 53%; left: 0px; width:120px;">Driver Station 2
-                    BLUE</button>
-                <button id="Driver Station 3 BLUE" class="driver-station-btnB"
-                    style="position: absolute; display: none; top: 72%; left: 0px; width: 120px;">Driver Station 3
-                    BLUE</button>
 
-                <button id="Driver Station 3 RED" class="driver-station-btnR"
-                    style="position: absolute; display: none; top: 18%; left: 90%;">Driver Station 3 RED</button>
-                <button id="Driver Station 2 RED" class="driver-station-btnR"
-                    style="position: absolute; display: none; top: 53%; left: 90%;">Driver Station 2 RED</button>
-                <button id="Driver Station 1 RED" class="driver-station-btnR"
-                    style="position: absolute; display: none; top: 72%; left: 90%;">Driver Station 1 RED</button>
+        <div id="field_image_auto">
+            <img src="images/redMarker.png" id="defenseMarkerRED" width="50px" height="50px" style="display: none;">
+
+            <img src="images/greenMarker.png" id="defenseMarkerGREEN" width="50px" height="50px" style="display: none;">
+
+            <img src="images/purpleMarker.png" id="defenseMarkerPURPLE" width="50px" height="50px"
+                style="display: none;">
+            <div class="teleop_title">
+                <div class="driver-btns" style="position: relative; width: 100%; height: 100%;">
+                    <button id="Driver Station 1 BLUE" class="driver-station-btnB"
+                        style="position: absolute; display: none; top: 18%; left: 0px; width:120px;">Driver Station 1
+                        BLUE</button>
+                    <button id="Driver Station 2 BLUE" class="driver-station-btnB"
+                        style="position: absolute; display: none; top: 53%; left: 0px; width:120px;">Driver Station 2
+                        BLUE</button>
+                    <button id="Driver Station 3 BLUE" class="driver-station-btnB"
+                        style="position: absolute; display: none; top: 72%; left: 0px; width: 120px;">Driver Station 3
+                        BLUE</button>
+
+                    <button id="Driver Station 3 RED" class="driver-station-btnR"
+                        style="position: absolute; display: none; top: 18%; left: 90%;">Driver Station 3 RED</button>
+                    <button id="Driver Station 2 RED" class="driver-station-btnR"
+                        style="position: absolute; display: none; top: 53%; left: 90%;">Driver Station 2 RED</button>
+                    <button id="Driver Station 1 RED" class="driver-station-btnR"
+                        style="position: absolute; display: none; top: 72%; left: 90%;">Driver Station 1 RED</button>
+                </div>
+
             </div>
         </div>
         <ul id="teleopActionsList"></ul>
     </div>
+
+
+
 
     <div id="endgameContainer" class="container hidden">
         <div class="endgame_title">
@@ -320,53 +371,67 @@
 
         <div id="field_image">
             <div class="endgame">
-                <button id="StageRightBLUE" style="font-size:20px; opacity: 60%;" onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
-                <button id="StageLeftBLUE"style="font-size:20px; opacity: 60%;" onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
-                <button id="CenterStageBLUE"style="font-size:20px; opacity: 60%;" onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
-                <button id="None"style="font-size:20px; background-color:green; opacity: 60%;" onclick="logEndgameAction('None')">None</button>
 
-                <button id="StageRightRED" style="font-size:20px;  opacity: 60%;" onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
-                <button id="StageLeftRED" style="font-size:20px;  opacity: 60%;" onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
-                <button id="CenterStageRED" style="font-size:20px;   opacity: 60%;" onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
+                <button id="StageRightBLUE" style="font-size:20px; opacity: 60%;"
+                    onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
+                <button id="StageLeftBLUE" style="font-size:20px; opacity: 60%;"
+                    onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
+                <button id="CenterStageBLUE" style="font-size:20px; opacity: 60%;"
+                    onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
+                <button id="None" style="font-size:20px; background-color:green; opacity: 60%;"
+                    onclick="logEndgameAction('None')">None</button>
+
+                <button id="StageRightRED" style="font-size:20px;  opacity: 60%;"
+                    onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
+                <button id="StageLeftRED" style="font-size:20px;  opacity: 60%;"
+                    onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
+                <button id="CenterStageRED" style="font-size:20px;   opacity: 60%;"
+                    onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
+
             </div>
         </div>
     </div>
 
     <script>
-            const x = 0
-            // const fileReader = new FileReader();
-            // fileReader.onload = function () {
-            function updateUI(data) {
-                // data = JSON.parse(data)
-                document.getElementById('teamDisplay').textContent = "Team " + data.teamNumber;
-                document.getElementById('matchNumber').textContent = "Match #" + data.matchNumber;
-                document.getElementById('teamDisplay').classList.remove('hidden');
-                document.getElementById('matchNumber').classList.remove('hidden');
-                // document.getElementById('uploadButton').classList.add('hidden');
 
-                // Populate note buttons
-                const notesContainer = document.getElementById('notesContainer');
-                const positions = [
-                    { top: '20%', left: '23%' }, { top: '35%', left: '23%' }, { top: '50%', left: '23%' },
-                    { top: '16%', left: '47%' }, { top: '33%', left: '47%' }, { top: '50%', left: '47%' },
-                    { top: '67%', left: '47%' }, { top: '85%', left: '47%' }, { top: '20%', left: '71%' },
-                    { top: '35%', left: '71%' }, { top: '50%', left: '71%' }
-                ];
+        const urlParams = new URLSearchParams(window.location.search);
+        const filePath = urlParams.get('file');
+        const imagePath = filePath.replace('.json', '.png');
+        const fieldImageA = document.getElementById('field_image_auto');
+
+        // const fileReader = new FileReader();
+        // fileReader.onload = function () {
+        function updateUI(data) {
+
+
+            const x = 0
+            // Display team and match information
+            document.getElementById('teamDisplay').textContent = "Team " + data.teamNumber;
+            document.getElementById('matchNumber').textContent = "Match #" + data.matchNumber;
+            document.getElementById('teamDisplay').classList.remove('hidden');
+            document.getElementById('matchNumber').classList.remove('hidden');
+
+            // Populate note buttons
+            if (data.autoActions !== undefined) {
                 data.autoActions.forEach((note, index) => {
-                    index = index + 1
-                    const note_button = document.getElementById(note.note)
-                    note_button.style.display = "inline"
-                    note_button.innerHTML = "Note " + index + "(" + note.outcome + ")";
-                    if (note.outcome === "scored") {
-                        note_button.style.backgroundColor = "green"
-                    } else if (note.outcome === "missed") {
-                        note_button.style.backgroundColor = "red"
-                    } else if (note.outcome === "not picked up") {
-                        note_button.style.backgroundColor = "yellow"
-                    } else if (note.outcome === "another team got it") {
-                        note_button.style.backgroundColor = "brown"
+                    const note_button = document.getElementById(note.note);
+                    if (note_button) {
+                        note_button.style.display = "inline";
+                        note_button.innerHTML = note.note + " (" + note.outcome + ")";
+                        if (note.outcome === "scored") {
+                            note_button.style.backgroundColor = "green";
+                        } else if (note.outcome === "missed") {
+                            note_button.style.backgroundColor = "red";
+                        } else if (note.outcome === "not picked up") {
+                            note_button.style.backgroundColor = "yellow";
+                        } else if (note.outcome === "another team got it") {
+                            note_button.style.backgroundColor = "brown";
+                        }
                     }
                 });
+
+            }
+
 
                 let teleopCycleCounter = 0
                 let teleopNoteCounter = 0
@@ -378,121 +443,184 @@
 
 
 
-                data.teleopActions.forEach((cycle, index) => {
-                     if (cycle.pickup === "Ground Pickup 1" || cycle.pickup === "Ground Pickup 2" || cycle.pickup === "Ground Pickup 3") {
-                        teleopCycleCounter = teleopCycleCounter + 0.5
-                     } else {
-                        teleopCycleCounter = teleopCycleCounter + 1
-                     }
-
-                     if (index == 0){
-                        document.getElementById('outOfAuto').textContent = cycle.pickup;
-                     } 
-                        if (cycle.shot_place != null || cycle.shot_place != "" || cycle.shot_place != undefined) {
-                            teleopNoteCounter = teleopNoteCounter + 1
-                        }
-                        if (cycle.shot_place === "Speaker" || cycle.shot_place === "Amp" || cycle.shot_place === "Pass" ) {
-                            teleopNoteScore = teleopNoteScore + 1
-                        }
-                        if (cycle.shot_place === "Speaker"){
-                            teleopSpeaker = teleopSpeaker + 1
-                        }
-                        if (cycle.shot_place === "Amp"){
-                            teleopAmp = teleopAmp + 1
-                        }
-                        if (cycle.shot_place === "Pass"){
-                            teleopPass = teleopPass + 1
-                        }
-                        if (cycle.shot_place === "Miss"){
-                            teleopMiss = teleopMiss + 1
-                        }
-
-                })
-
-                let endgameAction = ""
-                let endgameOutcome = ""
-
-                data.endgameActions.forEach((action) => {
-                    endgameAction = action.action
-                    endgameOutcome = action.outcome
-                    if (endgameAction === "Stage Right BLUE") {
-                        document.getElementById("StageRightRED").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("CenterStageBLUE").style.display = "none"
-                        document.getElementById("StageLeftRED").style.display = "none"
-                        document.getElementById("CenterStageRED").style.display = "none"
-                        document.getElementById("None").style.display = "none"
-                    }
-                    if (endgameAction === "Stage Left BLUE") {
-                        document.getElementById("StageRightRED").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("CenterStageBLUE").style.display = "none"
-                        document.getElementById("StageRightBLUE").style.display = "none"
-                        document.getElementById("CenterStageRED").style.display = "none"
-                        document.getElementById("None").style.display = "none"
-                    }
-                    if (endgameAction === "Center Stage BLUE") {
-                        document.getElementById("StageRightRED").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("StageLeftRED").style.display = "none"
-                        document.getElementById("StageRightBLUE").style.display = "none"
-                        document.getElementById("CenterStageRED").style.display = "none"
-                        document.getElementById("None").style.display = "none"
-                    }
-                    if (endgameAction === "Stage Right RED") {
-                        document.getElementById("StageRightBLUE").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("CenterStageBLUE").style.display = "none"
-                        document.getElementById("StageLeftRED").style.display = "none"
-                        document.getElementById("CenterStageRED").style.display = "none"
-                        document.getElementById("None").style.display = "none"
-                    }
-                    if (endgameAction === "Stage Left RED") {
-                        document.getElementById("StageRightRED").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("CenterStageBLUE").style.display = "none"
-                        document.getElementById("StageRightBLUE").style.display = "none"
-                        document.getElementById("CenterStageRED").style.display = "none"
-                        document.getElementById("None").style.display = "none"
-                    }
-                    if (endgameAction === "Center Stage RED") {
-                        document.getElementById("StageRightRED").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("CenterStageBLUE").style.display = "none"
-                        document.getElementById("StageRightBLUE").style.display = "none"
-                        document.getElementById("StageLeftRED").style.display = "none"
-                        document.getElementById("None").style.display = "none"
-                    }
-                    if (endgameAction === "None") {
-                        document.getElementById("StageRightRED").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("CenterStageBLUE").style.display = "none"
-                        document.getElementById("StageRightBLUE").style.display = "none"
-                        document.getElementById("StageLeftRED").style.display = "none"
-                        document.getElementById("CenterStageRED").style.display = "none"
-                    }
-
-                })
-                document.getElementById(data.robotPosition).style.display = "inline"
-                document.getElementById('autoContainer').classList.remove('hidden');
-                document.getElementById('autoContainer').style.display = "flex"
-                document.getElementById('teleopContainer').classList.remove('hidden');
-                document.getElementById('teleopContainer').style.display = "flex"
-                document.getElementById('endgameContainer').classList.remove('hidden');
-                document.getElementById('endgameContainer').style.display = "flex"
-
-                console.log(data.driverStation)
-                document.getElementById(data.driverStation).style.display = 'inline'
-                document.getElementById("numOfCycles").textContent = teleopCycleCounter;
-                document.getElementById("noteAttemps").textContent = teleopNoteCounter;
-                document.getElementById("notesScored").textContent = teleopNoteScore;
-                document.getElementById("ratio").textContent = teleopNoteScore + "/" + teleopNoteCounter;
-                document.getElementById("speakerNotes").textContent = teleopSpeaker;
-                document.getElementById("ampNotes").textContent = teleopAmp;
-                document.getElementById("passNotes").textContent = teleopPass;
-                document.getElementById("missNotes").textContent = teleopMiss;
-
+            if (imagePath) {
+                fieldImageA.style.backgroundImage = `url('${imagePath}')`;
+            } else {
+                fieldImageA.style.backgroundImage = `url('images/crescendo_feild.png')`;
             }
+
+            fieldImageA.style.backgroundSize = 'contain';
+            fieldImageA.style.backgroundRepeat = 'no-repeat';
+            fieldImageA.style.backgroundPosition = 'center';
+
+            // Initialize teleop counters
+            let teleopCycleCounter = 0;
+            let teleopNoteCounter = 0;
+            let teleopNoteScore = 0;
+            let teleopSpeaker = 0;
+            let teleopAmp = 0;
+            let teleopPass = 0;
+            let teleopMiss = 0;
+
+            // Process teleop actions
+            if (data.teleopActions !== undefined) {
+                data.teleopActions.forEach((cycle, index) => {
+
+                    if (
+                        cycle.pickup === "Ground Pickup 1" ||
+                        cycle.pickup === "Ground Pickup 2" ||
+                        cycle.pickup === "Ground Pickup 3"
+                    ) {
+                        teleopCycleCounter += 0.5;
+                    } else {
+                        teleopCycleCounter += 1;
+                    }
+
+                    if (index === 0) {
+
+                        document.getElementById('outOfAuto').textContent = cycle.pickup;
+                    }
+
+                    if (cycle.shot_place != null && cycle.shot_place !== "") {
+                        teleopNoteCounter += 1;
+                        if (["Speaker", "Amp", "Pass"].includes(cycle.shot_place)) {
+                            teleopNoteScore += 1;
+                        }
+                        if (cycle.shot_place === "Speaker") {
+                            teleopSpeaker += 1;
+                        } else if (cycle.shot_place === "Amp") {
+                            teleopAmp += 1;
+                        } else if (cycle.shot_place === "Pass") {
+                            teleopPass += 1;
+                        } else if (cycle.shot_place === "Miss") {
+                            teleopMiss += 1;
+                        }
+
+                    }
+                });
+            }
+
+            // Field image dimensions
+            const fieldWidth = 1152; // Width of your field image
+            const fieldHeight = 498;  // Height of your field image
+
+
+            // Calculate scaling factors
+            const xScale = fieldWidth / data.screenWidth;
+            const yScale = fieldHeight / data.screenHeight;
+
+            // Position defenseMarkerRED
+            if (data.defensePositions && data.defensePositions.defenseMarkerRED) {
+                let RedX = data.defensePositions.defenseMarkerRED.x * xScale;
+                let RedY = data.defensePositions.defenseMarkerRED.y * yScale;
+
+                const markerRed = document.getElementById("defenseMarkerRED");
+                markerRed.style.display = "block";
+                markerRed.style.position = "absolute";
+                markerRed.style.left = `${RedX}px`;
+                markerRed.style.top = `${RedY}px`;
+            }
+
+            // Position defenseMarkerGREEN
+            if (data.defensePositions && data.defensePositions.defenseMarkerGREEN) {
+                let GreenX = data.defensePositions.defenseMarkerGREEN.x * xScale;
+                let GreenY = data.defensePositions.defenseMarkerGREEN.y * yScale;
+
+                const markerGreen = document.getElementById("defenseMarkerGREEN");
+                markerGreen.style.display = "block";
+                markerGreen.style.position = "absolute";
+                markerGreen.style.left = `${GreenX}px`;
+                markerGreen.style.top = `${GreenY}px`;
+            }
+
+            // Position defenseMarkerPURPLE
+            if (data.defensePositions && data.defensePositions.defenseMarkerPURPLE) {
+                let PurpleX = data.defensePositions.defenseMarkerPURPLE.x * xScale;
+                let PurpleY = data.defensePositions.defenseMarkerPURPLE.y * yScale;
+
+                const markerPurple = document.getElementById("defenseMarkerPURPLE");
+                markerPurple.style.display = "block";
+                markerPurple.style.position = "absolute";
+                markerPurple.style.left = `${PurpleX}px`;
+                markerPurple.style.top = `${PurpleY}px`;
+            }
+
+            // Set the background image for the field_image
+
+
+            if (imagePath) {
+                fieldImageA.style.backgroundImage = `url('${imagePath}')`;
+            } else {
+                fieldImageA.style.backgroundImage = `url('images/crescendo_feild.png')`;
+            }
+            fieldImageA.style.backgroundSize = 'contain';
+            fieldImageA.style.backgroundRepeat = 'no-repeat';
+            fieldImageA.style.backgroundPosition = 'center';
+
+            // Process endgame actions
+            if (data.endgameActions !== undefined) {
+                data.endgameActions.forEach((action) => {
+                    const endgameAction = action.action;
+
+                    // Hide irrelevant buttons based on endgameAction
+                    if (endgameAction === "Stage Right BLUE") {
+                        document.getElementById("StageRightRED").style.display = "none";
+                        document.getElementById("StageLeftBLUE").style.display = "none";
+                        document.getElementById("CenterStageBLUE").style.display = "none";
+                        document.getElementById("StageLeftRED").style.display = "none";
+                        document.getElementById("CenterStageRED").style.display = "none";
+                        document.getElementById("None").style.display = "none";
+                    }
+                    // Repeat similar logic for other endgame actions...
+                });
+            } else {
+                // Hide all endgame buttons if no endgameActions
+                document.getElementById("StageRightRED").style.display = "none";
+                document.getElementById("StageLeftBLUE").style.display = "none";
+                document.getElementById("CenterStageBLUE").style.display = "none";
+                document.getElementById("StageRightBLUE").style.display = "none";
+                document.getElementById("StageLeftRED").style.display = "none";
+                document.getElementById("CenterStageRED").style.display = "none";
+            }
+
+            // Display notes
+            const notes = data.notes;
+            document.getElementById('notesSection').innerHTML = `${notes}`;
+
+            // Show robot position button
+            if (data.robotPosition) {
+                const positionButton = document.getElementById(data.robotPosition);
+                if (positionButton) {
+                    positionButton.style.display = "inline";
+                }
+            }
+
+            // Show containers
+            document.getElementById('autoContainer').classList.remove('hidden');
+            document.getElementById('autoContainer').style.display = "flex";
+            document.getElementById('teleopContainer').classList.remove('hidden');
+            document.getElementById('teleopContainer').style.display = "flex";
+            document.getElementById('endgameContainer').classList.remove('hidden');
+            document.getElementById('endgameContainer').style.display = "flex";
+
+            // Show driver station button
+            if (data.driverStation) {
+                const driverStationButton = document.getElementById(data.driverStation);
+                if (driverStationButton) {
+                    driverStationButton.style.display = 'inline';
+                }
+            }
+
+            // Update teleop stats
+            document.getElementById("numOfCycles").textContent = teleopCycleCounter;
+            document.getElementById("noteAttemps").textContent = teleopNoteCounter;
+            document.getElementById("notesScored").textContent = teleopNoteScore;
+            document.getElementById("ratio").textContent = teleopNoteScore + "/" + teleopNoteCounter;
+            document.getElementById("speakerNotes").textContent = teleopSpeaker;
+            document.getElementById("ampNotes").textContent = teleopAmp;
+            document.getElementById("passNotes").textContent = teleopPass;
+            document.getElementById("missNotes").textContent = teleopMiss;
+        }
 
 
         //     };
@@ -508,46 +636,49 @@
         // });
 
         function loadJsonData(filePath) {
-    fetch(filePath)
-        .then(response => response.json())
-        .then(data => {
-            updateUI(data); // Update the UI with the fetched data
+            fetch(filePath)
+                .then(response => response.json())
+                .then(data => {
+                    updateUI(data); // Update the UI with the fetched data
 
-            // Assuming the PNG file has the same name as the JSON file but with a .png extension
-            const imagePath = filePath.replace('.json', '.png');
-
-            // Set the background image for the field_image
-            const fieldImageA = document.getElementById('field_image_auto');
-            fieldImageA.style.backgroundImage = `url(${imagePath})`;
-            fieldImageA.style.backgroundSize = 'contain';
-            fieldImageA.style.backgroundRepeat = 'repeat-y';
-
-        })
-        .catch(error => {
-            console.error('Error loading the JSON file:', error);
-            alert('Failed to load data: ' + error.message);
-        });
-}
+                    // Assuming the PNG file has the same name as the JSON file but with a .png extension
 
 
-         const urlParams = new URLSearchParams(window.location.search);
-         const filePath = urlParams.get('file');
-         let dataGen = [];
-         console.log(filePath)
+                    // const imagePath = filePath.replace('.json', '.png');
 
-         if (filePath && !filePath.includes('._')) {
-    console.log('Loading data from:', filePath);
-    loadJsonData(filePath);
-} 
+                    // // Set the background image for the field_image
+                    // const fieldImageA = document.getElementById('field_image_auto');
+                    // fieldImageA.style.backgroundImage = `url(${imagePath})`;
+                    // console.log(imagePath)
+                    // fieldImageA.style.backgroundSize = 'contain';
+                    // fieldImageA.style.backgroundRepeat = 'repeat-y';
+
+                })
+                .catch(error => {
+                    console.error('Error loading the JSON file:', error);
+                    alert('Failed to load data: ' + error.message);
+                });
+        }
 
 
-    // document.addEventListener('DOMContentLoaded', () => {
-    //     const urlParams = new URLSearchParams(window.location.search);
-    //     const filePath = urlParams.get('file');
-    //     if (filePath) {
-    //         loadJsonData(filePath);
-    //     }
-    // });
+        // const urlParams = new URLSearchParams(window.location.search);
+        // const filePath = urlParams.get('file');
+        let dataGen = [];
+        console.log(filePath)
+
+        if (filePath && !filePath.includes('._')) {
+            console.log('Loading data from:', filePath);
+            loadJsonData(filePath);
+        }
+
+
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const urlParams = new URLSearchParams(window.location.search);
+        //     const filePath = urlParams.get('file');
+        //     if (filePath) {
+        //         loadJsonData(filePath);
+        //     }
+        // });
 
         document.getElementById('teleopContainer').classList.remove('hidden');
         // document.getElementById('uploadBackground').classList.remove('hidden');
