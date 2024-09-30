@@ -785,6 +785,7 @@
             scoutingData.teleopActions = [];
             sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
             logScreenWidth()
+            logScreenHeight()
         }
 
         function logAction(action) {
@@ -905,6 +906,12 @@
         function logScreenWidth() {
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
             scoutingData.screenWidth = screen.width
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+        }
+
+        function logScreenHeight() {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
+            scoutingData.screenHeight = screen.height
             sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
         }
 
