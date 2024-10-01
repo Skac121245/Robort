@@ -528,6 +528,9 @@
         function downloadSessionStorageData() {
             // Retrieve the scouting data from session storage
             const scoutingData = sessionStorage.getItem('scoutingData');
+            const notes = document.getElementById('notes').value;
+
+            scoutingData.notes = notes;
             if (scoutingData) {
                 const data = JSON.parse(scoutingData);
                 const matchNumber = data.matchNumber;
