@@ -526,34 +526,57 @@
         });
 
         function downloadSessionStorageData() {
-            // Retrieve the scouting data from session storage
-            const scoutingData = sessionStorage.getItem('scoutingData');
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
             const notes = document.getElementById('notes').value;
 
             scoutingData.notes = notes;
-            if (scoutingData) {
-                const data = JSON.parse(scoutingData);
-                const matchNumber = data.matchNumber;
-                const teamNumber = data.teamNumber;
-                const filename = `Match${matchNumber}_${teamNumber}_ScoutingData.json`;
+            // scoutingData.push(notes);
+            // Adding notes directly to the scoutingData object
 
-                // Create a blob from the data
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-
-                // Create an anchor element and use it to trigger the download
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = filename;
-                a.style.display = 'none';
-
-                // Append the anchor to the body, click it, and then remove it
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } else {
+            if (!scoutingData) {
                 alert('No scouting data available to download!');
+                return;
             }
+
+            const blob = new Blob([JSON.stringify(scoutingData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'scoutingData.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
+
+        // function downloadSessionStorageData() {
+        //     // Retrieve the scouting data from session storage
+        //     const scoutingData = sessionStorage.getItem('scoutingData');
+        //     const notes = document.getElementById('notes').value;
+
+        //     scoutingData.notes = notes;
+        //     if (scoutingData) {
+        //         const data = JSON.parse(scoutingData);
+        //         const matchNumber = data.matchNumber;
+        //         const teamNumber = data.teamNumber;
+        //         const filename = `Match${matchNumber}_${teamNumber}_ScoutingData.json`;
+
+        //         // Create a blob from the data
+        //         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+
+        //         // Create an anchor element and use it to trigger the download
+        //         const a = document.createElement('a');
+        //         a.href = URL.createObjectURL(blob);
+        //         a.download = filename;
+        //         a.style.display = 'none';
+
+        //         // Append the anchor to the body, click it, and then remove it
+        //         document.body.appendChild(a);
+        //         a.click();
+        //         document.body.removeChild(a);
+        //     } else {
+        //         alert('No scouting data available to download!');
+        //     }
+        // }
 
         function selectDriverStation(driverStation) {
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
