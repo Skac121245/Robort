@@ -11,191 +11,196 @@
     <style>
         /* General Styles */
         body,
-nav,
-header,
-.navbar,
-#footer,
-a,
-#backgroundImage {
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
+        nav,
+        header,
+        .navbar,
+        #footer,
+        a,
+        #backgroundImage {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    display: block;
-}
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: block;
+        }
 
-#container {
-    max-width: 800px;
-    margin: 20px auto;
-    background: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        #container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-#upload-section {
-    text-align: center;
-    margin-bottom: 20px;
-}
+        #upload-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-#fileList ul {
-    list-style-type: none;
-    padding: 0;
-}
+        #fileList ul {
+            list-style-type: none;
+            padding: 0;
+        }
 
-#fileList li {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer;
-}
+        #fileList li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
 
-#fileList li:hover {
-    background-color: #f0f0f0;
-}
+        #fileList li:hover {
+            background-color: #f0f0f0;
+        }
 
-#backBtn {
-    margin-bottom: 10px;
-}
+        #backBtn {
+            margin-bottom: 10px;
+        }
 
-#jsonViewer {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    background-color: #f9f9f9;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
+        #jsonViewer {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
 
-.bg-dark,
-.navbar-dark,
-.card {
-    background-color: #343a40 !important;
-    color: #f8f9fa !important;
-}
+        .bg-dark,
+        .navbar-dark,
+        .card {
+            background-color: #343a40 !important;
+            color: #f8f9fa !important;
+        }
 
-.bg-light,
-.navbar-light,
-.card {
-    background-color: #f8f9fa !important;
-    color: #343a40 !important;
-}
+        .bg-light,
+        .navbar-light,
+        .card {
+            background-color: #f8f9fa !important;
+            color: #343a40 !important;
+        }
 
-.navbar-dark .navbar-nav .nav-link,
-.navbar-dark .navbar-brand {
-    color: #f8f9fa !important;
-}
+        .navbar-dark .navbar-nav .nav-link,
+        .navbar-dark .navbar-brand {
+            color: #f8f9fa !important;
+        }
 
-.navbar-dark .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-}
+        .navbar-dark .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+        }
 
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 80px;
-    height: 34px;
-    margin: 10px;
-}
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 80px;
+            height: 34px;
+            margin: 10px;
+        }
 
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: background-color .4s;
-    border-radius: 34px;
-}
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: background-color .4s;
+            border-radius: 34px;
+        }
 
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: transform .4s;
-    border-radius: 50%;
-}
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: transform .4s;
+            border-radius: 50%;
+        }
 
-input:checked+.slider {
-    background-color: #555;
-}
+        input:checked+.slider {
+            background-color: #555;
+        }
 
-input:checked+.slider:before {
-    transform: translateX(46px);
-}
+        input:checked+.slider:before {
+            transform: translateX(46px);
+        }
 
-.icon {
-    color: #fff;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    transition: opacity 0.4s;
-}
+        .icon {
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            transition: opacity 0.4s;
+        }
 
-.sun {
-    left: 10px;
-    opacity: 0;
-}
+        .sun {
+            left: 10px;
+            opacity: 0;
+        }
 
-.moon {
-    right: 10px;
-    opacity: 1;
-}
+        .moon {
+            right: 10px;
+            opacity: 1;
+        }
 
-input:checked+.slider .sun {
-    opacity: 1;
-}
+        input:checked+.slider .sun {
+            opacity: 1;
+        }
 
-input:checked+.slider .moon {
-    opacity: 0;
-}
+        input:checked+.slider .moon {
+            opacity: 0;
+        }
 
-input:not(:checked)+.slider .sun {
-    opacity: 0;
-}
+        input:not(:checked)+.slider .sun {
+            opacity: 0;
+        }
 
-input:not(:checked)+.slider .moon {
-    opacity: 1;
-}
+        input:not(:checked)+.slider .moon {
+            opacity: 1;
+        }
 
-/* Dark mode styles for container */
-.dark-mode #container {
-    background-color: #454d55;
-    color: #f8f9fa;
-}
+        /* Dark mode styles for container */
+        .dark-mode #container {
+            background-color: #454d55;
+            color: #f8f9fa;
+        }
 
-.dark-mode #jsonViewer {
-    background-color: #3a3f44;
-    border-color: #555;
-    color: #f8f9fa;
-}
+        .dark-mode #jsonViewer {
+            background-color: #3a3f44;
+            border-color: #555;
+            color: #f8f9fa;
+        }
 
-.dark-mode #fileList li:hover {
-    background-color: #555;
-    color: #f8f9fa; /* Ensure text color changes on hover */
-}
+        .dark-mode #fileList li:hover {
+            background-color: #555;
+            color: #f8f9fa; /* Ensure text color changes on hover */
+        }
 
+        #h6-instructions {
+            margin-left: 10%;
+            margin-right: 10%;
+            text-align: center;
 
+        }
     </style>
 </head>
 
@@ -225,8 +230,6 @@ input:not(:checked)+.slider .moon {
                             <a class="dropdown-item" href="./scoutingUI.html">Live Scouter (WIP)</a>
                             <a class="dropdown-item" href="./pitScouterFRONT.html">Pit Scouter</a>
                             <a class="dropdown-item" href="./pitScouterBACK.html">Pit Scouter BACK</a>
-    
-                            
                         </div>
                     </li>
                     <li class="nav-item">
@@ -252,6 +255,7 @@ input:not(:checked)+.slider .moon {
 
     <div id="container">
         <h1 id="h1">Pit Scouting Viewer</h1>
+        <h6 id="h6-instructions">Here you can upload a folder of all the json files you've collected using the questionaire!</h6>
         <div id="upload-section">
             <input type="file" id="fileInput" webkitdirectory directory multiple>
             <button id="uploadBtn" class="btn btn-primary mt-3">Upload Folder</button>
@@ -260,6 +264,7 @@ input:not(:checked)+.slider .moon {
         <div id="fileContent" style="display:none;">
             <button id="backBtn" class="btn btn-secondary">Back to List</button>
             <pre id="jsonViewer"></pre>
+            <img id="robotImageView" alt="Robot Image" style="display:none; max-width: 100%; margin-top: 20px;">
         </div>
     </div>
 
@@ -340,24 +345,31 @@ input:not(:checked)+.slider .moon {
                 const jsonObject = JSON.parse(content); // Parse the JSON string into an object
 
                 const jsonViewer = document.getElementById('jsonViewer');
+                const robotImageView = document.getElementById('robotImageView');
                 jsonViewer.innerHTML = ''; // Clear previous content
+                robotImageView.style.display = 'none'; // Hide the image by default
 
                 // Create a formatted display of key-value pairs
                 Object.entries(jsonObject).forEach(([key, value]) => {
-                    const line = document.createElement('div');
-                    line.classList.add('json-line');
+                    if (key === 'robotImage' && value.startsWith('data:image/')) {
+                        robotImageView.src = value; // Set the Base64 image source
+                        robotImageView.style.display = 'block'; // Show the image
+                    } else {
+                        const line = document.createElement('div');
+                        line.classList.add('json-line');
 
-                    const keySpan = document.createElement('span');
-                    keySpan.classList.add('json-key');
-                    keySpan.textContent = key + ': ';
+                        const keySpan = document.createElement('span');
+                        keySpan.classList.add('json-key');
+                        keySpan.textContent = key + ': ';
 
-                    const valueSpan = document.createElement('span');
-                    valueSpan.classList.add('json-value');
-                    valueSpan.textContent = value;
+                        const valueSpan = document.createElement('span');
+                        valueSpan.classList.add('json-value');
+                        valueSpan.textContent = value;
 
-                    line.appendChild(keySpan);
-                    line.appendChild(valueSpan);
-                    jsonViewer.appendChild(line);
+                        line.appendChild(keySpan);
+                        line.appendChild(valueSpan);
+                        jsonViewer.appendChild(line);
+                    }
                 });
 
                 document.getElementById('fileList').style.display = 'none';
@@ -367,55 +379,55 @@ input:not(:checked)+.slider .moon {
 
         // Dark Mode Toggle Script
         document.addEventListener('DOMContentLoaded', function() {
-    const toggle = document.getElementById('darkModeToggle');
-    const body = document.body;
-    const navbar = document.querySelector('.navbar');
+            const toggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+            const navbar = document.querySelector('.navbar');
 
-    // Function to apply dark mode classes
-    function enableDarkMode() {
-        body.classList.add('bg-dark', 'dark-mode');
-        body.classList.remove('bg-light');
-        navbar.classList.add('navbar-dark');
-        navbar.classList.remove('navbar-light', 'bg-white');
-        document.querySelectorAll('.navbar').forEach(element => {
-            element.classList.add('bg-dark');
-            element.classList.remove('bg-white');
-        });
-    }
-
-    // Function to remove dark mode classes
-    function disableDarkMode() {
-        body.classList.add('bg-light');
-        body.classList.remove('bg-dark', 'dark-mode');
-        navbar.classList.add('navbar-light');
-        navbar.classList.remove('navbar-dark', 'bg-dark');
-        document.querySelectorAll('.navbar').forEach(element => {
-            if (!element.closest('#aboutModal')) {
-                element.classList.add('bg-white');
-                element.classList.remove('bg-dark');
+            // Function to apply dark mode classes
+            function enableDarkMode() {
+                body.classList.add('bg-dark', 'dark-mode');
+                body.classList.remove('bg-light');
+                navbar.classList.add('navbar-dark');
+                navbar.classList.remove('navbar-light', 'bg-white');
+                document.querySelectorAll('.navbar').forEach(element => {
+                    element.classList.add('bg-dark');
+                    element.classList.remove('bg-white');
+                });
             }
+
+            // Function to remove dark mode classes
+            function disableDarkMode() {
+                body.classList.add('bg-light');
+                body.classList.remove('bg-dark', 'dark-mode');
+                navbar.classList.add('navbar-light');
+                navbar.classList.remove('navbar-dark', 'bg-dark');
+                document.querySelectorAll('.navbar').forEach(element => {
+                    if (!element.closest('#aboutModal')) {
+                        element.classList.add('bg-white');
+                        element.classList.remove('bg-dark');
+                    }
+                });
+            }
+
+            // Initialize dark mode from local storage
+            if (localStorage.getItem('darkMode') === 'true') {
+                enableDarkMode();
+                toggle.checked = true;
+            } else {
+                disableDarkMode();
+            }
+
+            // Toggle dark mode on change
+            toggle.addEventListener('change', function() {
+                if (this.checked) {
+                    localStorage.setItem('darkMode', 'true');
+                    enableDarkMode();
+                } else {
+                    localStorage.setItem('darkMode', 'false');
+                    disableDarkMode();
+                }
+            });
         });
-    }
-
-    // Initialize dark mode from local storage
-    if (localStorage.getItem('darkMode') === 'true') {
-        enableDarkMode();
-        toggle.checked = true;
-    } else {
-        disableDarkMode();
-    }
-
-    // Toggle dark mode on change
-    toggle.addEventListener('change', function() {
-        if (this.checked) {
-            localStorage.setItem('darkMode', 'true');
-            enableDarkMode();
-        } else {
-            localStorage.setItem('darkMode', 'false');
-            disableDarkMode();
-        }
-    });
-});
     </script>
 </body>
 
