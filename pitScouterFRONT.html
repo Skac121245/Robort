@@ -176,8 +176,9 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="./Strat_Board_w_tabs.html">Canvas</a>
                         <a class="dropdown-item" href="./scoutingGen.html">Scouting Generator</a>
-                        <a class="dropdown-item" href="./scoutingUI.html">Live Scouter (WIP)</a>
+                        
                         <a class="dropdown-item" href="./pitScouterFRONT.html">Pit Scouter</a>
+                        <a class="dropdown-item" href="./pitScouterBACK.html">Pit Scouter BACK</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -188,6 +189,12 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="./Config_tab.html">Configure</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="dataBaseTeamPage.html">Database</a>
+                </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="scoutingUI.html">ScoutingUI</a>
                 </li>
             </ul>
             <label class="switch">
@@ -293,10 +300,10 @@
 
 
         <div class="form-group">
-            <label for="cameraInput">Take a picture of your robot</label>
+            <label for="cameraInput">Can I take a picture of your robot?</label>
             <video id="cameraStream" width="800" height="450" autoplay></video>
             <button type="button" id="captureBtn" class="btn btn-secondary">Capture</button>
-            <canvas id="cameraCanvas" width="800" height="450" style="display:none;"></canvas>
+            <canvas id="cameraCanvas" width="600" height="450" style="display:none;"></canvas>
             <img id="robotImagePreview" style="display:none;" />
         </div>
         <button type="submit" class="btn btn-primary">Download File</button>
