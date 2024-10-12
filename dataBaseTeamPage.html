@@ -182,14 +182,30 @@
         #CenterStageRED {
             background-color:red;top: 230px; left: 20px; width: 100px; height:50px; position: relative;
         }
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            /* margin-right: 50%; */
+        }
 
+        .button-link:hover {
+            background-color: #0056b3;
+        }
 
     </style>
 </head>
 
 <body>
-    <!-- <input type="file" id="uploadButton" accept=".json">
-    <input type="file" id="uploadBackground" accept="image/png" class="hidden"> -->
+    <a class="button-link" href="./index.html">Robort Home</a>
+    <input type="file" id="uploadButton" accept=".json">
+    <input type="file" id="uploadBackground" accept="image/png" class="hidden"> 
     <h1 id="teamDisplay" class="hidden"></h1>
     <h2 id="matchNumber" class="hidden"></h2>
 
@@ -333,6 +349,10 @@
     </div>
 
     <script>
+
+
+
+
             const x = 0
             // const fileReader = new FileReader();
             // fileReader.onload = function () {
@@ -492,6 +512,12 @@
                 document.getElementById("passNotes").textContent = teleopPass;
                 document.getElementById("missNotes").textContent = teleopMiss;
 
+
+                document.getElementById('teamDisplay').classList.remove('hidden');
+    document.getElementById('matchNumber').classList.remove('hidden');
+    document.getElementById('autoContainer').classList.remove('hidden');
+    document.getElementById('teleopContainer').classList.remove('hidden');
+    document.getElementById('endgameContainer').classList.remove('hidden');
             }
 
 
@@ -551,7 +577,15 @@
 
         document.getElementById('teleopContainer').classList.remove('hidden');
         // document.getElementById('uploadBackground').classList.remove('hidden');
-    </script>
+        document.getElementById('uploadButton').addEventListener('change', function (event) {
+    const fileReader = new FileReader();
+    fileReader.onload = function () {
+        const data = JSON.parse(fileReader.result);
+        updateUI(data);
+    };
+    fileReader.readAsText(event.target.files[0]);
+});
+   </script>
 </body>
 
 </html>
