@@ -403,6 +403,15 @@ div.modal-body, #warningModalLabel.modal-title {
   max-height: calc(100vh - 200px); /* Adjust as needed to fit your design */
   overflow-y: auto; /* Enables vertical scrolling if content overflows */
 }
+
+.modal-body tr, tr:hover, h5 {
+    color: #343a40 !important;
+}
+
+.modal-body td:hover {
+    color: #343a40 !important;
+}
+
          </style>
              <script>
                 document.addEventListener("DOMContentLoaded", function() {
@@ -775,10 +784,12 @@ div.modal-body, #warningModalLabel.modal-title {
           <!-- Button to add a new row -->
           <button id="addRow" class="btn btn-success">Add Row</button>
           <!-- Code block to show the JSON -->
-          <pre id="jsonOutput" class="mt-3"></pre>
+          <pre id="jsonOutput" class="mt-3" style="display: none;"></pre>
         </div>
         <div class="modal-footer">
-          <!-- Buttons for Copy and Download -->
+          <!-- Buttons for Upload, Copy and Download -->
+          <label for="uploadJSON" class="btn btn-info" style="margin-top:8px">Upload JSON</label>
+          <input type="file" id="uploadJSON" hidden />          
           <button id="copyJSON" class="btn btn-secondary">Copy JSON</button>
           <button id="downloadJSON" class="btn btn-primary">Download JSON</button>
         </div>
@@ -1649,6 +1660,7 @@ matchCell.appendChild(matchContainer);
   const inputs = row.querySelectorAll('input, select');
   inputs.forEach(input => {
     input.addEventListener('change', updateJSONOutput);
+    input.addEventListener('change', updateMatchNumbers);
   });
 
   // Initial call to update JSON
@@ -1688,82 +1700,7 @@ function updateTeamDropdowns() {
     }
   }
 }
-
 function updateJSONOutput() {
-  const matchCode = document.getElementById('matchCodeInput').value;
-  const tbody = document.querySelector('#editMatchTable tbody');
-  const rows = tbody.rows;
-
-  const data = [];
-
-  for (let i = 0; i < rows.length; i++) {
-    const row = rows[i];
-    const cells = row.cells;
-
-    const matchLevel = cells[0].querySelector('select').value;
-    // const winningAlliance = cells[1].querySelector('select').value;
-    const blueScore = parseInt(cells[2].querySelector('input').value) || 0;
-    const redScore = parseInt(cells[3].querySelector('input').value) || 0;
-    const estimatedStartTime = cells[4].querySelector('input').value;
-    const estimatedStartTimeUnix = estimatedStartTime ? Math.floor(new Date(estimatedStartTime).getTime() / 1000) : null;
-
-    // Determine the winning alliance based on the scores
-let winningAlliance = '';
-if (blueScore > redScore) {
-  winningAlliance = 'blue';
-} else if (redScore > blueScore) {
-  winningAlliance = 'red';
-} else {
-  winningAlliance = ''; // It's a tie or no winner
-}
-
-
-const blueTeams = [
-  'frc' + cells[4].querySelector('select').value,
-  'frc' + cells[5].querySelector('select').value,
-  'frc' + cells[6].querySelector('select').value
-];
-
-const redTeams = [
-  'frc' + cells[7].querySelector('select').value,
-  'frc' + cells[8].querySelector('select').value,
-  'frc' + cells[9].querySelector('select').value
-];
-
-
-    const matchData = {
-      "actual_time": null,
-      "alliances": {
-        "blue": {
-          "dq_team_keys": [],
-          "score": blueScore,
-          "surrogate_team_keys": [],
-          "team_keys": blueTeams
-        },
-        "red": {
-          "dq_team_keys": [],
-          "score": redScore,
-          "surrogate_team_keys": [],
-          "team_keys": redTeams
-        }
-      },
-      "comp_level": matchLevel,
-      "event_key": matchCode,
-      "key": matchCode + '_' + matchLevel + (i+1),
-      "match_number": i+1,
-      "predicted_time": estimatedStartTimeUnix,
-      "set_number": 1,
-      "time": estimatedStartTimeUnix,
-      "winning_alliance": winningAlliance
-    };
-
-    data.push(matchData);
-  }
-
-  // Update the JSON output
-  const jsonOutput = document.getElementById('jsonOutput');
-  jsonOutput.textContent = JSON.stringify(data, null, 2);
-}function updateJSONOutput() {
   const matchCode = document.getElementById('matchCodeInput').value;
   const tbody = document.querySelector('#editMatchTable tbody');
   const rows = tbody.rows;
@@ -1897,7 +1834,7 @@ document.getElementById('teamListInput').addEventListener('change', function() {
   updateTeamDropdowns();
 });
 
-// Event listener for the "Copy JSON" button
+// Event listener for the "Copy JSON" button (EDIT MODE)
 document.getElementById('copyJSON').addEventListener('click', function() {
   const jsonOutput = document.getElementById('jsonOutput');
   navigator.clipboard.writeText(jsonOutput.textContent).then(function() {
@@ -1907,7 +1844,7 @@ document.getElementById('copyJSON').addEventListener('click', function() {
   });
 });
 
-// Event listener for the "Download JSON" button
+// Event listener for the "Download JSON" button (EDIT MODE)
 document.getElementById('downloadJSON').addEventListener('click', function() {
   const jsonOutput = document.getElementById('jsonOutput');
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jsonOutput.textContent);
@@ -1919,6 +1856,172 @@ document.getElementById('downloadJSON').addEventListener('click', function() {
   downloadAnchorNode.click();
   downloadAnchorNode.remove();
 });
+
+// Event listener for the "Upload JSON" input (EDIT MODE)
+document.getElementById('uploadJSON').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  if (!file) {
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const jsonData = JSON.parse(e.target.result);
+      populateEditInterface(jsonData);
+    } catch (error) {
+        console.log(error);
+      alert('Invalid JSON file.');
+    }
+  };
+  reader.readAsText(file);
+});
+
+function populateEditInterface(data) {
+  // Clear existing rows in the edit match table
+  const tbody = document.querySelector('#editMatchTable tbody');
+  tbody.innerHTML = '';
+
+  // Update the match code input
+  const matchCodeInput = document.getElementById('matchCodeInput');
+  matchCodeInput.value = data[0].event_key || '';
+
+  // Update the team list input
+  const teamSet = new Set();
+  data.forEach(matchData => {
+    matchData.alliances.blue.team_keys.forEach(teamKey => {
+      teamSet.add(teamKey.replace('frc', ''));
+    });
+    matchData.alliances.red.team_keys.forEach(teamKey => {
+      teamSet.add(teamKey.replace('frc', ''));
+    });
+  });
+  const teamListInput = document.getElementById('teamListInput');
+  teamListInput.value = Array.from(teamSet).join(', ');
+
+  // Now that the team list input is updated, call updateTeamDropdowns to refresh the team list
+  updateTeamDropdowns();
+
+  const teamList = getTeamList(); // Get the updated team list
+
+  data.forEach(matchData => {
+    // For each match data, add a row to the table
+    const row = tbody.insertRow();
+
+    // Match column
+    const matchCell = row.insertCell();
+    // Create match select and match number label
+    const matchContainer = document.createElement('div');
+    matchContainer.style.display = 'flex';
+    matchContainer.style.alignItems = 'center';
+
+    const matchSelect = document.createElement('select');
+    matchSelect.className = 'form-control';
+    matchSelect.style.width = '60px';
+    ['qm', 'sf', 'f'].forEach(level => {
+      const option = document.createElement('option');
+      option.value = level;
+      option.textContent = level.toUpperCase();
+      matchSelect.appendChild(option);
+    });
+    matchSelect.value = matchData.comp_level;
+
+    const matchNumberLabel = document.createElement('span');
+    matchNumberLabel.style.marginLeft = '10px';
+    matchNumberLabel.textContent = matchData.comp_level.toUpperCase() + ' ' + matchData.match_number;
+
+    matchContainer.appendChild(matchSelect);
+    matchContainer.appendChild(matchNumberLabel);
+    matchCell.appendChild(matchContainer);
+
+    // Blue Score
+    const blueScoreCell = row.insertCell();
+    const blueScoreInput = document.createElement('input');
+    blueScoreInput.type = 'number';
+    blueScoreInput.className = 'form-control select-dropdown';
+    blueScoreInput.value = matchData.alliances.blue.score;
+    blueScoreCell.appendChild(blueScoreInput);
+
+    // Red Score
+    const redScoreCell = row.insertCell();
+    const redScoreInput = document.createElement('input');
+    redScoreInput.type = 'number';
+    redScoreInput.className = 'form-control select-dropdown';
+    redScoreInput.value = matchData.alliances.red.score;
+    redScoreCell.appendChild(redScoreInput);
+
+    // Estimated Start Time
+    const startTimeCell = row.insertCell();
+    const startTimeInput = document.createElement('input');
+    startTimeInput.type = 'datetime-local';
+    startTimeInput.className = 'form-control';
+    if (matchData.predicted_time) {
+      const date = new Date(matchData.predicted_time * 1000);
+      startTimeInput.value = date.toISOString().slice(0, 16);
+    }
+    startTimeCell.appendChild(startTimeInput);
+
+    // Blue Teams
+    matchData.alliances.blue.team_keys.forEach(teamKey => {
+      const teamCell = row.insertCell();
+      const teamSelect = document.createElement('select');
+      teamSelect.className = 'form-control select-dropdown';
+
+      // Populate the select with the full team list
+      teamList.forEach(teamNumber => {
+        const option = document.createElement('option');
+        option.value = teamNumber;
+        option.textContent = teamNumber;
+        teamSelect.appendChild(option);
+      });
+
+      // Set the selected value
+      teamSelect.value = teamKey.replace('frc', '');
+      teamCell.appendChild(teamSelect);
+    });
+
+    // Red Teams
+    matchData.alliances.red.team_keys.forEach(teamKey => {
+      const teamCell = row.insertCell();
+      const teamSelect = document.createElement('select');
+      teamSelect.className = 'form-control select-dropdown';
+
+      // Populate the select with the full team list
+      teamList.forEach(teamNumber => {
+        const option = document.createElement('option');
+        option.value = teamNumber;
+        option.textContent = teamNumber;
+      teamSelect.appendChild(option);
+      });
+
+      // Set the selected value
+      teamSelect.value = teamKey.replace('frc', '');
+      teamCell.appendChild(teamSelect);
+    });
+
+    // Actions cell (Remove Row)
+    const actionsCell = row.insertCell();
+    const removeButton = document.createElement('button');
+    removeButton.className = 'btn btn-danger';
+    removeButton.textContent = 'Remove';
+    removeButton.addEventListener('click', function() {
+      row.remove();
+      updateJSONOutput();
+      updateMatchNumbers();
+    });
+    actionsCell.appendChild(removeButton);
+
+    // Add event listeners to inputs to update JSON output when changed
+const inputs = row.querySelectorAll('input, select');
+inputs.forEach(input => {
+  input.addEventListener('change', updateJSONOutput);
+  input.addEventListener('change', updateMatchNumbers);
+});
+
+  });
+
+  updateMatchNumbers();
+  updateJSONOutput();
+}
 
 function uploadData(event) {
     const file = event.target.files[0];
