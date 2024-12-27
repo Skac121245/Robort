@@ -285,6 +285,9 @@ body.bg-dark .dropdown-menu {
 <button type="button" id="exportExcel" class="btn btn-success" style="display:none;">Export to Excel</button>
 <!-- Print button -->
 <button type="button" id="printButton" class="btn btn-secondary" style="display:none;" onclick="printTable()">Print</button>
+<button type="button" id="simulateButtonn" class="btn btn-info" style="display:none;">
+    Simulate
+</button>
 <div class="form-group">
     <div id="highlightGroup" style="display:none;">
     <label for="highlightTeamSelect"><br>Highlight Team:</label>
@@ -326,6 +329,26 @@ body.bg-dark .dropdown-menu {
       </div>
     </div>
   </div>
+  <!-- Criteria Error Modal -->
+<div class="modal fade" id="criteriaErrorModal" tabindex="-1" role="dialog" aria-labelledby="criteriaErrorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="criteriaErrorModalLabel">Impossible Criteria</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Your scouting criteria cannot be met with this event's data. Please adjust your settings and try again.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 <!-- About the Project Modal -->
 <div id="aboutModal" class="modal text-center modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -506,6 +529,16 @@ $('#highlightTeamSelect').change(function() {
     function fetchMatches(eventCode, teamsPerMatch) {
         if ($('#fetchMatchesButton').text() === 'Fetch Matches from Upload') {
         var matches = JSON.parse(localStorage.getItem('uploadedMatches'));
+        let feasible = checkFeasibility(
+            matches.filter(m => m.comp_level === 'qm'),
+            teamsPerMatch,
+            parseInt($('#teamAppearances').val(), 10)
+        );
+        if (!feasible) {
+            // Show error and do NOT proceed
+            $('#criteriaErrorModal').modal('show');
+            return; // Skip displayMatches entirely
+        }
         displayMatches(matches, teamsPerMatch);
         originalMatches = matches;
         $('#excludeTeamsButton').show();
@@ -519,6 +552,15 @@ $('#highlightTeamSelect').change(function() {
             success: function(data) {
                 data = data.filter(match => match.comp_level === 'qm');
                 data.sort((a, b) => a.match_number - b.match_number);
+                let feasible = checkFeasibility(
+                    data, 
+                    teamsPerMatch, 
+                    parseInt($('#teamAppearances').val(), 10)
+                );
+                if (!feasible) {
+                    $('#criteriaErrorModal').modal('show');
+                    return; // Don’t call displayMatches
+                }
                 originalMatches = data;
                 displayMatches(data, teamsPerMatch);
                 $('#excludeTeamsButton').show(); 
@@ -529,7 +571,28 @@ $('#highlightTeamSelect').change(function() {
         });
     }
     }
+    function checkFeasibility(matches, teamsPerMatch, teamAppearances) {
+    // Count how many QM (Qualification) matches
+    // We assume 'matches' is already filtered so it only has comp_level='qm'.
+    let numMatches = matches.length;
     
+    // Collect all distinct teams from these matches
+    let allTeams = new Set();
+    matches.forEach(match => {
+        match.alliances.red.team_keys.concat(match.alliances.blue.team_keys).forEach(team => {
+            allTeams.add(team.replace('frc', ''));
+        });
+    });
+    
+    let distinctTeams = allTeams.size;
+    
+    // If total capacity < total required
+    if ((numMatches * teamsPerMatch) < (distinctTeams * teamAppearances)) {
+        return false;  // means "Impossible"
+    }
+    return true;       // means "Feasible"
+}
+
     // Display the matches in the table with filtering based on team appearances
     function displayMatches(matches, teamsPerMatch) {
     $('#matchData').parents('table').find('thead').show();
@@ -538,26 +601,65 @@ $('#highlightTeamSelect').change(function() {
     $('#excludeTeamButton').show();
     $('#highlightGroup').show();
     var matchData = '';
+    let simulationData = [];
     let appearanceCount = {};
+    let teamFlags = {}; // Tracks whether each team has ever been chosen
+
 
     matches.forEach(function(match, index) {
         var teams = match.alliances.red.team_keys.concat(match.alliances.blue.team_keys);
         teams = teams.map(team => team.replace('frc', '')); // Normalize team numbers
+        // Build a small map of alliance color for each team in this match
+let allianceMap = {};
+match.alliances.red.team_keys.forEach(t => {
+    t = t.replace('frc', '');
+    allianceMap[t] = 'red';
+});
+match.alliances.blue.team_keys.forEach(t => {
+    t = t.replace('frc', '');
+    allianceMap[t] = 'blue';
+});
 
         // Initially filter teams based on the current appearances not exceeding the max allowed
         let potentialTeams = teams.filter(team => (appearanceCount[team] || 0) < $('#teamAppearances').val());
+        // Separate unflagged vs flagged in THIS match
+let matchUnflagged = potentialTeams.filter(t => !teamFlags[t]);
+let pickFrom       = (matchUnflagged.length > 0) ? matchUnflagged : potentialTeams;
 
         // Now limit the teams based on the 'Teams per Match' setting
         let displayedTeams = [];
-        for (let i = 0; i < potentialTeams.length && displayedTeams.length < teamsPerMatch; i++) {
-            let team = potentialTeams[i];
-            // Check if adding this team would exceed their appearance limit
-            if ((appearanceCount[team] || 0) + 1 <= $('#teamAppearances').val()) {
-                appearanceCount[team] = (appearanceCount[team] || 0) + 1;
-                displayedTeams.push(team);
-            }
+        for (let i = 0; i < pickFrom.length && displayedTeams.length < teamsPerMatch; i++) {
+    let team = pickFrom[i];
+    // Double-check you haven't exceeded the slider's max appearances
+    if ((appearanceCount[team] || 0) + 1 <= parseInt($('#teamAppearances').val(), 10)) {
+        // Mark a new appearance
+        appearanceCount[team] = (appearanceCount[team] || 0) + 1;
+        // Once a team is picked, set its flag on
+        if (!teamFlags[team]) {
+            teamFlags[team] = true;
         }
+        displayedTeams.push(team);
+    }
+}
 
+// Build a snapshot of all teams' states
+let teamsState = {};
+teams.forEach(t => {
+    const flagged = !!teamFlags[t];
+    const done = (appearanceCount[t] || 0) >= parseInt($('#teamAppearances').val(), 10);
+    const alliance = allianceMap[t] || 'neutral'; // fallback if not found
+
+    teamsState[t] = { flagged, done, alliance };
+});
+
+
+
+// Save info for the simulation feature
+simulationData.push({
+    matchNumber: match.match_number,
+    teamsPicked: [...displayedTeams],
+    teamsState: teamsState
+});
         // Add the match row only if there are displayed teams
         if (displayedTeams.length > 0) {
             matchData += `<tr><td>Match ${match.match_number}</td><td>${displayedTeams.map(team => `<span class='team-number'>${team}</span>`).join(', ')}</td></tr>`;
@@ -565,6 +667,7 @@ $('#highlightTeamSelect').change(function() {
     });
 
     $('#matchData').html(matchData);
+    setupSimulation(simulationData);
     setupTeamAutocomplete(); 
     collectTeams(matches); 
 }
@@ -884,6 +987,146 @@ function toggleFeedbackForm() {
         document.getElementById('bugForm').style.display = 'block';
     }
 }
+function setupSimulation(simData) {
+    // If no matches, hide simulate button
+    if (!simData || simData.length === 0) {
+        $('#simulateButton').hide();
+        return;
+    }
+
+    // Show the simulate button
+    $('#simulateButton').show();
+
+    // Configure the slider boundaries
+    $('#simSlider').attr('max', simData.length);
+    $('#simSlider').val(1);
+
+    // When you move the slider, show the corresponding match info
+    $('#simSlider').off('input').on('input', function() {
+    let idx = parseInt($(this).val(), 10) - 1;
+    displaySimMatch(simData[idx], simData);  // pass 'simData' as second param
+});
+
+    // Also define the "Simulate" button click
+    $('#simulateButton').off('click').on('click', function() {
+        // Open the modal
+        $('#simulationModal').modal('show');
+        // Show the first match by default
+        $('#simSlider').val(1).trigger('input');
+    });
+
+    // Setup the play button
+    let playing = false;
+    let intervalId;
+
+    $('#playSimulation').off('click').on('click', function() {
+        if (!playing) {
+            playing = true;
+            $('#playSimulation').text('Pause');
+            intervalId = setInterval(function() {
+                let currentVal = parseInt($('#simSlider').val(), 10);
+                if (currentVal < simData.length) {
+                    $('#simSlider').val(currentVal + 1).trigger('input');
+                } else {
+                    clearInterval(intervalId);
+                    playing = false;
+                    $('#playSimulation').text('Play');
+                }
+            }, 1000); // 1 second per match step
+        } else {
+            // Pause
+            playing = false;
+            clearInterval(intervalId);
+            $('#playSimulation').text('Play');
+        }
+    });
+    // 1) Show/hide all matches list
+$('#showAllMatchesCheckbox').off('change').on('change', function() {
+    let isChecked = $(this).is(':checked');
+    $('#allMatchesList').toggle(isChecked);
+    if (isChecked) {
+        // Force an update in case user has already moved the slider
+        let idx = parseInt($('#simSlider').val(), 10) - 1;
+        displayAllMatchesSoFar(simData, idx);
+    }
+});
+
+// 2) Show/hide team flags
+$('#showTeamFlagsCheckbox').off('change').on('change', function() {
+    let isChecked = $(this).is(':checked');
+    $('#teamsFlagsContainer').toggle(isChecked);
+    if (isChecked) {
+        // Force an update
+        let idx = parseInt($('#simSlider').val(), 10) - 1;
+        displayTeamsFlags(simData[idx]);
+    }
+});
+
+}
+
+// Helper to update the simulation modal content
+function displaySimMatch(matchObj, allSimData) {
+    if (!matchObj) return;
+    $('#simMatchInfo').text('Match ' + matchObj.matchNumber);
+    $('#simTeamsPicked').html(
+  matchObj.teamsPicked.map(t => {
+    const alliance = matchObj.teamsState[t]?.alliance || 'neutral';
+    let badgeClass = (alliance === 'red') ? 'badge badge-danger' :
+                     (alliance === 'blue') ? 'badge badge-primary' :
+                     'badge badge-secondary';
+    return `<span class="${badgeClass} mr-2">${t}</span>`;
+  }).join('')
+);
+
+
+    // Show all matches so far if box checked
+    let idx = allSimData.findIndex(m => m.matchNumber === matchObj.matchNumber);
+displayAllMatchesSoFar(allSimData, idx);
+
+    // Show team flags if box checked
+    if ($('#showTeamFlagsCheckbox').is(':checked')) {
+        displayTeamsFlags(matchObj);
+    }
+}
+function displayAllMatchesSoFar(simData, currentIndex) {
+    // Slice the data from match 1..(currentIndex+1)
+    let partial = simData.slice(0, currentIndex + 1);
+    // Build HTML
+    let html = '<h5>Matches So Far</h5><ul>';
+    partial.forEach(m => {
+        html += `<li>Match ${m.matchNumber}: ${m.teamsPicked.join(', ')}</li>`;
+    });
+    html += '</ul>';
+
+    $('#allMatchesList').html(html);
+}
+function displayTeamsFlags(matchObj) {
+    // matchObj.teamsState is where we stored each team’s flagged/done
+    const state = matchObj.teamsState || {};
+    let teamNames = Object.keys(state).sort((a,b) => parseInt(a)-parseInt(b) || a.localeCompare(b));
+
+    let html = '<h5>Team Flags</h5><ul style="list-style: none; padding-left: 0;">';
+    teamNames.forEach(t => {
+        let doneChecked = state[t].done ? 'checked' : '';
+// For alliance-based color in the Flags panel
+let alliance = state[t].alliance || 'neutral';
+let colorStyle = '';
+if (alliance === 'red') colorStyle = 'color: #dc3545';   // Red-ish
+else if (alliance === 'blue') colorStyle = 'color: #007bff'; // Blue-ish
+
+html += `
+  <li style="${colorStyle}">
+    <strong>Team ${t}</strong><br>
+    <label>
+      <input type="checkbox" disabled ${doneChecked}/> Can No Longer Be Picked
+    </label>
+  </li>
+`;
+    });
+    html += '</ul>';
+
+    $('#teamsFlagsContainer').html(html);
+}
 
         </script>
 <!-- Exclude Teams Modal -->
@@ -910,6 +1153,50 @@ function toggleFeedbackForm() {
         </div>
     </div>
 </div>
+<!-- Simulation Modal -->
+<div class="modal fade" id="simulationModal" tabindex="-1" aria-labelledby="simulationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 90%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="simulationModalLabel">Scouting Simulation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Controls (slider, play button) -->
+          <div class="d-flex flex-wrap align-items-center mb-3">
+            <input type="range" id="simSlider" min="1" max="1" value="1" class="custom-range" style="width: 80%;">
+            <button id="playSimulation" class="btn btn-secondary ml-3">Play</button>
+          </div>
+          <!-- Display which match & which teams -->
+           <!-- Additional Simulation Controls -->
+<div class="form-check mb-2">
+    <input class="form-check-input" type="checkbox" value="" id="showAllMatchesCheckbox">
+    <label class="form-check-label" for="showAllMatchesCheckbox">
+      Show All Matches So Far
+    </label>
+  </div>
+  <div class="form-check mb-2">
+    <input class="form-check-input" type="checkbox" value="" id="showTeamFlagsCheckbox">
+    <label class="form-check-label" for="showTeamFlagsCheckbox">
+      Show Team Flags
+    </label>
+  </div>
+  
+  <!-- Where we'll show the “All Matches So Far” list -->
+  <div id="allMatchesList" style="display: none; margin-bottom: 15px;"></div>
+  <!-- Where we show current team flags/done status -->
+  <div id="teamsFlagsContainer" style="display: none;"></div>
+  
+          <div>
+            <p id="simMatchInfo" style="font-weight: bold; margin-bottom: 10px;"></p>
+            <div id="simTeamsPicked"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
 </body>
 <script>
     window.onload = function() {
