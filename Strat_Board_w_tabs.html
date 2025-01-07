@@ -530,7 +530,7 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
               <a class="dropdown-item" href="./scoutingGen.html">Scouting Generator</a>
               
               <a class="dropdown-item" href="./pitScouterFRONT.html">Pit Scouter</a>
-              <a class="dropdown-item" href="./pitScouterBACK.html">Pit Scouter BACK</a>
+              <a class="dropdown-item" href="./pitScouterBACK.html">Pit Scouter Backend</a>
             </div>
           </li>
           <li class="nav-item">
@@ -840,7 +840,17 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
         const ctx = canvas.getContext('2d');
         const backgroundImage = new Image();
         const fileName = `${isAuto ? 'autonomous' : 'teleop'}-${selectedMatchKey}-canvas.png`; // Adjust file name based on the canvas type
-        backgroundImage.src = "images/crescendo_feild.png";
+        
+         if (localStorage.getItem('compOption') === 'undefined') {
+          backgroundImage.src = "https://lh3.googleusercontent.com/fife/ALs6j_GXtQ-sMn9nnWhcDhYQoBECTRw_3dLA6YE4ZD8QwuAQalmLNYZF-sa7MuOgpPkeN0rOZG2Fe_G-t6YUzxoCYaAZLJHvLVcwh6P5Y0C0IxQSfNgJeJMBw2Gh_YTDN9KedLKPkgsatdCJ9D6qNj7LwtCahVVZdp280JIaKSLvr82gRp8aeHdg5dIUpKpvVmC9pcw2FDqdaDG7MEYlZi2zztEt5Cq1igYkXvNUVuPWm1A2Qo_DAcbq3vejmXvLlTFnuZEL1rNAogFBiZ2GQ1ZAF1y7cEKm6fHMZ7-Of9N9xK2TUmU1i0iidHZGMMiNo49p9Xeiw0AaN1WAhepkDWYhDO8iHSBDUZRemg3XSYFHysnDliUkumaS_T5PhwQJ9srUBIT1tsEEgL-AcnrqqEwQ6lnsVyE4qrl5I_WKIAMnkCpjtXXMKpjiINQmu1OTOK01L3ibgaGnqmXbPDV88wPZZl_jVKHzqkwbM7cDfQYb1-zTKHKAqYcHxbpnVo3oGihJR1tTHqR9I8dQkT0k_bFs5dsnF0nDlTtwcGT9_rZXR6rYPZuRiLR6ntYCmqqP3KuCdTNRSxNPAMNz2kQBO_BPcODOwtbYb-yEf-vjUbH8nwFaMMsC-NXqamZA5DIpuqwEU96PjxdcT_6o9gqV82JaQ-OWIFflXuT6l_W-ENqkqiqDNtHWfit427sPnIGjJeB_zCpwejAYLTKf8oTCqT9rMkQN5fsOxRdl-JZCgKezUn7ukcZKvr1_fE7Fdz9DUBoDTknbHjptsle_NoZddbOa954L5ai3m5xf-s5FCXBHHwBRadF_XSQFgkMGjEegNVxAlRka8Aj6qInQmNPg8mt03D14OClHvXogix3U1Jjbk9AZhLOpVKUkyDD6_5lfanmTJdhGn3E5NGUCFs8oazLENzQAxr9E08UH4thFxFTqZ8qc1jqf9AvBMbRsImX3_8onu3t7igm-vgJKjmBnyZ40o3BqZTLcjazCCqKeoHevOMj6vsbrGZWehQdN3J5-9pGmckj6pRnLDMmlh_e0CA0Mcftx1Vn-7ebNtVTvqVKZO0EQXLd7geCUUz3ykDDO5SBj52LYYZ5so7b6IyPEBMQsX44x94vf_yeyXlbgfSo3hwL1g30uStZSU1BYLtTz_zV73D2I1xeA-4KXwd3Wj1bGBs4hCfqVP6h7L1CL-ljyYLveeCajGfOUKm1dCaNlRIvU1CCnVBn6tNHQUDmNqndhOzx37zUbcHdrPrm6rZhSeZuv3pVJotAvHcZL_apWun4_IlACZZIeZNhikhGtcF_rC96YP3kGZr71T6OrRFRDjxAZL_DnWccPgmVXs3gTUcDVdwuFVXIwNQ8F3WWUltua9lSqKDD1SjGwe8cwv3uKx9pbiXT9hV0RIVi6U6-jkN8XWOY0z9npdlBRxJPqLHHuL5u_uDlcwAU-_5bVaHDNy8cYKCD9HJhrL_FbnIqPFYN4g9nC4o2Klx0bgyivMuUpaUe_fWePD2ciFHUi1GwzEzaKAkCv13bJchHqw4gdn07j5vj5ykQLXU4ET-B8OCKL8b_kwQcGmLzHg8KYAgL-HHroKZ_9a9qHCaSTc2YapNYoa9_EhkZlezzcPTDpl62WEiskguMvTE8dsNARS6AVOSjQT9Zpzc-o6sQC7UkafaIMRULy35kZvmFsFXwoOfrlMJyCfipAm236vJYzYmgTN8kySbgd1kQtxWkR8E7s7j3zMGGVKc2HZO4GVyWSrJ6n-OCJR6yI5iKfl7P3mfUzQm2bC8E8KKxyteBAyHtCtYJdKRc=w1920-h868";
+        } else if (localStorage.getItem('compOption') === 'Reefscape') {
+          backgroundImage.src = "https://lh3.googleusercontent.com/fife/ALs6j_GXtQ-sMn9nnWhcDhYQoBECTRw_3dLA6YE4ZD8QwuAQalmLNYZF-sa7MuOgpPkeN0rOZG2Fe_G-t6YUzxoCYaAZLJHvLVcwh6P5Y0C0IxQSfNgJeJMBw2Gh_YTDN9KedLKPkgsatdCJ9D6qNj7LwtCahVVZdp280JIaKSLvr82gRp8aeHdg5dIUpKpvVmC9pcw2FDqdaDG7MEYlZi2zztEt5Cq1igYkXvNUVuPWm1A2Qo_DAcbq3vejmXvLlTFnuZEL1rNAogFBiZ2GQ1ZAF1y7cEKm6fHMZ7-Of9N9xK2TUmU1i0iidHZGMMiNo49p9Xeiw0AaN1WAhepkDWYhDO8iHSBDUZRemg3XSYFHysnDliUkumaS_T5PhwQJ9srUBIT1tsEEgL-AcnrqqEwQ6lnsVyE4qrl5I_WKIAMnkCpjtXXMKpjiINQmu1OTOK01L3ibgaGnqmXbPDV88wPZZl_jVKHzqkwbM7cDfQYb1-zTKHKAqYcHxbpnVo3oGihJR1tTHqR9I8dQkT0k_bFs5dsnF0nDlTtwcGT9_rZXR6rYPZuRiLR6ntYCmqqP3KuCdTNRSxNPAMNz2kQBO_BPcODOwtbYb-yEf-vjUbH8nwFaMMsC-NXqamZA5DIpuqwEU96PjxdcT_6o9gqV82JaQ-OWIFflXuT6l_W-ENqkqiqDNtHWfit427sPnIGjJeB_zCpwejAYLTKf8oTCqT9rMkQN5fsOxRdl-JZCgKezUn7ukcZKvr1_fE7Fdz9DUBoDTknbHjptsle_NoZddbOa954L5ai3m5xf-s5FCXBHHwBRadF_XSQFgkMGjEegNVxAlRka8Aj6qInQmNPg8mt03D14OClHvXogix3U1Jjbk9AZhLOpVKUkyDD6_5lfanmTJdhGn3E5NGUCFs8oazLENzQAxr9E08UH4thFxFTqZ8qc1jqf9AvBMbRsImX3_8onu3t7igm-vgJKjmBnyZ40o3BqZTLcjazCCqKeoHevOMj6vsbrGZWehQdN3J5-9pGmckj6pRnLDMmlh_e0CA0Mcftx1Vn-7ebNtVTvqVKZO0EQXLd7geCUUz3ykDDO5SBj52LYYZ5so7b6IyPEBMQsX44x94vf_yeyXlbgfSo3hwL1g30uStZSU1BYLtTz_zV73D2I1xeA-4KXwd3Wj1bGBs4hCfqVP6h7L1CL-ljyYLveeCajGfOUKm1dCaNlRIvU1CCnVBn6tNHQUDmNqndhOzx37zUbcHdrPrm6rZhSeZuv3pVJotAvHcZL_apWun4_IlACZZIeZNhikhGtcF_rC96YP3kGZr71T6OrRFRDjxAZL_DnWccPgmVXs3gTUcDVdwuFVXIwNQ8F3WWUltua9lSqKDD1SjGwe8cwv3uKx9pbiXT9hV0RIVi6U6-jkN8XWOY0z9npdlBRxJPqLHHuL5u_uDlcwAU-_5bVaHDNy8cYKCD9HJhrL_FbnIqPFYN4g9nC4o2Klx0bgyivMuUpaUe_fWePD2ciFHUi1GwzEzaKAkCv13bJchHqw4gdn07j5vj5ykQLXU4ET-B8OCKL8b_kwQcGmLzHg8KYAgL-HHroKZ_9a9qHCaSTc2YapNYoa9_EhkZlezzcPTDpl62WEiskguMvTE8dsNARS6AVOSjQT9Zpzc-o6sQC7UkafaIMRULy35kZvmFsFXwoOfrlMJyCfipAm236vJYzYmgTN8kySbgd1kQtxWkR8E7s7j3zMGGVKc2HZO4GVyWSrJ6n-OCJR6yI5iKfl7P3mfUzQm2bC8E8KKxyteBAyHtCtYJdKRc=w1920-h868";
+        }
+          else {
+            backgroundImage.src = "images/crescendo_feild.png";
+          }
+      
+      
         backgroundImage.onload = () => {
           // Create a temporary canvas to draw the background and the existing content
           const tempCanvas = document.createElement('canvas');
@@ -1348,8 +1358,15 @@ function clearCanvas() {
           body.classList.remove('bg-light');
           navbar.classList.add('navbar-dark');
           navbar.classList.remove('navbar-light', 'bg-white');
-          autoCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')"
-          teleopCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')"
+          if (localStorage.getItem('compOption') === 'undefined') {
+          backgroundImage.src = "https://lh3.googleusercontent.com/fife/ALs6j_GXtQ-sMn9nnWhcDhYQoBECTRw_3dLA6YE4ZD8QwuAQalmLNYZF-sa7MuOgpPkeN0rOZG2Fe_G-t6YUzxoCYaAZLJHvLVcwh6P5Y0C0IxQSfNgJeJMBw2Gh_YTDN9KedLKPkgsatdCJ9D6qNj7LwtCahVVZdp280JIaKSLvr82gRp8aeHdg5dIUpKpvVmC9pcw2FDqdaDG7MEYlZi2zztEt5Cq1igYkXvNUVuPWm1A2Qo_DAcbq3vejmXvLlTFnuZEL1rNAogFBiZ2GQ1ZAF1y7cEKm6fHMZ7-Of9N9xK2TUmU1i0iidHZGMMiNo49p9Xeiw0AaN1WAhepkDWYhDO8iHSBDUZRemg3XSYFHysnDliUkumaS_T5PhwQJ9srUBIT1tsEEgL-AcnrqqEwQ6lnsVyE4qrl5I_WKIAMnkCpjtXXMKpjiINQmu1OTOK01L3ibgaGnqmXbPDV88wPZZl_jVKHzqkwbM7cDfQYb1-zTKHKAqYcHxbpnVo3oGihJR1tTHqR9I8dQkT0k_bFs5dsnF0nDlTtwcGT9_rZXR6rYPZuRiLR6ntYCmqqP3KuCdTNRSxNPAMNz2kQBO_BPcODOwtbYb-yEf-vjUbH8nwFaMMsC-NXqamZA5DIpuqwEU96PjxdcT_6o9gqV82JaQ-OWIFflXuT6l_W-ENqkqiqDNtHWfit427sPnIGjJeB_zCpwejAYLTKf8oTCqT9rMkQN5fsOxRdl-JZCgKezUn7ukcZKvr1_fE7Fdz9DUBoDTknbHjptsle_NoZddbOa954L5ai3m5xf-s5FCXBHHwBRadF_XSQFgkMGjEegNVxAlRka8Aj6qInQmNPg8mt03D14OClHvXogix3U1Jjbk9AZhLOpVKUkyDD6_5lfanmTJdhGn3E5NGUCFs8oazLENzQAxr9E08UH4thFxFTqZ8qc1jqf9AvBMbRsImX3_8onu3t7igm-vgJKjmBnyZ40o3BqZTLcjazCCqKeoHevOMj6vsbrGZWehQdN3J5-9pGmckj6pRnLDMmlh_e0CA0Mcftx1Vn-7ebNtVTvqVKZO0EQXLd7geCUUz3ykDDO5SBj52LYYZ5so7b6IyPEBMQsX44x94vf_yeyXlbgfSo3hwL1g30uStZSU1BYLtTz_zV73D2I1xeA-4KXwd3Wj1bGBs4hCfqVP6h7L1CL-ljyYLveeCajGfOUKm1dCaNlRIvU1CCnVBn6tNHQUDmNqndhOzx37zUbcHdrPrm6rZhSeZuv3pVJotAvHcZL_apWun4_IlACZZIeZNhikhGtcF_rC96YP3kGZr71T6OrRFRDjxAZL_DnWccPgmVXs3gTUcDVdwuFVXIwNQ8F3WWUltua9lSqKDD1SjGwe8cwv3uKx9pbiXT9hV0RIVi6U6-jkN8XWOY0z9npdlBRxJPqLHHuL5u_uDlcwAU-_5bVaHDNy8cYKCD9HJhrL_FbnIqPFYN4g9nC4o2Klx0bgyivMuUpaUe_fWePD2ciFHUi1GwzEzaKAkCv13bJchHqw4gdn07j5vj5ykQLXU4ET-B8OCKL8b_kwQcGmLzHg8KYAgL-HHroKZ_9a9qHCaSTc2YapNYoa9_EhkZlezzcPTDpl62WEiskguMvTE8dsNARS6AVOSjQT9Zpzc-o6sQC7UkafaIMRULy35kZvmFsFXwoOfrlMJyCfipAm236vJYzYmgTN8kySbgd1kQtxWkR8E7s7j3zMGGVKc2HZO4GVyWSrJ6n-OCJR6yI5iKfl7P3mfUzQm2bC8E8KKxyteBAyHtCtYJdKRc=w1920-h868";
+        } else if (localStorage.getItem('compOption') === 'Reefscape') {
+          backgroundImage.src = "https://lh3.googleusercontent.com/fife/ALs6j_GXtQ-sMn9nnWhcDhYQoBECTRw_3dLA6YE4ZD8QwuAQalmLNYZF-sa7MuOgpPkeN0rOZG2Fe_G-t6YUzxoCYaAZLJHvLVcwh6P5Y0C0IxQSfNgJeJMBw2Gh_YTDN9KedLKPkgsatdCJ9D6qNj7LwtCahVVZdp280JIaKSLvr82gRp8aeHdg5dIUpKpvVmC9pcw2FDqdaDG7MEYlZi2zztEt5Cq1igYkXvNUVuPWm1A2Qo_DAcbq3vejmXvLlTFnuZEL1rNAogFBiZ2GQ1ZAF1y7cEKm6fHMZ7-Of9N9xK2TUmU1i0iidHZGMMiNo49p9Xeiw0AaN1WAhepkDWYhDO8iHSBDUZRemg3XSYFHysnDliUkumaS_T5PhwQJ9srUBIT1tsEEgL-AcnrqqEwQ6lnsVyE4qrl5I_WKIAMnkCpjtXXMKpjiINQmu1OTOK01L3ibgaGnqmXbPDV88wPZZl_jVKHzqkwbM7cDfQYb1-zTKHKAqYcHxbpnVo3oGihJR1tTHqR9I8dQkT0k_bFs5dsnF0nDlTtwcGT9_rZXR6rYPZuRiLR6ntYCmqqP3KuCdTNRSxNPAMNz2kQBO_BPcODOwtbYb-yEf-vjUbH8nwFaMMsC-NXqamZA5DIpuqwEU96PjxdcT_6o9gqV82JaQ-OWIFflXuT6l_W-ENqkqiqDNtHWfit427sPnIGjJeB_zCpwejAYLTKf8oTCqT9rMkQN5fsOxRdl-JZCgKezUn7ukcZKvr1_fE7Fdz9DUBoDTknbHjptsle_NoZddbOa954L5ai3m5xf-s5FCXBHHwBRadF_XSQFgkMGjEegNVxAlRka8Aj6qInQmNPg8mt03D14OClHvXogix3U1Jjbk9AZhLOpVKUkyDD6_5lfanmTJdhGn3E5NGUCFs8oazLENzQAxr9E08UH4thFxFTqZ8qc1jqf9AvBMbRsImX3_8onu3t7igm-vgJKjmBnyZ40o3BqZTLcjazCCqKeoHevOMj6vsbrGZWehQdN3J5-9pGmckj6pRnLDMmlh_e0CA0Mcftx1Vn-7ebNtVTvqVKZO0EQXLd7geCUUz3ykDDO5SBj52LYYZ5so7b6IyPEBMQsX44x94vf_yeyXlbgfSo3hwL1g30uStZSU1BYLtTz_zV73D2I1xeA-4KXwd3Wj1bGBs4hCfqVP6h7L1CL-ljyYLveeCajGfOUKm1dCaNlRIvU1CCnVBn6tNHQUDmNqndhOzx37zUbcHdrPrm6rZhSeZuv3pVJotAvHcZL_apWun4_IlACZZIeZNhikhGtcF_rC96YP3kGZr71T6OrRFRDjxAZL_DnWccPgmVXs3gTUcDVdwuFVXIwNQ8F3WWUltua9lSqKDD1SjGwe8cwv3uKx9pbiXT9hV0RIVi6U6-jkN8XWOY0z9npdlBRxJPqLHHuL5u_uDlcwAU-_5bVaHDNy8cYKCD9HJhrL_FbnIqPFYN4g9nC4o2Klx0bgyivMuUpaUe_fWePD2ciFHUi1GwzEzaKAkCv13bJchHqw4gdn07j5vj5ykQLXU4ET-B8OCKL8b_kwQcGmLzHg8KYAgL-HHroKZ_9a9qHCaSTc2YapNYoa9_EhkZlezzcPTDpl62WEiskguMvTE8dsNARS6AVOSjQT9Zpzc-o6sQC7UkafaIMRULy35kZvmFsFXwoOfrlMJyCfipAm236vJYzYmgTN8kySbgd1kQtxWkR8E7s7j3zMGGVKc2HZO4GVyWSrJ6n-OCJR6yI5iKfl7P3mfUzQm2bC8E8KKxyteBAyHtCtYJdKRc=w1920-h868";
+        }
+          else {
+            backgroundImage.src = "images/crescendo_feild.png";
+          }
+          
           document.querySelectorAll('.navbar').forEach(element => {
             element.classList.add('bg-dark');
             element.classList.remove('bg-white');
@@ -1367,7 +1384,7 @@ function clearCanvas() {
           navbar.classList.add('navbar-light');
           navbar.classList.remove('navbar-dark', 'bg-dark');
           autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')"
-          teleopCanvas.style.backgroundImage = "url('images/crescendo_feild.png')"
+          teleopCanvas.style.backgroundImage = "url(''images/crescendo_feild.png'')"
           document.querySelectorAll('.navbar').forEach(element => {
             if (!element.closest('#aboutModal')) {
             element.classList.add('bg-white');
@@ -1381,6 +1398,11 @@ function clearCanvas() {
             }
           });
         }
+        if (localStorage.getItem('compOption') === 'undefined') {
+          
+        } else {
+         
+        }
 
         // Initialize dark mode from local storage
         if (localStorage.getItem('darkMode') === 'true') {
@@ -1389,6 +1411,7 @@ function clearCanvas() {
         } else {
           disableDarkMode();
         }
+        
         body.style.display = 'block';
         // Toggle dark mode on change
         toggle.addEventListener('change', function () {

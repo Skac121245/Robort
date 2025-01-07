@@ -28,7 +28,7 @@ const createWindow = () => {
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: false, // It's often recommended to keep contextIsolation enabled for security purposes, but it requires additional setup to expose APIs to the renderer.
-        devTools: false
+        devTools: true
       }
     })
   

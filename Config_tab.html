@@ -233,7 +233,7 @@ body.bg-dark .dropdown-menu {
                             <a class="dropdown-item" href="./scoutingGen.html">Scouting Generator</a>
                             
                             <a class="dropdown-item" href="./pitScouterFRONT.html">Pit Scouter</a>
-                            <a class="dropdown-item" href="./pitScouterBACK.html">Pit Scouter BACK</a>
+                            <a class="dropdown-item" href="./pitScouterBACK.html">Pit Scouter Backend</a>
                         </div>
                     </li>
                     <li class="nav-item">
@@ -286,7 +286,27 @@ body.bg-dark .dropdown-menu {
                 </div>
             </div>
         </div>
-    
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Competition Settings
+                    </div>
+                    <div class="card-body">
+                        <form id="compForm">
+                            <div class="form-group">
+                                <label for="compOption">What competition season would you like to use?</label>
+                                <select id="compOption" class="form-control bg-dark">
+                                    <option value="Crescendo">2024 - Crescendo</option>
+                                    <option value="Reefscape">2025 - Reefscape</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-12 mb-4">
                 <div class="card">
@@ -606,6 +626,13 @@ body.bg-dark .dropdown-menu {
                 const eventCode = document.getElementById('eventCode').value;
                 localStorage.setItem('eventCode', eventCode);
                 alert('Event code saved.');
+            });
+
+            document.getElementById('compForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const compOption = document.getElementById('compOption').value;
+                localStorage.setItem('compOption', compOption);
+                alert('Competition settings saved.');
             });
     
            document.getElementById('teamForm').addEventListener('submit', function(e) {
