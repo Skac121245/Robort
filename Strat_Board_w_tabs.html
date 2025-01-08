@@ -478,18 +478,6 @@
         </div>
       </div>
 
-      <!-- ADDED OR MODIFIED: Game Select Dropdown -->
-      <div class="row align-items-center" style="margin-top:20px;">
-        <div class="col-sm-12">
-          <label for="gameSelect" style="font-size: 30px; font-weight: 600;">Select a game</label>
-          <select id="gameSelect" class="form-control">
-            <option value="reefscape">ReefScape</option>
-            <option value="crescendo" selected>Crescendo</option>
-          </select>
-        </div>
-      </div>
-      <!-- / Game Select Dropdown -->
-
     </div>
 
     <div id="other-button-container">
@@ -684,27 +672,10 @@
 
       document.addEventListener('DOMContentLoaded', function () {
 
-        const gameSelect = document.getElementById("gameSelect");
   const autoCanvas = document.getElementById("autoCanvas");
   const teleopCanvas = document.getElementById("teleopCanvas");
 
-  // Set default value to ReefScape
-  gameSelect.value = "reefscape";
-
-  // Set default background image to ReefScape
-  autoCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
-  teleopCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
-
-  // Listen for changes in gameSelect dropdown
-  gameSelect.addEventListener("change", function () {
-    if (gameSelect.value === "reefscape") {
-      autoCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
-      teleopCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
-    } else if (gameSelect.value === "crescendo") {
-      autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
-      teleopCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
-    }
-  });
+ 
         updateSaveButton();
         const uploadButton = document.getElementById('uploadMatchData');
         const fileInput = document.getElementById('uploadMatchData');
@@ -723,11 +694,6 @@
         const canvas = isAuto ? document.getElementById('autoCanvas') : document.getElementById('teleopCanvas');
         const backgroundImage = new Image();
         backgroundImage.src = isAuto ? "images/crescendo_feild.png" : "images/crescendo_feild.png";
-
-        // We'll override this if the user selected ReefScape:
-        if (document.getElementById('gameSelect').value === 'reefscape') {
-          backgroundImage.src = "images/reefscapefield.png";
-        }
 
         const fileName = `${isAuto ? 'autonomous' : 'teleop'}-${selectedMatchKey}-canvas.png`;
 
@@ -817,17 +783,6 @@
       };
 
       setupCanvas();
-
-      // ADDED OR MODIFIED: Listen for game changes
-      document.getElementById('gameSelect').addEventListener('change', function() {
-        if (this.value === 'reefscape') {
-          canvasAuto.style.backgroundImage = "url('images/reefscapefield.png')";
-          canvasTeleop.style.backgroundImage = "url('images/reefscapefield.png')";
-        } else {
-          canvasAuto.style.backgroundImage = "url('images/crescendo_feild.png')";
-          canvasTeleop.style.backgroundImage = "url('images/crescendo_feild.png')";
-        }
-      });
 
       function onPageLoad() {
         // Always start on auto
@@ -1129,11 +1084,6 @@
 
       matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
       fetchMatches();
-
-      document.addEventListener("DOMContentLoaded", function() {
-  const gameSelect = document.getElementById("gameSelect");
-  gameSelect.value = "reefscape"; // Ensure the placeholder is selected initially
-});
     </script>
 
     <script>
@@ -1150,8 +1100,8 @@
           body.classList.remove('bg-light');
           navbar.classList.add('navbar-dark');
           navbar.classList.remove('navbar-light', 'bg-white');
-          autoCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')";
-          teleopCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')";
+          // autoCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')";
+          // teleopCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')";
           document.querySelectorAll('.navbar').forEach(element => {
             element.classList.add('bg-dark');
             element.classList.remove('bg-white');
@@ -1160,6 +1110,7 @@
             element.classList.add('bg-dark');
             element.classList.remove('bg-white');
           });
+          fadeCanvasToDark(autoCanvas, teleopCanvas);
         }
 
         function disableDarkMode() {
@@ -1167,8 +1118,8 @@
           body.classList.remove('bg-dark');
           navbar.classList.add('navbar-light');
           navbar.classList.remove('navbar-dark', 'bg-dark');
-          autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
-          teleopCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
+          // autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
+          // teleopCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
           document.querySelectorAll('.navbar').forEach(element => {
             if (!element.closest('#aboutModal')) {
               element.classList.add('bg-white');
@@ -1181,6 +1132,7 @@
               element.classList.add('bg-white');
             }
           });
+          fadeCanvasToLight(autoCanvas, teleopCanvas);
         }
 
         if (localStorage.getItem('darkMode') === 'true') {
@@ -1305,6 +1257,73 @@
         document.body.style.display = "block";
       };
     </script>
+       <script>
+        // Use local storage value for the game background instead of a dropdown
+        const compOption = localStorage.getItem('compOption') || 'Reefscape';
+        const autoCanvas = document.getElementById("autoCanvas");
+        const teleopCanvas = document.getElementById("teleopCanvas");
+        const body = document.body;
+        if (compOption === "Reefscape") {
+          if (localStorage.getItem('darkMode') === "true") {
+            autoCanvas.style.backgroundImage = "url('images/reefscapefielddark.png')";
+            teleopCanvas.style.backgroundImage = "url('images/reefscapefielddark.png')";
+        } else {
+          autoCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
+          teleopCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
+        }
+        } else if (localStorage.getItem('darkMode') === "true") {
+            autoCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')";
+            teleopCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')";
+        } else {
+          autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
+          teleopCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
+        }
+      </script>
+      <script>
+        function fadeCanvasToDark(autoCanvas, teleopCanvas) {
+          // Ensure opacity transitions are set (fade-out/in)
+          autoCanvas.style.transition = "opacity 0.5s ease-in-out";
+          teleopCanvas.style.transition = "opacity 0.5s ease-in-out";
+      
+          // 1) Fade both canvases out
+          autoCanvas.style.opacity = 0;
+          teleopCanvas.style.opacity = 0;
+      
+          // 2) After 500ms, swap background images and fade back in
+          setTimeout(() => {
+            if (compOption === "Reefscape") {
+              autoCanvas.style.backgroundImage = "url('images/reefscapefielddark.png')";
+              teleopCanvas.style.backgroundImage = "url('images/reefscapefielddark.png')";
+            } else {
+              autoCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')";
+              teleopCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')";
+            }
+            autoCanvas.style.opacity = 1;
+            teleopCanvas.style.opacity = 1;
+          }, 250);
+        }
+      
+        function fadeCanvasToLight(autoCanvas, teleopCanvas) {
+          // Same transition for the light side
+          autoCanvas.style.transition = "opacity 0.5s ease-in-out";
+          teleopCanvas.style.transition = "opacity 0.5s ease-in-out";
+      
+          autoCanvas.style.opacity = 0;
+          teleopCanvas.style.opacity = 0;
+      
+          setTimeout(() => {
+            if (compOption === "Reefscape") {
+              autoCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
+              teleopCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
+            } else {
+              autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
+              teleopCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
+            }
+            autoCanvas.style.opacity = 1;
+            teleopCanvas.style.opacity = 1;
+          }, 250);
+        }
+      </script>      
 </body>
 
 </html>
