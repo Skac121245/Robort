@@ -6,17 +6,12 @@
   <script src="jquery-3.3.1.slim.min.js"></script>
   <link href="bootstrap.min.css" rel="stylesheet">
   <script src="showdown.min.js"></script>
-  <!-- <header>
-    <link rel="manifest" href="/manifest.json">
-    <div class="container">
-        <h1>Robort</h1>
-        <h2>Match Planning</h2>
-    </div>
-</header> -->
+
   <style>
-      #aboutTabsContent > .tab-pane {
-    padding-top: 20px; /* Add space above the content in each tab */
-}
+    #aboutTabsContent > .tab-pane {
+      padding-top: 20px; /* Add space above the content in each tab */
+    }
+
     body,
     nav,
     header,
@@ -32,16 +27,6 @@
       display: block;
     }
 
-    /* body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0px;
-    background-color: #f8f9fa;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  } */
-
     h1 {
       margin: 0;
     }
@@ -53,7 +38,6 @@
     header {
       width: 100%;
       display: block;
-      /* unicode-bidi: isolate; */
       background-color: #007bff;
       color: #ffffff;
       padding: 20px;
@@ -61,27 +45,12 @@
       margin-bottom: 0px;
     }
 
-
-    /* .container {
-    border-radius: 10px;
-    max-width: 800px;
-    margin: auto;
-    padding: 0px;
-    text-align: center;
-  } */
-
-
-
     .controls {
       display: flex;
       flex-direction: column;
-      /* Stack controls vertically */
       align-items: center;
-      /* Align controls in the middle */
       width: 100%;
-      /* Use full width to manage spacing better */
       gap: 15px;
-      /* Space out the individual controls */
     }
 
     select,
@@ -107,13 +76,11 @@
       background-color: #45a049;
     }
 
-    #backgroundImage {
-      /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
-    }
+    #backgroundImage {}
 
+    /* Default to crescendo images; can be changed by script */
     #autoCanvas {
       width: 100%;
-      /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
       background-image: url("images/crescendo_feild.png");
       background-size: contain;
       border: 1px solid #000;
@@ -123,7 +90,6 @@
 
     #teleopCanvas {
       width: 100%;
-      /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
       background-image: url("images/crescendo_feild.png");
       background-size: contain;
       border: 1px solid #000;
@@ -141,13 +107,9 @@
     #eventCodeInput {
       background-color: #ae83e3;
       padding: 5px 10px;
-      /* Adds padding inside the span for better visibility */
       border-radius: 5px;
-      /* Optional: adds rounded corners */
       margin-top: 10px;
-      /* Adds space above the span */
       display: inline-block;
-      /* Makes the span respect padding and margin */
     }
 
     #newOptionContainer {
@@ -165,43 +127,25 @@
     #button-container {
       display: flex;
       justify-content: space-around;
-      /* Space out buttons evenly */
       flex-wrap: wrap;
-      /* Allow buttons to wrap on smaller screens */
       gap: 20px;
-      /* Space between buttons when they wrap */
       width: 80%;
       margin-top: 10px;
-      /* Add some space above the button container */
-    }
-
-    #button-container button {
-      flex: 1;
-      /* Allow buttons to grow and fill the space */
-      margin: 0 5px;
-      /* Add margin on the sides */
-      min-width: 180px;
-      /* Minimum width for buttons to maintain readability */
     }
 
     #other-button-container {
       display: flex;
       justify-content: space-around;
-      /* Space out buttons evenly */
       flex-wrap: wrap;
-      /* Allow buttons to wrap on smaller screens */
       gap: 50px;
-      /* Space between buttons when they wrap */
       width: 80%;
       margin-top: 10px;
-      /* Add some space above the button container */
     }
 
     #manualTeamEntry div {
       display: flex;
       justify-content: center;
       gap: 10px;
-      /* Space between input fields */
     }
 
     #manualTeamEntry {
@@ -209,15 +153,12 @@
       flex-direction: column;
       align-items: center;
       gap: 5px;
-      /* Space between rows */
     }
 
     #switchTabs {
       background-color: hsl(206, 100%, 61%);
       font-size: 25px;
-
       padding: 0;
-      /* background-color: #ff6161; */
     }
 
     #clear {
@@ -233,28 +174,22 @@
 
     #matchSelect-container {
       margin-top: 20px;
-      /* Adds some spacing above the dropdown on smaller screens */
     }
 
     @media (max-width: 768px) {
       .container h2 {
         text-align: center;
-        /* Center-align the heading on smaller screens */
         margin-bottom: 20px;
-        /* Adds more space between the heading and the dropdown */
       }
 
       #matchSelect-container {
         text-align: center;
-        /* Center-align the dropdown for a balanced look */
       }
 
       #matchSelect {
         width: 100%;
-        /* Ensures the select element uses full width available */
       }
     }
-
 
     .eventAndDirections {
       display: flex;
@@ -272,7 +207,6 @@
       background-color: #4CAF50;
       border: none;
       border-radius: 5px;
-      /* box-shadow: 0 9px #999; */
     }
 
     .button:hover {
@@ -281,44 +215,23 @@
 
     .button:active {
       background-color: #3e8e41;
-      /* box-shadow: 0 5px #666; */
-      /* transform: translateY(4px); */
     }
 
-    /* Additional styling for file input to make it invisible */
     #uploadMatchData {
       display: none;
     }
-
-
-
-    /* Adjust the .controls container to stack its children vertically */
-    .controls {
-      flex-direction: column;
-      align-items: center;
-      /* Align items for a centered layout */
-    }
-
-
 
     .brand_con a {
       font-weight: 100;
       color: rgba(0, 0, 0, .9);
     }
 
-    /* .container {
-        max-width: 1170px;
-        margin: 20px;
-    } */
-
     .flex-row {
       display: flex;
       flex-direction: row;
     }
 
-    .nav_container {
-      /* width: 1000px; */
-    }
+    .nav_container {}
 
     @media screen and (max-width: 600px) {
       .flex-row {
@@ -338,7 +251,6 @@
     .color_indi {
       transition: all 0.3s ease;
       box-shadow: none;
-
     }
 
     #tabLabel {
@@ -352,8 +264,6 @@
       font-size: 25px;
       padding: 2px;
     }
-
-
 
     .switch input {
       opacity: 0;
@@ -385,14 +295,12 @@
       border-radius: 50%;
     }
 
-    input:checked+.slider {
+    input:checked + .slider {
       background-color: #555;
-      /* Dark mode slider color */
     }
 
-    input:checked+.slider:before {
+    input:checked + .slider:before {
       transform: translateX(46px);
-      /* Slide to the right */
     }
 
     .icon {
@@ -402,92 +310,84 @@
       transform: translateY(-50%);
       font-size: 20px;
       transition: opacity 0.4s;
-      /* Smooth transition for opacity */
     }
 
     .sun {
       left: 10px;
       opacity: 0;
-      /* Start hidden */
     }
 
     .moon {
       right: 10px;
       opacity: 1;
-      /* Start visible */
     }
 
-    input:checked+.slider .sun {
+    input:checked + .slider .sun {
       opacity: 1;
-      /* Fade in when dark mode is on */
     }
 
-    input:checked+.slider .moon {
+    input:checked + .slider .moon {
       opacity: 0;
-      /* Fade out when dark mode is on */
     }
 
-    input:not(:checked)+.slider .sun {
+    input:not(:checked) + .slider .sun {
       opacity: 0;
-      /* Remain hidden when light mode is on */
     }
 
-    input:not(:checked)+.slider .moon {
+    input:not(:checked) + .slider .moon {
       opacity: 1;
-      /* Remain visible when light mode is on */
     }
 
-    body .bg-dark #patch-notes, #aboutTabsContent {
-    color: #f8f9fa !important; /* Sets the text color for all content within the patch-notes container */
-}
+    body .bg-dark #patch-notes,
+    #aboutTabsContent {
+      color: #f8f9fa !important;
+    }
 
-body .bg-dark #patch-notes h3, #patch-notes p, #patch-notes a {
-    color: inherit !important; /* Ensures that headers, paragraphs, and links inherit the same color */
-}
+    body .bg-dark #patch-notes h3,
+    #patch-notes p,
+    #patch-notes a {
+      color: inherit !important;
+    }
 
-body .bg-light #patch-notes, #aboutTabsContent {
-    color: #343a40 !important; /* Sets the text color for all content within the patch-notes container */
-}
+    body .bg-light #patch-notes,
+    #aboutTabsContent {
+      color: #343a40 !important;
+    }
 
-body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
-    color: inherit !important; /* Ensures that headers, paragraphs, and links inherit the same color */
-}
-    /* Styles for dark and light modes */
+    body .bg-light #patch-notes h3,
+    #patch-notes p,
+    #patch-notes a {
+      color: inherit !important;
+    }
+
     .bg-dark,
     .navbar-dark,
     .card {
       background-color: #343a40 !important;
-      /* Dark gray background */
       color: #f8f9fa !important;
-      /* Light text for readability */
     }
 
     .bg-light,
     .navbar-light,
     .card {
       background-color: #f8f9fa !important;
-      /* Light gray background */
       color: #343a40 !important;
-      /* Dark text for readability */
     }
 
-    /* Enhanced specific selectors for navbar in dark mode */
     .navbar-dark {
       background-color: #343a40 !important;
-      /* Dark gray background */
       color: #f8f9fa !important;
-      /* Light text for readability */
     }
 
     .navbar-dark .navbar-nav .nav-link,
     .navbar-dark .navbar-brand {
       color: #f8f9fa !important;
-      /* Ensure navbar text colors are adjusted for dark mode */
     }
 
     .nav-link.active {
-  color: #343a40 !important;
-}
+      color: #343a40 !important;
+    }
+
     .navbar-dark .navbar-toggler-icon {
       background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248, 249, 250, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
     }
@@ -495,12 +395,13 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
     .color_con {
       flex: 1;
     }
-</style>
-<script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    document.body.style.display = "none"; // Hide body as soon as DOM is ready but not fully loaded
-                });
-            </script>
+
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      document.body.style.display = "none"; // Hide body as soon as DOM is ready but not fully loaded
+    });
+  </script>
 </head>
 
 <body>
@@ -528,9 +429,8 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="./Strat_Board_w_tabs.html">Canvas</a>
               <a class="dropdown-item" href="./scoutingGen.html">Scouting Generator</a>
-              
               <a class="dropdown-item" href="./pitScouterFRONT.html">Pit Scouter</a>
-              <a class="dropdown-item" href="./pitScouterBACK.html">Pit Scouter Backend</a>
+              <a class="dropdown-item" href="./pitScouterBACK.html">Pit Scouter BACK</a>
             </div>
           </li>
           <li class="nav-item">
@@ -544,16 +444,16 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
           </li>
           <li class="nav-item">
             <a class="nav-link" href="dataBaseTeamPage.html">Database</a>
-        </li>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="scoutingUI.html">ScoutingUI</a>
-        </li>
+          </li>
         </ul>
         <label class="switch">
           <input type="checkbox" id="darkModeToggle">
           <span class="slider round">
-            <span class="icon sun">🌞</span> <!-- Sun icon -->
-            <span class="icon moon">🌜</span> <!-- Moon icon -->
+            <span class="icon sun">🌞</span>
+            <span class="icon moon">🌜</span>
           </span>
         </label>
       </div>
@@ -564,9 +464,11 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
   <div class="controls">
 
     <div class="container">
-      <div class="row align-items-center"> <!-- Ensure vertical alignment is centered -->
+      <div class="row align-items-center">
         <div class="col-sm-12 col-md-6">
-          <h2>Current Event Code From <span id="storeOrConfig"></span>: <span id="eventCodeInput"></span></h2>
+          <h2>Current Event Code From <span id="storeOrConfig"></span>:
+            <span id="eventCodeInput"></span>
+          </h2>
         </div>
         <div class="col-sm-12 col-md-6">
           <div id="matchSelect-container" class="form-group">
@@ -575,8 +477,20 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
           </div>
         </div>
       </div>
-    </div>
 
+      <!-- ADDED OR MODIFIED: Game Select Dropdown -->
+      <div class="row align-items-center" style="margin-top:20px;">
+        <div class="col-sm-12">
+          <label for="gameSelect" style="font-size: 30px; font-weight: 600;">Select a game</label>
+          <select id="gameSelect" class="form-control">
+            <option value="reefscape">ReefScape</option>
+            <option value="crescendo" selected>Crescendo</option>
+          </select>
+        </div>
+      </div>
+      <!-- / Game Select Dropdown -->
+
+    </div>
 
     <div id="other-button-container">
 
@@ -584,7 +498,6 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
 
       <input type="file" id="uploadMatchData" style="display: none;" />
       <label for="uploadMatchData" class="button">Upload Match Data</label>
-
 
       <input type="file" id="fileInput" style="display: none;" />
       <button id="toggleDataInputMode">Switch to Manual Team Entry</button>
@@ -608,16 +521,11 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
       <button id="clear" onclick="clearCanvas()">Clear</button>
       <button id="toggleEraser">Toggle Eraser</button>
       <button onclick="switchTabs()" id="switchTabs">Switch Tabs</button>
-
     </div>
-
-    <!-- <input type="text" id="eventCodeInput" placeholder="Enter Event Code" value="2024mabri"/> -->
 
     <h1 id="tabLabel">Autonomous</h1>
     <button class="color_indi" id="topRect"
       style="background-color: transparent; width: 70%; height: 100%; display: inline-block;"></button>
-
-
 
     <div id="backgroundImage">
       <canvas id="autoCanvas" width="1536" height="664" style="display: show;"></canvas>
@@ -630,159 +538,119 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
     <!-- About the Project Modal -->
     <div id="aboutModal" class="modal text-center modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div class="modal-body">
-                  <ul class="nav nav-tabs" id="aboutTabs" role="tablist">
-                      <li class="nav-item">
-                          <a class="nav-link active" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="true">About</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" id="patch-notes-tab" data-toggle="tab" href="#patch-notes" role="tab" aria-controls="patch-notes" aria-selected="false">Patch Notes</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" id="feedback-tab" data-toggle="tab" href="#feedback" role="tab" aria-controls="feedback" aria-selected="false">Feedback</a>
-                    </li>
-                  </ul>
-                  <div class="tab-content" id="aboutTabsContent">
-                      <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
-                          <h2>Robort</h2>
-                          <h4>The ultimate in FRC competition gear</h4>
-                          <h5>Co-developed by Ben Skraly and Toba Banjo</h5>
-                          <p>Whether you're preparing to scout a heated match, sharing information about your team, or analyzing other robots, Robort has got you covered. Complete with modular design and accessible systems, it's the best tool both on and off the field.</p>
-                          <span>&copy; <script>document.write(new Date().getFullYear());</script> Watertown High School Robotics</span>
-                      </div>
-                      <div class="tab-pane fade" id="patch-notes" role="tabpanel" aria-labelledby="patch-notes-tab">
-                          <!-- Patch notes will be populated here by JavaScript -->
-                      </div>
-                      <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
-                        <form id="feedbackForm">
-                            <div class="form-group">
-                                <label for="feedbackType">Select Feedback Type:</label>
-                                <select class="form-control" id="feedbackType" onchange="toggleFeedbackForm()">
-                                    <option value="feature">Feature Suggestion</option>
-                                    <option value="bug">Bug Report</option>
-                                </select>
-                            </div>
-                            <!-- Feature Suggestion Form -->
-                            <div id="featureForm" style="display: block;">
-                                <div class="form-group">
-                                    <label>Feature Area: <label style="color:red">*</label></label>
-                                    <div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="featureArea" id="statistics" value="Statistics/Data">
-                                            <label class="form-check-label" for="statistics">Statistics/Data</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="featureArea" id="scouting" value="Scouting">
-                                            <label class="form-check-label" for="scouting">Scouting</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="featureArea" id="quality" value="Quality of Life">
-                                            <label class="form-check-label" for="quality">Quality of Life</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="featureArea" id="other" value="Other">
-                                            <label class="form-check-label" for="other">Other</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="featureDescription">Description:</label>
-                                    <textarea class="form-control" id="featureDescription" rows="3"></textarea>
-                                </div>
-                            </div>
-                            <!-- Bug Report Form -->
-                            <div id="bugForm" style="display: none;">
-                                <div class="form-group">
-                                    <label for="bugTitle">Title:</label>
-                                    <input type="text" class="form-control" id="bugTitle">
-                                </div>
-                                <div class="form-group">
-                                    <label for="bugSummary">Issue Summary:</label>
-                                    <textarea class="form-control" id="bugSummary" rows="2"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="bugSteps">Steps to Reproduce:</label>
-                                    <textarea class="form-control" id="bugSteps" rows="3"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="bugResults">Expected vs. Actual Results:</label>
-                                    <textarea class="form-control" id="bugResults" rows="2"></textarea>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
-                    </div>                    
-                  </div>
-              </div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
+          <div class="modal-body">
+            <ul class="nav nav-tabs" id="aboutTabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="about-tab" data-toggle="tab" href="#about" role="tab"
+                  aria-controls="about" aria-selected="true">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="patch-notes-tab" data-toggle="tab" href="#patch-notes" role="tab"
+                  aria-controls="patch-notes" aria-selected="false">Patch Notes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="feedback-tab" data-toggle="tab" href="#feedback" role="tab"
+                  aria-controls="feedback" aria-selected="false">Feedback</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="aboutTabsContent">
+              <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
+                <h2>Robort</h2>
+                <h4>The ultimate in FRC competition gear</h4>
+                <h5>Co-developed by Ben Skraly and Toba Banjo</h5>
+                <p>Whether you're preparing to scout a heated match, sharing information about your team, or analyzing
+                  other robots, Robort has got you covered. Complete with modular design and accessible systems, it's the
+                  best tool both on and off the field.</p>
+                <span>&copy; <script>document.write(new Date().getFullYear());</script> Watertown High School Robotics</span>
+              </div>
+              <div class="tab-pane fade" id="patch-notes" role="tabpanel" aria-labelledby="patch-notes-tab">
+              </div>
+              <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
+                <form id="feedbackForm">
+                  <div class="form-group">
+                    <label for="feedbackType">Select Feedback Type:</label>
+                    <select class="form-control" id="feedbackType" onchange="toggleFeedbackForm()">
+                      <option value="feature">Feature Suggestion</option>
+                      <option value="bug">Bug Report</option>
+                    </select>
+                  </div>
+                  <div id="featureForm" style="display: block;">
+                    <div class="form-group">
+                      <label>Feature Area: <label style="color:red">*</label></label>
+                      <div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="featureArea" id="statistics"
+                            value="Statistics/Data">
+                          <label class="form-check-label" for="statistics">Statistics/Data</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="featureArea" id="scouting"
+                            value="Scouting">
+                          <label class="form-check-label" for="scouting">Scouting</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="featureArea" id="quality"
+                            value="Quality of Life">
+                          <label class="form-check-label" for="quality">Quality of Life</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="featureArea" id="other"
+                            value="Other">
+                          <label class="form-check-label" for="other">Other</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="featureDescription">Description:</label>
+                      <textarea class="form-control" id="featureDescription" rows="3"></textarea>
+                    </div>
+                  </div>
+                  <div id="bugForm" style="display: none;">
+                    <div class="form-group">
+                      <label for="bugTitle">Title:</label>
+                      <input type="text" class="form-control" id="bugTitle">
+                    </div>
+                    <div class="form-group">
+                      <label for="bugSummary">Issue Summary:</label>
+                      <textarea class="form-control" id="bugSummary" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="bugSteps">Steps to Reproduce:</label>
+                      <textarea class="form-control" id="bugSteps" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="bugResults">Expected vs. Actual Results:</label>
+                      <textarea class="form-control" id="bugResults" rows="2"></textarea>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-  </div>
+    </div>
 
 
     <script src="jquery-3.3.1.slim.min.js"></script>
     <script src="bootstrap.min.js"></script>
     <script src="electron.js"></script>
     <script>
-
-
-      // import saveCanvas from "save-canvas-to-image";
       let teamPositionsAuto = [];
       let teamPositionsTeleop = [];
-
       let isManualEntry = false;
       let apiData = [];
-
       let eraserEnabled = false;
-
       let selectedMatchKey = "";
       let eventCode = '';
-
-      //   document.getElementById('saveAutoCanvas').addEventListener('click', function() {
-      //     const canvas = document.getElementById('teleopCanvas');
-      //     const dataURL = canvas.toDataURL('image/png');
-      //     const link = document.createElement('a');
-      //     link.download = `autonomous-${selectedMatchKey}-canvas.png`;
-      //     link.href = dataURL;
-      //     link.click();
-      // });
-
-      // document.getElementById('saveAutoCanvas').addEventListener('click', function() {
-      //     // Assume canvas size is constant, and we want to preserve it
-      //     const canvas = document.getElementById('teleopCanvas');
-      //     const ctx = canvas.getContext('2d');
-
-      //     // Background Image
-      //     const backgroundImage = new Image();
-      //     backgroundImage.src = "images/crescendo_feild.png"; // Ensure this path is correct
-
-      //     backgroundImage.onload = () => {
-      //         // Create a temporary canvas to draw the background and the existing content
-      //         const tempCanvas = document.createElement('canvas');
-      //         const tempCtx = tempCanvas.getContext('2d');
-
-      //         tempCanvas.width = canvas.width;
-      //         tempCanvas.height = canvas.height;
-
-      //         // Draw the background on the temp canvas, scaled to fit
-      //         tempCtx.drawImage(backgroundImage, 0, 0, tempCanvas.width, tempCanvas.height);
-
-      //         // Now draw the original canvas content on top of the background
-      //         tempCtx.drawImage(canvas, 0, 0);
-
-      //         // Save the combined content from the temporary canvas
-      //         const dataURL = tempCanvas.toDataURL('image/png');
-      //         const link = document.createElement('a');
-      //         link.download = `autonomous-${selectedMatchKey}-canvas.png`; // You can change the filename
-      //         link.href = dataURL;
-      //         link.click();
-      //     };
-      // });
+      let isAuto = true; // keep track of which tab we're on
 
       document.getElementById('toggleDataInputMode').addEventListener('click', function () {
         isManualEntry = !isManualEntry;
@@ -809,85 +677,90 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
           return;
         }
 
-        // Assuming drawTeams function can handle team numbers directly
         clearCanvas();
         drawTeams(blueTeams.map(team => `frc${team}`), bluePositions, 'blue');
         drawTeams(redTeams.map(team => `frc${team}`), redPositions, 'red');
       });
 
-
-
       document.addEventListener('DOMContentLoaded', function () {
+
+        const gameSelect = document.getElementById("gameSelect");
+  const autoCanvas = document.getElementById("autoCanvas");
+  const teleopCanvas = document.getElementById("teleopCanvas");
+
+  // Set default value to ReefScape
+  gameSelect.value = "reefscape";
+
+  // Set default background image to ReefScape
+  autoCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
+  teleopCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
+
+  // Listen for changes in gameSelect dropdown
+  gameSelect.addEventListener("change", function () {
+    if (gameSelect.value === "reefscape") {
+      autoCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
+      teleopCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
+    } else if (gameSelect.value === "crescendo") {
+      autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
+      teleopCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
+    }
+  });
         updateSaveButton();
         const uploadButton = document.getElementById('uploadMatchData');
         const fileInput = document.getElementById('uploadMatchData');
 
         uploadButton.addEventListener('click', function () {
-          fileInput.click(); // Trigger file input when upload button is clicked
+          fileInput.click(); 
         });
 
         fileInput.addEventListener('change', function (event) {
-          uploadData(event); // Call your existing function to handle file upload
+          uploadData(event); 
         });
 
-      }
+      });
 
-
-
-      );
       document.getElementById('saveCanvas').addEventListener('click', function () {
         const canvas = isAuto ? document.getElementById('autoCanvas') : document.getElementById('teleopCanvas');
-        const ctx = canvas.getContext('2d');
         const backgroundImage = new Image();
-        const fileName = `${isAuto ? 'autonomous' : 'teleop'}-${selectedMatchKey}-canvas.png`; // Adjust file name based on the canvas type
-        
-         if (localStorage.getItem('compOption') === 'undefined') {
-          backgroundImage.src = "https://lh3.googleusercontent.com/fife/ALs6j_GXtQ-sMn9nnWhcDhYQoBECTRw_3dLA6YE4ZD8QwuAQalmLNYZF-sa7MuOgpPkeN0rOZG2Fe_G-t6YUzxoCYaAZLJHvLVcwh6P5Y0C0IxQSfNgJeJMBw2Gh_YTDN9KedLKPkgsatdCJ9D6qNj7LwtCahVVZdp280JIaKSLvr82gRp8aeHdg5dIUpKpvVmC9pcw2FDqdaDG7MEYlZi2zztEt5Cq1igYkXvNUVuPWm1A2Qo_DAcbq3vejmXvLlTFnuZEL1rNAogFBiZ2GQ1ZAF1y7cEKm6fHMZ7-Of9N9xK2TUmU1i0iidHZGMMiNo49p9Xeiw0AaN1WAhepkDWYhDO8iHSBDUZRemg3XSYFHysnDliUkumaS_T5PhwQJ9srUBIT1tsEEgL-AcnrqqEwQ6lnsVyE4qrl5I_WKIAMnkCpjtXXMKpjiINQmu1OTOK01L3ibgaGnqmXbPDV88wPZZl_jVKHzqkwbM7cDfQYb1-zTKHKAqYcHxbpnVo3oGihJR1tTHqR9I8dQkT0k_bFs5dsnF0nDlTtwcGT9_rZXR6rYPZuRiLR6ntYCmqqP3KuCdTNRSxNPAMNz2kQBO_BPcODOwtbYb-yEf-vjUbH8nwFaMMsC-NXqamZA5DIpuqwEU96PjxdcT_6o9gqV82JaQ-OWIFflXuT6l_W-ENqkqiqDNtHWfit427sPnIGjJeB_zCpwejAYLTKf8oTCqT9rMkQN5fsOxRdl-JZCgKezUn7ukcZKvr1_fE7Fdz9DUBoDTknbHjptsle_NoZddbOa954L5ai3m5xf-s5FCXBHHwBRadF_XSQFgkMGjEegNVxAlRka8Aj6qInQmNPg8mt03D14OClHvXogix3U1Jjbk9AZhLOpVKUkyDD6_5lfanmTJdhGn3E5NGUCFs8oazLENzQAxr9E08UH4thFxFTqZ8qc1jqf9AvBMbRsImX3_8onu3t7igm-vgJKjmBnyZ40o3BqZTLcjazCCqKeoHevOMj6vsbrGZWehQdN3J5-9pGmckj6pRnLDMmlh_e0CA0Mcftx1Vn-7ebNtVTvqVKZO0EQXLd7geCUUz3ykDDO5SBj52LYYZ5so7b6IyPEBMQsX44x94vf_yeyXlbgfSo3hwL1g30uStZSU1BYLtTz_zV73D2I1xeA-4KXwd3Wj1bGBs4hCfqVP6h7L1CL-ljyYLveeCajGfOUKm1dCaNlRIvU1CCnVBn6tNHQUDmNqndhOzx37zUbcHdrPrm6rZhSeZuv3pVJotAvHcZL_apWun4_IlACZZIeZNhikhGtcF_rC96YP3kGZr71T6OrRFRDjxAZL_DnWccPgmVXs3gTUcDVdwuFVXIwNQ8F3WWUltua9lSqKDD1SjGwe8cwv3uKx9pbiXT9hV0RIVi6U6-jkN8XWOY0z9npdlBRxJPqLHHuL5u_uDlcwAU-_5bVaHDNy8cYKCD9HJhrL_FbnIqPFYN4g9nC4o2Klx0bgyivMuUpaUe_fWePD2ciFHUi1GwzEzaKAkCv13bJchHqw4gdn07j5vj5ykQLXU4ET-B8OCKL8b_kwQcGmLzHg8KYAgL-HHroKZ_9a9qHCaSTc2YapNYoa9_EhkZlezzcPTDpl62WEiskguMvTE8dsNARS6AVOSjQT9Zpzc-o6sQC7UkafaIMRULy35kZvmFsFXwoOfrlMJyCfipAm236vJYzYmgTN8kySbgd1kQtxWkR8E7s7j3zMGGVKc2HZO4GVyWSrJ6n-OCJR6yI5iKfl7P3mfUzQm2bC8E8KKxyteBAyHtCtYJdKRc=w1920-h868";
-        } else if (localStorage.getItem('compOption') === 'Reefscape') {
-          backgroundImage.src = "https://lh3.googleusercontent.com/fife/ALs6j_GXtQ-sMn9nnWhcDhYQoBECTRw_3dLA6YE4ZD8QwuAQalmLNYZF-sa7MuOgpPkeN0rOZG2Fe_G-t6YUzxoCYaAZLJHvLVcwh6P5Y0C0IxQSfNgJeJMBw2Gh_YTDN9KedLKPkgsatdCJ9D6qNj7LwtCahVVZdp280JIaKSLvr82gRp8aeHdg5dIUpKpvVmC9pcw2FDqdaDG7MEYlZi2zztEt5Cq1igYkXvNUVuPWm1A2Qo_DAcbq3vejmXvLlTFnuZEL1rNAogFBiZ2GQ1ZAF1y7cEKm6fHMZ7-Of9N9xK2TUmU1i0iidHZGMMiNo49p9Xeiw0AaN1WAhepkDWYhDO8iHSBDUZRemg3XSYFHysnDliUkumaS_T5PhwQJ9srUBIT1tsEEgL-AcnrqqEwQ6lnsVyE4qrl5I_WKIAMnkCpjtXXMKpjiINQmu1OTOK01L3ibgaGnqmXbPDV88wPZZl_jVKHzqkwbM7cDfQYb1-zTKHKAqYcHxbpnVo3oGihJR1tTHqR9I8dQkT0k_bFs5dsnF0nDlTtwcGT9_rZXR6rYPZuRiLR6ntYCmqqP3KuCdTNRSxNPAMNz2kQBO_BPcODOwtbYb-yEf-vjUbH8nwFaMMsC-NXqamZA5DIpuqwEU96PjxdcT_6o9gqV82JaQ-OWIFflXuT6l_W-ENqkqiqDNtHWfit427sPnIGjJeB_zCpwejAYLTKf8oTCqT9rMkQN5fsOxRdl-JZCgKezUn7ukcZKvr1_fE7Fdz9DUBoDTknbHjptsle_NoZddbOa954L5ai3m5xf-s5FCXBHHwBRadF_XSQFgkMGjEegNVxAlRka8Aj6qInQmNPg8mt03D14OClHvXogix3U1Jjbk9AZhLOpVKUkyDD6_5lfanmTJdhGn3E5NGUCFs8oazLENzQAxr9E08UH4thFxFTqZ8qc1jqf9AvBMbRsImX3_8onu3t7igm-vgJKjmBnyZ40o3BqZTLcjazCCqKeoHevOMj6vsbrGZWehQdN3J5-9pGmckj6pRnLDMmlh_e0CA0Mcftx1Vn-7ebNtVTvqVKZO0EQXLd7geCUUz3ykDDO5SBj52LYYZ5so7b6IyPEBMQsX44x94vf_yeyXlbgfSo3hwL1g30uStZSU1BYLtTz_zV73D2I1xeA-4KXwd3Wj1bGBs4hCfqVP6h7L1CL-ljyYLveeCajGfOUKm1dCaNlRIvU1CCnVBn6tNHQUDmNqndhOzx37zUbcHdrPrm6rZhSeZuv3pVJotAvHcZL_apWun4_IlACZZIeZNhikhGtcF_rC96YP3kGZr71T6OrRFRDjxAZL_DnWccPgmVXs3gTUcDVdwuFVXIwNQ8F3WWUltua9lSqKDD1SjGwe8cwv3uKx9pbiXT9hV0RIVi6U6-jkN8XWOY0z9npdlBRxJPqLHHuL5u_uDlcwAU-_5bVaHDNy8cYKCD9HJhrL_FbnIqPFYN4g9nC4o2Klx0bgyivMuUpaUe_fWePD2ciFHUi1GwzEzaKAkCv13bJchHqw4gdn07j5vj5ykQLXU4ET-B8OCKL8b_kwQcGmLzHg8KYAgL-HHroKZ_9a9qHCaSTc2YapNYoa9_EhkZlezzcPTDpl62WEiskguMvTE8dsNARS6AVOSjQT9Zpzc-o6sQC7UkafaIMRULy35kZvmFsFXwoOfrlMJyCfipAm236vJYzYmgTN8kySbgd1kQtxWkR8E7s7j3zMGGVKc2HZO4GVyWSrJ6n-OCJR6yI5iKfl7P3mfUzQm2bC8E8KKxyteBAyHtCtYJdKRc=w1920-h868";
+        backgroundImage.src = isAuto ? "images/crescendo_feild.png" : "images/crescendo_feild.png";
+
+        // We'll override this if the user selected ReefScape:
+        if (document.getElementById('gameSelect').value === 'reefscape') {
+          backgroundImage.src = "images/reefscapefield.png";
         }
-          else {
-            backgroundImage.src = "images/crescendo_feild.png";
-          }
-      
-      
+
+        const fileName = `${isAuto ? 'autonomous' : 'teleop'}-${selectedMatchKey}-canvas.png`;
+
         backgroundImage.onload = () => {
-          // Create a temporary canvas to draw the background and the existing content
           const tempCanvas = document.createElement('canvas');
           const tempCtx = tempCanvas.getContext('2d');
 
           tempCanvas.width = canvas.width;
           tempCanvas.height = canvas.height;
 
-          // Draw the background on the temp canvas, scaled to fit
           tempCtx.drawImage(backgroundImage, 0, 0, tempCanvas.width, tempCanvas.height);
-
-          // Now draw the original canvas content on top of the background
           tempCtx.drawImage(canvas, 0, 0);
 
-          // Save the combined content from the temporary canvas
           const dataURL = tempCanvas.toDataURL('image/png');
           const link = document.createElement('a');
-          link.download = `${fileName}-${selectedMatchKey}-canvas.png`; // You can change the filename
+          link.download = `${fileName}`;
           link.href = dataURL;
           link.click();
         };
       });
 
-
       function uploadData(event) {
-        // apiData = [];
         const file = event.target.files[0];
         if (!file) {
           return;
         }
         const reader = new FileReader();
         reader.onload = (e) => {
-          clearPreviousData(); // Make sure this function fully resets the state as needed
+          clearPreviousData();
           const content = e.target.result;
           try {
             apiData = JSON.parse(content);
-            populateMatchSelect(apiData); // This should trigger a UI update to reflect the new data
+            populateMatchSelect(apiData);
           } catch (err) {
             console.error('Failed to parse uploaded file:', err);
           }
@@ -895,52 +768,49 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
         reader.readAsText(file);
       }
 
-      // document.getElementById('addOptionButton').addEventListener('click', function() {
-      //       const selectElement = document.getElementById('eventCodeInput');
-      //       const newOptionText = document.getElementById('newOptionText').value;
-      //       if (newOptionText.trim() !== '') { // Ensure the input is not empty or just whitespace
-      //           const newOptionElement = new Option(newOptionText, newOptionText.toLowerCase().replace(/\s+/g, '_'));
-      //           selectElement.add(newOptionElement);
-      //           document.getElementById('newOptionText').value = ''; // Clear the input field after adding
-      //       }
-      //   });
-
-
-
       document.getElementById('toggleEraser').addEventListener('click', function () {
         eraserEnabled = !eraserEnabled;
         if (isAuto) {
           ctx = ctxAuto;
-          canvas = canvasAuto
         } else {
-          ctx = ctxTeleop
-          canvas = canvasTeleop
+          ctx = ctxTeleop;
         }
         if (eraserEnabled) {
-          // Activate eraser mode
           ctx.globalCompositeOperation = 'destination-out';
-          this.textContent = 'Switch to Pen'; // Change the button text accordingly
+          this.textContent = 'Switch to Pen';
         } else {
-          // Back to drawing mode
           ctx.globalCompositeOperation = 'source-over';
           this.textContent = 'Toggle Eraser';
         }
       });
-      window.addEventListener("load", onPageLoad)
+
+      window.addEventListener("load", onPageLoad);
       const canvasAuto = document.getElementById('autoCanvas');
       const canvasTeleop = document.getElementById('teleopCanvas');
       const ctxAuto = canvasAuto.getContext('2d');
       const ctxTeleop = canvasTeleop.getContext('2d');
-      const tabLabel = document.getElementById('tabLabel')
+      const tabLabel = document.getElementById('tabLabel');
       const matchSelect = document.getElementById('matchSelect');
-      let ApiDataUploaded = localStorage.getItem('ApiDataUploaded')
+      let ApiDataUploaded = localStorage.getItem('ApiDataUploaded');
       let matches = [];
       let drawing = false;
       let drawColor = 'black';
-      let teamPositions = [];
 
-      const bluePositions = [{ x: 70, y: 150 }, { x: 70, y: 380 }, { x: 70, y: 500 }];
-      const redPositions = [{ x: 1400, y: 500 }, { x: 1400, y: 380 }, { x: 1400, y: 150 }];
+      /* 
+         ADDED OR MODIFIED: 
+         Shifted these positions more toward the middle of the canvas y-axis
+      */
+      const bluePositions = [
+        { x: 70,   y: 250 },
+        { x: 70,   y: 350 },
+        { x: 70,   y: 450 }
+      ];
+      const redPositions = [
+        { x: 1400, y: 250 },
+        { x: 1400, y: 350 },
+        { x: 1400, y: 450 }
+      ];
+
       const teamColors = {
         blue: ['#07f7df', '#075bf7', '#AD00FF'],
         red: ['#FF00A5', '#f76707', '#f7c707']
@@ -948,47 +818,54 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
 
       setupCanvas();
 
+      // ADDED OR MODIFIED: Listen for game changes
+      document.getElementById('gameSelect').addEventListener('change', function() {
+        if (this.value === 'reefscape') {
+          canvasAuto.style.backgroundImage = "url('images/reefscapefield.png')";
+          canvasTeleop.style.backgroundImage = "url('images/reefscapefield.png')";
+        } else {
+          canvasAuto.style.backgroundImage = "url('images/crescendo_feild.png')";
+          canvasTeleop.style.backgroundImage = "url('images/crescendo_feild.png')";
+        }
+      });
 
       function onPageLoad() {
-        let isAuto = true;
-        switchTabs();
+        // Always start on auto
+        isAuto = true;
+        switchTabs(); // ensures teleop is hidden first
       }
 
       function switchTabs() {
         if (canvasAuto.style.display !== "none") {
           canvasTeleop.style.display = "block";
           canvasAuto.style.display = "none";
-          isAuto = false; // Update to reflect the current canvas
+          isAuto = false;
           tabLabel.textContent = "Teleop";
         } else {
           canvasTeleop.style.display = "none";
           canvasAuto.style.display = "block";
-          isAuto = true; // Update to reflect the current canvas
+          isAuto = true;
           tabLabel.textContent = "Autonomous";
         }
-        updateSaveButton(); // Update the save button's label and functionality
-      
+        updateSaveButton();
         redrawTeamNumbers();
       }
 
       function redrawTeamNumbers() {
-    // Use the current canvas context
-    let ctx = isAuto ? ctxAuto : ctxTeleop;
-    let teamPositions = isAuto ? teamPositionsAuto : teamPositionsTeleop;
+        let ctx = isAuto ? ctxAuto : ctxTeleop;
+        let teamPositions = isAuto ? teamPositionsAuto : teamPositionsTeleop;
 
-    // Redraw each team number stored in teamPositions
-    teamPositions.forEach(team => {
-        // Draw the colored background rectangle
-        ctx.fillStyle = team.color;
-        ctx.fillRect(team.x, team.y, team.width, team.height);
+        teamPositions.forEach(team => {
+          ctx.fillStyle = team.color;
+          ctx.fillRect(team.x, team.y, team.width, team.height);
 
-        // Draw the team number text on top
-        ctx.fillStyle = 'black'; // Contrast color for text
-        ctx.font = '40px Arial';
-        ctx.fillText(team.text, team.x + (team.width - ctx.measureText(team.text).width) / 2, team.y + team.height - 10);
-    });
-}
-
+          ctx.fillStyle = 'black';
+          ctx.font = '40px Arial';
+          const textX = team.x + (team.width - ctx.measureText(team.text).width) / 2;
+          // 10 px from bottom 
+          ctx.fillText(team.text, textX, team.y + team.height - 10);
+        });
+      }
 
       function updateSaveButton() {
         const saveButton = document.getElementById('saveCanvas');
@@ -999,26 +876,26 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
         }
       }
 
-
       function setupCanvas() {
-        // Mouse Events
+        // Mouse
         canvasAuto.addEventListener('mousedown', startDrawing);
         canvasAuto.addEventListener('mouseup', stopDrawing);
         canvasAuto.addEventListener('mouseout', stopDrawing);
         canvasAuto.addEventListener('mousemove', drawMouse);
 
-        // Touch Events
+        // Touch
         canvasAuto.addEventListener('touchstart', startDrawingTouch, false);
         canvasAuto.addEventListener('touchend', stopDrawingTouch, false);
         canvasAuto.addEventListener('touchcancel', stopDrawingTouch, false);
         canvasAuto.addEventListener('touchmove', drawTouch, false);
 
+        // Mouse
         canvasTeleop.addEventListener('mousedown', startDrawing);
         canvasTeleop.addEventListener('mouseup', stopDrawing);
         canvasTeleop.addEventListener('mouseout', stopDrawing);
         canvasTeleop.addEventListener('mousemove', drawMouse);
 
-        // Touch Events
+        // Touch
         canvasTeleop.addEventListener('touchstart', startDrawingTouch, false);
         canvasTeleop.addEventListener('touchend', stopDrawingTouch, false);
         canvasTeleop.addEventListener('touchcancel', stopDrawingTouch, false);
@@ -1026,16 +903,10 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
       }
 
       function startDrawing(e) {
-        if (isAuto) {
-          canvas = canvasAuto;
-        } else {
-          canvs = canvasTeleop;
-        }
         drawing = true;
-        var offsetX = e.offsetX || e.touches[0].clientX - canvas.getBoundingClientRect().left;
-        var offsetY = e.offsetY || e.touches[0].clientY - canvas.getBoundingClientRect().top;
+        const offsetX = e.offsetX || (e.touches && e.touches[0].clientX - canvasAuto.getBoundingClientRect().left);
+        const offsetY = e.offsetY || (e.touches && e.touches[0].clientY - canvasAuto.getBoundingClientRect().top);
         checkTeamClick(offsetX, offsetY);
-        // Prevents the mouse down from having an additional side effect, such as starting a selection
         e.preventDefault();
       }
 
@@ -1052,35 +923,30 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
 
       function drawMouse(e) {
         if (drawing) {
-          var offsetX = e.offsetX;
-          var offsetY = e.offsetY;
-          draw(offsetX, offsetY);
+          draw(e.offsetX, e.offsetY);
         }
       }
 
       function startDrawingTouch(e) {
-        if (e.touches.length == 1) { // Only track one finger
+        if (e.touches.length == 1) {
           startDrawing(e);
         }
       }
 
       function drawTouch(e) {
+        if (!drawing) return;
         if (isAuto) {
-          if (drawing) {
-            var touch = e.touches[0];
-            var offsetX = touch.clientX - canvasAuto.getBoundingClientRect().left;
-            var offsetY = touch.clientY - canvasAuto.getBoundingClientRect().top;
-            draw(offsetX, offsetY);
-          }
+          const touch = e.touches[0];
+          const offsetX = touch.clientX - canvasAuto.getBoundingClientRect().left;
+          const offsetY = touch.clientY - canvasAuto.getBoundingClientRect().top;
+          draw(offsetX, offsetY);
         } else {
-          if (drawing) {
-            var touch = e.touches[0];
-            var offsetX = touch.clientX - canvasTeleop.getBoundingClientRect().left;
-            var offsetY = touch.clientY - canvasTeleop.getBoundingClientRect().top;
-            draw(offsetX, offsetY);
-          }
+          const touch = e.touches[0];
+          const offsetX = touch.clientX - canvasTeleop.getBoundingClientRect().left;
+          const offsetY = touch.clientY - canvasTeleop.getBoundingClientRect().top;
+          draw(offsetX, offsetY);
         }
-        e.preventDefault(); // Prevent scrolling when touching the canvas
+        e.preventDefault();
       }
 
       function stopDrawingTouch() {
@@ -1088,34 +954,24 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
       }
 
       function draw(x, y) {
-        if (isAuto) {
-          ctx = ctxAuto;
-          canvas = canvasAuto
-        } else {
-          ctx = ctxTeleop
-          canvas = canvasTeleop
-        }
-        // Adjust drawing logic to support erasing
-        ctx.lineWidth = eraserEnabled ? 50 : 4; // You might want a larger lineWidth for erasing
+        let ctx = isAuto ? ctxAuto : ctxTeleop;
+        let canvas = isAuto ? canvasAuto : canvasTeleop;
+        ctx.lineWidth = eraserEnabled ? 50 : 4;
         ctx.lineCap = 'round';
-        ctx.strokeStyle = eraserEnabled ? 'rgba(0,0,0,1)' : drawColor; // Use the background color or fully opaque color for erasing
+        ctx.strokeStyle = eraserEnabled ? 'rgba(0,0,0,1)' : drawColor;
 
-        const scale = 1536 / canvas.clientWidth;
-        const scaleX = scale * x;
-        const scaleY = scale * y;
+        const scale = canvas.width / canvas.clientWidth;
+        const scaleX = x * scale;
+        const scaleY = y * scale;
         ctx.lineTo(scaleX, scaleY);
         ctx.stroke();
         ctx.beginPath();
         ctx.moveTo(scaleX, scaleY);
-
-
       }
-
 
       function fetchMatches() {
         const eventCode = localStorage.getItem('eventCode');
         document.getElementById('eventCodeInput').textContent = eventCode;
-        console.log(eventCode)
         const webhookEndpoint = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
         fetch(webhookEndpoint, {
           method: "GET",
@@ -1133,41 +989,31 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
             matches = data;
             apiData = data;
             populateMatchSelect(data);
-            apiData = JSON.stringify(apiData)
-            localStorage.setItem('ApiDataUploaded', apiData)
-            apiData = data
-            document.getElementById('storeOrConfig').textContent = "Config"
+            localStorage.setItem('ApiDataUploaded', JSON.stringify(apiData));
+            document.getElementById('storeOrConfig').textContent = "Config";
           })
           .catch(error => {
-            if (ApiDataUploaded != null || ApiDataUploaded != "" || ApiDataUploaded != "[]") {
+            if (ApiDataUploaded != null && ApiDataUploaded !== "" && ApiDataUploaded !== "[]") {
               apiData = JSON.parse(ApiDataUploaded);
               populateMatchSelect(apiData);
               selectedMatchKey = matchSelect.value;
-              console.log(selectedMatchKey)
-              const selectedMatch = apiData.find(match => match.key === selectedMatchKey);
               const match = apiData.find(m => m.key === selectedMatchKey);
-              eventCodeStored = match.event_key
-              console.log(`eventCodeStored = ${eventCodeStored}`)
-              document.getElementById('storeOrConfig').textContent = "Local Storage"
-              document.getElementById('eventCodeInput').textContent = `${eventCodeStored}`
-
-
+              eventCodeStored = match ? match.event_key : '';
+              document.getElementById('storeOrConfig').textContent = "Local Storage";
+              document.getElementById('eventCodeInput').textContent = `${eventCodeStored}`;
             } else {
-              console.error('Error fetching matches:', error)
+              console.error('Error fetching matches:', error);
             }
           });
       }
 
       function populateMatchSelect(matches) {
         matchSelect.innerHTML = '';
-
-        // Sort matches by their match number
         matches.sort((a, b) => {
           let compLevelA = a.comp_level + a.set_number.toString().padStart(3, '0') + a.match_number.toString().padStart(3, '0');
           let compLevelB = b.comp_level + b.set_number.toString().padStart(3, '0') + b.match_number.toString().padStart(3, '0');
           return compLevelA.localeCompare(compLevelB);
         });
-
         matches.forEach(match => {
           const option = document.createElement('option');
           option.value = match.key;
@@ -1177,196 +1023,135 @@ body .bg-light #patch-notes h3, #patch-notes p, #patch-notes a {
       }
 
       function displayTeamsForSelectedMatch() {
-    selectedMatchKey = matchSelect.value;
-    const selectedMatch = apiData.find(match => match.key === selectedMatchKey);
-    if (!selectedMatch) {
-        console.error('Selected match not found');
-        return;
-    }
+        selectedMatchKey = matchSelect.value;
+        const selectedMatch = apiData.find(match => match.key === selectedMatchKey);
+        if (!selectedMatch) {
+          console.error('Selected match not found');
+          return;
+        }
 
-    clearCanvas();
+        clearCanvas();
+        teamPositionsAuto = [];
+        teamPositionsTeleop = [];
 
-    // Clear teamPositions arrays
-    teamPositionsAuto = [];
-    teamPositionsTeleop = [];
+        const originalIsAuto = isAuto;
 
-    // Draw teams on both canvases
-    const originalIsAuto = isAuto; // Store the original isAuto value
+        isAuto = true;
+        drawTeams(selectedMatch.alliances.blue.team_keys, bluePositions, 'blue');
+        drawTeams(selectedMatch.alliances.red.team_keys, redPositions, 'red');
 
-    isAuto = true; // Set to auto canvas
-    drawTeams(selectedMatch.alliances.blue.team_keys, bluePositions, 'blue');
-    drawTeams(selectedMatch.alliances.red.team_keys, redPositions, 'red');
+        isAuto = false;
+        drawTeams(selectedMatch.alliances.blue.team_keys, bluePositions, 'blue');
+        drawTeams(selectedMatch.alliances.red.team_keys, redPositions, 'red');
 
-    isAuto = false; // Set to teleop canvas
-    drawTeams(selectedMatch.alliances.blue.team_keys, bluePositions, 'blue');
-    drawTeams(selectedMatch.alliances.red.team_keys, redPositions, 'red');
-
-    isAuto = originalIsAuto; // Restore the original isAuto value
-}
-
+        isAuto = originalIsAuto;
+      }
 
       const uploadInput = document.getElementById('uploadMatchData');
       uploadInput.addEventListener('change', uploadData);
 
-
-
       function clearPreviousData() {
-        // Clear the global data variable
         apiData = [];
       }
 
       function drawTeams(teamKeys, positions, alliance) {
-    let ctx = isAuto ? ctxAuto : ctxTeleop;
-    let teamPositions = isAuto ? teamPositionsAuto : teamPositionsTeleop;
+        let ctx = isAuto ? ctxAuto : ctxTeleop;
+        let teamPositions = isAuto ? teamPositionsAuto : teamPositionsTeleop;
 
-    ctx.font = '40px Arial'; // Ensure font size is set before measuring text
-    const padding = 10; // Padding around the text for the outline box
+        ctx.font = '40px Arial';
+        const padding = 10;
 
-    teamKeys.forEach((key, index) => {
-        const teamNumber = key.replace('frc', '');
-        const position = positions[index];
-        const color = teamColors[alliance][index];
+        teamKeys.forEach((key, index) => {
+          const teamNumber = key.replace('frc', '');
+          const position = positions[index];
+          const color = teamColors[alliance][index];
 
-        const textMetrics = ctx.measureText(teamNumber);
-        const textWidth = textMetrics.width;
-        const rectHeight = 50; // Example height of clickable area
-        const rectY = position.y - 40; // Adjust based on font size and desired box size
+          const textMetrics = ctx.measureText(teamNumber);
+          const textWidth = textMetrics.width;
+          const rectHeight = 50;
+          const rectY = position.y - 40;
 
-        // Draw the team number and background
-        ctx.fillStyle = color;
-        ctx.fillRect(position.x - (padding / 2), rectY, textWidth + padding, rectHeight);
-        ctx.fillStyle = 'black';
-        ctx.fillText(teamNumber, position.x, position.y);
+          ctx.fillStyle = color;
+          ctx.fillRect(position.x - (padding / 2), rectY, textWidth + padding, rectHeight);
+          ctx.fillStyle = 'black';
+          ctx.fillText(teamNumber, position.x, position.y);
 
-        // Store positions for click detection
-        teamPositions.push({
+          teamPositions.push({
             x: position.x - (padding / 2),
             y: rectY,
             width: textWidth + padding,
             height: rectHeight,
             color: color,
             text: teamNumber
-        });
-    });
-}
-
-
-
-      function drawText(text, x, y, color, index, alliance) {
-        if (isAuto) {
-          ctx = ctxAuto
-        } else {
-          ctx = ctxTeleop
-        }
-        // Calculate text width for background and click detection area
-        ctx.font = '40px Arial'; // Ensure font size is set before measuring text
-        const textMetrics = ctx.measureText(text);
-        const textWidth = textMetrics.width;
-        const padding = 10; // Padding around the text for the outline box
-
-        // Adjust position for the rectangle to be centered on the text if necessary
-        const rectX = x - padding / 2;
-        const rectY = y - 40; // Adjust based on font size and desired box size
-        const rectWidth = textWidth + padding;
-        const rectHeight = 50;
-
-        // Draw the colored background rectangle
-        ctx.fillStyle = color;
-        ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
-
-        // Draw the team number text on top
-        ctx.fillStyle = 'black'; // Contrast color for text
-        ctx.fillText(text, x, y);
-
-        document.getElementById('tabLabel').style.backgroundColor = "blue"
-
-        // Update the teamPositions array for click detection
-        teamPositions.push({
-          x: rectX,
-          y: rectY,
-          width: rectWidth,
-          height: rectHeight,
-          color: color, // Assign the drawing color for when the area is clicked
+          });
         });
       }
 
       function checkTeamClick(x, y) {
-    const canvasRect = canvas.getBoundingClientRect();
-    let scaleWidth = canvas.width / canvasRect.width;
-    let scaleHeight = canvas.height / canvasRect.height;
+        let canvas = isAuto ? canvasAuto : canvasTeleop;
+        const canvasRect = canvas.getBoundingClientRect();
+        let scaleWidth = canvas.width / canvasRect.width;
+        let scaleHeight = canvas.height / canvasRect.height;
 
-    let scaledX = x * scaleWidth;
-    let scaledY = y * scaleHeight;
-    let colorFound = false;
+        let scaledX = x * scaleWidth;
+        let scaledY = y * scaleHeight;
+        let colorFound = false;
 
-    let teamPositions = isAuto ? teamPositionsAuto : teamPositionsTeleop;
+        let teamPositions = isAuto ? teamPositionsAuto : teamPositionsTeleop;
 
-    teamPositions.forEach(team => {
-        if (scaledX >= team.x && scaledX <= (team.x + team.width) && scaledY >= team.y && scaledY <= (team.y + team.height)) {
+        teamPositions.forEach(team => {
+          if (
+            scaledX >= team.x &&
+            scaledX <= (team.x + team.width) &&
+            scaledY >= team.y &&
+            scaledY <= (team.y + team.height)
+          ) {
             drawColor = team.color;
             colorFound = true;
-            console.log(drawColor);
             document.getElementById('topRect').style.backgroundColor = drawColor;
             document.getElementById('bottomRect').style.backgroundColor = drawColor;
+          }
+        });
+
+        if (!colorFound) {
+          console.log("Click was outside of team areas.");
         }
-    });
-
-    if (!colorFound) {
-        console.log("Click was outside of team areas.");
-    }
-}
-
-
-
-function clearCanvas() {
-    let ctx = isAuto ? ctxAuto : ctxTeleop;
-    let canvas = isAuto ? canvasAuto : canvasTeleop;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.globalCompositeOperation = 'source-over';
-    // Redraw team numbers after clearing
-    redrawTeamNumbers();
-}
-
-      function drawTeamNumberBox(x, y, width, height, color, text) {
-        ctx.fillStyle = color;
-        // Draw rectangle for team number background
-        ctx.fillRect(x, y, width, height);
-        ctx.fillStyle = 'black'; // Assuming text color is always black
-        // Adjustments for text positioning within the rectangle if needed
-        ctx.font = '40px Arial'; // Ensure this matches the initial drawing's font
-        // Calculate the y position to vertically center the text in the rectangle
-        const textY = y + height / 2 + ctx.measureText(text).actualBoundingBoxAscent / 2;
-        ctx.fillText(text, x + (width / 2) - (ctx.measureText(text).width / 2), textY); // Center the text inside the rectangle
       }
 
+      function clearCanvas() {
+        let ctx = isAuto ? ctxAuto : ctxTeleop;
+        let canvas = isAuto ? canvasAuto : canvasTeleop;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = 'source-over';
+        // Redraw team numbers after clearing
+        redrawTeamNumbers();
+      }
 
       matchSelect.addEventListener('change', displayTeamsForSelectedMatch);
       fetchMatches();
+
+      document.addEventListener("DOMContentLoaded", function() {
+  const gameSelect = document.getElementById("gameSelect");
+  gameSelect.value = "reefscape"; // Ensure the placeholder is selected initially
+});
     </script>
+
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
+      document.addEventListener('DOMContentLoaded', function() {
+
         const toggle = document.getElementById('darkModeToggle');
         const body = document.body;
-        const navbar = document.querySelector('.navbar'); // Select the navbar element
+        const navbar = document.querySelector('.navbar');
         const teleopCanvas = document.getElementById('teleopCanvas');
         const autoCanvas = document.getElementById('autoCanvas');
 
-
-        // Function to apply dark mode classes
         function enableDarkMode() {
           body.classList.add('bg-dark');
           body.classList.remove('bg-light');
           navbar.classList.add('navbar-dark');
           navbar.classList.remove('navbar-light', 'bg-white');
-          if (localStorage.getItem('compOption') === 'undefined') {
-          backgroundImage.src = "https://lh3.googleusercontent.com/fife/ALs6j_GXtQ-sMn9nnWhcDhYQoBECTRw_3dLA6YE4ZD8QwuAQalmLNYZF-sa7MuOgpPkeN0rOZG2Fe_G-t6YUzxoCYaAZLJHvLVcwh6P5Y0C0IxQSfNgJeJMBw2Gh_YTDN9KedLKPkgsatdCJ9D6qNj7LwtCahVVZdp280JIaKSLvr82gRp8aeHdg5dIUpKpvVmC9pcw2FDqdaDG7MEYlZi2zztEt5Cq1igYkXvNUVuPWm1A2Qo_DAcbq3vejmXvLlTFnuZEL1rNAogFBiZ2GQ1ZAF1y7cEKm6fHMZ7-Of9N9xK2TUmU1i0iidHZGMMiNo49p9Xeiw0AaN1WAhepkDWYhDO8iHSBDUZRemg3XSYFHysnDliUkumaS_T5PhwQJ9srUBIT1tsEEgL-AcnrqqEwQ6lnsVyE4qrl5I_WKIAMnkCpjtXXMKpjiINQmu1OTOK01L3ibgaGnqmXbPDV88wPZZl_jVKHzqkwbM7cDfQYb1-zTKHKAqYcHxbpnVo3oGihJR1tTHqR9I8dQkT0k_bFs5dsnF0nDlTtwcGT9_rZXR6rYPZuRiLR6ntYCmqqP3KuCdTNRSxNPAMNz2kQBO_BPcODOwtbYb-yEf-vjUbH8nwFaMMsC-NXqamZA5DIpuqwEU96PjxdcT_6o9gqV82JaQ-OWIFflXuT6l_W-ENqkqiqDNtHWfit427sPnIGjJeB_zCpwejAYLTKf8oTCqT9rMkQN5fsOxRdl-JZCgKezUn7ukcZKvr1_fE7Fdz9DUBoDTknbHjptsle_NoZddbOa954L5ai3m5xf-s5FCXBHHwBRadF_XSQFgkMGjEegNVxAlRka8Aj6qInQmNPg8mt03D14OClHvXogix3U1Jjbk9AZhLOpVKUkyDD6_5lfanmTJdhGn3E5NGUCFs8oazLENzQAxr9E08UH4thFxFTqZ8qc1jqf9AvBMbRsImX3_8onu3t7igm-vgJKjmBnyZ40o3BqZTLcjazCCqKeoHevOMj6vsbrGZWehQdN3J5-9pGmckj6pRnLDMmlh_e0CA0Mcftx1Vn-7ebNtVTvqVKZO0EQXLd7geCUUz3ykDDO5SBj52LYYZ5so7b6IyPEBMQsX44x94vf_yeyXlbgfSo3hwL1g30uStZSU1BYLtTz_zV73D2I1xeA-4KXwd3Wj1bGBs4hCfqVP6h7L1CL-ljyYLveeCajGfOUKm1dCaNlRIvU1CCnVBn6tNHQUDmNqndhOzx37zUbcHdrPrm6rZhSeZuv3pVJotAvHcZL_apWun4_IlACZZIeZNhikhGtcF_rC96YP3kGZr71T6OrRFRDjxAZL_DnWccPgmVXs3gTUcDVdwuFVXIwNQ8F3WWUltua9lSqKDD1SjGwe8cwv3uKx9pbiXT9hV0RIVi6U6-jkN8XWOY0z9npdlBRxJPqLHHuL5u_uDlcwAU-_5bVaHDNy8cYKCD9HJhrL_FbnIqPFYN4g9nC4o2Klx0bgyivMuUpaUe_fWePD2ciFHUi1GwzEzaKAkCv13bJchHqw4gdn07j5vj5ykQLXU4ET-B8OCKL8b_kwQcGmLzHg8KYAgL-HHroKZ_9a9qHCaSTc2YapNYoa9_EhkZlezzcPTDpl62WEiskguMvTE8dsNARS6AVOSjQT9Zpzc-o6sQC7UkafaIMRULy35kZvmFsFXwoOfrlMJyCfipAm236vJYzYmgTN8kySbgd1kQtxWkR8E7s7j3zMGGVKc2HZO4GVyWSrJ6n-OCJR6yI5iKfl7P3mfUzQm2bC8E8KKxyteBAyHtCtYJdKRc=w1920-h868";
-        } else if (localStorage.getItem('compOption') === 'Reefscape') {
-          backgroundImage.src = "https://lh3.googleusercontent.com/fife/ALs6j_GXtQ-sMn9nnWhcDhYQoBECTRw_3dLA6YE4ZD8QwuAQalmLNYZF-sa7MuOgpPkeN0rOZG2Fe_G-t6YUzxoCYaAZLJHvLVcwh6P5Y0C0IxQSfNgJeJMBw2Gh_YTDN9KedLKPkgsatdCJ9D6qNj7LwtCahVVZdp280JIaKSLvr82gRp8aeHdg5dIUpKpvVmC9pcw2FDqdaDG7MEYlZi2zztEt5Cq1igYkXvNUVuPWm1A2Qo_DAcbq3vejmXvLlTFnuZEL1rNAogFBiZ2GQ1ZAF1y7cEKm6fHMZ7-Of9N9xK2TUmU1i0iidHZGMMiNo49p9Xeiw0AaN1WAhepkDWYhDO8iHSBDUZRemg3XSYFHysnDliUkumaS_T5PhwQJ9srUBIT1tsEEgL-AcnrqqEwQ6lnsVyE4qrl5I_WKIAMnkCpjtXXMKpjiINQmu1OTOK01L3ibgaGnqmXbPDV88wPZZl_jVKHzqkwbM7cDfQYb1-zTKHKAqYcHxbpnVo3oGihJR1tTHqR9I8dQkT0k_bFs5dsnF0nDlTtwcGT9_rZXR6rYPZuRiLR6ntYCmqqP3KuCdTNRSxNPAMNz2kQBO_BPcODOwtbYb-yEf-vjUbH8nwFaMMsC-NXqamZA5DIpuqwEU96PjxdcT_6o9gqV82JaQ-OWIFflXuT6l_W-ENqkqiqDNtHWfit427sPnIGjJeB_zCpwejAYLTKf8oTCqT9rMkQN5fsOxRdl-JZCgKezUn7ukcZKvr1_fE7Fdz9DUBoDTknbHjptsle_NoZddbOa954L5ai3m5xf-s5FCXBHHwBRadF_XSQFgkMGjEegNVxAlRka8Aj6qInQmNPg8mt03D14OClHvXogix3U1Jjbk9AZhLOpVKUkyDD6_5lfanmTJdhGn3E5NGUCFs8oazLENzQAxr9E08UH4thFxFTqZ8qc1jqf9AvBMbRsImX3_8onu3t7igm-vgJKjmBnyZ40o3BqZTLcjazCCqKeoHevOMj6vsbrGZWehQdN3J5-9pGmckj6pRnLDMmlh_e0CA0Mcftx1Vn-7ebNtVTvqVKZO0EQXLd7geCUUz3ykDDO5SBj52LYYZ5so7b6IyPEBMQsX44x94vf_yeyXlbgfSo3hwL1g30uStZSU1BYLtTz_zV73D2I1xeA-4KXwd3Wj1bGBs4hCfqVP6h7L1CL-ljyYLveeCajGfOUKm1dCaNlRIvU1CCnVBn6tNHQUDmNqndhOzx37zUbcHdrPrm6rZhSeZuv3pVJotAvHcZL_apWun4_IlACZZIeZNhikhGtcF_rC96YP3kGZr71T6OrRFRDjxAZL_DnWccPgmVXs3gTUcDVdwuFVXIwNQ8F3WWUltua9lSqKDD1SjGwe8cwv3uKx9pbiXT9hV0RIVi6U6-jkN8XWOY0z9npdlBRxJPqLHHuL5u_uDlcwAU-_5bVaHDNy8cYKCD9HJhrL_FbnIqPFYN4g9nC4o2Klx0bgyivMuUpaUe_fWePD2ciFHUi1GwzEzaKAkCv13bJchHqw4gdn07j5vj5ykQLXU4ET-B8OCKL8b_kwQcGmLzHg8KYAgL-HHroKZ_9a9qHCaSTc2YapNYoa9_EhkZlezzcPTDpl62WEiskguMvTE8dsNARS6AVOSjQT9Zpzc-o6sQC7UkafaIMRULy35kZvmFsFXwoOfrlMJyCfipAm236vJYzYmgTN8kySbgd1kQtxWkR8E7s7j3zMGGVKc2HZO4GVyWSrJ6n-OCJR6yI5iKfl7P3mfUzQm2bC8E8KKxyteBAyHtCtYJdKRc=w1920-h868";
-        }
-          else {
-            backgroundImage.src = "images/crescendo_feild.png";
-          }
-          
+          autoCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')";
+          teleopCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')";
           document.querySelectorAll('.navbar').forEach(element => {
             element.classList.add('bg-dark');
             element.classList.remove('bg-white');
@@ -1377,44 +1162,36 @@ function clearCanvas() {
           });
         }
 
-        // Function to remove dark mode classes
         function disableDarkMode() {
           body.classList.add('bg-light');
           body.classList.remove('bg-dark');
           navbar.classList.add('navbar-light');
           navbar.classList.remove('navbar-dark', 'bg-dark');
-          autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')"
-          teleopCanvas.style.backgroundImage = "url(''images/crescendo_feild.png'')"
+          autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
+          teleopCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
           document.querySelectorAll('.navbar').forEach(element => {
             if (!element.closest('#aboutModal')) {
-            element.classList.add('bg-white');
-            element.classList.remove('bg-dark');
+              element.classList.add('bg-white');
+              element.classList.remove('bg-dark');
             }
           });
           document.querySelectorAll('.form-control').forEach(element => {
             if (!element.closest('#aboutModal')) {
-            element.classList.remove('bg-dark');
-            element.classList.add('bg-white');
+              element.classList.remove('bg-dark');
+              element.classList.add('bg-white');
             }
           });
         }
-        if (localStorage.getItem('compOption') === 'undefined') {
-          
-        } else {
-         
-        }
 
-        // Initialize dark mode from local storage
         if (localStorage.getItem('darkMode') === 'true') {
           enableDarkMode();
           toggle.checked = true;
         } else {
           disableDarkMode();
         }
-        
         body.style.display = 'block';
-        // Toggle dark mode on change
-        toggle.addEventListener('change', function () {
+
+        toggle.addEventListener('change', function() {
           if (this.checked) {
             localStorage.setItem('darkMode', 'true');
             enableDarkMode();
@@ -1426,113 +1203,108 @@ function clearCanvas() {
       });
 
       document.getElementById('roborte').addEventListener('click', function() {
-    $('#aboutModal').modal('show');
-});
+        $('#aboutModal').modal('show');
+      });
 
-// Fetch and display GitHub release notes with markdown parsing and specific download link
-function loadGitHubReleases() {
-    const apiUrl = 'https://api.github.com/repos/skac121245/Robort/releases';
-    const converter = new showdown.Converter(); // Initialize markdown converter
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
+      function loadGitHubReleases() {
+        const apiUrl = 'https://api.github.com/repos/skac121245/Robort/releases';
+        const converter = new showdown.Converter();
+        fetch(apiUrl)
+          .then(response => response.json())
+          .then(data => {
             const container = document.getElementById('patch-notes');
-            container.innerHTML = ''; // Clear existing content
+            container.innerHTML = '';
             data.forEach(release => {
-                if (release.body !== null) { // Only display if there's a description
-                    const markdownHTML = converter.makeHtml(release.body);
-                    const releaseDiv = document.createElement('div');
-                    releaseDiv.innerHTML = `
-                        <h3>${release.tag_name}</h3>
-                        <div>${markdownHTML}</div>
-                        <a href="${release.html_url}" target="_blank">View on GitHub</a>
-                        <hr>`;
-                    container.appendChild(releaseDiv);
-                }
+              if (release.body !== null) {
+                const markdownHTML = converter.makeHtml(release.body);
+                const releaseDiv = document.createElement('div');
+                releaseDiv.innerHTML = `
+                  <h3>${release.tag_name}</h3>
+                  <div>${markdownHTML}</div>
+                  <a href="${release.html_url}" target="_blank">View on GitHub</a>
+                  <hr>`;
+                container.appendChild(releaseDiv);
+              }
             });
-        })
-        .catch(error => console.error('Error fetching GitHub releases:', error));
-}
+          })
+          .catch(error => console.error('Error fetching GitHub releases:', error));
+      }
 
+      document.getElementById('patch-notes-tab').addEventListener('click', function() {
+        loadGitHubReleases();
+      });
 
+      document.getElementById('feedbackForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const feedbackType = document.getElementById('feedbackType').value;
+        let postData = {
+          username: "Robort Feedback Bot",
+          embeds: [],
+        };
 
-document.getElementById('patch-notes-tab').addEventListener('click', function() {
-    loadGitHubReleases();
-});
-
-
-document.getElementById('feedbackForm').addEventListener('submit', async function(event) {
-    event.preventDefault();  // Prevent the default form submission behavior
-    const feedbackType = document.getElementById('feedbackType').value;
-    let postData = {
-        username: "Robort Feedback Bot",
-        embeds: [],
-    };
-
-    if (feedbackType === 'feature') {
-        const area = document.querySelector('input[name="featureArea"]:checked').value;
-        const description = document.getElementById('featureDescription').value;
-        postData.embeds.push({
+        if (feedbackType === 'feature') {
+          const area = document.querySelector('input[name="featureArea"]:checked').value;
+          const description = document.getElementById('featureDescription').value;
+          postData.embeds.push({
             title: "Feature Suggestion",
             fields: [
-                { name: "Area", value: area, inline: true },
-                { name: "Description", value: description }
+              { name: "Area", value: area, inline: true },
+              { name: "Description", value: description }
             ],
-            color: 65280  // Green
-        });
-    } else {
-        const title = document.getElementById('bugTitle').value;
-        const summary = document.getElementById('bugSummary').value;
-        const steps = document.getElementById('bugSteps').value;
-        const results = document.getElementById('bugResults').value;
-        postData.embeds.push({
+            color: 65280
+          });
+        } else {
+          const title = document.getElementById('bugTitle').value;
+          const summary = document.getElementById('bugSummary').value;
+          const steps = document.getElementById('bugSteps').value;
+          const results = document.getElementById('bugResults').value;
+          postData.embeds.push({
             title: "Bug Report: " + title,
             fields: [
-                { name: "Summary", value: summary },
-                { name: "Steps to Reproduce", value: steps },
-                { name: "Expected vs. Actual Results", value: results }
+              { name: "Summary", value: summary },
+              { name: "Steps to Reproduce", value: steps },
+              { name: "Expected vs. Actual Results", value: results }
             ],
-            color: 16711680  // Red
-        });
-    }
+            color: 16711680
+          });
+        }
 
-    try {
-        const response = await fetch('https://discord.com/api/webhooks/1231365349476405268/lX0MXxHO2zwQPnNxEiuConQ8Sf47Qwq4EDrE8mLV8pctu3c63VQBjnsjAwlGLK2DPeLm', {
+        try {
+          const response = await fetch('https://discord.com/api/webhooks/1231365349476405268/lX0MXxHO2zwQPnNxEiuConQ8Sf47Qwq4EDrE8mLV8pctu3c63VQBjnsjAwlGLK2DPeLm', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify(postData)
-        });
-        if (response.ok) {
+          });
+          if (response.ok) {
             alert('Feedback submitted successfully!');
-            document.getElementById('feedbackForm').reset();  // Reset the form after successful submission
-        } else {
+            document.getElementById('feedbackForm').reset();
+          } else {
             alert('Failed to submit feedback. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error submitting feedback:', error);
+          alert('Error submitting feedback. Please check your network connection and try again.');
         }
-    } catch (error) {
-        console.error('Error submitting feedback:', error);
-        alert('Error submitting feedback. Please check your network connection and try again.');
-    }
-});
+      });
 
-function toggleFeedbackForm() {
-    const feedbackType = document.getElementById('feedbackType').value;
-    if (feedbackType === 'feature') {
-        document.getElementById('featureForm').style.display = 'block';
-        document.getElementById('bugForm').style.display = 'none';
-    } else {
-        document.getElementById('featureForm').style.display = 'none';
-        document.getElementById('bugForm').style.display = 'block';
-    }
-}
-
+      function toggleFeedbackForm() {
+        const feedbackType = document.getElementById('feedbackType').value;
+        if (feedbackType === 'feature') {
+          document.getElementById('featureForm').style.display = 'block';
+          document.getElementById('bugForm').style.display = 'none';
+        } else {
+          document.getElementById('featureForm').style.display = 'none';
+          document.getElementById('bugForm').style.display = 'block';
+        }
+      }
     </script>
-     <script>
+    <script>
       window.onload = function() {
-          document.body.style.display = "block"; // Show body when everything is loaded
+        document.body.style.display = "block";
       };
-  </script>
+    </script>
 </body>
 
 </html>
