@@ -284,8 +284,8 @@ body.bg-dark .dropdown-menu {
                         <a class="dropdown-item" href="./Strat_Board_w_tabs.html">Canvas</a>
                         <a class="dropdown-item" href="./scoutingGen.html">Scouting Generator</a>
                         <a class="dropdown-item" href="./pitScouterFRONT.html">Pit Scouter</a>
-                        <a class="dropdown-item" href="./pitScouterBACK.html">Pit Scouter BACK</a>
-                        
+                        <a class="dropdown-item" href="./pitScouterBACK.html">Pit Scouter Backend</a>
+                        <a class="dropdown-item" href="./scoutingUI.html">Scouting UI</a>
                       </div>
                 </li>
                 <li class="nav-item">
@@ -299,9 +299,6 @@ body.bg-dark .dropdown-menu {
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="dataBaseTeamPage.html">Database</a>
-              </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="scoutingUI.html">ScoutingUI</a>
               </li>
             </ul>
             <label class="switch">
@@ -444,9 +441,14 @@ body.bg-dark .dropdown-menu {
             // Display dynamic team and robot information
             const teamNumber = localStorage.getItem('teamNumber');
             const robotName = localStorage.getItem('robotName');
-            if (teamNumber) {
-                document.getElementById('displayTeamNumber').textContent = `${teamNumber}'s`;
-            }
+            // 1) Check if we have a teamNumber. If so, fill the span as before.
+    // 2) Otherwise, remove "of Team" altogether.
+    if (teamNumber && teamNumber.trim() !== "") {
+      document.getElementById('displayTeamNumber').textContent = `${teamNumber}'s`;
+    } else {
+      const heading = document.querySelector('header h1');
+      heading.textContent = "The Features";
+    }
             if (robotName) {
                 document.getElementById('robotName').textContent = `"${robotName}"`;
             }
