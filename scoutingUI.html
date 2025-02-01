@@ -22,9 +22,11 @@
         }
 
         iframe {
-            position: fixed;
-            right: 20px;
-        }
+    position: fixed;
+    right: 20px;
+    transform-origin: center center;
+}
+
 
         #position-btn-p1, #position-btn-p2, #position-btn-p3, #position-btn-p4,
         #driver-station-btn-1, #driver-station-btn-2, #driver-station-btn-3 {
@@ -411,44 +413,44 @@
 
     <div id="teleopContainer" style="display: none; position: absolute; width: 100%; ">
         <button id="groundPickupButton1" class="groundPickupButton"
-            style="font-size:20px; background-color:green; position:absolute;  width: 200px; height: 120px; opacity: 60%;"
+            style="font-size:20px; background-color:green; position:absolute;  width: 200px; height: 120px; opacity: 0.6;"
             onclick="logAction('Ground Pickup 1')">Ground Pickup 1</button>
 
         <button id="groundPickupButton2" class="groundPickupButton"
-            style="font-size:20px; background-color:green; position:absolute; width: 200px; height: 120px; opacity: 60%;"
+            style="font-size:20px; background-color:green; position:absolute; width: 200px; height: 120px; opacity: 0.6;"
             onclick="logAction('Ground Pickup 2')">Ground Pickup 2</button>
 
         <button id="groundPickupButton3" class="groundPickupButton"
-            style="font-size:20px; background-color:green; position:absolute; width: 200px; height: 120px; opacity: 60%;"
+            style="font-size:20px; background-color:green; position:absolute; width: 200px; height: 120px; opacity: 0.6;"
             onclick="logAction('Ground Pickup 3')">Ground Pickup 3</button>
 
         <button id="sourceButton"
-            style="font-size:30px;  position:absolute; opacity: 60%;"
+            style="font-size:30px;  position:absolute; opacity: 0.6;"
             onclick="logAction('Source BLUE')">Source</button>
         <button id="sourceButton2"
-            style=" font-size:30px; background-color:red; position:absolute; opacity: 60%;"
+            style=" font-size:30px; background-color:red; position:absolute; opacity: 0.6;"
             onclick="logAction('Source RED')">Source</button>
 
         <div id="additionalActions" style="display: none;">
-            <button id="speaker" style="font-size:30px; position:absolute;  opacity: 60%;"
+            <button id="speaker" style="font-size:30px; position:absolute;  opacity: 0.6;"
                 onclick="logAction('Speaker')">Speaker</button>
-            <button id="miss" style="font-size:30px; position:absolute;  opacity: 90%;"
+            <button id="miss" style="font-size:30px; position:absolute;  opacity: 0.9;"
                 onclick="logAction('Miss')">Miss</button>
-            <button id="amp" style="font-size:30px; position:absolute;  opacity: 60%;"
+            <button id="amp" style="font-size:30px; position:absolute;  opacity: 0.6;"
                 onclick="logAction('Amp')">Amp</button>
-            <button id="pass" style="font-size:30px; position:absolute; opacity: 60%;"
+            <button id="pass" style="font-size:30px; position:absolute; opacity: 0.6;"
                 onclick="logAction('Pass')">Pass</button>
         </div>
 
         <div id="endgameContainer" style="display: none; text-align: center;">
-            <button id="StageRightBLUE" style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
-            <button id="StageLeftBLUE"style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
-            <button id="CenterStageBLUE"style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
-            <button id="None"style="font-size:20px; background-color:green; position:absolute; opacity: 60%;" onclick="logEndgameAction('None')">None</button>
+            <button id="StageRightBLUE" style="font-size:20px; position:absolute; opacity: 0.6;" onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
+            <button id="StageLeftBLUE"style="font-size:20px; position:absolute; opacity: 0.6;" onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
+            <button id="CenterStageBLUE"style="font-size:20px; position:absolute; opacity: 0.6;" onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
+            <button id="None"style="font-size:20px; background-color:green; position:absolute; opacity: 0.6;" onclick="logEndgameAction('None')">None</button>
 
-            <button id="StageRightRED" style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
-            <button id="StageLeftRED" style="font-size:20px; position:absolute; opacity: 60%;" onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
-            <button id="CenterStageRED" style="font-size:20px; position:absolute;  opacity: 60%;" onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
+            <button id="StageRightRED" style="font-size:20px; position:absolute; opacity: 0.6;" onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
+            <button id="StageLeftRED" style="font-size:20px; position:absolute; opacity: 0.6;" onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
+            <button id="CenterStageRED" style="font-size:20px; position:absolute;  opacity: 0.6;" onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
 
             <div id="endgameOutcome" style="width:600px; position:absolute; top: 620px; left: 450px; display: none; text-align: center;">
                 <button style="background-color: blue;" onclick="saveEndgameOutcome('Park')">Park</button>
@@ -472,52 +474,94 @@
         <button onclick="saveNoteOutcome('another team got it')">Another Team Got It</button>
     </div>
     <script>
+        const compOption = localStorage.getItem('compOption');
+
+        const configPath = `dashboard/${compOption}.json`;
+
+        // Load the configuration file.
+  fetch(configPath)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(config => {
+      // Use the loaded configuration to set up your UI.
+      const fieldIframe = document.getElementById("field-canvas");
+
+// Add an event listener for when the iframe finishes loading:
+fieldIframe.addEventListener("load", function() {
+  // Access the iframe's document:
+  const iframeDoc = fieldIframe.contentDocument || fieldIframe.contentWindow.document;
+  // Get the #strategyCanvas element within the iframe:
+  const strategyCanvas = iframeDoc.getElementById("strategyCanvas");
+  if (strategyCanvas) {
+    // Set its background image:
+    strategyCanvas.style.backgroundImage = `url('${config.fieldImage}')`;
+  } else {
+    console.error("Element #strategyCanvas not found in the iframe.");
+  }
+});
+
+      // Apply field positions
+      const fieldPositions = config.buttonPositions.field;
+      for (let posKey in fieldPositions.positions) {
+        const btnConfig = fieldPositions.positions[posKey];
+        const btnElem = document.getElementById(btnConfig.id);
+        if (btnElem) {
+          btnElem.style.top = btnConfig.top;
+          btnElem.style.left = btnConfig.left;
+        }
+      }
+      // Apply driver station positions
+      for (let dsKey in fieldPositions.driverStations) {
+        const btnConfig = fieldPositions.driverStations[dsKey];
+        const btnElem = document.getElementById(btnConfig.id);
+        if (btnElem) {
+          btnElem.style.top = btnConfig.top;
+          btnElem.style.left = btnConfig.left;
+        }
+      }
+      // Set Teleop button positions
+      const teleopPositions = config.buttonPositions.teleop;
+      for (let btnKey in teleopPositions) {
+        const btnConfig = teleopPositions[btnKey];
+        const btnElem = document.getElementById(btnConfig.id);
+        if (btnElem) {
+          btnElem.style.top = btnConfig.top;
+          btnElem.style.left = btnConfig.left;
+          btnElem.style.width = btnConfig.width;
+          btnElem.style.height = btnConfig.height;
+        }
+      }
+      // Set Endgame button positions
+      const endgamePositions = config.buttonPositions.endgame;
+      for (let btnKey in endgamePositions) {
+        const btnConfig = endgamePositions[btnKey];
+        const btnElem = document.getElementById(btnConfig.id);
+        if (btnElem) {
+          btnElem.style.top = btnConfig.top;
+          btnElem.style.left = btnConfig.left;
+          btnElem.style.width = btnConfig.width;
+          btnElem.style.height = btnConfig.height;
+        }
+      }
+      // Example of using JSON attribute names:
+      // const matchNumberKey = config.jsonAttributes.matchNumber;
+      // Then, when storing data, you can do something like:
+      // scoutingData[matchNumberKey] = document.getElementById("matchNumber").value;
+    })
+    .catch(error => {
+      console.error("Error loading configuration:", error);
+    });
+
         document.querySelectorAll('.position-btn').forEach(button => {
             button.addEventListener('click', function () {
                 const position = this.innerText;
                 selectPosition(position);
             });
         });
-
-        function toggleSide() {
-            const isChecked = document.getElementById('sideToggle').checked;
-            const maxLeft = 78; // Maximum left percentage for red side
-            const minLeft = 15; // Minimum left percentage for blue side
-
-            // Calculate new positions for driver stations
-            const driverStationPositions = {
-                "Driver Station 1": "72%", // DS 1 becomes DS 3
-                "Driver Station 2": "53%", // DS 2 remains DS 2
-                "Driver Station 3": "18%"  // DS 3 becomes DS 1
-            };
-
-            document.querySelectorAll('.position-btn, .driver-station-btn').forEach(button => {
-                if (isChecked) {
-                    // Change to red side
-                    if (button.classList.contains('driver-station-btn')) {
-                        button.style.top = driverStationPositions[button.innerText]; // Update top position based on mapping
-                    }
-                    const currentLeft = parseInt(button.style.left, 10);
-                    const newLeft = maxLeft - (currentLeft - minLeft);
-                    button.style.left = `${newLeft}%`;
-                    button.classList.add('red');
-                } else {
-                    // Change to blue side (reverse operation for driver stations)
-                    const driverStationReversePositions = {
-                        "Driver Station 1": "18%", // DS 3 goes back to DS 1
-                        "Driver Station 2": "53%", // DS 2 remains DS 2
-                        "Driver Station 3": "72%"  // DS 1 goes back to DS 3
-                    };
-                    if (button.classList.contains('driver-station-btn')) {
-                        button.style.top = driverStationReversePositions[button.innerText];
-                    }
-                    const currentLeft = parseInt(button.style.left, 10);
-                    const newLeft = minLeft + (maxLeft - currentLeft);
-                    button.style.left = `${newLeft}%`;
-                    button.classList.remove('red');
-                }
-            });
-        }
 
         document.querySelectorAll('.driver-station-btn').forEach(button => {
             button.addEventListener('click', function () {
@@ -781,18 +825,30 @@
             document.getElementById('endgameContainer').style.display = 'none';
         }
 
-        let x = 0
+let x = 0;
 
-        function rotateField() {
-            console.log(x)
-            if (x % 2 < 1) {
-                document.getElementById('field-canvas').style.rotate = "180deg"
-                x = x + 1
-            } else {
-                document.getElementById('field-canvas').style.rotate = "0deg"
-                x = x + 1
-            }
-        }
+function rotateField() {
+    if (x % 2 === 0) {
+        // Rotate the field background (iframe) by 180°
+        document.getElementById('field-canvas').style.transform = "rotate(180deg)";
+        // Mirror the entire button container both horizontally and vertically.
+        document.getElementById('field').style.transform = "translateY(120px) scale(-1, -1)";
+        // For each button, apply the same transformation so that its text stays normal.
+        document.querySelectorAll('#field button').forEach(button => {
+            button.style.transform = "scale(-1, -1)";
+        });
+    } else {
+        // Reset the transforms to their default values.
+        document.getElementById('field-canvas').style.transform = "rotate(0deg)";
+        document.getElementById('field').style.transform = "none";
+        document.querySelectorAll('#field button').forEach(button => {
+            button.style.transform = "none";
+        });
+    }
+    x++;
+}
+
+
 
     </script>
 </body>

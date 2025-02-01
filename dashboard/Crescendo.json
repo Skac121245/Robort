@@ -1,0 +1,49 @@
+{
+    "fieldImage": "images/crescendo_feild.png",
+    "buttonPositions": {
+      "field": {
+        "positions": {
+          "position1": { "id": "position-btn-p1", "top": "28%", "left": "15%" },
+          "position2": { "id": "position-btn-p2", "top": "45%", "left": "18%" },
+          "position3": { "id": "position-btn-p3", "top": "62%", "left": "15%" },
+          "position4": { "id": "position-btn-p4", "top": "82%", "left": "15%" },
+          "position5": { "id": "position-btn-p5", "top": "28%", "left": "78%" },
+          "position6": { "id": "position-btn-p6", "top": "45%", "left": "75%" },
+          "position7": { "id": "position-btn-p7", "top": "62%", "left": "78%" },
+          "position8": { "id": "position-btn-p8", "top": "82%", "left": "78%" }
+        },
+        "driverStations": {
+          "driverStation1_BLUE": { "id": "driver-station-btn-1", "top": "26%", "left": "1%" },
+          "driverStation2_BLUE": { "id": "driver-station-btn-2", "top": "60%", "left": "1%" },
+          "driverStation3_BLUE": { "id": "driver-station-btn-3", "top": "80%", "left": "1%" },
+          "driverStation1_RED": { "id": "driver-station-btn-4", "top": "80%", "left": "90%" },
+          "driverStation2_RED": { "id": "driver-station-btn-5", "top": "60%", "left": "90%" },
+          "driverStation3_RED": { "id": "driver-station-btn-6", "top": "26%", "left": "90%" }
+        }
+      },
+      "teleop": {
+        "groundPickupButton1": { "id": "groundPickupButton1", "top": "50px", "left": "230px", "width": "200px", "height": "120px" },
+        "groundPickupButton2": { "id": "groundPickupButton2", "top": "195px", "left": "230px", "width": "200px", "height": "120px" },
+        "groundPickupButton3": { "id": "groundPickupButton3", "top": "340px", "left": "230px", "width": "200px", "height": "120px" },
+        "sourceButton":         { "id": "sourceButton", "top": "50px", "left": "10px",  "width": "200px", "height": "195px" },
+        "sourceButton2":        { "id": "sourceButton2", "top": "265px", "left": "10px",  "width": "200px", "height": "195px" }
+      },
+      "endgame": {
+        "StageRightBLUE": { "id": "StageRightBLUE", "top": "470px", "left": "20px", "width": "200px", "height": "200px" },
+        "StageLeftBLUE":  { "id": "StageLeftBLUE", "top": "260px", "left": "20px", "width": "200px", "height": "200px" },
+        "CenterStageBLUE": { "id": "CenterStageBLUE", "top": "365px", "left": "230px", "width": "200px", "height": "200px" },
+        "StageRightRED":  { "id": "StageRightRED", "top": "150px", "left": "230px", "width": "200px", "height": "200px" },
+        "StageLeftRED":   { "id": "StageLeftRED", "top": "-60px", "left": "230px", "width": "200px", "height": "200px" },
+        "CenterStageRED": { "id": "CenterStageRED", "top": "50px", "left": "20px", "width": "200px", "height": "200px" }
+      }
+    },
+    "jsonAttributes": {
+      "matchNumber": "matchNumber",
+      "teamNumber": "teamNumber",
+      "scoutingData": "scoutingData",
+      "teleopActions": "teleopActions",
+      "endgameActions": "endgameActions",
+      "notes": "notes"
+    }
+  }
+  
