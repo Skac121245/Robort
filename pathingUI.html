@@ -227,16 +227,26 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
   });
 }
 
-function saveCanvas() {
-  const scoutingData = sessionStorage.getItem('scoutingData')
-        const matchNumber = scoutingData.matchNumber;
-        const teamNumber = scoutingData.teamNumber;
-        console.log("match# " + matchNumber + " " + "team# " + teamNumber)
-        const canvas = document.getElementById('strategyCanvas');
-        const ctx = canvas.getContext('2d');
+  // Assuming compOption is set correctly in localStorage.
+  var compOption = localStorage.getItem('compOption');
+  if (compOption != ('Crescendo')) {
+            compOption = 'Reefscape';
+        }
+  const configUrl = `dashboard/${compOption}.json`;
+
+  function saveCanvas() {
+    // First, fetch and parse the JSON configuration
+    fetch(configUrl)
+      .then(response => response.json())
+      .then(config => {
+        // Now config is an object and you can access config.fieldImage
         const backgroundImage = new Image();
-        backgroundImage.src = "images/crescendo_feild.png";
+        backgroundImage.src = config.fieldImage;
+
         backgroundImage.onload = () => {
+          const canvas = document.getElementById('strategyCanvas');
+          const ctx = canvas.getContext('2d');
+
           // Create a temporary canvas to draw the background and the existing content
           const tempCanvas = document.createElement('canvas');
           const tempCtx = tempCanvas.getContext('2d');
@@ -253,11 +263,18 @@ function saveCanvas() {
           // Save the combined content from the temporary canvas
           const dataURL = tempCanvas.toDataURL('image/png');
           const link = document.createElement('a');
-          link.download = `Match${sessionStorage.getItem('scoutingData').matchNumber}_${sessionStorage.getItem('scoutingData').teamNumber}_ScoutingData.png`; // You can change the filename
+          // Assuming scoutingData is a parsed object from sessionStorage. If it's stored as JSON,
+          // you'll need to parse it with JSON.parse.
+          const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+          link.download = `Match${scoutingData.matchNumber}_${scoutingData.teamNumber}_ScoutingData.png`;
           link.href = dataURL;
           link.click();
         };
-      };
+      })
+      .catch(error => {
+        console.error('Error loading config:', error);
+      });
+  }
 
 
     function drawText(text, x, y, color, index, alliance) {

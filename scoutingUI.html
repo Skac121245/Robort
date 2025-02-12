@@ -474,8 +474,10 @@
         <button onclick="saveNoteOutcome('another team got it')">Another Team Got It</button>
     </div>
     <script>
-        const compOption = localStorage.getItem('compOption');
-
+        var compOption = localStorage.getItem('compOption');
+        if (compOption != ('Crescendo')) {
+            compOption = 'Reefscape';
+        }
         const configPath = `dashboard/${compOption}.json`;
 
         // Load the configuration file.
@@ -512,6 +514,12 @@ fieldIframe.addEventListener("load", function() {
         if (btnElem) {
           btnElem.style.top = btnConfig.top;
           btnElem.style.left = btnConfig.left;
+        } 
+        if (btnConfig.name) {
+            btnElem.innerText = btnConfig.name;
+        }
+        if (btnConfig.hide) {
+            btnElem.style.display = 'none';
         }
       }
       // Apply driver station positions
@@ -521,6 +529,12 @@ fieldIframe.addEventListener("load", function() {
         if (btnElem) {
           btnElem.style.top = btnConfig.top;
           btnElem.style.left = btnConfig.left;
+        }
+        if (btnConfig.name) {
+            btnElem.innerText = btnConfig.name;
+        }
+        if (btnConfig.hide) {
+            btnElem.style.display = 'none';
         }
       }
       // Set Teleop button positions
@@ -534,6 +548,12 @@ fieldIframe.addEventListener("load", function() {
           btnElem.style.width = btnConfig.width;
           btnElem.style.height = btnConfig.height;
         }
+        if (btnConfig.name) {
+            btnElem.innerText = btnConfig.name;
+        }
+        if (btnConfig.hide) {
+            btnElem.style.display = 'none';
+        }
       }
       // Set Endgame button positions
       const endgamePositions = config.buttonPositions.endgame;
@@ -545,6 +565,12 @@ fieldIframe.addEventListener("load", function() {
           btnElem.style.left = btnConfig.left;
           btnElem.style.width = btnConfig.width;
           btnElem.style.height = btnConfig.height;
+        }
+        if (btnConfig.name) {
+            btnElem.innerText = btnConfig.name;
+        }
+        if (btnConfig.hide) {
+            btnElem.style.display = 'none';
         }
       }
       // Example of using JSON attribute names:

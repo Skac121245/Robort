@@ -3,22 +3,22 @@
     "buttonPositions": {
       "field": {
         "positions": {
-          "position1": { "id": "position-btn-p1", "top": "28%", "left": "15%" },
-          "position2": { "id": "position-btn-p2", "top": "45%", "left": "18%" },
-          "position3": { "id": "position-btn-p3", "top": "62%", "left": "15%" },
-          "position4": { "id": "position-btn-p4", "top": "82%", "left": "15%" },
-          "position5": { "id": "position-btn-p5", "top": "28%", "left": "78%" },
-          "position6": { "id": "position-btn-p6", "top": "45%", "left": "75%" },
-          "position7": { "id": "position-btn-p7", "top": "62%", "left": "78%" },
-          "position8": { "id": "position-btn-p8", "top": "82%", "left": "78%" }
+          "position1": { "id": "position-btn-p1", "top": "35%", "left": "40%" },
+          "position2": { "id": "position-btn-p2", "top": "58%", "left": "40%" },
+          "position3": { "id": "position-btn-p3", "top": "81%", "left": "40%" },
+          "position4": { "id": "position-btn-p4", "top": "82%", "left": "15%", "hide":true },
+          "position5": { "id": "position-btn-p5", "top": "35%", "left": "53%" },
+          "position6": { "id": "position-btn-p6", "top": "58%", "left": "53%" },
+          "position7": { "id": "position-btn-p7", "top": "81%", "left": "53%" },
+          "position8": { "id": "position-btn-p8", "top": "82%", "left": "78%", "hide": true }
         },
         "driverStations": {
           "driverStation1_BLUE": { "id": "driver-station-btn-1", "top": "40%", "left": "1%" },
           "driverStation2_BLUE": { "id": "driver-station-btn-2", "top": "60%", "left": "1%" },
           "driverStation3_BLUE": { "id": "driver-station-btn-3", "top": "80%", "left": "1%" },
-          "driverStation1_RED": { "id": "driver-station-btn-4", "top": "80%", "left": "90%" },
+          "driverStation1_RED": { "id": "driver-station-btn-4", "top": "40%", "left": "90%" },
           "driverStation2_RED": { "id": "driver-station-btn-5", "top": "60%", "left": "90%" },
-          "driverStation3_RED": { "id": "driver-station-btn-6", "top": "26%", "left": "90%" }
+          "driverStation3_RED": { "id": "driver-station-btn-6", "top": "80%", "left": "90%" }
         }
       },
       "teleop": {
