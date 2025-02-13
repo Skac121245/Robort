@@ -525,7 +525,7 @@ fieldIframe.addEventListener("load", function() {
 
       // Apply note button positions
       for (let btnKey in fieldPositions.notes) {
-        const btnConfig = notes[btnKey];
+        const btnConfig = fieldPositions.notes[btnKey];
         const btnElem = document.getElementById(btnConfig.id);
         if (btnElem) {
           btnElem.style.top = btnConfig.top;
