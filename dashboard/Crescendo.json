@@ -19,6 +19,19 @@
           "driverStation1_RED": { "id": "driver-station-btn-4", "top": "80%", "left": "90%" },
           "driverStation2_RED": { "id": "driver-station-btn-5", "top": "60%", "left": "90%" },
           "driverStation3_RED": { "id": "driver-station-btn-6", "top": "26%", "left": "90%" }
+        },
+        "notes": {
+          "notebtn1": { "id": "notebtn1", "top": "31%", "left": "23%" },
+          "notebtn2": { "id": "notebtn2", "top": "46%", "left": "23%" },
+          "notebtn3": { "id": "notebtn3", "top": "61%", "left": "23%" },
+          "notebtn4": { "id": "notebtn4", "top": "26.5%", "left": "46.5%" },
+          "notebtn5": { "id": "notebtn5", "top": "43.5%", "left": "46.5%" },
+          "notebtn6": { "id": "notebtn6", "top": "60.5%", "left": "46.5%" },
+          "notebtn7": { "id": "notebtn7", "top": "77.4%", "left": "46.5%" },
+          "notebtn8": { "id": "notebtn8", "top": "95.5%", "left": "46.5%" },
+          "notebtn9": { "id": "notebtn9", "top": "31%", "left": "70.5%" },
+          "notebtn10": { "id": "notebtn10", "top": "46%", "left": "70.5%" },
+          "notebtn11": { "id": "notebtn11", "top": "61%", "left": "70.5%" }
         }
       },
       "teleop": {

@@ -369,37 +369,37 @@
 
         <div id="notesContainer" style="display: none; position: relative; width: 100%; height: 100%;">
             <!-- Example note buttons, position these as needed -->
-            <button class="note-btn" style="position: absolute; top: 31%; left: 23%;"
+            <button class="note-btn" id="notebtn1" style="position: absolute; top: 31%; left: 23%;"
                 onclick="noteAction('Note 1')">Note
                 1</button>
-            <button class="note-btn" style="position: absolute; top: 46%; left: 23%;"
+            <button class="note-btn" id="notebtn2" style="position: absolute; top: 46%; left: 23%;"
                 onclick="noteAction('Note 2')">Note
                 2</button>
-            <button class="note-btn" style="position: absolute; top: 61%; left: 23%;"
+            <button class="note-btn" id="notebtn3" style="position: absolute; top: 61%; left: 23%;"
                 onclick="noteAction('Note 3')">Note
                 3</button>
-            <button class="note-btn" style="position: absolute; top: 26.5%; left: 46.5%;"
+            <button class="note-btn" id="notebtn4" style="position: absolute; top: 26.5%; left: 46.5%;"
                 onclick="noteAction('Note 4')">Note
                 4</button>
-            <button class="note-btn" style="position: absolute; top: 43.5%; left: 46.5%;"
+            <button class="note-btn" id="notebtn5" style="position: absolute; top: 43.5%; left: 46.5%;"
                 onclick="noteAction('Note 5')">Note
                 5</button>
-            <button class="note-btn" style="position: absolute; top: 60.5%; left: 46.5%;"
+            <button class="note-btn" id="notebtn6" style="position: absolute; top: 60.5%; left: 46.5%;"
                 onclick="noteAction('Note 6')">Note
                 6</button>
-            <button class="note-btn" style="position: absolute; top: 77.5%; left: 46.5%;"
+            <button class="note-btn" id="notebtn7" style="position: absolute; top: 77.5%; left: 46.5%;"
                 onclick="noteAction('Note 7')">Note
                 7</button>
-            <button class="note-btn" style="position: absolute; top: 95.5%; left: 46.5%;"
+            <button class="note-btn" id="notebtn8" style="position: absolute; top: 95.5%; left: 46.5%;"
                 onclick="noteAction('Note 8')">Note
                 8</button>
-            <button class="note-btn" style="position: absolute; top: 31%; left: 70.5%;"
+            <button class="note-btn" id="notebtn9" style="position: absolute; top: 31%; left: 70.5%;"
                 onclick="noteAction('Note 9')">Note
                 9</button>
-            <button class="note-btn" style="position: absolute; top: 46%; left: 70.5%;"
+            <button class="note-btn" id="notebtn10" style="position: absolute; top: 46%; left: 70.5%;"
                 onclick="noteAction('Note 10')">Note
                 10</button>
-            <button class="note-btn" style="position: absolute; top: 61%; left: 70.5%;"
+            <button class="note-btn" id="notebtn11" style="position: absolute; top: 61%; left: 70.5%;"
                 onclick="noteAction('Note 11')">Note
                 11</button>
             <!-- Add more note buttons as required -->
@@ -522,6 +522,25 @@ fieldIframe.addEventListener("load", function() {
             btnElem.style.display = 'none';
         }
       }
+
+      // Apply note button positions
+      for (let btnKey in fieldPositions.notes) {
+        const btnConfig = notes[btnKey];
+        const btnElem = document.getElementById(btnConfig.id);
+        if (btnElem) {
+          btnElem.style.top = btnConfig.top;
+          btnElem.style.left = btnConfig.left;
+          btnElem.style.width = btnConfig.width;
+          btnElem.style.height = btnConfig.height;
+        }
+        if (btnConfig.name) {
+            btnElem.innerText = btnConfig.name;
+        }
+        if (btnConfig.hide) {
+            btnElem.style.display = 'none';
+        }
+      }
+
       // Apply driver station positions
       for (let dsKey in fieldPositions.driverStations) {
         const btnConfig = fieldPositions.driverStations[dsKey];
@@ -573,6 +592,7 @@ fieldIframe.addEventListener("load", function() {
             btnElem.style.display = 'none';
         }
       }
+
       // Example of using JSON attribute names:
       // const matchNumberKey = config.jsonAttributes.matchNumber;
       // Then, when storing data, you can do something like:
