@@ -371,11 +371,10 @@
             // const fileReader = new FileReader();
             // fileReader.onload = function () {
             function updateUI(data) {
-                  // Reset all positions from previous data.
-  resetPositions();
-  
   // Validate data and alert for any missing attributes.
   validateData(data);
+                  // Reset all positions from previous data.
+  resetPositions();
               fetch(configPath)
     .then(response => {
       if (!response.ok) {
