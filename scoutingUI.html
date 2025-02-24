@@ -919,17 +919,20 @@ for (let outcomeKey in endgameOutcomeConfig) {
        function logAction(action, actionType) {
   const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
 
-  if (actionType === 'pickup') {
+  if (actionType === 'pickup' || typeof scoutingData.currentActionIndex === 'undefined') {
+    // If it's a pickup action, or no current action exists, start a new action
     scoutingData.teleopActions.push({ pickup: action, shot_place: null });
     scoutingData.currentActionIndex = scoutingData.teleopActions.length - 1;
-    showAdditionalActions();
-  } else {
-    if (typeof scoutingData.currentActionIndex !== 'undefined') {
-      scoutingData.teleopActions[scoutingData.currentActionIndex].shot_place = action;
-      delete scoutingData.currentActionIndex;
-      hideAdditionalActions();
+    if(actionType === 'pickup'){
+      showAdditionalActions();
     }
+  } else {
+    // Otherwise, update the current action
+    scoutingData.teleopActions[scoutingData.currentActionIndex].shot_place = action;
+    delete scoutingData.currentActionIndex;
+    hideAdditionalActions();
   }
+  
 
   sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
   console.log(action + ' action logged.');
@@ -970,9 +973,7 @@ function hideAdditionalActions() {
 
         function logTeleopAction(action) {
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
-            if (!scoutingData.teleopActions) {
-                scoutingData.teleopActions = [];
-            }
+           
             scoutingData.teleopActions.push(action);
             sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
 

@@ -215,6 +215,7 @@
     <a class="button-link" href="./index.html">Robort Home</a>
     <input type="file" id="uploadButton" accept=".json">
     <input type="file" id="uploadBackground" accept="image/png" class="hidden"> 
+    <p id="warningText" style="display:none"></p>
     <h1 id="teamDisplay" class="hidden"></h1>
     <h2 id="matchNumber" class="hidden"></h2>
 
@@ -300,8 +301,8 @@
         <div class="stats" >
             <h3>Stats</h3>
             <h4>Out of Auto: <span id="outOfAuto"></span></h4>
-            <h4># of Cycles: <span id="numOfCycles"></span></h4>
-            <h4># of Notes attempted scored: <span id="noteAttemps"></span></h4>
+            <h4># of Complete Cycles: <span id="numOfCycles"></span></h4>
+            <h4># of attempted Game Piece Scores: <span id="noteAttemps"></span></h4>
             <h4># of Notes Scored: <span id="notesScored"></span></h4>
             <h4>Ratio of notes scored to notes shot: <span id="ratio"></span></h4>
             <h4># in SPEAKER: <span id="speakerNotes"></span></h4>
@@ -311,21 +312,21 @@
         </div>
         <div id="field_image_auto">
             <div class="driver-btns" style="position: relative; width: 100%; height: 100%;">
-                <button id="Driver Station 1 BLUE" class="driver-station-btnB"
+                <button id="driver-station-btn-1" class="driver-station-btnB"
                     style="position: absolute; display: none; top: 18%; left: 0px; width:120px;">Driver Station 1
                     BLUE</button>
-                <button id="Driver Station 2 BLUE" class="driver-station-btnB"
+                <button id="driver-station-btn-2" class="driver-station-btnB"
                     style="position: absolute; display: none; top: 53%; left: 0px; width:120px;">Driver Station 2
                     BLUE</button>
-                <button id="Driver Station 3 BLUE" class="driver-station-btnB"
+                <button id="driver-station-btn-3" class="driver-station-btnB"
                     style="position: absolute; display: none; top: 72%; left: 0px; width: 120px;">Driver Station 3
                     BLUE</button>
 
-                <button id="Driver Station 3 RED" class="driver-station-btnR"
+                <button id="driver-station-btn-6" class="driver-station-btnR"
                     style="position: absolute; display: none; top: 18%; left: 90%;">Driver Station 3 RED</button>
-                <button id="Driver Station 2 RED" class="driver-station-btnR"
+                <button id="driver-station-btn-5" class="driver-station-btnR"
                     style="position: absolute; display: none; top: 53%; left: 90%;">Driver Station 2 RED</button>
-                <button id="Driver Station 1 RED" class="driver-station-btnR"
+                <button id="driver-station-btn-4" class="driver-station-btnR"
                     style="position: absolute; display: none; top: 72%; left: 90%;">Driver Station 1 RED</button>
             </div>
         </div>
@@ -411,7 +412,6 @@
         
       }
                 // Populate note buttons
-                const notesContainer = document.getElementById('notesContainer');
                 const noteConfigs = Object.values(fieldPositions.notes);
                 const matchNotes = data.autoActions;
                 noteConfigs.forEach((note, index) => {
@@ -432,7 +432,23 @@
     if (btnConfig.hide) {
           note_button.style.display = "none";
         }
-       
+         // Populate driver station positions
+      for (let dsKey in fieldPositions.driverStations) {
+        const btnConfig = fieldPositions.driverStations[dsKey];
+        const btnElem = document.getElementById(btnConfig.id);
+        if (btnElem) {
+          const btnTop = parseFloat(btnConfig.top.replace('%', ''));
+          const currentTop = btnTop + config.buttonPositions.addtop;
+          btnElem.style.top = currentTop + '%';
+          btnElem.style.left = btnConfig.left;
+        }
+        if (btnConfig.name) {
+            btnElem.innerText = btnConfig.name;
+        }
+        if (btnConfig.hide) {
+            btnElem.style.display = 'none';
+        }
+      }
           // Get the outcome from the match data (if it exists)
     let outcome = "";
     if (matchNotes && matchNotes[index] && matchNotes[index].outcome) {
@@ -465,13 +481,17 @@
                 let teleopMiss = 0
 
 
+                    if(data.teleopActions){
+                         data.teleopActions.forEach((cycle, index) => {
+    Object.values(config.buttonPositions.teleop).forEach(teleopConfig => {
+        if (cycle.pickup.trim() === teleopConfig.name && cycle.shot_place) {
+        if(cycle.shot_place != "Miss") {
+            teleopCycleCounter += 1;
+        }
+    }
+    });
 
-                data.teleopActions.forEach((cycle, index) => {
-                     if (cycle.pickup === "Ground Pickup 1" || cycle.pickup === "Ground Pickup 2" || cycle.pickup === "Ground Pickup 3") {
-                        teleopCycleCounter = teleopCycleCounter + 0.5
-                     } else {
-                        teleopCycleCounter = teleopCycleCounter + 1
-                     }
+                            
 
                      if (index == 0){
                         document.getElementById('outOfAuto').textContent = cycle.pickup;
@@ -496,10 +516,11 @@
                         }
 
                 })
-
+          }
+               
                 let endgameAction = ""
                 let endgameOutcome = ""
-
+                if(data.endgameActions){
                 data.endgameActions.forEach((action) => {
                     endgameAction = action.action
                     endgameOutcome = action.outcome
@@ -560,7 +581,7 @@
                         document.getElementById("CenterStageRED").style.display = "none"
                     }
 
-                })
+                })}
                 const buttons = document.querySelectorAll("button");
 buttons.forEach(btn => {
   if (btn.textContent.trim() === data.robotPosition) {
@@ -575,7 +596,16 @@ buttons.forEach(btn => {
                 document.getElementById('endgameContainer').style.display = "flex"
 
                 console.log(data.driverStation)
-                document.getElementById(data.driverStation).style.display = 'inline'
+                buttons.forEach(btn => {
+  if (btn.textContent.trim() === data.driverStation) {
+    btn.style.display = "inline";
+  }
+});
+if (data.teleopActions && data.teleopActions.length > 0 && teleopCycleCounter === 0) {
+  console.warn("No complete cycles recorded. It looks like the teleop actions did not match any expected configuration. Please verify that the correct game code is selected in settings and that your JSON values match the configuration.");
+alert("No complete cycles were recorded, likely due to a game code mismatch. Please verify that the correct game code is selected in settings.");
+}
+
                 document.getElementById("numOfCycles").textContent = teleopCycleCounter;
                 document.getElementById("noteAttemps").textContent = teleopNoteCounter;
                 document.getElementById("notesScored").textContent = teleopNoteScore;
@@ -591,6 +621,9 @@ buttons.forEach(btn => {
     document.getElementById('autoContainer').classList.remove('hidden');
     document.getElementById('teleopContainer').classList.remove('hidden');
     document.getElementById('endgameContainer').classList.remove('hidden');
+
+    document.getElementById('warningText').style.display = "inline"
+    document.getElementById('warningText').textContent = 'For optimal results, reload the page before loading another file.';
             })}
 
 
