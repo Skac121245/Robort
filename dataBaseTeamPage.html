@@ -303,10 +303,12 @@
             <h4>Out of Auto: <span id="outOfAuto"></span></h4>
             <h4># of Complete Cycles: <span id="numOfCycles"></span></h4>
             <h4># of attempted Game Piece Scores: <span id="noteAttemps"></span></h4>
-            <h4># of Notes Scored: <span id="notesScored"></span></h4>
-            <h4>Ratio of notes scored to notes shot: <span id="ratio"></span></h4>
-            <h4># in SPEAKER: <span id="speakerNotes"></span></h4>
-            <h4># in AMP: <span id="ampNotes"></span></h4>
+            <h4># of Game Pieces Scored: <span id="notesScored"></span></h4>
+            <h4>Ratio of Game Pieces Scored to Game Pieces Shot: <span id="ratio"></span></h4>
+            <div class="attrib_list">
+            <!-- <h4># in SPEAKER: <span id="speakerNotes"></span></h4>
+            <h4># in AMP: <span id="ampNotes"></span></h4> -->
+            </div>
             <h4># PASSED: <span id="passNotes"></span></h4>
             <h4># MISSED: <span id="missNotes"></span></h4>
         </div>
@@ -496,6 +498,7 @@
                      if (index == 0){
                         document.getElementById('outOfAuto').textContent = cycle.pickup;
                      } 
+
                         if (cycle.shot_place != null || cycle.shot_place != "" || cycle.shot_place != undefined) {
                             teleopNoteCounter = teleopNoteCounter + 1
                         }
@@ -514,10 +517,30 @@
                         if (cycle.shot_place === "Miss"){
                             teleopMiss = teleopMiss + 1
                         }
-
+                        
                 })
           }
-               
+               // Custom Attribute Checking
+               const attributeCount = {}
+               if(data.teleopActions){
+                data.teleopActions.forEach((cycle, index) => {
+                    data.teleopAttributes.forEach((attribute) => {
+                        if (attribute.toLowerCase() === cycle.shot_place[index].toLowerCase()) {
+         if (attributeCount[attribute]) {
+            console.log(attributeCount[attribute] + " added")
+            attributeCount[attribute]++;
+        } else {
+            attributeCount[attribute] = 1;
+        }
+    }
+        
+                    })
+    
+                })}
+                data.attributeCount.forEach((attribute)=> {
+            // document.querySelector('#attrib_list').innerHTML = 'Hi <span>' + name + '</span>'; 
+            // <h4># in SPEAKER: <span id="speakerNotes"></span></h4>
+        }) 
                 let endgameAction = ""
                 let endgameOutcome = ""
                 if(data.endgameActions){
@@ -603,7 +626,7 @@ buttons.forEach(btn => {
 });
 if (data.teleopActions && data.teleopActions.length > 0 && teleopCycleCounter === 0) {
   console.warn("No complete cycles recorded. It looks like the teleop actions did not match any expected configuration. Please verify that the correct game code is selected in settings and that your JSON values match the configuration.");
-alert("No complete cycles were recorded, likely due to a game code mismatch. Please verify that the correct game code is selected in settings.");
+alert("No complete cycles were recorded, potentially due to a game code mismatch. Please verify that the correct game code is selected in settings.");
 }
 
                 document.getElementById("numOfCycles").textContent = teleopCycleCounter;

@@ -169,6 +169,12 @@
       },
       "addtop": -11
     },
+    "teleopAttributes": {
+      "SPEAKER": {},
+      "AMP": {},
+      "PASSED": {},
+      "MISSED": {}
+    },
     "jsonAttributes": {
       "matchNumber": "matchNumber",
       "teamNumber": "teamNumber",
