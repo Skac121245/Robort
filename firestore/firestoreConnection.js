@@ -84,7 +84,7 @@ export default class FirestoreConnection {
   async addData(collectionName, data, docId) {
     if (docId) {
       const docRef = doc(this.db, collectionName, docId);
-      return await setDoc(docRef, data, { merge: true });
+      return await setDoc(docRef, data);
     } else {
       return await addDoc(collection(this.db, collectionName), data); // addDoc auto-generates an ID
     }
