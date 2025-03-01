@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firestore Demo</title>
+    <script src="./firestore.js" type="module"></script>
+  </head>
+
+  <body>
+    <h1>Firestore Demo</h1>
+    <div>
+      This example shows how to interact with a Firestore database in the cloud.
+    </div>
+    <div>
+      Importing the firestore.js file creates a connection to Firestore and
+      starts polling a collection called <b>scouting-data</b>.
+    </div>
+    <br />
+    <br />
+    <section>
+      <h2>Getting data from firestore</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Team Name</th>
+            <th>Can Climb?</th>
+            <th>Can Score L0?</th>
+            <th>Can Score L1?</th>
+            <th>Can Score L2?</th>
+            <th>Can Score L3?</th>
+          </tr>
+        </thead>
+        <tbody id="results"></tbody>
+      </table>
+    </section>
+    <section>
+      <h2>Image upload</h2>
+      Here are some images people have uploaded:
+      <div id="image-results"></div>
+    </section>
+    <section>
+      <h2>Pushing data to firestore</h2>
+      <div>
+        Click this button to add a randomized team to the firestore database
+      </div>
+      <button onclick="addRandomTeam()">Add team</button>
+      <br />
+      <br />
+      <div>Click this button to select an image to upload</div>
+      <input id="image-uploader" type="file" accept="image/*"></input>
+    </section>
+
+  </body>
+</html>
