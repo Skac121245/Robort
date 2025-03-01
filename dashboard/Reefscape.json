@@ -45,7 +45,6 @@
           "color": "green",
           "size": "large",
           "actionType": "score"
-
         },
         "coral": {
           "id": "coral",
@@ -103,9 +102,9 @@
   },
 "coralMiss": {
     "id": "coralMiss",
-    "top": "445px",
-    "left": "170px",
-    "width": "130px",
+    "top": "370px",
+    "left": "30px",
+    "width": "270px",
     "height": "120px",
     "name": "Miss",
     "color": "red",

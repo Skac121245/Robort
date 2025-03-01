@@ -6,6 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRC Scouting App - Autonomous Mode</title>
     <style>
+#teleopButtons, 
+#additionalActions, 
+#teleopContainer button,
+#noteOutcome {
+  position: relative;
+  z-index: 10002 !important;
+}
+
+
+        html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
         #field {
             width: 100%;
             /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
@@ -108,12 +124,7 @@
         #notesSection {
             position: relative;
             width: 400px;
-            padding: 10px;
             box-sizing: border-box;
-            background: #f8f9fa;
-            /* Light grey background for better visibility */
-            border-top: 1px solid #ccc;
-            /* A subtle top border for visual separation */
             top: 645px;
             left: 1000px;
         }
@@ -462,7 +473,7 @@ function exportLog(e) {
     </div>
 
     <div id="notesSection">
-        <textarea id="notes" placeholder="Enter your notes here..."></textarea>
+        <textarea id="notes" placeholder="Enter your notes here..." style="position: absolute; bottom: -65px; right: -120px; width: 1200px; height: 96px; z-index: 10001;"></textarea>
     </div>
 
 
@@ -775,6 +786,18 @@ for (let outcomeKey in endgameOutcomeConfig) {
             scoutingData.notes = notes;
             // scoutingData.push(notes);
             // Adding notes directly to the scoutingData object
+            const iframe = document.getElementById('field-canvas');
+if (iframe && iframe.contentDocument) {
+    const strategyCanvas = iframe.contentDocument.getElementById('strategyCanvas');
+    if (strategyCanvas && strategyCanvas.toDataURL) {
+        scoutingData.canvasDrawing = strategyCanvas.toDataURL(); // Save Base64 image
+    } else {
+        console.warn("Canvas not found or unable to convert to base64.");
+    }
+} else {
+    console.warn("Iframe or contentDocument not accessible.");
+}
+            scoutingData.canvasDrawing = document.getElementById('field-canvas').contentDocument.getElementById('strategyCanvas').toDataURL();
 
             if (!scoutingData) {
                 alert('No scouting data available to download!');

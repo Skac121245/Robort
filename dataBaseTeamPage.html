@@ -305,12 +305,9 @@
             <h4># of attempted Game Piece Scores: <span id="noteAttemps"></span></h4>
             <h4># of Game Pieces Scored: <span id="notesScored"></span></h4>
             <h4>Ratio of Game Pieces Scored to Game Pieces Shot: <span id="ratio"></span></h4>
-            <div class="attrib_list">
-            <!-- <h4># in SPEAKER: <span id="speakerNotes"></span></h4>
-            <h4># in AMP: <span id="ampNotes"></span></h4> -->
-            </div>
-            <h4># PASSED: <span id="passNotes"></span></h4>
-            <h4># MISSED: <span id="missNotes"></span></h4>
+            <div id="customAttributesContainer">
+                <h3>Custom Attributes</h3>
+              </div>              
         </div>
         <div id="field_image_auto">
             <div class="driver-btns" style="position: relative; width: 100%; height: 100%;">
@@ -374,6 +371,8 @@
             // const fileReader = new FileReader();
             // fileReader.onload = function () {
             function updateUI(data) {
+                const jsonData = data;
+
                   // Reset all positions from previous data.
   resetPositions();
   
@@ -520,27 +519,53 @@
                         
                 })
           }
-               // Custom Attribute Checking
-               const attributeCount = {}
-               if(data.teleopActions){
-                data.teleopActions.forEach((cycle, index) => {
-                    data.teleopAttributes.forEach((attribute) => {
-                        if (attribute.toLowerCase() === cycle.shot_place[index].toLowerCase()) {
-         if (attributeCount[attribute]) {
-            console.log(attributeCount[attribute] + " added")
-            attributeCount[attribute]++;
-        } else {
-            attributeCount[attribute] = 1;
-        }
+// --- CUSTOM ATTRIBUTE COUNTING ---
+const customCounts = {};
+
+// Ensure the game code JSON defines additionalActions under buttonPositions
+if (config.buttonPositions.additionalActions) {
+  for (let key in config.buttonPositions.additionalActions) {
+    const customAction = config.buttonPositions.additionalActions[key];
+    // Initialize the count using the custom action's name
+    customCounts[customAction.name] = 0;
+    console.log("Found additional action:", customAction);
+  }
+} else {
+  console.warn("No additionalActions found in config.buttonPositions");
+}
+
+// Loop through the teleop actions from the scouting JSON
+if (data.teleopActions && Array.isArray(data.teleopActions)) {
+  data.teleopActions.forEach(action => {
+    for (let key in config.buttonPositions.additionalActions) {
+      const customAction = config.buttonPositions.additionalActions[key];
+      // Compare in a case-insensitive manner
+      if (
+        (action.pickup && action.pickup.toLowerCase() === customAction.name.toLowerCase()) ||
+        (action.shot_place && action.shot_place.toLowerCase() === customAction.name.toLowerCase())
+      ) {
+        console.log("Match found for:", customAction.name, action);
+        customCounts[customAction.name]++;
+      }
     }
-        
-                    })
-    
-                })}
-                data.attributeCount.forEach((attribute)=> {
-            // document.querySelector('#attrib_list').innerHTML = 'Hi <span>' + name + '</span>'; 
-            // <h4># in SPEAKER: <span id="speakerNotes"></span></h4>
-        }) 
+  });
+}
+
+console.log("Custom Attribute Counts:", customCounts);
+
+// Update the UI—make sure your HTML includes an element with id "customAttributesContainer"
+const customContainer = document.getElementById('customAttributesContainer');
+if (customContainer) {
+  let html = '<h3>Custom Attributes</h3>';
+  for (let attr in customCounts) {
+    html += `<div>${attr}: ${customCounts[attr]}</div>`;
+  }
+  customContainer.innerHTML = html;
+} else {
+  console.warn("Element with id 'customAttributesContainer' not found in HTML");
+}
+
+
                 let endgameAction = ""
                 let endgameOutcome = ""
                 if(data.endgameActions){
@@ -635,8 +660,6 @@ alert("No complete cycles were recorded, potentially due to a game code mismatch
                 document.getElementById("ratio").textContent = teleopNoteScore + "/" + teleopNoteCounter;
                 document.getElementById("speakerNotes").textContent = teleopSpeaker;
                 document.getElementById("ampNotes").textContent = teleopAmp;
-                document.getElementById("passNotes").textContent = teleopPass;
-                document.getElementById("missNotes").textContent = teleopMiss;
 
 
                 document.getElementById('teamDisplay').classList.remove('hidden');
@@ -647,7 +670,7 @@ alert("No complete cycles were recorded, potentially due to a game code mismatch
 
     document.getElementById('warningText').style.display = "inline"
     document.getElementById('warningText').textContent = 'For optimal results, reload the page before loading another file.';
-            })}
+            })
 
 
         //     };
@@ -671,15 +694,43 @@ alert("No complete cycles were recorded, potentially due to a game code mismatch
       return response.json();
     })
     .then(config => {
-      const autoCanvas = document.getElementById("field_image_auto");
-      const teleopCanvas = document.getElementById("field_image");
-      const endgameCanvas = document.getElementById("field_image_endgame");
-    autoCanvas.style.backgroundImage = `url('${config.fieldImage}')`;
-    teleopCanvas.style.backgroundImage = `url('${config.fieldImage}')`;
-    endgameCanvas.style.backgroundImage = `url('${config.fieldImage}')`;
+        const autoCanvas = document.getElementById("field_image");
+        // Composite teleop background by overlaying the canvas drawing onto the field image
+const teleopContainer = document.getElementById("field_image_auto");
+const compositeCanvas = document.createElement('canvas');
+compositeCanvas.width = teleopContainer.offsetWidth;  // e.g., 1152
+compositeCanvas.height = teleopContainer.offsetHeight; // e.g., 498
+const ctx = compositeCanvas.getContext('2d');
+
+const fieldImg = new Image();
+fieldImg.crossOrigin = "anonymous"; // Use if needed for cross-origin images
+fieldImg.src = config.fieldImage;      // config.fieldImage holds the URL to your field image
+
+fieldImg.onload = function() {
+  // Draw the field image first
+  ctx.drawImage(fieldImg, 0, 0, compositeCanvas.width, compositeCanvas.height);
+  
+  if (jsonData.canvasDrawing) {
+    const drawingImg = new Image();
+    drawingImg.src = jsonData.canvasDrawing;  // The saved canvas drawing in Base64
+    drawingImg.onload = function() {
+      // Draw the drawing on top of the field image
+      ctx.drawImage(drawingImg, 0, 0, compositeCanvas.width, compositeCanvas.height);
+      // Set the teleop container's background to the combined image
+      teleopContainer.style.backgroundImage = `url('${compositeCanvas.toDataURL()}')`;
+    };
+  } else {
+    // Fallback: if there's no canvas drawing, use the field image directly
+    teleopContainer.style.backgroundImage = `url('${config.fieldImage}')`;
+  }
+};
+const endgameCanvas = document.getElementById("field_image_endgame");
+autoCanvas.style.backgroundImage = `url('${config.fieldImage}')`;
+endgameCanvas.style.backgroundImage = `url('${config.fieldImage}')`;
+
     
     });
-
+}
         function loadJsonData(filePath) {
     fetch(filePath)
         .then(response => response.json())
