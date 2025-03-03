@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Robort Game Code JSON Documentation</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container my-5">
+    <h1>Robort Scouting App Documentation</h1>
+    <p>This documentation explains the JSON configuration used by your FRC scouting app <strong>Robort</strong>. The configuration file defines how the UI is built for the field, teleop, additional actions, and endgame phases. Each section below details the meaning of each parameter (excluding any game-specific custom attributes).</p>
+    
+    <h2>JSON Schema Overview</h2>
+    <p>The JSON configuration file contains two main parts:</p>
+    <ul>
+      <li><strong>fieldImage</strong> – A string path or URL to the background field image.</li>
+      <li>
+        <strong>buttonPositions</strong> – An object containing configurations for the various UI buttons. This includes:
+        <ul>
+          <li><strong>field</strong> – Positions for field buttons, driver station buttons, and note buttons.</li>
+          <li><strong>teleop</strong> – Configurations for teleoperated mode buttons.</li>
+          <li><strong>additionalActions</strong> – Extra action buttons used during teleop.</li>
+          <li><strong>endgame</strong> – Configurations for endgame buttons.</li>
+          <li><strong>endgameOutcome</strong> – Outcome buttons for endgame results.</li>
+          <li><strong>addtop</strong> – A numeric offset to adjust the vertical placement of buttons.</li>
+        </ul>
+      </li>
+      <li><strong>jsonAttributes</strong> – Maps keys (such as match number, team number, and various action arrays) used internally by the app.</li>
+    </ul>
+
+    <h2>Field Configuration</h2>
+    <p>The <strong>field</strong> object under <strong>buttonPositions</strong> controls the layout for elements that appear on the field. Each position includes:</p>
+    <ul>
+      <li><strong>id</strong>: The HTML element identifier.</li>
+      <li><strong>top</strong> and <strong>left</strong>: CSS positioning values determining the button’s location.</li>
+      <li><strong>hide</strong> (optional): If set to true, the button is hidden.</li>
+      <li><strong>name</strong> (optional): The text label displayed on the button.</li>
+    </ul>
+    <p>The configurations for driver stations and note buttons follow similar properties, with note buttons typically including a <strong>name</strong> property as their label.</p>
+
+    <h2>Teleop Configuration</h2>
+    <p>The <strong>teleop</strong> section defines the buttons used during the teleoperated phase. Each teleop button includes:</p>
+    <ul>
+      <li><strong>id</strong>: The HTML element identifier.</li>
+      <li><strong>top</strong>, <strong>left</strong>, <strong>width</strong>, and <strong>height</strong>: Values that control the button’s position and size.</li>
+      <li><strong>name</strong>: The label text shown on the button.</li>
+      <li><strong>color</strong>: The background color used for visual differentiation.</li>
+      <li><strong>size</strong>: A style indicator (for example, "large" or "medium") that affects font size and padding.</li>
+      <li><strong>actionType</strong>: The type of action (e.g., "score" or "pickup").</li>
+    </ul>
+
+    <h2>Additional Actions</h2>
+    <p>The <strong>additionalActions</strong> section allows you to specify extra buttons for teleop. Their properties mirror those of the teleop buttons, including position, size, and styling attributes.</p>
+
+    <h2>Endgame Configuration</h2>
+    <p>The <strong>endgame</strong> section defines the buttons available during the endgame phase. Each button here includes:</p>
+    <ul>
+      <li><strong>id</strong>: The HTML element identifier.</li>
+      <li><strong>top</strong>, <strong>left</strong>, <strong>width</strong>, and <strong>height</strong>: Values that control the button’s position and size.</li>
+      <li><strong>name</strong>: The label text shown on the button.</li>
+      <li><strong>color</strong> and <strong>size</strong>: Styling options for the button.</li>
+    </ul>
+    <p>The <strong>endgameOutcome</strong> subsection further specifies buttons that capture the outcome of an endgame action (for example, "Park" or "Hang Deep").</p>
+
+    <h2>JSON Attributes Mapping</h2>
+    <p>The <strong>jsonAttributes</strong> object maps the internal keys used by your app to the corresponding values in the JSON file. This mapping includes:</p>
+    <ul>
+      <li><strong>matchNumber</strong> – The match number.</li>
+      <li><strong>teamNumber</strong> – The team number.</li>
+      <li><strong>scoutingData</strong> – The overall scouting data object.</li>
+      <li><strong>teleopActions</strong> – An array of teleop actions.</li>
+      <li><strong>endgameActions</strong> – An array of endgame actions.</li>
+      <li><strong>notes</strong> – Collected notes.</li>
+    </ul>
+  </div>
+</body>
+</html>

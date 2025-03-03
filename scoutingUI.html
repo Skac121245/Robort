@@ -808,7 +808,11 @@ if (iframe && iframe.contentDocument) {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'scoutingData.json';
+            const matchNumber = scoutingData.matchNumber;
+const teamNumber = scoutingData.teamNumber;
+const filename = `Match${matchNumber}_${teamNumber}_ScoutingData.json`;
+a.download = filename;
+
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
