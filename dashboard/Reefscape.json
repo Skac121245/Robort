@@ -44,7 +44,8 @@
           "name": "Algae in Processor",
           "color": "green",
           "size": "large",
-          "actionType": "score"
+          "actionType": "score",
+          "customAttribute": true
         },
         "coral": {
           "id": "coral",

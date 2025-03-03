@@ -304,7 +304,7 @@
             <h4># of Complete Cycles: <span id="numOfCycles"></span></h4>
             <h4># of attempted Game Piece Scores: <span id="noteAttemps"></span></h4>
             <h4># of Game Pieces Scored: <span id="notesScored"></span></h4>
-            <h4>Ratio of Game Pieces Scored to Game Pieces Shot: <span id="ratio"></span></h4>
+            <h4>Ratio of Game Pieces Scored to Game Pieces Attempted: <span id="ratio"></span></h4>
             <div id="customAttributesContainer">
                 <h3>Custom Attributes</h3>
               </div>              
@@ -342,9 +342,10 @@
             <h1>M</h1>
             <h1>E</h1>
         </div>
-
+        <div id="endgameAttributesContainer"></div>
         <div id="field_image_endgame">
             <div class="endgame" id="endgame">
+
                 <button id="StageRightBLUE" style="font-size:20px; opacity: 60%;" onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
                 <button id="StageLeftBLUE"style="font-size:20px; opacity: 60%;" onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
                 <button id="CenterStageBLUE"style="font-size:20px; opacity: 60%;" onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
@@ -519,44 +520,56 @@
                         
                 })
           }
-// --- CUSTOM ATTRIBUTE COUNTING ---
+// --- CUSTOM TELEOP ATTRIBUTES COUNTING ---
+// Create an object to hold the counts.
 const customCounts = {};
 
-// Ensure the game code JSON defines additionalActions under buttonPositions
+// 1. Initialize counts from additionalActions.
 if (config.buttonPositions.additionalActions) {
   for (let key in config.buttonPositions.additionalActions) {
     const customAction = config.buttonPositions.additionalActions[key];
-    // Initialize the count using the custom action's name
     customCounts[customAction.name] = 0;
-    console.log("Found additional action:", customAction);
+    console.log("Additional custom action found:", customAction);
   }
-} else {
-  console.warn("No additionalActions found in config.buttonPositions");
 }
 
-// Loop through the teleop actions from the scouting JSON
+// 2. Also include any teleop button that has customAttribute set to true.
+if (config.buttonPositions.teleop) {
+  for (let key in config.buttonPositions.teleop) {
+    const teleopBtn = config.buttonPositions.teleop[key];
+    if (teleopBtn.customAttribute) {
+      // Add if not already added.
+      if (!customCounts.hasOwnProperty(teleopBtn.name)) {
+        customCounts[teleopBtn.name] = 0;
+        console.log("Teleop custom action added:", teleopBtn);
+      }
+    }
+  }
+}
+
+// 3. Loop through the teleop actions from the scouting JSON and tally if they match (case-insensitive).
 if (data.teleopActions && Array.isArray(data.teleopActions)) {
   data.teleopActions.forEach(action => {
-    for (let key in config.buttonPositions.additionalActions) {
-      const customAction = config.buttonPositions.additionalActions[key];
-      // Compare in a case-insensitive manner
+    for (let attr in customCounts) {
       if (
-        (action.pickup && action.pickup.toLowerCase() === customAction.name.toLowerCase()) ||
-        (action.shot_place && action.shot_place.toLowerCase() === customAction.name.toLowerCase())
+        (action.pickup && action.pickup.toLowerCase() === attr.toLowerCase()) ||
+        (action.shot_place && action.shot_place.toLowerCase() === attr.toLowerCase())
       ) {
-        console.log("Match found for:", customAction.name, action);
-        customCounts[customAction.name]++;
+        console.log("Custom match found for:", attr, action);
+        customCounts[attr]++;
       }
     }
   });
 }
 
-console.log("Custom Attribute Counts:", customCounts);
+console.log("Custom Teleop Attribute Counts:", customCounts);
 
-// Update the UI—make sure your HTML includes an element with id "customAttributesContainer"
+// 4. Update the UI. (Make sure you have a container with id "customAttributesContainer".)
 const customContainer = document.getElementById('customAttributesContainer');
 if (customContainer) {
-  let html = '<h3>Custom Attributes</h3>';
+  // You can dynamically set the header text as desired:
+  let headerText = "Custom Attributes";
+  let html = `<h3>${headerText}</h3>`;
   for (let attr in customCounts) {
     html += `<div>${attr}: ${customCounts[attr]}</div>`;
   }
@@ -564,72 +577,85 @@ if (customContainer) {
 } else {
   console.warn("Element with id 'customAttributesContainer' not found in HTML");
 }
+// --- ENDGAME ATTRIBUTES DISPLAY ---
+if (data.endgameActions && Array.isArray(data.endgameActions)) {
+  const endgameAttrContainer = document.getElementById('endgameAttributesContainer');
+  if (endgameAttrContainer) {
+    let html = '<h3 style="margin-left:40px;">Actions</h3>';
+    data.endgameActions.forEach(item => {
+      html += `<div style="margin-left:40px;">
+                 <div style="font-size:18px; font-weight:bold;">${item.action || "No Action"}</div>
+                 <div style="font-size:14px; color:gray;">${item.outcome || "No Outcome"}</div>
+               </div>`;
+    });
+    endgameAttrContainer.innerHTML = html;
+  }
+}
 
+                // let endgameAction = ""
+                // let endgameOutcome = ""
+                // if(data.endgameActions){
+                // data.endgameActions.forEach((action) => {
+                //     endgameAction = action.action
+                //     endgameOutcome = action.outcome
+                //     if (endgameAction === "Stage Right BLUE") {
+                //         document.getElementById("StageRightRED").style.display = "none"
+                //         document.getElementById("StageLeftBLUE").style.display = "none"
+                //         document.getElementById("CenterStageBLUE").style.display = "none"
+                //         document.getElementById("StageLeftRED").style.display = "none"
+                //         document.getElementById("CenterStageRED").style.display = "none"
+                //         document.getElementById("None").style.display = "none"
+                //     }
+                //     if (endgameAction === "Stage Left BLUE") {
+                //         document.getElementById("StageRightRED").style.display = "none"
+                //         document.getElementById("StageLeftBLUE").style.display = "none"
+                //         document.getElementById("CenterStageBLUE").style.display = "none"
+                //         document.getElementById("StageRightBLUE").style.display = "none"
+                //         document.getElementById("CenterStageRED").style.display = "none"
+                //         document.getElementById("None").style.display = "none"
+                //     }
+                //     if (endgameAction === "Center Stage BLUE") {
+                //         document.getElementById("StageRightRED").style.display = "none"
+                //         document.getElementById("StageLeftBLUE").style.display = "none"
+                //         document.getElementById("StageLeftRED").style.display = "none"
+                //         document.getElementById("StageRightBLUE").style.display = "none"
+                //         document.getElementById("CenterStageRED").style.display = "none"
+                //         document.getElementById("None").style.display = "none"
+                //     }
+                //     if (endgameAction === "Stage Right RED") {
+                //         document.getElementById("StageRightBLUE").style.display = "none"
+                //         document.getElementById("StageLeftBLUE").style.display = "none"
+                //         document.getElementById("CenterStageBLUE").style.display = "none"
+                //         document.getElementById("StageLeftRED").style.display = "none"
+                //         document.getElementById("CenterStageRED").style.display = "none"
+                //         document.getElementById("None").style.display = "none"
+                //     }
+                //     if (endgameAction === "Stage Left RED") {
+                //         document.getElementById("StageRightRED").style.display = "none"
+                //         document.getElementById("StageLeftBLUE").style.display = "none"
+                //         document.getElementById("CenterStageBLUE").style.display = "none"
+                //         document.getElementById("StageRightBLUE").style.display = "none"
+                //         document.getElementById("CenterStageRED").style.display = "none"
+                //         document.getElementById("None").style.display = "none"
+                //     }
+                //     if (endgameAction === "Center Stage RED") {
+                //         document.getElementById("StageRightRED").style.display = "none"
+                //         document.getElementById("StageLeftBLUE").style.display = "none"
+                //         document.getElementById("CenterStageBLUE").style.display = "none"
+                //         document.getElementById("StageRightBLUE").style.display = "none"
+                //         document.getElementById("StageLeftRED").style.display = "none"
+                //         document.getElementById("None").style.display = "none"
+                //     }
+                //     if (endgameAction === "None") {
+                //         document.getElementById("StageRightRED").style.display = "none"
+                //         document.getElementById("StageLeftBLUE").style.display = "none"
+                //         document.getElementById("CenterStageBLUE").style.display = "none"
+                //         document.getElementById("StageRightBLUE").style.display = "none"
+                //         document.getElementById("StageLeftRED").style.display = "none"
+                //         document.getElementById("CenterStageRED").style.display = "none"
+                //     }
 
-                let endgameAction = ""
-                let endgameOutcome = ""
-                if(data.endgameActions){
-                data.endgameActions.forEach((action) => {
-                    endgameAction = action.action
-                    endgameOutcome = action.outcome
-                    if (endgameAction === "Stage Right BLUE") {
-                        document.getElementById("StageRightRED").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("CenterStageBLUE").style.display = "none"
-                        document.getElementById("StageLeftRED").style.display = "none"
-                        document.getElementById("CenterStageRED").style.display = "none"
-                        document.getElementById("None").style.display = "none"
-                    }
-                    if (endgameAction === "Stage Left BLUE") {
-                        document.getElementById("StageRightRED").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("CenterStageBLUE").style.display = "none"
-                        document.getElementById("StageRightBLUE").style.display = "none"
-                        document.getElementById("CenterStageRED").style.display = "none"
-                        document.getElementById("None").style.display = "none"
-                    }
-                    if (endgameAction === "Center Stage BLUE") {
-                        document.getElementById("StageRightRED").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("StageLeftRED").style.display = "none"
-                        document.getElementById("StageRightBLUE").style.display = "none"
-                        document.getElementById("CenterStageRED").style.display = "none"
-                        document.getElementById("None").style.display = "none"
-                    }
-                    if (endgameAction === "Stage Right RED") {
-                        document.getElementById("StageRightBLUE").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("CenterStageBLUE").style.display = "none"
-                        document.getElementById("StageLeftRED").style.display = "none"
-                        document.getElementById("CenterStageRED").style.display = "none"
-                        document.getElementById("None").style.display = "none"
-                    }
-                    if (endgameAction === "Stage Left RED") {
-                        document.getElementById("StageRightRED").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("CenterStageBLUE").style.display = "none"
-                        document.getElementById("StageRightBLUE").style.display = "none"
-                        document.getElementById("CenterStageRED").style.display = "none"
-                        document.getElementById("None").style.display = "none"
-                    }
-                    if (endgameAction === "Center Stage RED") {
-                        document.getElementById("StageRightRED").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("CenterStageBLUE").style.display = "none"
-                        document.getElementById("StageRightBLUE").style.display = "none"
-                        document.getElementById("StageLeftRED").style.display = "none"
-                        document.getElementById("None").style.display = "none"
-                    }
-                    if (endgameAction === "None") {
-                        document.getElementById("StageRightRED").style.display = "none"
-                        document.getElementById("StageLeftBLUE").style.display = "none"
-                        document.getElementById("CenterStageBLUE").style.display = "none"
-                        document.getElementById("StageRightBLUE").style.display = "none"
-                        document.getElementById("StageLeftRED").style.display = "none"
-                        document.getElementById("CenterStageRED").style.display = "none"
-                    }
-
-                })}
+                // })}
                 const buttons = document.querySelectorAll("button");
 buttons.forEach(btn => {
   if (btn.textContent.trim() === data.robotPosition) {
