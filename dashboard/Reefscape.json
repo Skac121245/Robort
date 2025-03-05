@@ -107,8 +107,8 @@
     "left": "30px",
     "width": "270px",
     "height": "120px",
-    "name": "Miss",
-    "color": "red",
+    "name": "SIGMA",
+    "color": "yellow",
     "size": "large"
   }},
       "endgame": {
@@ -174,10 +174,10 @@
         }
       },
       "endgameOutcome": {
-        "Park":    { "id": "outcomePark", "name": "Park", "top": "0px", "left": "0px", "width": "120px", "height": "50px", "color": "blue", "size": "medium" },
-        "Hang Shallow":   { "id": "outcomeShallow", "name": "Shallow", "top": "0px", "left": "130px", "width": "120px", "height": "50px", "color": "blue", "size": "medium" },
-        "Hang Deep": { "id": "outcomeDeep", "name": "Deep", "top": "60px", "left": "0px", "width": "120px", "height": "50px", "color": "blue", "size": "medium" },
-        "None":    { "id": "outcomeNone", "name": "None", "top": "60px", "left": "130px", "width": "120px", "height": "50px", "color": "blue", "size": "medium" }
+        "Park":    { "id": "outcomePark", "name": "Park", "top": "-20px", "left": "0px", "width": "120px", "height": "50px", "color": "blue", "size": "medium" },
+        "Hang Shallow":   { "id": "outcomeShallow", "name": "Shallow", "top": "-20px", "left": "130px", "width": "120px", "height": "50px", "color": "blue", "size": "medium" },
+        "Hang Deep": { "id": "outcomeDeep", "name": "Deep", "top": "40px", "left": "0px", "width": "120px", "height": "50px", "color": "blue", "size": "medium" },
+        "None":    { "id": "outcomeNone", "name": "None", "top": "40px", "left": "130px", "width": "120px", "height": "50px", "color": "blue", "size": "medium" }
       },
       "addtop": -10
     },

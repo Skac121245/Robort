@@ -302,9 +302,9 @@
             <h3>Stats</h3>
             <h4>Out of Auto: <span id="outOfAuto"></span></h4>
             <h4># of Complete Cycles: <span id="numOfCycles"></span></h4>
-            <h4># of attempted Game Piece Scores: <span id="noteAttemps"></span></h4>
+            <!-- <h4># of attempted Game Piece Scores: <span id="noteAttemps"></span></h4>
             <h4># of Game Pieces Scored: <span id="notesScored"></span></h4>
-            <h4>Ratio of Game Pieces Scored to Game Pieces Attempted: <span id="ratio"></span></h4>
+            <h4>Ratio of Game Pieces Scored to Game Pieces Attempted: <span id="ratio"></span></h4> -->
             <div id="customAttributesContainer">
                 <h3>Custom Attributes</h3>
               </div>              
@@ -499,24 +499,7 @@
                         document.getElementById('outOfAuto').textContent = cycle.pickup;
                      } 
 
-                        if (cycle.shot_place != null || cycle.shot_place != "" || cycle.shot_place != undefined) {
-                            teleopNoteCounter = teleopNoteCounter + 1
-                        }
-                        if (cycle.shot_place === "Speaker" || cycle.shot_place === "Amp" || cycle.shot_place === "Pass" ) {
-                            teleopNoteScore = teleopNoteScore + 1
-                        }
-                        if (cycle.shot_place === "Speaker"){
-                            teleopSpeaker = teleopSpeaker + 1
-                        }
-                        if (cycle.shot_place === "Amp"){
-                            teleopAmp = teleopAmp + 1
-                        }
-                        if (cycle.shot_place === "Pass"){
-                            teleopPass = teleopPass + 1
-                        }
-                        if (cycle.shot_place === "Miss"){
-                            teleopMiss = teleopMiss + 1
-                        }
+                    
                         
                 })
           }
@@ -681,9 +664,9 @@ alert("No complete cycles were recorded, potentially due to a game code mismatch
 }
 
                 document.getElementById("numOfCycles").textContent = teleopCycleCounter;
-                document.getElementById("noteAttemps").textContent = teleopNoteCounter;
-                document.getElementById("notesScored").textContent = teleopNoteScore;
-                document.getElementById("ratio").textContent = teleopNoteScore + "/" + teleopNoteCounter;
+                // document.getElementById("noteAttemps").textContent = teleopNoteCounter;
+                // document.getElementById("notesScored").textContent = teleopNoteScore;
+                // document.getElementById("ratio").textContent = teleopNoteScore + "/" + teleopNoteCounter;
                 document.getElementById("speakerNotes").textContent = teleopSpeaker;
                 document.getElementById("ampNotes").textContent = teleopAmp;
 
