@@ -927,6 +927,7 @@ a.download = filename;
         function startTeleop() {
             document.querySelector('button[onclick="startTeleop()"]').style.display = 'none';
             document.querySelector('button[onclick="startEndgame()"]').style.display = 'inline-block';
+            document.querySelector('button[onclick="downloadSessionStorageData()"]').style.display = 'inline-block';
   // Hide field and note containers
   document.getElementById('field').style.display = "none";
   document.getElementById('notesContainer').style.display = 'none';
@@ -1017,7 +1018,6 @@ function hideAdditionalActions() {
             document.getElementById('endgameContainer').style.display = 'block';
             document.getElementById('additionalActions').style.display = 'none';
             document.getElementById('teleopButtons').style.display = 'none';
-            document.querySelector('button[onclick="downloadSessionStorageData()"]').style.display = 'inline-block';
 
 
             // Hide the "Start Endgame" button to prevent multiple endgame starts
