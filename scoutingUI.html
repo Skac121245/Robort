@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRC Scouting App - Autonomous Mode</title>
+    <link rel="stylesheet" href="css/alertStyles.css">
+    <script src="js/alertHandler.js"></script>
     <style>
 #teleopButtons, 
 #additionalActions, 
@@ -765,12 +767,52 @@ for (let outcomeKey in endgameOutcomeConfig) {
       console.error("Error loading configuration:", error);
     });
 
-        document.querySelectorAll('.position-btn').forEach(button => {
-            button.addEventListener('click', function () {
-                const position = this.innerText;
-                selectPosition(position);
-            });
+       document.querySelectorAll('.position-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const position = this.innerText;
+        selectPosition(position);
+        disableOppositeDriverStations(this);
+    });
+});
+function disableOppositeDriverStations(posBtn) {
+    // Get the inline left style value (expected as a percentage, e.g. "40%")
+    let leftStr = posBtn.style.left; 
+    let leftPercent = parseFloat(leftStr);
+
+    // Re-enable all driver station buttons first (in case a position was previously selected)
+    document.querySelectorAll('.driver-station-btn').forEach(btn => {
+        btn.disabled = false;
+        // Reset their original background colors (adjust these values if needed)
+        if (btn.style.left.includes("1%")) {
+            // Blue alliance stations
+            btn.style.backgroundColor = "rgba(0, 123, 255, 0.5)";
+        } else if (btn.style.left.includes("90%")) {
+            // Red alliance stations
+            btn.style.backgroundColor = "rgba(255, 65, 65, 0.6)";
+        }
+        btn.style.cursor = "pointer";
+    });
+
+    if (leftPercent < 50) {
+        // Position is on the left side, so disable the red alliance stations (assumed to have left "90%")
+        document.querySelectorAll('.driver-station-btn').forEach(btn => {
+            if (btn.style.left.includes("90%")) {
+                btn.disabled = true;
+                btn.style.backgroundColor = "grey";
+                btn.style.cursor = "default";
+            }
         });
+    } else {
+        // Position is on the right side, so disable the blue alliance stations (assumed to have left "1%")
+        document.querySelectorAll('.driver-station-btn').forEach(btn => {
+            if (btn.style.left.includes("1%")) {
+                btn.disabled = true;
+                btn.style.backgroundColor = "grey";
+                btn.style.cursor = "default";
+            }
+        });
+    }
+}
 
         document.querySelectorAll('.driver-station-btn').forEach(button => {
             button.addEventListener('click', function () {
