@@ -1060,8 +1060,10 @@ function rotateField() {
         document.getElementById('field-canvas').style.transform = "rotate(180deg)";
         // Mirror the entire button container both horizontally and vertically.
         document.getElementById('field').style.transform = "translateY(120px) scale(-1, -1)";
+         // Mirror the endgame container
+         document.getElementById('endgameContainer').style.transform = "scale(-1, -1) translateY(-600px) translateX(-340px)";
         // For each button, apply the same transformation so that its text stays normal.
-        document.querySelectorAll('#field button').forEach(button => {
+        document.querySelectorAll('#field button, #endgameContainer button').forEach(button => {
             button.style.transform = "scale(-1, -1)";
         });
     } else {
@@ -1071,6 +1073,10 @@ function rotateField() {
         document.querySelectorAll('#field button').forEach(button => {
             button.style.transform = "none";
         });
+        document.querySelectorAll('#endgameContainer button').forEach(button => {
+            button.style.transform = "none";
+        });
+        document.getElementById('endgameContainer').style.transform = "rotate(0deg)";
     }
     x++;
 }

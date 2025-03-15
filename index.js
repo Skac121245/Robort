@@ -31,6 +31,11 @@ const createWindow = () => {
         devTools: true
       }
     })
+    
+    win.onload = function() {
+        win.focus();
+      };
+      
   
     win.loadFile('index.html')
 
