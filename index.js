@@ -43,12 +43,25 @@ const createWindow = () => {
       let windowTitle = name + " - v" + version;
       win.setTitle(windowTitle);
 })
-
+win.webContents.on('before-input-event', (event, input) => {
+    const currentURL = win.webContents.getURL();
+    // Check if the current page is scoutingUI.html
+    if (currentURL.includes('scoutingUI.html')) {
+      // Disable F5 and Ctrl+R (or Command+R on macOS)
+      if (input.key === 'F5' ||
+         ((input.control || input.meta) && input.key.toLowerCase() === 'r')) {
+        event.preventDefault();
+      }
+    }
+  });
+  
   }
 
   app.whenReady().then(() => {
     createWindow()
   })
+
+  
   ipcMain.on('open-folder-dialog', (event) => {
     dialog.showOpenDialog({
         properties: ['openDirectory']
