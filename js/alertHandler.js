@@ -86,3 +86,64 @@ window.errorAlert = function(message) {
 window.warningAlert = function(message) {
     showCustomAlert(message, 'warning');
 };
+
+function showCustomConfirm(message, callback) {
+    const container = createAlertContainer();
+    const confirmDialog = document.createElement('div');
+    confirmDialog.className = 'alert alert-info fade show';
+    confirmDialog.style.cssText = `
+      margin-bottom: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      padding: 20px;
+      font-size: 1.2rem;
+      position: relative;
+      border-radius: 8px;
+      background-color: #f0f0f0;
+    `;
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.style.marginBottom = '20px';
+    messageDiv.textContent = message;
+    confirmDialog.appendChild(messageDiv);
+    
+    // Create Yes and No buttons
+    const yesBtn = document.createElement('button');
+    yesBtn.textContent = 'Yes';
+    yesBtn.style.cssText = `
+      margin-right: 10px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+    `;
+    yesBtn.onclick = function() {
+      callback(true);
+      confirmDialog.classList.remove('show');
+      setTimeout(() => confirmDialog.remove(), 150);
+    };
+  
+    const noBtn = document.createElement('button');
+    noBtn.textContent = 'No';
+    noBtn.style.cssText = `
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #dc3545;
+      color: white;
+      cursor: pointer;
+    `;
+    noBtn.onclick = function() {
+      callback(false);
+      confirmDialog.classList.remove('show');
+      setTimeout(() => confirmDialog.remove(), 150);
+    };
+  
+    confirmDialog.appendChild(yesBtn);
+    confirmDialog.appendChild(noBtn);
+    container.appendChild(confirmDialog);
+  }
+  

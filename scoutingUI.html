@@ -356,7 +356,9 @@
         <button onclick="startEndgame()" style="display:none;">Start Endgame</button>
         <button onclick="downloadSessionStorageData()" style="display:none">Download Data</button>
         <button onclick="rotateField()">Rotate Field</button>
-        <button id="reload" class="large-button" onclick="location.reload()">Reload Scouter</button>
+        <button id="reload" class="large-button" onclick="confirmRefresh()">Reload Scouter</button>
+        <button id="undoBtn" onclick="undoAction()">Undo</button>
+<button id="redoBtn" onclick="redoAction()">Redo</button>
     </div>
     <div id="logWindow" style="position: fixed; bottom: 0; left: 0; width: 300px; height: 150px; background: rgba(0,0,0,0.7); color: white; overflow-y: auto; padding: 5px; font-size: 12px; z-index: 9999;">
         <div id="logHeader" style="position: relative; cursor: pointer; background: #444; padding: 2px;" onclick="toggleLogWindow()">
@@ -510,6 +512,8 @@ function exportLog(e) {
         <button onclick="saveNoteOutcome('another team got it')">Another Team Got It</button>
     </div>
     <script>
+        var redoStack = [];
+        var reloadCheck = 0;
         var compOption = localStorage.getItem('compOption');
         if (compOption != ('Crescendo')) {
             compOption = 'Reefscape';
@@ -822,6 +826,7 @@ function disableOppositeDriverStations(posBtn) {
         });
 
         function downloadSessionStorageData() {
+            reloadCheck = 1;
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
             const notes = document.getElementById('notes').value;
 
@@ -916,21 +921,28 @@ a.download = filename;
             }
         }
 
-        function noteAction(note) {
-            console.log('Note action for:', note);
-            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
-            if (!scoutingData.notes) {
-                scoutingData.notes = [];
-                scoutingData.autoActions = [];
-            }
-            scoutingData.notes.push(note);
-            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+       function noteAction(note) {
+  console.log('Note action for:', note);
+  let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+  if (!scoutingData.notes) {
+    scoutingData.notes = [];
+  }
+  scoutingData.notes.push(note);
 
-            // Show the note outcome options
-            document.getElementById('noteOutcome').style.display = 'block';
-            // Store the current note globally or in the session for outcome processing
-            sessionStorage.setItem('currentNote', note);
-        }
+  // Also add this auto action to the undo/redo stack,
+  // tagging it with 'auto' so your undo/redo functions can handle it.
+  scoutingData.teleopActions = scoutingData.teleopActions || [];
+  scoutingData.teleopActions.push({ pickup: note, shot_place: 'auto' });
+
+  sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+  // Show the note outcome options
+  document.getElementById('noteOutcome').style.display = 'block';
+  // Store the current note globally for outcome processing
+  sessionStorage.setItem('currentNote', note);
+  updateUndoRedoButtons();
+}
+
 
         function saveNoteOutcome(outcome) {
             const note = sessionStorage.getItem('currentNote');
@@ -980,7 +992,9 @@ a.download = filename;
   let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
   
   // Initialize teleopActions array if it doesn't exist
-  scoutingData.teleopActions = [];
+  if (!scoutingData.teleopActions) {
+    scoutingData.teleopActions = [];
+  }
   
   sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
 }
@@ -988,7 +1002,7 @@ a.download = filename;
 
        function logAction(action, actionType) {
   const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
-
+  redoStack = [];
   if (actionType === 'pickup' || typeof scoutingData.currentActionIndex === 'undefined') {
     // If it's a pickup action, or no current action exists, start a new action
     scoutingData.teleopActions.push({ pickup: action, shot_place: null });
@@ -1042,6 +1056,7 @@ function hideAdditionalActions() {
 
 
         function logTeleopAction(action) {
+            updateUndoRedoButtons();
             const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
            
             scoutingData.teleopActions.push(action);
@@ -1066,17 +1081,22 @@ function hideAdditionalActions() {
             document.querySelector('button[onclick="startEndgame()"]').style.display = 'none';
         }
 
-        function logEndgameAction(action) {
-  // Store the endgame action in scoutingData
+       function logEndgameAction(action) {
+  // Retrieve scoutingData (using an empty object fallback)
   const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
-  scoutingData.endgameAction = action;
+  // Ensure teleopActions exists for unified undo/redo tracking
+  scoutingData.teleopActions = scoutingData.teleopActions || [];
+  // Tag this as an endgame action by setting shot_place to a reserved value (e.g., 'endgame')
+  scoutingData.teleopActions.push({ pickup: action, shot_place: 'endgame' });
+  // (Optionally, still keep your separate endgameActions array if needed)
+  scoutingData.endgameActions = scoutingData.endgameActions || [];
+  scoutingData.endgameActions.push({ action: action, outcome: null });
   sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
-
   console.log(action + ' endgame action logged.');
-
-  // Show the dynamic endgame outcome container
+  // Show endgame UI if needed
   document.getElementById('endgameOutcome').style.display = 'block';
 }
+
 
         function saveEndgameOutcome(outcome) {
             // Retrieve the endgame action and append the outcome to it
@@ -1123,6 +1143,124 @@ function rotateField() {
     x++;
 }
 
+
+// Undo / Redo Stuff
+
+
+function undoAction() {
+  const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+  if (scoutingData.teleopActions && scoutingData.teleopActions.length > 0) {
+    const undoneAction = scoutingData.teleopActions.pop();
+    redoStack.push(undoneAction);
+    sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+    
+    if (undoneAction.shot_place === 'endgame') {
+      // When undoing an endgame action, show the endgame UI again
+      document.getElementById('endgameContainer').style.display = 'block';
+      document.getElementById('endgameOutcome').style.display = 'block';
+    } else {
+      if (scoutingData.teleopActions.length > 0) {
+        const lastAction = scoutingData.teleopActions[scoutingData.teleopActions.length - 1];
+        if (!lastAction.shot_place) {
+          showAdditionalActions();
+        } else {
+          hideAdditionalActions();
+        }
+      } else {
+        hideAdditionalActions();
+      }
+    }
+    logTemporaryMessage("Undid action: " + (undoneAction.pickup || undoneAction));
+    updateUndoRedoButtons();
+  } else {
+    logTemporaryMessage("No actions to undo.");
+    updateUndoRedoButtons();
+  }
+}
+
+function redoAction() {
+  if (redoStack.length > 0) {
+    const action = redoStack.pop();
+    const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+    scoutingData.teleopActions = scoutingData.teleopActions || [];
+    scoutingData.teleopActions.push(action);
+    sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+    
+    if (action.shot_place === 'endgame') {
+      document.getElementById('endgameContainer').style.display = 'block';
+      document.getElementById('endgameOutcome').style.display = 'block';
+    } else {
+      if (!action.shot_place) {
+         showAdditionalActions();
+      } else {
+         hideAdditionalActions();
+      }
+    }
+    logTemporaryMessage("Redid action: " + (action.pickup || action));
+  } else {
+    logTemporaryMessage("No actions to redo.");
+  }
+  updateUndoRedoButtons(); // <-- Call update after changes
+}
+
+window.onload = updateUndoRedoButtons; // Ensure buttons are updated on page load
+
+function updateUndoRedoButtons() {
+  const undoBtn = document.getElementById('undoBtn');
+  const redoBtn = document.getElementById('redoBtn');
+  const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+
+  if (!scoutingData.teleopActions || scoutingData.teleopActions.length === 0) {
+    undoBtn.disabled = true;
+    undoBtn.style.opacity = 0.5;
+  } else {
+    undoBtn.disabled = false;
+    undoBtn.style.opacity = 1;
+  }
+
+  if (!redoStack || redoStack.length === 0) {
+    redoBtn.disabled = true;
+    redoBtn.style.opacity = 0.5;
+  } else {
+    redoBtn.disabled = false;
+    redoBtn.style.opacity = 1;
+  }
+}
+
+
+
+function logTemporaryMessage(message) {
+  var logContent = document.getElementById('logContent');
+  if (logContent) {
+    var tempMsg = document.createElement('div');
+    tempMsg.textContent = message;
+    // Start fully opaque; add a CSS transition for fading
+    tempMsg.style.opacity = 1;
+    tempMsg.style.transition = "opacity 1s linear";
+    logContent.appendChild(tempMsg);
+    
+    // After 2 seconds, trigger fade-out over 1 second then remove the message
+    setTimeout(function() {
+      tempMsg.style.opacity = 0;
+      setTimeout(function() {
+        if (tempMsg.parentNode) {
+          tempMsg.parentNode.removeChild(tempMsg);
+        }
+      }, 1000);
+    }, 2000);
+  }
+}
+function confirmRefresh() {
+  if (sessionStorage.getItem('scoutingData') && reloadCheck === 0) {
+    showCustomConfirm("You haven't downloaded your data yet. Are you sure you want to refresh?", function(confirmed) {
+      if (confirmed) {
+        location.reload();
+      }
+    });
+  } else {
+    location.reload();
+  }
+}
 
 
     </script>
