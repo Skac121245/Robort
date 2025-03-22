@@ -513,6 +513,7 @@ function exportLog(e) {
     </div>
     <script>
         var redoStack = [];
+        updateUndoRedoButtons();
         var reloadCheck = 0;
         var compOption = localStorage.getItem('compOption');
         if (compOption != ('Crescendo')) {
@@ -817,9 +818,46 @@ function disableOppositeDriverStations(posBtn) {
         });
     }
 }
+function disableOppositePositions(driverBtn) {
+    // Get the inline left style value of the driver station button (e.g. "1%" or "90%")
+    let leftStr = driverBtn.style.left;
+    let leftPercent = parseFloat(leftStr);
+
+    // Re-enable all position buttons first
+    document.querySelectorAll('.position-btn').forEach(btn => {
+        btn.disabled = false;
+        // Optionally, reset to the default background color.
+        // You can also store original colors in data attributes if needed.
+        btn.style.backgroundColor = ""; 
+        btn.style.cursor = "pointer";
+    });
+
+    if (leftPercent < 50) {
+        // Driver station is on the left side, so disable all position buttons on the right side
+        document.querySelectorAll('.position-btn').forEach(btn => {
+            let posLeft = parseFloat(btn.style.left);
+            if (posLeft > 50) {
+                btn.disabled = true;
+                btn.style.backgroundColor = "grey";
+                btn.style.cursor = "default";
+            }
+        });
+    } else {
+        // Driver station is on the right side, so disable all position buttons on the left side
+        document.querySelectorAll('.position-btn').forEach(btn => {
+            let posLeft = parseFloat(btn.style.left);
+            if (posLeft < 50) {
+                btn.disabled = true;
+                btn.style.backgroundColor = "grey";
+                btn.style.cursor = "default";
+            }
+        });
+    }
+}
 
         document.querySelectorAll('.driver-station-btn').forEach(button => {
             button.addEventListener('click', function () {
+                disableOppositePositions(this);
                 const driverStation = this.innerText;
                 selectDriverStation(driverStation);
             });
@@ -1000,27 +1038,29 @@ a.download = filename;
 }
 
 
-       function logAction(action, actionType) {
+function logAction(action, actionType) {
   const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+  // Clear redoStack because a new action invalidates redo history.
   redoStack = [];
   if (actionType === 'pickup' || typeof scoutingData.currentActionIndex === 'undefined') {
-    // If it's a pickup action, or no current action exists, start a new action
+    // Start a new action.
     scoutingData.teleopActions.push({ pickup: action, shot_place: null });
     scoutingData.currentActionIndex = scoutingData.teleopActions.length - 1;
-    if(actionType === 'pickup'){
+    if (actionType === 'pickup'){
       showAdditionalActions();
     }
   } else {
-    // Otherwise, update the current action
+    // Update the current action.
     scoutingData.teleopActions[scoutingData.currentActionIndex].shot_place = action;
     delete scoutingData.currentActionIndex;
     hideAdditionalActions();
   }
   
-
   sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
   console.log(action + ' action logged.');
+  updateUndoRedoButtons(); // Ensure UI reflects the new history.
 }
+
 
 
 
@@ -1203,7 +1243,18 @@ function redoAction() {
   updateUndoRedoButtons(); // <-- Call update after changes
 }
 
-window.onload = updateUndoRedoButtons; // Ensure buttons are updated on page load
+window.onload = function() {
+  // Optionally, initialize scoutingData if it doesn't exist
+  let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
+  if (!scoutingData.teleopActions) {
+    scoutingData.teleopActions = [];
+    sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+  }
+  // Update the UI state of undo/redo buttons
+  updateUndoRedoButtons();
+};
+
+
 
 function updateUndoRedoButtons() {
   const undoBtn = document.getElementById('undoBtn');
@@ -1250,14 +1301,23 @@ function logTemporaryMessage(message) {
     }, 2000);
   }
 }
+function clearUndoRedoState() {
+  let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
+  scoutingData.teleopActions = [];
+  sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+  redoStack = [];
+}
+
 function confirmRefresh() {
   if (sessionStorage.getItem('scoutingData') && reloadCheck === 0) {
     showCustomConfirm("You haven't downloaded your data yet. Are you sure you want to refresh?", function(confirmed) {
       if (confirmed) {
+        clearUndoRedoState();
         location.reload();
       }
     });
   } else {
+    clearUndoRedoState();
     location.reload();
   }
 }

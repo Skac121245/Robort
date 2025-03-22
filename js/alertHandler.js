@@ -9,7 +9,7 @@ function createAlertContainer() {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 9999;
+            z-index: 10002 !important;
             width: 80%;
             max-width: 600px;
             text-align: center;

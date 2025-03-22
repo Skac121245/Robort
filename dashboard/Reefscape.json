@@ -37,11 +37,23 @@
       "teleop": {
         "processor": {
           "id": "processor",
-          "top": "50px",
+          "top": "90px",
           "left": "10px",
           "width": "200px",
-          "height": "410px",
+          "height": "150px",
           "name": "Algae in Processor",
+          "color": "green",
+          "size": "large",
+          "actionType": "score",
+          "customAttribute": true
+        },
+        "net": {
+          "id": "net",
+          "top": "260px",
+          "left": "10px",
+          "width": "200px",
+          "height": "150px",
+          "name": "Algae in Net",
           "color": "green",
           "size": "large",
           "actionType": "score",
@@ -50,7 +62,7 @@
         "coral": {
           "id": "coral",
           "top": "205px",
-          "left": "220px",
+          "left": "215px",
           "width": "130px",
           "height": "100px",
           "name": "Coral Score",
