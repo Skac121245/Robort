@@ -544,6 +544,9 @@ $('#highlightTeamSelect').change(function() {
         displayMatches(matches, teamsPerMatch);
         originalMatches = matches;
         $('#excludeTeamsButton').show();
+        exclusionList = [];
+        updateExclusionListDisplay();
+
     } else {
         var url = `https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`;
         $.ajax({
@@ -566,6 +569,9 @@ $('#highlightTeamSelect').change(function() {
                 originalMatches = data;
                 displayMatches(data, teamsPerMatch);
                 $('#excludeTeamsButton').show(); 
+                exclusionList = [];
+                updateExclusionListDisplay();
+
             },
             error: function() {
                 alert('Failed to retrieve data. Check the event code and your internet connection.');
@@ -697,24 +703,58 @@ $(document).ready(function() {
         });
     }
 
-    $('#addExclusion').click(function() {
-        var teamNum = $('#excludeTeamInput').val().trim();
-        var isSelectedFromDropdown = $('#excludeTeamInput').data('autocomplete-selected');  // Check the flag
+   $('#addExclusion').click(function() {
+    var teamNum = $('#excludeTeamInput').val().trim();
+    var isSelectedFromDropdown = $('#excludeTeamInput').data('autocomplete-selected');  // Check the flag
 
-        // Only add the team if it was selected from the dropdown
-        if (teamNum && isSelectedFromDropdown) {
-            if (!exclusionList.includes(teamNum)) {
-                exclusionList.push(teamNum);
-                updateExclusionListDisplay();
-                filterMatches();
-            }
-            $('#excludeTeamInput').val('');  // Clear input
-            $('#excludeTeamInput').removeData('autocomplete-selected');  // Reset the flag
-        } else {
-            alert('Please select a team from the dropdown list.');
-            $('#excludeTeamInput').focus();
+    if (teamNum && isSelectedFromDropdown) {
+        // Simulate the new exclusion list without committing it yet.
+        var tempExclusionList = exclusionList.slice();
+        if (tempExclusionList.indexOf(teamNum) === -1) {
+            tempExclusionList.push(teamNum);
         }
-    });
+        
+        // Create the filtered matches using the simulated list
+        var filteredMatches = originalMatches.filter(match => {
+            var teams = match.alliances.red.team_keys
+                           .concat(match.alliances.blue.team_keys)
+                           .map(team => team.replace('frc', ''));
+            return !teams.some(team => tempExclusionList.includes(team));
+        });
+
+        // Check if the new simulated exclusion still meets the criteria
+        if (!checkFeasibility(
+                filteredMatches,
+                parseInt($('#teamsPerMatch').val(), 10),
+                parseInt($('#teamAppearances').val(), 10)
+            )) {
+            // Hide the Exclude Teams modal and show the criteria error modal.
+            $('#excludeTeamsModal').modal('hide');
+            $('#criteriaErrorModal').modal('show');
+            // When the error modal closes, reopen the exclude modal.
+            $('#criteriaErrorModal').off('hidden.bs.modal').on('hidden.bs.modal', function() {
+                $('#excludeTeamsModal').modal('show');
+            });
+            $('#excludeTeamInput').val('');
+            $('#excludeTeamInput').removeData('autocomplete-selected');
+            return; // Stop without updating the exclusionList
+        }
+        
+        // If feasible, add the team and update everything.
+        if (exclusionList.indexOf(teamNum) === -1) {
+            exclusionList.push(teamNum);
+        }
+        updateExclusionListDisplay();
+        filterMatches();
+        
+        $('#excludeTeamInput').val('');  // Clear input
+        $('#excludeTeamInput').removeData('autocomplete-selected');  // Reset the flag
+    } else {
+        alert('Please select a team from the dropdown list.');
+        $('#excludeTeamInput').focus();
+    }
+});
+
 });
 
 function updateExclusionListDisplay() {
@@ -735,16 +775,32 @@ function removeFromExclusion(team) {
 }
 
 function filterMatches() {
-    // Filter the original matches based on the exclusion list
     var filteredMatches = originalMatches.filter(match => {
-        var teams = match.alliances.red.team_keys.concat(match.alliances.blue.team_keys);
-        teams = teams.map(team => team.replace('frc', ''));
+        var teams = match.alliances.red.team_keys.concat(match.alliances.blue.team_keys)
+                      .map(team => team.replace('frc', ''));
         return !teams.some(team => exclusionList.includes(team));
     });
     
-    // Display the matches after filtering
+    if (!checkFeasibility(
+            filteredMatches,
+            parseInt($('#teamsPerMatch').val(), 10),
+            parseInt($('#teamAppearances').val(), 10)
+        )) {
+         // If the criteria cannot be met, hide the exclusion modal and show the error modal.
+         if ($('#excludeTeamsModal').is(':visible')) {
+             $('#excludeTeamsModal').modal('hide');
+         }
+         $('#criteriaErrorModal').modal('show');
+         $('#criteriaErrorModal').off('hidden.bs.modal').on('hidden.bs.modal', function() {
+             $('#excludeTeamsModal').modal('show');
+         });
+         return;
+    }
+    
     displayMatches(filteredMatches, parseInt($('#teamsPerMatch').val(), 10));
 }
+
+
 
 function setupTeamAutocomplete() {
     var availableTeams = [];
@@ -758,17 +814,43 @@ function setupTeamAutocomplete() {
     });
 
     $('#excludeTeamInput').autocomplete({
-        source: availableTeams,
-        select: function(event, ui) {
-            if (!exclusionList.includes(ui.item.value)) {
-                exclusionList.push(ui.item.value);
-                updateExclusionListDisplay();
-                filterMatches();
-            }
-            $(this).val(''); // Clear input after selection
-            return false; // Prevent the widget from inserting the value.
+    source: availableTeams,
+    select: function(event, ui) {
+        var teamNum = ui.item.value;
+        // Simulate adding the team
+        var tempExclusionList = exclusionList.slice();
+        if (tempExclusionList.indexOf(teamNum) === -1) {
+            tempExclusionList.push(teamNum);
         }
-    });
+        var filteredMatches = originalMatches.filter(match => {
+            var teams = match.alliances.red.team_keys
+                           .concat(match.alliances.blue.team_keys)
+                           .map(team => team.replace('frc', ''));
+            return !teams.some(team => tempExclusionList.includes(team));
+        });
+        if (!checkFeasibility(
+                filteredMatches,
+                parseInt($('#teamsPerMatch').val(), 10),
+                parseInt($('#teamAppearances').val(), 10)
+            )) {
+            $('#excludeTeamsModal').modal('hide');
+            $('#criteriaErrorModal').modal('show');
+            $('#criteriaErrorModal').off('hidden.bs.modal').on('hidden.bs.modal', function() {
+                $('#excludeTeamsModal').modal('show');
+            });
+            return false; // Do not add the team
+        } else {
+            if (!exclusionList.includes(teamNum)) {
+                exclusionList.push(teamNum);
+            }
+            updateExclusionListDisplay();
+            filterMatches();
+        }
+        $(this).val(''); // Clear input after selection
+        return false; // Prevent the widget from inserting the value.
+    }
+});
+
 }
 
 function exportTableToExcel(tableID){
