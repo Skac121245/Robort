@@ -398,8 +398,8 @@
     })
     .then(config => {
       
-      const textNotes = data.notes;
-      if (textNotes) {
+      const textNotes = "<b>Auto:</b> " + data.autoNotes + "<br>" + "<b>Teleop:</b> " + data.teleopNotes + "<br>" + "Endgame:" + data.endgameNotes;
+      if (data.autoNotes || data.teleopNotes || data.endgameNotes) {
       document.getElementById('textNotesContainer').innerHTML = "<b>Match Notes</b><br>" + textNotes;
       document.getElementById('textNotesContainer').style.display = "block";
     }
@@ -482,11 +482,14 @@
     note_button.style.backgroundColor = "red";
     note_button.title = "Missed"
 } else if (outcome === "not picked up") {
-    note_button.style.backgroundColor = "yellow";
+    note_button.style.backgroundColor = "blue";
     note_button.title = "Not Picked Up"
 } else if (outcome === "another team got it") {
     note_button.style.backgroundColor = "brown";
      note_button.title = "Another Team Got It"
+} else if (outcome === "taxi") {
+  note_button.style.backgroundColor = "yellow";
+  note_button.title = "Taxi"
 }
                 });
 
