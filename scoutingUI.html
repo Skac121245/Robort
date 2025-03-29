@@ -1016,7 +1016,8 @@ a.download = filename;
                 currentPhase = "auto"; // Set phase to auto
         // Refresh note textbox for auto phase
         document.getElementById('notes').value = scoutingData.autoNotes || '';
-                alert('Scouting started!');
+        document.getElementById('notes').placeholder = 'Enter auto phase notes here...';        
+        alert('Scouting started!');
                 document.getElementById('fieldOverlay').style.display = 'none';
                 document.querySelector('button[onclick="startTeleop()"]').style.display = 'inline-block';
                 document.querySelector('button[onclick="startScouting()"]').style.display = 'none';
@@ -1036,8 +1037,9 @@ a.download = filename;
     
     // Switch phase to teleop and refresh note textbox.
     currentPhase = "teleop";
-    document.getElementById('notes').placeholder = scoutingData.teleopNotes || '';
-    
+    document.getElementById('notes').placeholder = 'Enter teleop phase notes here...';
+    document.getElementById('notes').value = scoutingData.teleopNotes || '';
+ 
     document.querySelector('button[onclick="startTeleop()"]').style.display = 'none';
     document.querySelector('button[onclick="startEndgame()"]').style.display = 'inline-block';
     document.querySelector('button[onclick="downloadSessionStorageData()"]').style.display = 'inline-block';
@@ -1138,6 +1140,7 @@ function hideAdditionalActions() {
     
     // Switch phase to endgame and refresh note textbox.
     currentPhase = "endgame";
+    document.getElementById('notes').placeholder = 'Enter endgame phase notes here...';
     document.getElementById('notes').value = scoutingData.endgameNotes || '';
     
             // Show endgame buttons
@@ -1230,7 +1233,6 @@ function rotateField() {
   endgameContainer.style.transform =
       "rotate(270deg) scale(-1, -1) translateX(-600px) translateY(-340px)";
 }
-n
 
 }
 
