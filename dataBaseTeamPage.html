@@ -397,12 +397,28 @@
       return response.json();
     })
     .then(config => {
+      let textNotes = '';
       
-      const textNotes = "<b>Auto:</b> " + data.autoNotes + "<br>" + "<b>Teleop:</b> " + data.teleopNotes + "<br>" + "Endgame:" + data.endgameNotes;
-      if (data.autoNotes || data.teleopNotes || data.endgameNotes) {
-      document.getElementById('textNotesContainer').innerHTML = "<b>Match Notes</b><br>" + textNotes;
-      document.getElementById('textNotesContainer').style.display = "block";
-    }
+      // Handle notes with proper null checks
+      const autoNotes = data.autoNotes || '';
+      const teleopNotes = data.teleopNotes || '';
+      const endgameNotes = data.endgameNotes || '';
+
+      if (autoNotes || teleopNotes || endgameNotes) {
+        if (autoNotes === teleopNotes && teleopNotes === endgameNotes && autoNotes !== '') {
+          textNotes = autoNotes;
+        }
+        else {
+        textNotes = "<b>Auto: </b> " + autoNotes + "<br>" + 
+                   "<b>Teleop: </b> " + teleopNotes + "<br>" + 
+                   "<b>Endgame: </b> " + endgameNotes;
+        }
+        const notesContainer = document.getElementById('textNotesContainer');
+        if (notesContainer) {
+          notesContainer.innerHTML = "<b>Match Notes</b><br>" + textNotes;
+          notesContainer.style.display = "block";
+        }
+      }
                 // data = JSON.parse(data)
                 document.getElementById('teamDisplay').textContent = "Team " + data.teamNumber;
                 document.getElementById('matchNumber').textContent = "Match #" + data.matchNumber;
