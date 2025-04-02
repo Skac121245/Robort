@@ -21,12 +21,12 @@
           "driverStation3_RED": { "id": "driver-station-btn-6", "top": "80%", "left": "90%" }
         },
         "notes": {
-          "notebtn1": { "id": "notebtn1", "top": "45%", "left": "23%", "name": "PRELOAD Algae (FRONT)"},
-          "notebtn2": { "id": "notebtn2", "top": "59%", "left": "23%", "name": "PRELOAD Algae (MIDDLE)" },
-          "notebtn3": { "id": "notebtn3", "top": "73%", "left": "23%", "name": "PRELOAD Algae (BACK)" },
-          "notebtn4": { "id": "notebtn4", "top": "45%", "left": "61%", "name": "PRELOAD Algae (FRONT)" },
-          "notebtn5": { "id": "notebtn5", "top": "59%", "left": "61%", "name": "PRELOAD Algae (MIDDLE)" },
-          "notebtn6": { "id": "notebtn6", "top": "73%", "left": "61%", "name": "PRELOAD Algae (BACK)" },
+          "notebtn1": { "id": "notebtn1", "top": "45%", "left": "23%", "name": "PRELOAD Coral (FRONT)"},
+          "notebtn2": { "id": "notebtn2", "top": "59%", "left": "23%", "name": "PRELOAD Coral (MIDDLE)" },
+          "notebtn3": { "id": "notebtn3", "top": "73%", "left": "23%", "name": "PRELOAD Coral (BACK)" },
+          "notebtn4": { "id": "notebtn4", "top": "45%", "left": "61%", "name": "PRELOAD Coral (FRONT)" },
+          "notebtn5": { "id": "notebtn5", "top": "59%", "left": "61%", "name": "PRELOAD Coral (MIDDLE)" },
+          "notebtn6": { "id": "notebtn6", "top": "73%", "left": "61%", "name": "PRELOAD Coral (BACK)" },
           "notebtn7": { "id": "notebtn7", "top": "59%", "left": "%", "name": "PRELOAD Alga",  "hide": true },
           "notebtn8": { "id": "notebtn8", "top": "95.5%", "left": "36.5%", "name": "Alga 8", "hide": true },
           "notebtn9": { "id": "notebtn9", "top": "31%", "left": "70.5%", "name": "Alga 9", "hide": true },
