@@ -555,17 +555,22 @@ function exportLog(e) {
 
 // Add an event listener for when the iframe finishes loading:
 fieldIframe.addEventListener("load", function() {
-  // Access the iframe's document:
   const iframeDoc = fieldIframe.contentDocument || fieldIframe.contentWindow.document;
-  // Get the #strategyCanvas element within the iframe:
   const strategyCanvas = iframeDoc.getElementById("strategyCanvas");
   if (strategyCanvas) {
-    // Set its background image:
-    strategyCanvas.style.backgroundImage = `url('${config.fieldImage}')`;
+    const img = new Image();
+    img.onload = function() {
+      strategyCanvas.style.backgroundImage = `url('${config.fieldImage}')`;
+    };
+    img.onerror = function() {
+      console.error("Failed to load field image:", config.fieldImage);
+    };
+    img.src = config.fieldImage;
   } else {
     console.error("Element #strategyCanvas not found in the iframe.");
   }
 });
+
 
       // Apply field positions
       const fieldPositions = config.buttonPositions.field;
