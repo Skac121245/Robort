@@ -35,6 +35,9 @@ const createWindow = () => {
   
     win.loadFile('index.html')
 
+    win.webContents.setVisualZoomLevelLimits(1, 3);
+
+
     win.setMenuBarVisibility(false);
 
     win.webContents.on('did-finish-load', () => {
