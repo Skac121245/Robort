@@ -856,13 +856,15 @@
         canvasTeleop.addEventListener('touchmove', drawTouch, false);
       }
 
-      function startDrawing(e) {
-        drawing = true;
-        const offsetX = e.offsetX || (e.touches && e.touches[0].clientX - canvasAuto.getBoundingClientRect().left);
-        const offsetY = e.offsetY || (e.touches && e.touches[0].clientY - canvasAuto.getBoundingClientRect().top);
-        checkTeamClick(offsetX, offsetY);
-        e.preventDefault();
-      }
+     function startDrawing(e) {
+  drawing = true;
+  const canvas = isAuto ? canvasAuto : canvasTeleop; // Use the correct canvas based on current mode
+  const rect = canvas.getBoundingClientRect();
+  const offsetX = (typeof e.offsetX !== 'undefined') ? e.offsetX : (e.touches[0].clientX - rect.left);
+  const offsetY = (typeof e.offsetY !== 'undefined') ? e.offsetY : (e.touches[0].clientY - rect.top);
+  checkTeamClick(offsetX, offsetY);
+  e.preventDefault();
+}
 
       function stopDrawing() {
         if (drawing) {
