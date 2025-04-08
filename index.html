@@ -358,7 +358,7 @@ body.bg-dark p {
 
 .navbar-dark .navbar-nav .nav-link,
 .navbar-dark .navbar-brand {
-  color: #f8f9fa !important; /* Ensure navbar text colors are adjusted for dark mode */
+  color: #f8f9fa00 !important; /* Ensure navbar text colors are adjusted for dark mode */
 }
 body.bg-dark .dropdown-item {
     background-color: #343a40 !important; /* Dark gray background */
@@ -482,7 +482,7 @@ div.modal-body, #warningModalLabel.modal-title {
                     <a class="nav-link" href="./Config_tab.html">Configure</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="./dataBaseTeamPage.html">Database</a>
+                    <a class="nav-link" href="./DB.html">Database</a>
                 </li>
                 <!-- <li class="nav-item">
                     <a class="nav-link" href="./SQLiteDemo.html">Database</a>
@@ -505,7 +505,7 @@ div.modal-body, #warningModalLabel.modal-title {
     
     
         <div id="lcd-container">
-            <h1 id="h1" class="text-center">Countdown to District Champs!</h1>
+            <h1 id="h1" class="text-center">Countdown to Champs!</h1>
                 <div id="countdown" class="countdown-container">
                   <div class="group">
                     <div class="unit">
@@ -1394,7 +1394,7 @@ document.getElementById("teamHighlight").addEventListener("change", highlightCel
 
         function getTimeRemaining() {
             const now = new Date();
-            const nextKickoffDate = new Date('April 2, 2025 12:00:00');
+            const nextKickoffDate = new Date('April 16, 2025 12:00:00');
             // const nextKickoffDate = new Date();
             let delta = Math.abs(nextKickoffDate - now) / 1000;
 

@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Team Match Viewer & Aggregator (EPA Integrated)</title>
+
+  <!-- (Optional) Bootstrap CSS -->
+  <link href="bootstrap.min.css" rel="stylesheet" />
+
+  <!-- (Optional) jQuery (for Bootstrap Toggler, if needed) -->
+  <script src="jquery-3.3.1.slim.min.js"></script>
+
+  <style>
+    /* General Styles */
+    body,
+    nav,
+    header,
+    .navbar,
+    #footer,
+    a,
+    #backgroundImage {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      display: block;
+    }
+
+    /* Container for event -> teams listing */
+    #teamListContainer {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Container for Team "Home Page" with aggregated data */
+    #teamHomeContainer {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      display: none;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Container for matches of a selected team */
+    #matchListContainer {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      display: none; /* Show when user selects "View matches" from team home page */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    ul li {
+      padding: 10px;
+      border-bottom: 1px solid rgba(221, 221, 221, 0);
+      cursor: pointer;
+    }
+    ul li:hover {
+      background-color: #f0f0f072;
+    }
+
+    /* Dark mode classes re-used */
+    .bg-dark,
+    .navbar-dark,
+    .card {
+      background-color: #343a40 !important;
+      color: #f8f9fa !important;
+    }
+    .bg-light,
+    .navbar-light,
+    .card {
+      background-color: #f8f9fa !important;
+      color: #343a40 !important;
+    }
+    .navbar-dark .navbar-nav .nav-link,
+    .navbar-dark .navbar-brand {
+      color: #f8f9fa !important;
+    }
+
+    /* Dark Mode Toggle Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 80px;
+      height: 34px;
+      margin: 10px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: background-color 0.4s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px; width: 26px;
+      left: 4px; bottom: 4px;
+      background-color: white;
+      transition: transform 0.4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #555;
+    }
+    input:checked + .slider:before {
+      transform: translateX(46px);
+    }
+    .icon {
+      color: #fff;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      transition: opacity 0.4s;
+    }
+    .sun {
+      left: 10px;
+      opacity: 0;
+    }
+    .moon {
+      right: 10px;
+      opacity: 1;
+    }
+    input:checked + .slider .sun {
+      opacity: 1;
+    }
+    input:checked + .slider .moon {
+      opacity: 0;
+    }
+
+    /* Dark mode for custom containers */
+    .dark-mode #teamListContainer,
+    .dark-mode #teamHomeContainer,
+    .dark-mode #matchListContainer {
+      background-color: #454d55;
+      color: #f8f9fa;
+    }
+
+    /* ========== MATCH VIEWER ========== */
+    .hidden {
+      display: none;
+    }
+    .container-matchviewer {
+      margin: 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      display: none; /* visible after selecting a match */
+      width: 100%;
+    }
+
+    #field_image, #field_image_auto, #field_image_endgame {
+      background-image: url("images/crescendo_feild.png");
+      background-size: contain;
+      border: 1px solid #000;
+      width: 1152px;
+      height: 498px;
+      display: flex;
+      margin: 20px auto;
+      position: relative;
+    }
+    #notesContainer .note-btn {
+      background-color: rgba(0, 200, 150, 0.5);
+      border: none;
+      color: black;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      position: absolute;
+      opacity: 60%;
+    }
+    .position-btnB {
+      position: absolute;
+      background-color: rgba(0, 123, 255, 0.5);
+      border: none;
+      color: black;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .position-btnR {
+      position: absolute;
+      background-color: rgba(255, 65, 65, 0.6);
+      border: none;
+      color: white;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .driver-station-btnB {
+      position: absolute;
+      background-color: rgba(0, 123, 255, 0.5);
+      border: none;
+      color: white;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      height: 50px;
+    }
+    .driver-station-btnR {
+      position: absolute;
+      background-color: rgba(255, 65, 65, 0.6);
+      border: none;
+      color: white;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #teleopContainer {
+      display: none;
+    }
+    .flex {
+      display: flex;
+    }
+    .stats {
+      flex: 1;
+      margin: 10px;
+      border-radius: 8px;
+      border-color: #000;
+      border-width: 4px;
+    }
+    #StageRightBLUE, #StageLeftBLUE, #CenterStageBLUE, #None,
+    #StageRightRED,  #StageLeftRED,  #CenterStageRED {
+      opacity: 60%;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .button-link {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: white;
+      background-color: #007bff;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    .button-link:hover {
+      background-color: #0056b3;
+    }
+    #textNotesContainer {
+      width: 300px;         
+      min-height: 150px;    
+      padding: 10px;        
+      margin: 20px auto;    
+      border: 4px solid #000;
+      text-align: center;
+      white-space: pre-line;
+      display: none;
+    }
+    .dark-mode .container-matchviewer {
+      background-color: #454d55;
+      color: #f8f9fa;
+    }
+
+    /* Team Home Page Stats */
+    #teamStatsPanel {
+      margin-top: 20px;
+      text-align: center;
+    }
+    #teamStatsPanel h3 {
+      margin-bottom: 20px;
+    }
+    #teamStatsPanel .statItem {
+      margin: 6px 0;
+    }
+    
+     /* Score Predictor Section */
+     #scorePredictorContainer {
+      max-width:800px;
+      margin:20px auto;
+      background:white;
+      padding:20px;
+      box-shadow:0 0 10px rgba(0,0,0,0.1);
+      margin-bottom:20px;
+    }
+    #scorePredictorContainer label {
+      margin-right:10px;
+    }
+    #scorePredictorContainer input {
+      width:80px; 
+      margin:0 5px;
+    }
+    .dark-mode #scorePredictorContainer {
+      background-color:#454d55; 
+      color:#f8f9fa;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR (with dark mode toggle) -->
+  <nav class="navbar navbar-expand-lg">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="./index.html">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./Team_List_element.html">Teams</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Scouting
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="./Strat_Board_w_tabs.html">Canvas</a>
+                    <a class="dropdown-item" href="./scoutingGen.html">Scouting Generator</a>
+                    <a class="dropdown-item" href="./pitScouterFRONT.html">Pit Scouter</a>
+                    <a class="dropdown-item" href="./pitScouterBACK.html">Pit Scouter Backend</a>
+                    <a class="dropdown-item" href="./scoutingUI.html">Scouting UI</a>
+                    <a class="dropdown-item" href="./documentation.html">Documentation</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./Checklist.html">Pre-Match Checklist</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./2423_Features.html">Features</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./Config_tab.html">Configure</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./dataBaseTeamPage.html">Database</a>
+            </li>
+            <!-- <li class="nav-item">
+                <a class="nav-link" href="./SQLiteDemo.html">Database</a>
+            </li> -->
+        </ul>
+        <label class="switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider round">
+              <span class="icon sun">🌞</span> <!-- Sun icon -->
+              <span class="icon moon">🌜</span> <!-- Moon icon -->
+            </span>
+          </label>
+          
+    </div>
+</nav>
+  <!-- SCORE PREDICTOR -->
+<div id="scorePredictorContainer">
+    <h2>Score Predictor</h2>
+    <p>Manually enter three team numbers for the Blue Alliance and three for the Red Alliance. Then click "Predict Score" to sum their EPA values (based on your uploaded aggregator data).</p>
+    <div>
+      <label>Blue Alliance Teams:</label>
+      <input type="text" id="blueTeam1" placeholder="e.g. 95" />
+      <input type="text" id="blueTeam2" placeholder="e.g. 133" />
+      <input type="text" id="blueTeam3" placeholder="e.g. 6329" />
+    </div>
+    <div style="margin-top:10px;">
+      <label>Red Alliance Teams:</label>
+      <input type="text" id="redTeam1" placeholder="e.g. 2067" />
+      <input type="text" id="redTeam2" placeholder="e.g. 319" />
+      <input type="text" id="redTeam3" placeholder="e.g. 195" />
+    </div>
+    <button class="btn btn-primary mt-3" id="predictBtn">Predict Score</button>
+    <div id="predictOutput" style="margin-top:15px; font-weight:bold;"></div>
+  </div>
+
+  <!-- Container for uploading an EVENT folder -->
+  <div id="teamListContainer">
+    <h2 style="text-align:center;">Event Teams Viewer</h2>
+    <p style="text-align:center;">
+      Select an EVENT folder containing subfolders named by team number,
+      with match JSON files inside each subfolder.
+    </p>
+    <div style="text-align:center;">
+      <input type="file" id="folderInput" webkitdirectory directory multiple/>
+      <button class="btn btn-primary mt-3" id="folderUploadBtn">Upload Folder</button>
+    </div>
+
+    <div id="teamList" style="margin-top:20px;">
+      <!-- Dynamically generated list of teams goes here -->
+    </div>
+  </div>
+
+  <!-- Container: "Home Page" for a single Team (Aggregated Data) -->
+  <div id="teamHomeContainer">
+    <button class="btn btn-secondary mb-3" id="backToAllTeamsBtn">Back to All Teams</button>
+    <h2 id="teamHomeTitle"></h2>
+    <div id="teamStatsPanel">
+      <h3>Aggregated Stats</h3>
+      <div class="statItem">Auto Average Points Per Match (APPM): <span id="autoAPPM"></span></div>
+      <div class="statItem">Teleop Average Points Per Match (APPM): <span id="teleopAPPM"></span></div>
+      <div class="statItem">Endgame Average Points Per Match (APPM): <span id="endgameAPPM"></span></div>
+
+      <!-- We'll display an iterative "EPA" that uses an Elo-like update across matches. -->
+      <div class="statItem">Estimated Points Per Match (EPA): <span id="epa"></span></div>
+    </div>
+    <button class="btn btn-info mt-3" id="viewMatchesBtn">View Matches</button>
+  </div>
+
+  <!-- Container for list of matches (user can pick one to see detail) -->
+  <div id="matchListContainer">
+    <button class="btn btn-secondary mb-3" id="backToTeamHomeBtn">Back to Team Home</button>
+    <h3 id="selectedTeamHeader"></h3>
+    <div id="matchList">
+      <!-- Dynamically generated list of matches for the chosen team goes here -->
+    </div>
+  </div>
+
+  <!-- MATCH VIEWER -->
+  <div class="container-matchviewer" id="matchViewerContainer">
+    <button class="btn btn-secondary mb-3" id="backToTeamHomeBtn2">Back to Team Home</button>
+    <p id="warningText" style="display:none"></p>
+
+    <div id="textNotesContainer"></div>
+    <h1 id="teamDisplay" class="hidden"></h1>
+    <h2 id="matchNumber" class="hidden"></h2>
+
+    <!-- AUTO CONTAINER -->
+    <div id="autoContainer" class="container hidden" style="max-width: 100%;">
+      <div class="auto_title" style="text-align:center;">
+        <h1>A U T O</h1>
+      </div>
+      <div id="field_image">
+        <div id="notesContainer" style="position: relative; width: 100%; height: 100%;">
+          <!-- Example position placeholders -->
+          <button class="position-btnB" id="position-btn-p1" style="display: none; top: 20%; left: 15%;">Position 1</button>
+          <button class="position-btnB" id="position-btn-p2" style="display: none; top: 35%; left: 18%;">Position 2</button>
+          <button class="position-btnB" id="position-btn-p3" style="display: none; top: 50%; left: 15%;">Position 3</button>
+          <button class="position-btnB" id="position-btn-p4" style="display: none; top: 70%; left: 15%;">Position 4</button>
+
+          <button class="position-btnR" id="position-btn-p5" style="display: none; top: 20%; left: 78%;">Position 5</button>
+          <button class="position-btnR" id="position-btn-p6" style="display: none; top: 35%; left: 75%;">Position 6</button>
+          <button class="position-btnR" id="position-btn-p7" style="display: none; top: 50%; left: 78%;">Position 7</button>
+          <button class="position-btnR" id="position-btn-p8" style="display: none; top: 70%; left: 78%;">Position 8</button>
+
+          <!-- Note buttons (Auto) -->
+          <button id='notebtn1'  class="note-btn" style="display: none; top:20%; left:23%;">Note 1</button>
+          <button id='notebtn2'  class="note-btn" style="display: none; top:35%; left:23%;">Note 2</button>
+          <button id='notebtn3'  class="note-btn" style="display: none; top:50%; left:23%;">Note 3</button>
+          <button id='notebtn4'  class="note-btn" style="display: none; top:16%; left:47%;">Note 4</button>
+          <button id='notebtn5'  class="note-btn" style="display: none; top:33%; left:47%;">Note 5</button>
+          <button id='notebtn6'  class="note-btn" style="display: none; top:50%; left:47%;">Note 6</button>
+          <button id='notebtn7'  class="note-btn" style="display: none; top:67%; left:47%;">Note 7</button>
+          <button id='notebtn8'  class="note-btn" style="display: none; top:85%; left:47%;">Note 8</button>
+          <button id='notebtn9'  class="note-btn" style="display: none; top:20%; left:71%;">Note 9</button>
+          <button id='notebtn10' class="note-btn" style="display: none; top:35%; left:71%;">Note 10</button>
+          <button id='notebtn11' class="note-btn" style="display: none; top:50%; left:71%;">Note 11</button>
+        </div>
+      </div>
+      <ul id="autoActionsList"></ul>
+    </div>
+
+    <!-- TELEOP CONTAINER -->
+    <div id="teleopContainer" class="container hidden" style="max-width: 100%;">
+      <div class="teleop_title" style="text-align:center;">
+        <h1>T E L E O P</h1>
+      </div>
+      <div class="flex">
+        <div class="stats">
+          <h3>Stats</h3>
+          <h4>Out of Auto: <span id="outOfAuto"></span></h4>
+          <h4># of Complete Cycles: <span id="numOfCycles"></span></h4>
+          <div id="customAttributesContainer">
+            <h3>Custom Attributes</h3>
+          </div>
+        </div>
+        <div id="field_image_auto">
+          <div class="driver-btns" style="position: relative; width: 100%; height: 100%;">
+            <button id="driver-station-btn-1" class="driver-station-btnB"
+                    style="display: none; top:18%; left:0px; width:120px;">
+              Driver Station 1 BLUE
+            </button>
+            <button id="driver-station-btn-2" class="driver-station-btnB"
+                    style="display: none; top:53%; left:0px; width:120px;">
+              Driver Station 2 BLUE
+            </button>
+            <button id="driver-station-btn-3" class="driver-station-btnB"
+                    style="display: none; top:72%; left:0px; width:120px;">
+              Driver Station 3 BLUE
+            </button>
+
+            <button id="driver-station-btn-6" class="driver-station-btnR"
+                    style="display: none; top:18%; left:90%;">
+              Driver Station 3 RED
+            </button>
+            <button id="driver-station-btn-5" class="driver-station-btnR"
+                    style="display: none; top:53%; left:90%;">
+              Driver Station 2 RED
+            </button>
+            <button id="driver-station-btn-4" class="driver-station-btnR"
+                    style="display: none; top:72%; left:90%;">
+              Driver Station 1 RED
+            </button>
+          </div>
+        </div>
+      </div>
+      <ul id="teleopActionsList"></ul>
+    </div>
+
+    <!-- ENDGAME CONTAINER -->
+    <div id="endgameContainer" class="container hidden" style="max-width: 100%;">
+      <div class="endgame_title" style="text-align:center;">
+        <h1>E N D G A M E</h1>
+      </div>
+      <div id="endgameAttributesContainer"></div>
+      <div id="field_image_endgame">
+        <div class="endgame" id="endgame">
+          <button id="StageRightBLUE"   onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
+          <button id="StageLeftBLUE"    onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
+          <button id="CenterStageBLUE"  onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
+          <button id="None"             onclick="logEndgameAction('None')">None</button>
+          <button id="StageRightRED"    onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
+          <button id="StageLeftRED"     onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
+          <button id="CenterStageRED"   onclick="logEndgameAction('Center Stage RED')">Center Stage</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN JS SCRIPT -->
+  <script>
+    // =======================
+    // DARK MODE TOGGLE LOGIC
+    // =======================
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggle = document.getElementById('darkModeToggle');
+      const body = document.body;
+      const navbar = document.querySelector('.navbar');
+
+      function enableDarkMode() {
+        body.classList.add('bg-dark', 'dark-mode');
+        body.classList.remove('bg-light');
+        navbar.classList.add('navbar-dark');
+        navbar.classList.remove('navbar-light', 'bg-white');
+        document.querySelectorAll('.navbar').forEach(element => {
+          element.classList.add('bg-dark');
+          element.classList.remove('bg-white');
+        });
+      }
+
+      function disableDarkMode() {
+        body.classList.add('bg-light');
+        body.classList.remove('bg-dark', 'dark-mode');
+        navbar.classList.add('navbar-light');
+        navbar.classList.remove('navbar-dark', 'bg-dark');
+        document.querySelectorAll('.navbar').forEach(element => {
+          if (!element.closest('#aboutModal')) {
+            element.classList.add('bg-white');
+            element.classList.remove('bg-dark');
+          }
+        });
+      }
+
+      // Initialize from localStorage
+      if (localStorage.getItem('darkMode') === 'true') {
+        enableDarkMode();
+        toggle.checked = true;
+      } else {
+        disableDarkMode();
+      }
+
+      // Toggle
+      toggle.addEventListener('change', function() {
+        if (this.checked) {
+          localStorage.setItem('darkMode', 'true');
+          enableDarkMode();
+        } else {
+          localStorage.setItem('darkMode', 'false');
+          disableDarkMode();
+        }
+      });
+    });
+
+
+    // ==============
+    // FOLDER UPLOAD
+    // ==============
+    let teamsData = {};
+
+    document.getElementById('folderUploadBtn').addEventListener('click', () => {
+      const input = document.getElementById('folderInput');
+      const files = input.files;
+
+      if (!files || files.length === 0) {
+        alert('Please select a folder first.');
+        return;
+      }
+
+      // Reset data
+      teamsData = {};
+
+      const readPromises = Array.from(files).map(file => {
+        return new Promise((resolve, reject) => {
+          if (!file.name.toLowerCase().endsWith('.json')) {
+            resolve();
+            return;
+          }
+
+          const relativePath = file.webkitRelativePath;
+          // Expect pathParts like: [EventName, TeamNumber, matchFile.json]
+          const pathParts = relativePath.split('/');
+          if (pathParts.length < 3) {
+            resolve();
+            return;
+          }
+
+          const teamNumber = pathParts[1];
+          const matchFileName = pathParts.slice(2).join('/');
+
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const content = event.target.result;
+            if (!teamsData[teamNumber]) {
+              teamsData[teamNumber] = {};
+            }
+            teamsData[teamNumber][matchFileName] = content;
+            resolve();
+          };
+          reader.onerror = reject;
+          reader.readAsText(file);
+        });
+      });
+
+      Promise.all(readPromises)
+        .then(() => {
+          displayTeamList();
+        })
+        .catch(err => console.error('Error reading files:', err));
+    });
+
+    // ==================
+    // DISPLAY TEAM LIST
+    // ==================
+    function displayTeamList() {
+      document.getElementById('teamListContainer').style.display = 'block';
+      document.getElementById('teamHomeContainer').style.display = 'none';
+      document.getElementById('matchListContainer').style.display = 'none';
+      document.getElementById('matchViewerContainer').style.display = 'none';
+
+      const teamListDiv = document.getElementById('teamList');
+      teamListDiv.innerHTML = '';
+
+      const teams = Object.keys(teamsData).sort((a,b) => {
+        const numA = parseInt(a, 10);
+        const numB = parseInt(b, 10);
+        if (!isNaN(numA) && !isNaN(numB)) {
+          return numA - numB;
+        } else {
+          return a.localeCompare(b);
+        }
+      });
+
+      if (teams.length === 0) {
+        teamListDiv.innerHTML = '<p>No valid JSON files found in subfolders.</p>';
+        return;
+      }
+
+      const ul = document.createElement('ul');
+      teamListDiv.appendChild(ul);
+
+      teams.forEach(team => {
+        const li = document.createElement('li');
+        li.textContent = `Team ${team}`;
+        li.addEventListener('click', () => {
+          showTeamHomePage(team);
+        });
+        ul.appendChild(li);
+      });
+    }
+
+    // ===========================
+    // TEAM HOME PAGE AGGREGATION
+    // ===========================
+    function showTeamHomePage(teamNumber) {
+      document.getElementById('teamListContainer').style.display = 'none';
+      document.getElementById('matchListContainer').style.display = 'none';
+      document.getElementById('matchViewerContainer').style.display = 'none';
+
+      document.getElementById('teamHomeContainer').style.display = 'block';
+      document.getElementById('teamHomeTitle').textContent = `Team ${teamNumber} Home`;
+
+      // Compute aggregator-based stats (simple averaging)
+      const {
+        autoAvg,
+        teleopAvg,
+        endgameAvg
+      } = computeTeamAverages(teamNumber);
+
+      // Instead of an iterative approach, we just sum all three averages for EPA
+      const epaValue = autoAvg + teleopAvg + endgameAvg;
+
+      // Populate stats
+      document.getElementById('autoAPPM').textContent    = autoAvg.toFixed(2);
+      document.getElementById('teleopAPPM').textContent  = teleopAvg.toFixed(2);
+      document.getElementById('endgameAPPM').textContent = endgameAvg.toFixed(2);
+      document.getElementById('epa').textContent         = epaValue.toFixed(2);
+
+      // "View Matches" button
+      const viewMatchesBtn = document.getElementById('viewMatchesBtn');
+      viewMatchesBtn.onclick = () => {
+        displayTeamMatches(teamNumber);
+      };
+
+      // "Back to All Teams" button
+      const backBtn = document.getElementById('backToAllTeamsBtn');
+      backBtn.onclick = () => {
+        displayTeamList();
+      };
+    }
+
+    // ========================================================
+    // 1) SIMPLE AVERAGING FOR APPM (Auto/Teleop/Endgame)
+    // ========================================================
+    function computeTeamAverages(teamNumber) {
+      const matchKeys = Object.keys(teamsData[teamNumber]);
+      if (matchKeys.length === 0) {
+        return { autoAvg: 0, teleopAvg: 0, endgameAvg: 0 };
+      }
+
+      let autoPointsArray = [];
+      let teleopPointsArray = [];
+      let endgamePointsArray = [];
+
+      matchKeys.forEach(matchFile => {
+        try {
+          const data = JSON.parse(teamsData[teamNumber][matchFile]);
+          const autoPts    = getAutoPoints(data);
+          const teleopPts  = getTeleopPoints(data);
+          const endgamePts = getEndgamePoints(data);
+
+          autoPointsArray.push(autoPts);
+          teleopPointsArray.push(teleopPts);
+          endgamePointsArray.push(endgamePts);
+
+        } catch (err) {
+          console.warn(`Error parsing match file ${matchFile}:`, err);
+        }
+      });
+
+      const autoAvg    = average(autoPointsArray);
+      const teleopAvg  = average(teleopPointsArray);
+      const endgameAvg = average(endgamePointsArray);
+
+      return { autoAvg, teleopAvg, endgameAvg };
+    }
+
+    // ===============
+    // SCORING DETAILS
+    // ===============
+    // 1) AUTO: if outcome != 'missed', +7 points each action
+    function getAutoPoints(data) {
+      let total = 0;
+      if (!data.autoActions || !Array.isArray(data.autoActions)) return 0;
+      data.autoActions.forEach(action => {
+        const outcome = (action.outcome || "").toLowerCase();
+        if (outcome !== "missed") {
+          total += 7;
+        }
+      });
+      return total;
+    }
+
+    // 2) TELEOP: "Coral Level 4" => 5, "Level 3" =>4, "Level 2" =>3, "Level 1" =>1, "miss" =>0
+    function getTeleopPoints(data) {
+      let total = 0;
+      if (!data.teleopActions || !Array.isArray(data.teleopActions)) return 0;
+      data.teleopActions.forEach(action => {
+        const shotPlace = (action.shot_place || "").toLowerCase();
+        if (shotPlace === "coral level 4") {
+          total += 5;
+        } else if (shotPlace === "coral level 3") {
+          total += 4;
+        } else if (shotPlace === "coral level 2") {
+          total += 3;
+        } else if (shotPlace === "coral level 1") {
+          total += 1;
+        }
+        // "miss" => 0
+      });
+      return total;
+    }
+
+    // 3) ENDGAME: "deep" =>12, "shallow" =>6, "park" =>2
+    function getEndgamePoints(data) {
+      let total = 0;
+      if (!data.endgameActions || !Array.isArray(data.endgameActions)) return 0;
+      data.endgameActions.forEach(action => {
+        const outcome = (action.outcome || "").toLowerCase();
+        const act     = (action.action   || "").toLowerCase();
+        if (outcome.includes("deep") || act.includes("deep")) {
+          total += 12;
+        } else if (outcome.includes("shallow") || act.includes("shallow")) {
+          total += 6;
+        } else if (outcome.includes("park") || act.includes("park")) {
+          total += 2;
+        }
+      });
+      return total;
+    }
+
+    // Simple average function
+    function average(arr) {
+      if (!arr.length) return 0;
+      const sum = arr.reduce((acc, val) => acc + val, 0);
+      return sum / arr.length;
+    }
+
+    // =====================
+    // TEAM MATCHES VIEW
+    // =====================
+    function displayTeamMatches(teamNumber) {
+      document.getElementById('teamHomeContainer').style.display = 'none';
+      document.getElementById('matchListContainer').style.display = 'block';
+      document.getElementById('matchViewerContainer').style.display = 'none';
+
+      const matchListDiv = document.getElementById('matchList');
+      const selectedTeamHeader = document.getElementById('selectedTeamHeader');
+      matchListDiv.innerHTML = '';
+      selectedTeamHeader.textContent = `Matches for Team ${teamNumber}`;
+
+      const matchFiles = Object.keys(teamsData[teamNumber]) || [];
+      if (matchFiles.length === 0) {
+        matchListDiv.innerHTML = '<p>No match files found for this team.</p>';
+        return;
+      }
+
+      const ul = document.createElement('ul');
+      matchListDiv.appendChild(ul);
+
+      matchFiles.forEach(filename => {
+        const li = document.createElement('li');
+        li.textContent = filename;
+        li.addEventListener('click', () => {
+          // Parse the content and show in viewer
+          const fileContent = teamsData[teamNumber][filename];
+          try {
+            const jsonData = JSON.parse(fileContent);
+            showMatchViewer(jsonData);
+          } catch (err) {
+            alert(`Error parsing JSON in file "${filename}": ${err}`);
+          }
+        });
+        ul.appendChild(li);
+      });
+
+      // "Back to Team Home" button
+      document.getElementById('backToTeamHomeBtn').onclick = () => {
+        showTeamHomePage(teamNumber);
+      };
+    }
+
+    // =====================
+    // MATCH VIEWER DISPLAY
+    // =====================
+    function showMatchViewer(jsonData) {
+      document.getElementById('matchListContainer').style.display = 'none';
+      document.getElementById('matchViewerContainer').style.display = 'block';
+      resetPositions();
+      updateUI(jsonData);
+    }
+
+    // Reset dynamic elements in the match viewer
+    function resetPositions() {
+      const allButtons = document.querySelectorAll('.position-btnB, .position-btnR, .note-btn');
+      allButtons.forEach(btn => {
+        btn.style.top = '';
+        btn.style.left = '';
+        btn.style.display = 'none';
+        btn.style.backgroundColor = '';
+        btn.title = '';
+        btn.innerHTML = '';
+      });
+
+      const driverStations = document.querySelectorAll('.driver-station-btnB, .driver-station-btnR');
+      driverStations.forEach(btn => {
+        btn.style.top = '';
+        btn.style.left = '';
+        btn.style.display = 'none';
+        btn.innerText = '';
+      });
+
+      const endgameButtons = document.querySelectorAll('#endgame button');
+      endgameButtons.forEach(btn => {
+        btn.style.display = 'inline';
+        btn.style.top = '';
+        btn.style.left = '';
+      });
+
+      document.getElementById('textNotesContainer').style.display = "none";
+      document.getElementById('textNotesContainer').innerHTML = '';
+
+      document.getElementById('teamDisplay').textContent = '';
+      document.getElementById('teamDisplay').classList.add('hidden');
+      document.getElementById('matchNumber').textContent = '';
+      document.getElementById('matchNumber').classList.add('hidden');
+
+      document.getElementById('autoContainer').style.display = 'none';
+      document.getElementById('teleopContainer').style.display = 'none';
+      document.getElementById('endgameContainer').style.display = 'none';
+    }
+
+    function validateData(data) {
+      const requiredAttributes = [
+        'teamNumber',
+        'matchNumber',
+        'autoActions',
+        'teleopActions',
+        'endgameActions',
+        'robotPosition',
+        'driverStation'
+      ];
+      let missing = [];
+
+      if (!data.hasOwnProperty("matchNumber") || data["matchNumber"] === null || data["matchNumber"] === '') {
+        throw alert("Invalid or empty matchNumber. Please try again with a different file.");
+      }
+
+      requiredAttributes.forEach(attr => {
+        if (!data.hasOwnProperty(attr) || data[attr] === null || data[attr] === '') {
+          missing.push(attr);
+        }
+      });
+      if (missing.length > 0) {
+        alert("Warning: The JSON is missing these attributes: " + missing.join(", "));
+      }
+    }
+
+    function updateUI(data) {
+      validateData(data);
+
+      let textNotes = '';
+      const autoNotes = data.autoNotes || '';
+      const teleopNotes = data.teleopNotes || '';
+      const endgameNotes = data.endgameNotes || '';
+
+      if (autoNotes || teleopNotes || endgameNotes) {
+        if (autoNotes === teleopNotes && teleopNotes === endgameNotes && autoNotes !== '') {
+          textNotes = autoNotes;
+        } else {
+          textNotes = "<b>Auto:</b> " + autoNotes + "<br>" +
+                      "<b>Teleop:</b> " + teleopNotes + "<br>" +
+                      "<b>Endgame:</b> " + endgameNotes;
+        }
+        const notesContainer = document.getElementById('textNotesContainer');
+        if (notesContainer) {
+          notesContainer.innerHTML = "<b>Match Notes</b><br>" + textNotes;
+          notesContainer.style.display = "block";
+        }
+      }
+
+      document.getElementById('teamDisplay').textContent = "Team " + (data.teamNumber || "???");
+      document.getElementById('matchNumber').textContent = "Match #" + (data.matchNumber || "???");
+      document.getElementById('teamDisplay').classList.remove('hidden');
+      document.getElementById('matchNumber').classList.remove('hidden');
+
+      document.getElementById('autoContainer').classList.remove('hidden');
+      document.getElementById('teleopContainer').classList.remove('hidden');
+      document.getElementById('endgameContainer').classList.remove('hidden');
+      document.getElementById('autoContainer').style.display = "block";
+      document.getElementById('teleopContainer').style.display = "block";
+      document.getElementById('endgameContainer').style.display = "block";
+
+      document.getElementById('outOfAuto').textContent = '';
+      document.getElementById('numOfCycles').textContent = '0';
+
+      // Additional "Back to Team Home" button in the match viewer
+      document.getElementById('backToTeamHomeBtn2').onclick = () => {
+        showTeamHomePage(data.teamNumber);
+      };
+
+      let compOption = localStorage.getItem('compOption');
+      if (compOption !== 'Crescendo') {
+        compOption = 'Reefscape'; // fallback
+      }
+      const configPath = `dashboard/${compOption}.json`;
+
+      fetch(configPath)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(config => {
+          // Base field images
+          const autoCanvas      = document.getElementById("field_image");
+          const teleopContainer = document.getElementById("field_image_auto");
+          const endgameContainer= document.getElementById("field_image_endgame");
+
+          if (config.fieldImage) {
+            autoCanvas.style.backgroundImage      = `url('${config.fieldImage}')`;
+            teleopContainer.style.backgroundImage = `url('${config.fieldImage}')`;
+            endgameContainer.style.backgroundImage= `url('${config.fieldImage}')`;
+          }
+
+          // Combine any canvasDrawing with teleop background
+          const compositeCanvas = document.createElement('canvas');
+          compositeCanvas.width  = teleopContainer.offsetWidth;
+          compositeCanvas.height = teleopContainer.offsetHeight;
+          const ctx = compositeCanvas.getContext('2d');
+
+          const fieldImg = new Image();
+          fieldImg.crossOrigin = "anonymous";
+          fieldImg.src = config.fieldImage || "images/crescendo_feild.png";
+
+          fieldImg.onload = function() {
+            ctx.drawImage(fieldImg, 0, 0, compositeCanvas.width, compositeCanvas.height);
+            if (data.canvasDrawing) {
+              const drawingImg = new Image();
+              drawingImg.src = data.canvasDrawing;
+              drawingImg.onload = function() {
+                ctx.drawImage(drawingImg, 0, 0, compositeCanvas.width, compositeCanvas.height);
+                teleopContainer.style.backgroundImage = `url('${compositeCanvas.toDataURL()}')`;
+              };
+            } else {
+              teleopContainer.style.backgroundImage = `url('${fieldImg.src}')`;
+            }
+          };
+
+          // Place note buttons
+          const fieldPositions = config.buttonPositions.field;
+          if (fieldPositions && fieldPositions.positions) {
+            for (let posKey in fieldPositions.positions) {
+              const btnConfig = fieldPositions.positions[posKey];
+              const btnElem   = document.getElementById(btnConfig.id);
+              if (btnElem) {
+                const btnTop = parseFloat(btnConfig.top.replace('%', ''));
+                const currentTop = btnTop + (config.buttonPositions.addtop || 0);
+                btnElem.style.top  = currentTop + '%';
+                btnElem.style.left = btnConfig.left;
+                if (btnConfig.name) {
+                  btnElem.innerText = btnConfig.name;
+                }
+                if (btnConfig.hide) {
+                  btnElem.style.display = 'none';
+                }
+              }
+            }
+          }
+
+          // Auto note/outcome color
+          if (fieldPositions && fieldPositions.notes) {
+            const noteConfigs = Object.values(fieldPositions.notes);
+            const matchNotes  = data.autoActions; 
+            noteConfigs.forEach((note, index) => {
+              const note_button = document.getElementById(note.id);
+              if (!note_button) return;
+              note_button.style.display = "inline";
+
+              const btnTop = parseFloat(note.top.replace('%', ''));
+              const currentTop = btnTop + (config.buttonPositions.addtop || 0);
+              note_button.style.top  = currentTop + '%';
+              note_button.style.left = note.left;
+              note_button.style.width= note.width || '';
+              note_button.style.height= note.height || '';
+              if (note.hide) {
+                note_button.style.display = "none";
+              }
+
+              let outcome = "";
+              if (matchNotes && matchNotes[index] && matchNotes[index].outcome) {
+                outcome = matchNotes[index].outcome.trim().toLowerCase();
+              }
+              note_button.innerHTML = note.name;
+              if (outcome === "scored") {
+                note_button.style.backgroundColor = "green";
+                note_button.title = "Scored";
+              } else if (outcome === "missed") {
+                note_button.style.backgroundColor = "red";
+                note_button.title = "Missed";
+              }
+            });
+          }
+
+          // Driver station positions
+          if (fieldPositions && fieldPositions.driverStations) {
+            for (let dsKey in fieldPositions.driverStations) {
+              const dsBtnConfig = fieldPositions.driverStations[dsKey];
+              const dsElem = document.getElementById(dsBtnConfig.id);
+              if (dsElem) {
+                const btnTop = parseFloat(dsBtnConfig.top.replace('%', ''));
+                const currentTop = btnTop + (config.buttonPositions.addtop || 0);
+                dsElem.style.top = currentTop + '%';
+                dsElem.style.left= dsBtnConfig.left;
+                if (dsBtnConfig.name) {
+                  dsElem.innerText = dsBtnConfig.name;
+                }
+                if (dsBtnConfig.hide) {
+                  dsElem.style.display = 'none';
+                }
+              }
+            }
+          }
+
+          // Show the correct driver station and robot position
+          const buttons = document.querySelectorAll("button");
+          buttons.forEach(btn => {
+            if (btn.textContent.trim() === (data.driverStation || "").trim()) {
+              btn.style.display = "inline";
+            }
+          });
+          buttons.forEach(btn => {
+            if (btn.textContent.trim() === (data.robotPosition || "").trim()) {
+              btn.style.display = "inline";
+            }
+          });
+
+          // Teleop logic: # cycles
+          let teleopCycleCounter = 0;
+          if (data.teleopActions && Array.isArray(data.teleopActions)) {
+            data.teleopActions.forEach((action, i) => {
+              const shot = (action.shot_place || "").toLowerCase();
+              if (shot !== "miss") {
+                teleopCycleCounter++;
+              }
+              if (i === 0) {
+                document.getElementById('outOfAuto').textContent = action.pickup || '';
+              }
+            });
+          }
+          document.getElementById("numOfCycles").textContent = teleopCycleCounter;
+
+          // Custom teleop attributes
+          const customCounts = {};
+          if (config.buttonPositions.additionalActions) {
+            for (let key in config.buttonPositions.additionalActions) {
+              const customAction = config.buttonPositions.additionalActions[key];
+              customCounts[customAction.name] = 0;
+            }
+          }
+          if (config.buttonPositions.teleop) {
+            for (let key in config.buttonPositions.teleop) {
+              const teleopBtn = config.buttonPositions.teleop[key];
+              if (teleopBtn.customAttribute) {
+                if (!customCounts.hasOwnProperty(teleopBtn.name)) {
+                  customCounts[teleopBtn.name] = 0;
+                }
+              }
+            }
+          }
+          if (data.teleopActions && Array.isArray(data.teleopActions)) {
+            data.teleopActions.forEach(action => {
+              const pickup = (action.pickup || "").toLowerCase();
+              const shot   = (action.shot_place || "").toLowerCase();
+              for (let attr in customCounts) {
+                if (pickup === attr.toLowerCase() || shot === attr.toLowerCase()) {
+                  customCounts[attr]++;
+                }
+              }
+            });
+          }
+          const customContainer = document.getElementById('customAttributesContainer');
+          if (customContainer) {
+            let html = `<h3>Custom Attributes</h3>`;
+            for (let attr in customCounts) {
+              html += `<div>${attr}: ${customCounts[attr]}</div>`;
+            }
+            customContainer.innerHTML = html;
+          }
+
+          // Endgame
+          if (data.endgameActions && Array.isArray(data.endgameActions)) {
+            const endgameAttrContainer = document.getElementById('endgameAttributesContainer');
+            if (endgameAttrContainer) {
+              let html = '<h3 style="margin-left:40px;">Actions</h3>';
+              data.endgameActions.forEach(item => {
+                html += `<div style="margin-left:40px;">
+                          <div style="font-size:18px; font-weight:bold;">${item.action || "No Action"}</div>
+                          <div style="font-size:14px; color:gray;">${item.outcome || "No Outcome"}</div>
+                         </div>`;
+              });
+              endgameAttrContainer.innerHTML = html;
+            }
+          }
+
+          if (data.teleopActions && data.teleopActions.length > 0 && teleopCycleCounter === 0) {
+            alert("No successful teleop cycles were recorded. Possibly everything was missed?");
+          }
+          document.getElementById('warningText').style.display = "inline";
+          document.getElementById('warningText').textContent =
+            'For optimal results, reload the page before loading another file.';
+        })
+        .catch(error => {
+          console.error('Config File Error:', error);
+          alert('Error loading config: ' + error.message);
+        });
+    }
+
+    function logEndgameAction(action) {
+      console.log("Endgame action clicked:", action);
+    }
+
+    /* ========== PREDICT SCORE BUTTON ========== */
+// 1) We define getTeamEPA to return the aggregator-summed EPA for a given team
+function getTeamEPA(teamNumberStr){
+  if(!teamsData[teamNumberStr]){
+    return 0; // If aggregator has no data for this team, treat as 0
+  }
+  const {autoAvg, teleopAvg, endgameAvg}= computeTeamAverages(teamNumberStr);
+  return (autoAvg+teleopAvg+endgameAvg);
+}
+
+// 2) On "Predict" click, read all 6 inputs and sum
+document.getElementById('predictBtn').addEventListener('click', ()=>{
+  const b1=document.getElementById('blueTeam1').value.trim();
+  const b2=document.getElementById('blueTeam2').value.trim();
+  const b3=document.getElementById('blueTeam3').value.trim();
+  const r1=document.getElementById('redTeam1').value.trim();
+  const r2=document.getElementById('redTeam2').value.trim();
+  const r3=document.getElementById('redTeam3').value.trim();
+
+  // Convert them to aggregator-based EPAs
+  const blueScore= getTeamEPA(b1)+ getTeamEPA(b2)+ getTeamEPA(b3);
+  const redScore = getTeamEPA(r1)+ getTeamEPA(r2)+ getTeamEPA(r3);
+
+  const outputDiv=document.getElementById('predictOutput');
+  outputDiv.innerHTML=`
+    Blue Alliance Predicted Score: <b>${blueScore.toFixed(1)}</b><br>
+    Red Alliance Predicted Score: <b>${redScore.toFixed(1)}</b>`;
+});
+  </script>
+</body>
+</html>
