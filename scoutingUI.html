@@ -526,9 +526,10 @@ function exportLog(e) {
         updateUndoRedoButtons();
         var reloadCheck = 0;
         var compOption = localStorage.getItem('compOption');
-        if (compOption != ('Crescendo')) {
-            compOption = 'Reefscape';
-        }
+        if (!compOption) { 
+            compOption = "Reefscape"; // This should be set to the latest competition
+            localStorage.setItem('compOption', "Reefscape"); // This should be set to the latest competition
+          }
         const configPath = `dashboard/${compOption}.json`;
         function toggleNotesMode(){
   var toggle = document.getElementById('notesModeToggle');

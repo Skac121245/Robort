@@ -229,9 +229,6 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
 
   // Assuming compOption is set correctly in localStorage.
   var compOption = localStorage.getItem('compOption');
-  if (compOption != ('Crescendo')) {
-            compOption = 'Reefscape';
-        }
   const configUrl = `dashboard/${compOption}.json`;
 
   function saveCanvas() {

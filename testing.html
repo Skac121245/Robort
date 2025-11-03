@@ -539,9 +539,6 @@ function showMatchViewer(jsonData) {
       };
 
       let compOption = localStorage.getItem('compOption');
-      if (compOption !== 'Crescendo') {
-        compOption = 'Reefscape'; // fallback
-      }
       const configPath = `dashboard/${compOption}.json`;
 
       fetch(configPath)
