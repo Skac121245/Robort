@@ -1,0 +1,70 @@
+{
+    "fieldImage": "images/infiniterecharge_field.png",
+    "buttonPositions": {
+      "field": {
+        "positions": {
+          "position1": { "id": "position-btn-p1", "top": "37%", "left": "26%" },
+          "position2": { "id": "position-btn-p2", "top": "54%", "left": "26%" },
+          "position3": { "id": "position-btn-p3", "top": "71%", "left": "26%" },
+          "position4": { "id": "position-btn-p4", "top": "82%", "left": "15%", "hide":true},
+          "position5": { "id": "position-btn-p5", "top": "37%", "left": "73%", "name": "Position 4" },
+          "position6": { "id": "position-btn-p6", "top": "54%", "left": "73%", "name": "Position 5" },
+          "position7": { "id": "position-btn-p7", "top": "71%", "left": "73%", "name": "Position 6" },
+          "position8": { "id": "position-btn-p8", "top": "82%", "left": "78%", "hide": true }
+        },
+        "driverStations": {
+           "driverStation1_BLUE": { "id": "driver-station-btn-1", "top": "20%", "left": "1%" },
+          "driverStation2_BLUE": { "id": "driver-station-btn-2", "top": "50%", "left": "1%" },
+          "driverStation3_BLUE": { "id": "driver-station-btn-3", "top": "90%", "left": "1%" },
+          "driverStation1_RED": { "id": "driver-station-btn-4", "top": "20%", "left": "90%" },
+          "driverStation2_RED": { "id": "driver-station-btn-5", "top": "50%", "left": "90%" },
+          "driverStation3_RED": { "id": "driver-station-btn-6", "top": "90%", "left": "90%" }
+        },
+        "notes": {
+          "notebtn1": { "id": "notebtn1", "top": "20%", "left": "38.5%", "name": "Cell➡"},
+          "notebtn2": { "id": "notebtn2", "top": "12%", "left": "46.5%", "name": "Cell\n⬇"},
+          "notebtn3": { "id": "notebtn3", "top": "20%", "left": "54%", "name": "⬅Cell"},
+          "notebtn4": { "id": "notebtn4", "top": "16%", "left": "62%", "name": "⬅Cell" },
+          "notebtn5": { "id": "notebtn5", "top": "23%", "left": "62%", "name": "⬅Cell" },
+          "notebtn6": { "id": "notebtn6", "top": "", "left": "", "name": "Cell" },
+          "notebtn7": { "id": "notebtn7", "top": "95%", "left": "63%", "name": "⬅Cell"},
+          "notebtn8": { "id": "notebtn8", "top": "95%", "left": "46.5%", "name": "Cell➡"},
+          "notebtn9": { "id": "notebtn9", "top": "100%", "left": "55.5%", "name": "⬆\nCell"},
+          "notebtn10": { "id": "notebtn10", "top": "91%", "left": "39%", "name": "Cell➡"},
+          "notebtn11": { "id": "notebtn11", "top": "98%", "left": "39%", "name": "Cell➡"}
+         } },
+     "teleop": {
+         "powerport": {
+          "id": "powerport",
+          "top": "90px",
+          "left": "10px",
+          "width": "200px",
+          "height": "150px",
+          "name": "Score in Power Port",
+          "color": "blue",
+          "size": "large",
+          "actionType": "score",
+          "customAttribute": true
+        }
+},
+"additionalActions": {
+ },
+      "endgame": {
+       
+      },
+      "endgameOutcome": {
+      
+      },
+      "addtop": -10,
+    
+    "jsonAttributes": {
+      "matchNumber": "matchNumber",
+      "teamNumber": "teamNumber",
+      "scoutingData": "scoutingData",
+      "teleopActions": "teleopActions",
+      "endgameActions": "endgameActions",
+      "notes": "notes"
+    }
+  
+  }
+}

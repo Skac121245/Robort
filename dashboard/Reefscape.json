@@ -6,7 +6,7 @@
           "position1": { "id": "position-btn-p1", "top": "35%", "left": "40%" },
           "position2": { "id": "position-btn-p2", "top": "58%", "left": "40%" },
           "position3": { "id": "position-btn-p3", "top": "81%", "left": "40%" },
-          "position4": { "id": "position-btn-p4", "top": "82%", "left": "15%", "hide":true },
+          "position4": { "id": "position-btn-p4", "top": "82%", "left": "15%", "hide":true},
           "position5": { "id": "position-btn-p5", "top": "35%", "left": "53%" },
           "position6": { "id": "position-btn-p6", "top": "58%", "left": "53%" },
           "position7": { "id": "position-btn-p7", "top": "81%", "left": "53%" },
