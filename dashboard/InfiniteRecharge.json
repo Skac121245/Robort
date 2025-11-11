@@ -36,24 +36,129 @@
      "teleop": {
          "powerport": {
           "id": "powerport",
-          "top": "90px",
+          "top": "10px",
           "left": "10px",
-          "width": "200px",
+          "width": "300px",
           "height": "150px",
           "name": "Score in Power Port",
           "color": "blue",
           "size": "large",
+          "actionType": "pickup",
+          "customAttribute": true
+        },
+        "rotationControl": {
+          "id": "rotationControl",
+          "top": "200px",
+          "left": "10px",
+          "width": "125px",
+          "height": "150px",
+          "name": "Control Panel Rotation Control",
+          "color": "blue",
+          "size": "small",
+          "actionType": "score",
+          "customAttribute": true
+        },
+        "positionControl": {
+          "id": "positionControl",
+          "top": "200px",
+          "left": "180px",
+          "width": "125px",
+          "height": "150px",
+          "name": "Control Panel Position Control",
+          "color": "blue",
+          "size": "small", 
           "actionType": "score",
           "customAttribute": true
         }
 },
 "additionalActions": {
+    "cellBottom": {
+          "id": "cellBottom",
+          "top": "90px",
+          "left": "0.5%",
+          "width": "150px",
+          "height": "110px",
+          "name": "Bottom Port",
+          "color": "orange",
+          "size": "small"
+        },
+          "cellOuter": {
+          "id": "cellOuter",
+          "top": "90px",
+          "left": "11%",
+          "width": "150px",
+          "height": "110px",
+          "name": "Outer Port",
+          "color": "orange",
+          "size": "small"
+        },
+          "cellInner": {
+          "id": "cellInner",
+          "top": "250px",
+          "left": "0.5%",
+          "width": "150px",
+          "height": "110px",
+          "name": "Inner Port",
+          "color": "orange",
+          "size": "small"
+        },
+          "cellMiss": {
+          "id": "cellMiss",
+          "top": "250px",
+          "left": "11%",
+          "width": "150px",
+          "height": "110px",
+          "name": "Missed Port",
+          "color": "red",
+          "size": "small"
+        }
  },
       "endgame": {
-       
+        "generatorLeftRED": {
+          "id": "generatorLeftRED",
+          "top": "230px",
+          "left": "55%",
+          "width": "100px",
+          "height": "60px",
+          "name": "Generator Left",
+          "color": "red",
+          "size": "small"
+        },
+         "generatorRightRED": {
+          "id": "generatorRightRED",
+          "top": "200px",
+          "left": "62%",
+          "width": "100px",
+          "height": "60px",
+          "name": "Generator Right",
+          "color": "red",
+          "size": "small"
+        },
+         "generatorLeftBLUE": {
+          "id": "generatorLeftBLUE",
+          "top": "330px",
+          "left": "58%",
+          "width": "100px",
+          "height": "60px",
+          "name": "Generator Left",
+          "color": "blue",
+          "size": "small"
+        },
+         "generatorRightBLUE": {
+          "id": "generatorRightBLUE",
+          "top": "275px",
+          "left": "65%",
+          "width": "100px",
+          "height": "60px",
+          "name": "Generator Right",
+          "color": "blue",
+          "size": "small"
+        } 
       },
       "endgameOutcome": {
-      
+        "Park":    { "id": "outcomePark", "name": "Park", "top": "-500px", "left": "-420px", "width": "120px", "height": "50px", "color": "blue", "size": "medium" },
+        "Hang":   { "id": "outcomeHang", "name": "Hang", "top": "-500px", "left": "-250px", "width": "120px", "height": "50px", "color": "blue", "size": "medium" },
+        "Hang + Level": { "id": "outcomeLevel", "name": "Hang + Level", "top": "-425px", "left": "-330px", "width": "120px", "height": "70px", "color": "blue", "size": "medium" }
       },
       "addtop": -10,
     
