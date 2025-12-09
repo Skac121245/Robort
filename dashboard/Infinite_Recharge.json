@@ -1,0 +1,285 @@
+{
+  "fieldImage": "images/Infinite_Recharge_field.png",
+  "buttonPositions": {
+    "field": {
+      "positions": {
+        "position1": {
+          "id": "position-btn-p1",
+          "top": "30%",
+          "left": "26.5%"
+        },
+        "position2": {
+          "id": "position-btn-p2",
+          "top": "55%",
+          "left": "26.5%"
+        },
+        "position3": {
+          "id": "position-btn-p3",
+          "top": "80%",
+          "left": "26.5%"
+        },
+        "position4": {
+          "id": "position-btn-p4",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        },
+        "position5": {
+          "id": "position-btn-p5",
+          "top": "30%",
+          "left": "73.25%"
+        },
+        "position6": {
+          "id": "position-btn-p6",
+          "top": "55%",
+          "left": "73.25%"
+        },
+        "position7": {
+          "id": "position-btn-p7",
+          "top": "80%",
+          "left": "73.25%"
+        },
+        "position8": {
+          "id": "position-btn-p8",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        }
+      },
+      "driverStations": {
+        "driverStation1_BLUE": {
+          "id": "driver-station-btn-1",
+          "top": "18%",
+          "left": "3%"
+        },
+        "driverStation2_BLUE": {
+          "id": "driver-station-btn-2",
+          "top": "53.5%",
+          "left": "2%"
+        },
+        "driverStation3_BLUE": {
+          "id": "driver-station-btn-3",
+          "top": "90%",
+          "left": "3%"
+        },
+        "driverStation1_RED": {
+          "id": "driver-station-btn-4",
+          "top": "18%",
+          "left": "91%"
+        },
+        "driverStation2_RED": {
+          "id": "driver-station-btn-5",
+          "top": "57.5%",
+          "left": "90%"
+        },
+        "driverStation3_RED": {
+          "id": "driver-station-btn-6",
+          "top": "93%",
+          "left": "91%"
+        }
+      },
+      "notes": {
+        "notebtn1": {
+          "id": "notebtn1",
+          "top": "20.25%",
+          "left": "62%",
+          "name": "Cells (2)"
+        },
+        "notebtn2": {
+          "id": "notebtn2",
+          "top": "95%",
+          "left": "37%",
+          "name": "Cells (2)"
+        },
+        "notebtn3": {
+          "id": "notebtn3",
+          "top": "15.75%",
+          "left": "47.5%",
+          "name": "Cells (2)"
+        },
+        "notebtn4": {
+          "id": "notebtn4",
+          "top": "98.75%",
+          "left": "52%",
+          "name": "Cells (2)"
+        },
+        "notebtn5": {
+          "id": "notebtn5",
+          "top": "95%",
+          "left": "63%",
+          "name": "Cell"
+        },
+        "notebtn6": {
+          "id": "notebtn6",
+          "top": "20.25%",
+          "left": "37%",
+          "name": "Cell"
+        },
+        "notebtn7": {
+          "id": "notebtn7",
+          "top": "48%",
+          "left": "43%",
+          "name": "Cells (3)"
+        },
+        "notebtn8": {
+          "id": "notebtn8",
+          "top": "66.25%",
+          "left": "56.5%",
+          "name": "Cells (3)"
+        },
+        "notebtn9": {
+          "id": "notebtn9",
+          "top": "57.5%",
+          "left": "43%",
+          "name": "Cells (2)"
+        },
+        "notebtn10": {
+          "id": "notebtn10",
+          "top": "57%",
+          "left": "56.25%",
+          "name": "Cells (2)"
+        },
+        "notebtn11": {
+          "id": "notebtn11",
+          "top": "%",
+          "left": "%",
+          "name": "",
+          "hide": true
+        }
+      }
+    },
+    "teleop": {
+      "ScoreBtn": {
+        "id": "ScoreBtn",
+        "top": "60px",
+        "left": "02%",
+        "width": "275px",
+        "height": "125px",
+        "name": "Score in Power Port",
+        "color": "green",
+        "size": "large",
+        "actionType": "pickup",
+        "customAttribute": true
+      },
+      "ControlBtn1": {
+        "id": "ControlBtn1",
+        "top": "200px",
+        "left": "02%",
+        "width": "125px",
+        "height": "75px",
+        "name": "Control Panel - Rotate",
+        "color": "green",
+        "size": "small",
+        "actionType": "score",
+        "customAttribute": true
+        },
+      "ControlBtn2": {
+        "id": "ControlBtn2",
+        "top": "200px",
+        "left": "11.81%",
+        "width": "125px",
+        "height": "75px",
+        "name": "Control Panel - Target",
+        "color": "green",
+        "size": "small",
+        "actionType": "score",
+        "customAttribute": true
+        }
+    },
+    "additionalActions": {
+      "inner": {
+        "id": "inner",
+        "top": "60px",
+        "left": "2%",
+        "width": "275px",
+        "height": "125px",
+        "name": "Score Inner",
+        "color": "blue",
+        "size": "large"
+      },
+        "outer": {
+        "id": "outer",
+        "top": "200px",
+        "left": "2%",
+        "width": "275px",
+        "height": "125px",
+        "name": "Score Outer",
+        "color": "blue",
+        "size": "large"
+      },
+        "bottom": {
+        "id": "bottom",
+        "top": "340px",
+        "left": "2%",
+        "width": "275px",
+        "height": "125px",
+        "name": "Score Bottom",
+        "color": "blue",
+        "size": "large"
+      }
+    },
+    "endgame": {
+      "RshieldGenerator": {
+        "id": "RshieldGenerator",
+        "top": "195px",
+        "left": "55%",
+        "width": "180px",
+        "height": "80px",
+        "name": "Shield Generator - Red",
+        "color": "red",
+        "size": "small"
+      },
+        "BshieldGenerator": {
+        "id": "BshieldGenerator",
+        "top": "295px",
+        "left": "58%",
+        "width": "180px",
+        "height": "80px",
+        "name": "Shield Generator - Blue",
+        "color": "blue",
+        "size": "small"
+      }
+    },
+    "endgameOutcome": {
+      "Park": {
+        "id": "Park",
+        "name": "Level",
+        "top": "60px",
+        "left": "15%",
+        "width": "275px",
+        "height": "125px",
+        "color": "green",
+        "size": "medium"
+      },
+      "Hang": {
+        "id": "Hang",
+        "name": "Hang",
+        "top": "60px",
+        "left": "15%",
+        "width": "275px",
+        "height": "125px",
+        "color": "green",
+        "size": "medium"
+      },
+      "Hang-+-Level": {
+        "id": "Hang-+-Level",
+        "name": "Hang + Level",
+        "top": "60px",
+        "left": "15%",
+        "width": "275px",
+        "height": "125px",
+        "color": "green",
+        "size": "medium"
+      }
+    },
+    "addtop": -10
+  },
+  "jsonAttributes": {
+      "matchNumber": "matchNumber",
+      "teamNumber": "teamNumber",
+      "scoutingData": "scoutingData",
+      "teleopActions": "teleopActions",
+      "endgameActions": "endgameActions",
+      "notes": "notes"
+    }
+}
