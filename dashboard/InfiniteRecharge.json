@@ -1,0 +1,320 @@
+{
+  "fieldImage": "/images/infiniterecharge_field.png",
+  "buttonPositions": {
+    "field": {
+      "positions": {
+        "position1": {
+          "id": "position-btn-p1",
+          "top": "30%",
+          "left": "26%"
+        },
+        "position2": {
+          "id": "position-btn-p2",
+          "top": "60%",
+          "left": "26%"
+        },
+        "position3": {
+          "id": "position-btn-p3",
+          "top": "90%",
+          "left": "26%"
+        },
+        "position4": {
+          "id": "position-btn-p4",
+          "top": "30%",
+          "left": "26%",
+          "hide": true
+        },
+        "position5": {
+          "id": "position-btn-p5",
+          "top": "60%",
+          "left": "73%",
+          "hide": false
+        },
+        "position6": {
+          "id": "position-btn-p6",
+          "top": "30%",
+          "left": "73%",
+          "name": "Position 4"
+        },
+        "position7": {
+          "id": "position-btn-p7",
+          "top": "60%",
+          "left": "73%",
+          "name": "Position 5"
+        },
+        "position8": {
+          "id": "position-btn-p8",
+          "top": "90%",
+          "left": "73%",
+          "name": "Position 6"
+        }
+      },
+      "driverStations": {
+        "driverStation1_BLUE": {
+          "id": "driver-station-btn-1",
+          "top": "20%",
+          "left": "%"
+        },
+        "driverStation2_BLUE": {
+          "id": "driver-station-btn-2",
+          "top": "53%",
+          "left": "%"
+        },
+        "driverStation3_BLUE": {
+          "id": "driver-station-btn-3",
+          "top": "92%",
+          "left": "%"
+        },
+        "driverStation1_RED": {
+          "id": "driver-station-btn-4",
+          "top": "20%",
+          "left": "%"
+        },
+        "driverStation2_RED": {
+          "id": "driver-station-btn-5",
+          "top": "53%",
+          "left": "%"
+        },
+        "driverStation3_RED": {
+          "id": "driver-station-btn-6",
+          "top": "92%",
+          "left": "%"
+        }
+      },
+      "notes": {
+        "notebtn1": {
+          "id": "notebtn1",
+          "top": "40%",
+          "left": "18%",
+          "name": "Low Shot"
+        },
+        "notebtn2": {
+          "id": "notebtn2",
+          "top": "32%",
+          "left": "18%",
+          "name": "High Outer Shot"
+        },
+        "notebtn3": {
+          "id": "notebtn3",
+          "top": "27%",
+          "left": "18%",
+          "name": "High Inner Shot"
+        },
+        "notebtn4": {
+          "id": "notebtn4",
+          "top": "79%",
+          "left": "90%",
+          "name": "Low Shot"
+        },
+        "notebtn5": {
+          "id": "notebtn5",
+          "top": "87%",
+          "left": "90%",
+          "name": "High Outer Shot"
+        },
+        "notebtn6": {
+          "id": "notebtn6",
+          "top": "92%",
+          "left": "90%",
+          "name": "High Inner Shot"
+        },
+        "notebtn7": {
+          "id": "notebtn7",
+          "top": "%",
+          "left": "%",
+          "name": "",
+          "hide": true
+        },
+        "notebtn8": {
+          "id": "notebtn8",
+          "top": "%",
+          "left": "%",
+          "name": "",
+          "hide": true
+        },
+        "notebtn9": {
+          "id": "notebtn9",
+          "top": "%",
+          "left": "%",
+          "name": "",
+          "hide": true
+        },
+        "notebtn10": {
+          "id": "notebtn10",
+          "top": "%",
+          "left": "%",
+          "name": "",
+          "hide": true
+        },
+        "notebtn11": {
+          "id": "notebtn11",
+          "top": "%",
+          "left": "%",
+          "name": "",
+          "hide": true
+        }
+      }
+    },
+    "teleop": {
+      "Red Score Cell Collector": {
+        "id": "Red Score Cell Collector",
+        "top": "175px",
+        "left": "33%",
+        "width": "100px",
+        "height": "100px",
+        "name": "Cell Score Collector",
+        "color": "Red",
+        "size": "small",
+        "actionType": "pickup",
+        "customAttribute": true
+      },
+      "Blue Score Cell Collector": {
+        "id": "Blue Score Cell Collector",
+        "top": "350px",
+        "left": "90%",
+        "width": "100px",
+        "height": "100px",
+        "name": "Cell Score Collector",
+        "color": "blue",
+        "size": "small",
+        "actionType": "pickup",
+        "customAttribute": true
+      }
+    },
+    "additionalActions": {
+      "Red Low Shot": {
+        "id": "Red Low Shot",
+        "top": "400px",
+        "left": "25%",
+        "width": "75px",
+        "height": "75px",
+        "name": "Low Shot",
+        "color": "black",
+        "size": "small"
+      },
+      "Red High Outer Shot": {
+        "id": "Red High Outer Shot",
+        "top": "250px",
+        "left": "25%",
+        "width": "75px",
+        "height": "75px",
+        "name": "High Outer Shot",
+        "color": "black",
+        "size": "small"
+      },     
+      "Red High Inner Shot": {
+        "id": "Red High Inner Shot",
+        "top": "125px",
+        "left": "25%",
+        "width": "75px",
+        "height": "75px",
+        "name": "High Inner Shot",
+        "color": "black",
+        "size": "small"
+      },
+    "Blue Low Shot": {
+        "id": "Blue Low Shot",
+        "top": "400px",
+        "left": "93%",
+        "width": "75px",
+        "height": "75px",
+        "name": "Low Shot",
+        "color": "black",
+        "size": "small"
+      },
+      "Blue High Outer Shot": {
+        "id": "Blue High Outer Shot",
+        "top": "250px",
+        "left": "93%",
+        "width": "75px",
+        "height": "75px",
+        "name": "High Outer Shot",
+        "color": "black",
+        "size": "small"
+      },     
+      "Blue High Inner Shot": {
+        "id": "Blue High Inner Shot",
+        "top": "125px",
+        "left": "93%",
+        "width": "75px",
+        "height": "75px",
+        "name": "High Inner Shot",
+        "color": "black",
+        "size": "small"
+      }
+    },
+    "endgame": {
+      "Spot 1": {
+        "id": "Spot 1",
+        "top": "220px",
+        "left": "53%",
+        "width": "px",
+        "height": "px",
+        "name": "Spot 1",
+        "color": "red",
+        "size": "large"
+      },
+      "Spot 2": {
+        "id": "Spot 2",
+        "top": "210px",
+        "left": "63%",
+        "width": "px",
+        "height": "px",
+        "name": "Spot 2",
+        "color": "red",
+        "size": "large"
+      },
+      "Spot 3": {
+        "id": "Spot 3",
+        "top": "330px",
+        "left": "56%",
+        "width": "px",
+        "height": "px",
+        "name": "Spot 3",
+        "color": "blue",
+        "size": "large"
+      },
+      "Spot 4": {
+        "id": "Spot 4",
+        "top": "320px",
+        "left": "66%",
+        "width": "px",
+        "height": "px",
+        "name": "Spot 4",
+        "color": "blue",
+        "size": "large"
+      }
+    },
+    "endgameOutcome": {
+      "Hang": {
+        "id": "Hang",
+        "top": "px",
+        "left": "%",
+        "width": "150px",
+        "height": "150px",
+        "name": "Hang",
+        "color": "black",
+        "size": "large"
+      },
+      "Park": {
+        "id": "Park",
+        "top": "px",
+        "left": "15%",
+        "width": "150px",
+        "height": "150px",
+        "name": "Park",
+        "color": "black",
+        "size": "large"
+      }
+    },
+    "addtop": -10,
+    "jsonAttributes": {
+      "matchNumber": "matchNumber",
+      "teamNumber": "teamNumber",
+      "scoutingData": "scoutingData",
+      "teleopActions": "teleopActions",
+      "endgameActions": "endgameActions",
+      "notes": "notes"
+    }
+  }
+}
