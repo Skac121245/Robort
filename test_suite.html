@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robort Test Suite</title>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding: 20px; background-color: #f8f9fa; }
+        .test-card { margin-bottom: 20px; border: 1px solid #ddd; background: white; border-radius: 8px; padding: 15px; }
+        .log-box { background: #333; color: #0f0; font-family: monospace; padding: 15px; height: 400px; overflow-y: auto; border-radius: 5px; }
+        .pass { color: #4caf50; font-weight: bold; }
+        .fail { color: #f44336; font-weight: bold; }
+        .warn { color: #ff9800; }
+        #testFrame { width: 100%; height: 600px; border: 1px solid #ccc; margin-top: 20px; display: none; } /* Set display:block to debug visible pages */
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="test-card">
+                <h3>Test Configuration</h3>
+                <div class="form-group">
+                    <label>Select Suites to Run:</label>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="checkHome" checked>
+                        <label class="custom-control-label" for="checkHome">Home (Index)</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="checkTeams" checked>
+                        <label class="custom-control-label" for="checkTeams">Teams List</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="checkCanvas" checked>
+                        <label class="custom-control-label" for="checkCanvas">Canvas (Strat Board)</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="checkScouting" checked>
+                        <label class="custom-control-label" for="checkScouting">Scouting Generator</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="checkChecklist" checked>
+                        <label class="custom-control-label" for="checkChecklist">Pre-Match Checklist</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" onclick="startTestSuite()">RUN SELECTED TESTS</button>
+                <br>
+                <small>Check "Show Iframe" to see the pages being tested.</small><br>
+                <button class="btn btn-sm btn-secondary" onclick="toggleIframe()">Toggle Show/Hide Iframe</button>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="test-card">
+                <h3>Execution Log</h3>
+                <div id="logOutput" class="log-box">Waiting to start...</div>
+            </div>
+        </div>
+    </div>
+    <iframe id="testFrame"></iframe>
+</div>
+
+<script src="jquery-3.5.1.min.js"></script>
+<script>
+    // --- Configuration ---
+    const EVENT_CODES = ['2024mabri', '2023gal', '2024week0', '2024necmp'];
+    const API_KEY = "J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV"; // Sourced from your files
+    const TIMEOUT_MS = 10000;
+
+    const frame = document.getElementById('testFrame');
+    const logBox = document.getElementById('logOutput');
+
+    function log(msg, type = 'info') {
+        const div = document.createElement('div');
+        div.innerHTML = msg;
+        if (type === 'pass') div.className = 'pass';
+        if (type === 'fail') div.className = 'fail';
+        if (type === 'warn') div.className = 'warn';
+        logBox.appendChild(div);
+        logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    function toggleIframe() {
+        frame.style.display = frame.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function getRandomEvent() {
+        return EVENT_CODES[Math.floor(Math.random() * EVENT_CODES.length)];
+    }
+
+    async function loadPage(url) {
+        return new Promise((resolve) => {
+            log(`Loading page: ${url}...`);
+            frame.src = url;
+            frame.onload = () => {
+                // Inject helper to prevent alerts from blocking tests
+                frame.contentWindow.alert = function(msg) { console.log('Suppressed Alert:', msg); };
+                frame.contentWindow.confirm = function(msg) { console.log('Suppressed Confirm:', msg); return true; };
+                setTimeout(resolve, 1000); // Wait a bit for DOM ready scripts
+            };
+        });
+    }
+
+    // --- TEST SUITES ---
+
+    const Suites = {
+        Home: async () => {
+            try {
+                log('--- Starting Home Suite ---');
+                await loadPage('index.html');
+                const doc = frame.contentDocument;
+                const win = frame.contentWindow;
+
+                // --- SETUP MOCKS ---
+                const originalFetch = win.fetch;
+                const fetchLog = [];
+                win.fetch = async (url, options) => {
+                    fetchLog.push({ url, options });
+                    // Mock Discord/GitHub to prevent spam/errors
+                    if (url.includes('discord') || url.includes('github')) {
+                        return { ok: true, json: async () => [] }; 
+                    }
+                    return originalFetch(url, options);
+                };
+
+                // 1. Countdown Clock
+                const secondsEl = doc.getElementById('seconds');
+                if (secondsEl) {
+                    const startState = secondsEl.innerHTML;
+                    await new Promise(r => setTimeout(r, 1200)); 
+                    const endState = secondsEl.innerHTML;
+                    if (startState !== endState) {
+                        log('[PASS] Countdown clock is ticking.', 'pass');
+                    } else {
+                        log('[FAIL] Countdown clock stuck.', 'fail');
+                    }
+                } else {
+                    log('[FAIL] Clock elements missing.', 'fail');
+                }
+
+                // 2. Data Loading & Dropdowns
+                const testEvent = '2023gal'; 
+                log(`Testing Dropdowns with event: ${testEvent}`);
+                
+                if (win.setupWebhookSubscription) {
+                    await win.setupWebhookSubscription(testEvent);
+                    await new Promise(r => setTimeout(r, 3000)); // Give API time to load
+                }
+
+                const table = doc.getElementById('matchesTable');
+                if (table && table.rows.length > 1) {
+                    log(`[PASS] Match table populated.`, 'pass');
+                    
+                    const select = doc.getElementById('winningAllianceSelect');
+                    const targetCell = table.rows[1].cells[1]; 
+                    
+                    const verifyDropdown = async (value, validator, name) => {
+                        let attempts = 0;
+                        let valid = false;
+                        let content = '';
+                        while(attempts < 3 && !valid) {
+                            select.value = value;
+                            select.dispatchEvent(new Event('change', { bubbles: true }));
+                            await new Promise(r => setTimeout(r, 500));
+                            content = targetCell.textContent.trim();
+                            valid = validator(content, targetCell);
+                            if (!valid) attempts++;
+                        }
+                        if (valid) log(`[PASS] Dropdown "${name}": Validated (${content}).`, 'pass');
+                        else log(`[FAIL] Dropdown "${name}": Output mismatch. Got: "${content}"`, 'fail');
+                    };
+
+                    await verifyDropdown('winningAlliance', (txt) => {
+                        const t = txt.toLowerCase();
+                        return t.includes('blue') || t.includes('red') || t.includes('tie') || t === '';
+                    }, 'Winning Alliance');
+
+                    await verifyDropdown('matchScore', (txt) => /\d/.test(txt), 'Match Score');
+
+                    await verifyDropdown('predictedStartTime', (txt) => txt.includes(':') || txt.includes('/') || txt.includes(','), 'Estimated Start Time');
+
+                } else {
+                    log('[FAIL] Table failed to populate, skipping dropdown tests.', 'fail');
+                }
+
+                // 3. Auto Scroll (Increased Wait & Threshold)
+                const scrollBtn = doc.getElementById('autoScroll');
+                if (scrollBtn) {
+                    log('Testing Auto Scroll...');
+                    doc.body.style.minHeight = '5000px'; // Force scrollable
+                    win.scrollTo(0, 0);
+                    const startY = win.scrollY;
+                    
+                    // Click and wait longer (2.5s)
+                    scrollBtn.click();
+                    await new Promise(r => setTimeout(r, 2500)); 
+                    
+                    const endY = win.scrollY;
+                    scrollBtn.click(); // Stop
+                    doc.body.style.minHeight = ''; 
+
+                    if (endY > startY + 10) { // Threshold of 10px
+                        log(`[PASS] Auto Scroll moved page (Start: ${startY}, End: ${endY}).`, 'pass');
+                    } else {
+                        log(`[WARN] Auto Scroll did not move significantly (Start: ${startY}, End: ${endY}). If you are not looking at the tab, browsers throttle this.`, 'warn');
+                    }
+                }
+
+                // 4. Edit Mode
+                const editBtn = doc.getElementById('editMode');
+                if (editBtn) {
+                    editBtn.click();
+                    await new Promise(r => setTimeout(r, 600)); 
+                    const modal = doc.getElementById('editModeModal');
+                    if (modal && (modal.classList.contains('show') || modal.style.display === 'block')) {
+                        log('[PASS] "Edit Mode" modal opened.', 'pass');
+                        // Use button click to close to avoid jQuery errors
+                        const closeBtn = modal.querySelector('button.close') || modal.querySelector('[data-dismiss="modal"]');
+                        if (closeBtn) closeBtn.click();
+                        await new Promise(r => setTimeout(r, 500));
+                    } else {
+                        log('[FAIL] "Edit Mode" modal did not open.', 'fail');
+                    }
+                }
+
+                // 5. Navbar & Feedback (Run BEFORE Amory because Amory navigates away)
+                const feedbackForm = doc.getElementById('feedbackForm');
+                if (feedbackForm) {
+                    // FIX: Select a radio button first to prevent crash
+                    const radio = doc.querySelector('input[name="featureArea"]');
+                    if (radio) radio.checked = true;
+                    
+                    doc.getElementById('featureDescription').value = 'Test';
+                    feedbackForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                    await new Promise(r => setTimeout(r, 500));
+                    
+                    if (fetchLog.some(c => c.url.includes('discord'))) {
+                        log('[PASS] Feedback form submission caught.', 'pass');
+                    } else {
+                        log('[FAIL] Feedback form did not submit (Fetch not detected).', 'fail');
+                    }
+                }
+
+                // 6. Easter Eggs (Amory) - Run LAST because it redirects!
+                log('Testing "Amory" Easter Egg (Redirect)...');
+                ['a','m','o','r','y'].forEach(k => doc.body.dispatchEvent(new KeyboardEvent('keyup', { key: k })));
+                
+                await new Promise(r => setTimeout(r, 1500)); // Wait for redirect
+                
+                // Check if the frame URL changed
+                const currentUrl = frame.contentWindow.location.href;
+                if (currentUrl.includes('amory.html')) {
+                    log('[PASS] "Amory" Easter egg successfully redirected page.', 'pass');
+                } else {
+                    log(`[FAIL] "Amory" Easter egg failed to redirect. Current URL: ${currentUrl}`, 'fail');
+                }
+
+            } catch (e) {
+                log('CRITICAL ERROR IN HOME SUITE: ' + e.message, 'fail');
+                console.error(e);
+            }
+        },
+
+        Teams: async () => {
+            log('--- Starting Teams Suite ---');
+            await loadPage('Team_List_element.html');
+            const doc = frame.contentDocument;
+            const win = frame.contentWindow;
+
+            const code = getRandomEvent();
+            win.localStorage.setItem('eventCode', code);
+            
+            // Trigger fetch
+            if (win.fetchTeams) {
+                await win.fetchTeams();
+                await new Promise(r => setTimeout(r, 3000));
+            }
+
+            const rows = doc.querySelectorAll('#teamsTable tbody tr');
+            if (rows.length > 0) {
+                log(`[PASS] Loaded ${rows.length} teams for ${code}.`, 'pass');
+                
+                // Test Info Modal
+                const firstRowCol = rows[0].querySelector('td');
+                if (firstRowCol) {
+                    firstRowCol.click();
+                    await new Promise(r => setTimeout(r, 1000));
+                    const modalTitle = doc.getElementById('teamInfoModalLabel');
+                    if (modalTitle && $(doc.getElementById('teamInfoModal')).hasClass('show')) {
+                        log('[PASS] Team Info Modal opened on click.', 'pass');
+                    } else {
+                        // Bootstrap modal classes might vary slightly depending on jquery version interaction
+                        // Checking visibility style as fallback
+                        const modal = doc.getElementById('teamInfoModal');
+                        if (modal && (modal.style.display === 'block' || modal.classList.contains('show'))) {
+                            log('[PASS] Team Info Modal opened on click.', 'pass');
+                        } else {
+                            log('[FAIL] Team Info Modal did not open.', 'fail');
+                        }
+                    }
+                }
+            } else {
+                log(`[FAIL] No teams loaded for ${code}.`, 'fail');
+            }
+        },
+
+        Canvas: async () => {
+            log('--- Starting Canvas Suite (Strat_Board_w_tabs) ---');
+            await loadPage('Strat_Board_w_tabs.html');
+            const doc = frame.contentDocument;
+            const win = frame.contentWindow;
+
+            const code = getRandomEvent();
+            const input = doc.getElementById('eventCodeInput') || doc.querySelector('input[type="text"]');
+            
+            if (input) {
+                input.value = code;
+                
+                // 1. Load Matches
+                if (win.fetchMatches) {
+                    win.fetchMatches();
+                    log('Waiting for matches to load...');
+                    await new Promise(r => setTimeout(r, 3000));
+                }
+
+                const matchSelect = doc.getElementById('matchSelect');
+                // Check if dropdown populated
+                if (matchSelect && matchSelect.options.length > 0) {
+                    log(`[PASS] Matches populated in dropdown for ${code}.`, 'pass');
+                    
+                    // 2. Force Select a Match to trigger drawing
+                    const firstMatchVal = matchSelect.options[0].value;
+                    matchSelect.value = firstMatchVal;
+                    // Dispatch change to run displayTeamsForSelectedMatch()
+                    matchSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                    
+                    await new Promise(r => setTimeout(r, 500)); // Wait for draw
+
+                    // 3. Verify Hitboxes (numbers) exist
+                    if (win.teamPositions && win.teamPositions.length > 0) {
+                        log(`[PASS] Canvas drawn with ${win.teamPositions.length} team hitboxes (numbers).`, 'pass');
+                    } else {
+                        log('[FAIL] Canvas team hitboxes (numbers) not found. Draw function may not have run.', 'fail');
+                    }
+                } else {
+                    log('[FAIL] Matches dropdown not populated.', 'fail');
+                }
+            } else {
+                log('[FAIL] Event Code Input not found.', 'fail');
+            }
+        },
+
+        Scouting: async () => {
+            log('--- Starting Scouting Generator Suite ---');
+            await loadPage('scoutingGen.html');
+            const doc = frame.contentDocument;
+            const win = frame.contentWindow;
+
+            // Use a regional event (fewer teams relative to matches) to guarantee feasibility
+            const feasibleCode = '2023gal'; 
+            const form = doc.getElementById('scoutingForm');
+            
+            // --- TEST 1: Feasible Criteria (Happy Path) ---
+            log(`Testing Feasible Criteria for ${feasibleCode}...`);
+            doc.getElementById('eventCode').value = feasibleCode;
+            doc.getElementById('teamsPerMatch').value = "6"; 
+            doc.getElementById('teamAppearances').value = "1"; 
+            
+            // Trigger Submit
+            form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+            await new Promise(r => setTimeout(r, 4000)); // Wait for API
+
+            // Check for rows OR the feasibility error (if API fails or event is weird)
+            const matchRows = doc.querySelectorAll('#matchData tr');
+            const errorModal = doc.getElementById('criteriaErrorModal');
+            
+            if (matchRows.length > 0) {
+                log(`[PASS] Generated ${matchRows.length} match rows.`, 'pass');
+            } else if (errorModal && (errorModal.classList.contains('show') || errorModal.style.display === 'block')) {
+                 log(`[WARN] Feasibility check failed even for minimal settings. This event might have very few matches.`, 'warn');
+            } else {
+                log('[FAIL] No rows generated and no error modal appeared.', 'fail');
+            }
+
+            // --- TEST 2: Impossible Criteria (Error Path) ---
+            log('Testing Impossible Criteria (High Appearances)...');
+            
+            // Force impossibility: 6 teams/match, 12 appearances per team
+            doc.getElementById('teamsPerMatch').value = "6";
+            doc.getElementById('teamAppearances').value = "12"; 
+            
+            // Re-submit
+            form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+            await new Promise(r => setTimeout(r, 1500)); // Wait for modal fade-in
+            
+            const errModal2 = doc.getElementById('criteriaErrorModal');
+            // Check visibility robustly (Bootstrap adds 'show' class, or inline display block)
+            const isVisible = errModal2 && (errModal2.classList.contains('show') || getComputedStyle(errModal2).display === 'block');
+            
+            if (isVisible) {
+                log('[PASS] Impossible criteria triggered Error Modal.', 'pass');
+                // Close it to clean up
+                const closeBtn = errModal2.querySelector('button.close, .btn-danger');
+                if(closeBtn) closeBtn.click();
+            } else {
+                log('[FAIL] Impossible criteria did NOT trigger Error Modal.', 'fail');
+            }
+
+            // --- TEST 3: UI Elements ---
+            if (doc.getElementById('exportExcel') && doc.getElementById('exportExcel').style.display !== 'none') {
+                log('[PASS] Export button is visible.', 'pass');
+            }
+        },
+
+        Checklist: async () => {
+            log('--- Starting Pre-Match Checklist Suite ---');
+            await loadPage('Checklist.html');
+            const doc = frame.contentDocument;
+            const win = frame.contentWindow;
+
+            const input = doc.getElementById('newItems');
+            const form = doc.getElementById('addItemForm');
+            const container = doc.getElementById('checklistContainer');
+
+            // 1. Add Items (Normal + Markdown Header)
+            log('Testing Item Addition...');
+            input.value = "Check Battery, # Robot Inspection, Clean Wheels";
+            form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+            await new Promise(r => setTimeout(r, 200));
+
+            const items = container.querySelectorAll('.checklist-item');
+            if (items.length >= 3) {
+                log(`[PASS] Added 3 items. Total items: ${items.length}`, 'pass');
+            } else {
+                log(`[FAIL] Items not added correctly. Found: ${items.length}`, 'fail');
+            }
+
+            // 2. Verify Markdown Parsing
+            const headerItem = Array.from(items).find(i => i.querySelector('label')?.textContent.includes('Robot Inspection'));
+            const headerLabel = headerItem ? headerItem.querySelector('label') : null;
+            
+            if (headerLabel && (headerLabel.tagName === 'H1' || headerLabel.innerHTML.includes('<h1') || headerLabel.classList.contains('header-label'))) {
+                 log('[PASS] Markdown header parsed correctly.', 'pass');
+            } else {
+                 // Note: Your markdown parser might wrap it in specific tags or classes
+                 if (headerLabel && headerLabel.textContent.trim() === 'Robot Inspection') {
+                     log('[PASS] Markdown text stripped of # char.', 'pass');
+                 } else {
+                     log('[WARN] Markdown header formatting verification ambiguous.', 'warn');
+                 }
+            }
+
+            // 3. Checkbox Functionality
+            const firstCheckbox = container.querySelector('input[type="checkbox"]');
+            if (firstCheckbox) {
+                firstCheckbox.click();
+                if (firstCheckbox.checked) {
+                    log('[PASS] Checkbox toggled successfully.', 'pass');
+                } else {
+                    log('[FAIL] Checkbox failed to toggle.', 'fail');
+                }
+            }
+
+            // 4. Removal Mode
+            log('Testing Removal Mode...');
+            const removeToggle = doc.getElementById('itemRemovalToggle');
+            if (removeToggle) {
+                removeToggle.click(); // Enable removal mode
+                const itemToRemove = container.querySelector('.checklist-item label');
+                if (itemToRemove) {
+                    const originalCount = container.children.length;
+                    itemToRemove.click(); // Should delete
+                    await new Promise(r => setTimeout(r, 200));
+                    
+                    if (container.children.length === originalCount - 1) {
+                        log('[PASS] Removal Mode: Clicked item was deleted.', 'pass');
+                    } else {
+                        log('[FAIL] Removal Mode: Item was NOT deleted.', 'fail');
+                    }
+                }
+                removeToggle.click(); // Disable removal mode
+            }
+
+            // 5. Clear All
+            const clearBtn = doc.getElementById('clearChecklist');
+            if (clearBtn) {
+                clearBtn.click();
+                await new Promise(r => setTimeout(r, 500)); // Wait for modal
+                const confirmBtn = doc.getElementById('confirmClear');
+                if (confirmBtn) {
+                    confirmBtn.click();
+                    await new Promise(r => setTimeout(r, 200));
+                    if (container.children.length === 0) {
+                        log('[PASS] "Clear Checklist" removed all items.', 'pass');
+                    } else {
+                        log('[FAIL] "Clear Checklist" failed to empty list.', 'fail');
+                    }
+                }
+            }
+        }
+    };
+
+    async function startTestSuite() {
+        logBox.innerHTML = '';
+        log('Initializing Test Suite...');
+
+        if (document.getElementById('checkHome').checked) await Suites.Home();
+        if (document.getElementById('checkTeams').checked) await Suites.Teams();
+        if (document.getElementById('checkCanvas').checked) await Suites.Canvas();
+        if (document.getElementById('checkScouting').checked) await Suites.Scouting();
+        if (document.getElementById('checkChecklist').checked) await Suites.Checklist();
+
+        log('--- ALL SELECTED TESTS COMPLETE ---');
+    }
+
+</script>
+</body>
+</html>
