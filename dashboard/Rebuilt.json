@@ -1,0 +1,249 @@
+{
+  "fieldImage": "images/rebuilt_field.png",
+  "buttonPositions": {
+    "field": {
+      "positions": {
+        "position1": {
+          "id": "position-btn-p1",
+          "top": "%",
+          "left": "%"
+        },
+        "position2": {
+          "id": "position-btn-p2",
+          "top": "%",
+          "left": "%"
+        },
+        "position3": {
+          "id": "position-btn-p3",
+          "top": "%",
+          "left": "%"
+        },
+        "position4": {
+          "id": "position-btn-p4",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        },
+        "position5": {
+          "id": "position-btn-p5",
+          "top": "%",
+          "left": "%"
+        },
+        "position6": {
+          "id": "position-btn-p6",
+          "top": "%",
+          "left": "%"
+        },
+        "position7": {
+          "id": "position-btn-p7",
+          "top": "%",
+          "left": "%"
+        },
+        "position8": {
+          "id": "position-btn-p8",
+          "top": "%",
+          "left": "%"
+        }
+      },
+      "driverStations": {
+        "driverStation1_BLUE": {
+          "id": "driver-station-btn-1",
+          "top": "%",
+          "left": "%"
+        },
+        "driverStation2_BLUE": {
+          "id": "driver-station-btn-2",
+          "top": "%",
+          "left": "%"
+        },
+        "driverStation3_BLUE": {
+          "id": "driver-station-btn-3",
+          "top": "%",
+          "left": "%"
+        },
+        "driverStation1_RED": {
+          "id": "driver-station-btn-4",
+          "top": "%",
+          "left": "%"
+        },
+        "driverStation2_RED": {
+          "id": "driver-station-btn-5",
+          "top": "%",
+          "left": "%"
+        },
+        "driverStation3_RED": {
+          "id": "driver-station-btn-6",
+          "top": "%",
+          "left": "%"
+        }
+      },
+      "notes": {
+        "notebtn1": {
+          "id": "notebtn1",
+          "top": "%",
+          "left": "%",
+          "name": ""
+        },
+        "notebtn2": {
+          "id": "notebtn2",
+          "top": "%",
+          "left": "%",
+          "name": ""
+        },
+        "notebtn3": {
+          "id": "notebtn3",
+          "top": "%",
+          "left": "%",
+          "name": ""
+        },
+        "notebtn4": {
+          "id": "notebtn4",
+          "top": "%",
+          "left": "%",
+          "name": ""
+        },
+        "notebtn5": {
+          "id": "notebtn5",
+          "top": "%",
+          "left": "%",
+          "name": ""
+        },
+        "notebtn6": {
+          "id": "notebtn6",
+          "top": "%",
+          "left": "%",
+          "name": ""
+        },
+        "notebtn7": {
+          "id": "notebtn7",
+          "top": "%",
+          "left": "%",
+          "name": ""
+        },
+        "notebtn8": {
+          "id": "notebtn8",
+          "top": "%",
+          "left": "%",
+          "name": ""
+        },
+        "notebtn9": {
+          "id": "notebtn9",
+          "top": "%",
+          "left": "%",
+          "name": ""
+        },
+        "notebtn10": {
+          "id": "notebtn10",
+          "top": "%",
+          "left": "%",
+          "name": ""
+        },
+        "notebtn11": {
+          "id": "notebtn11",
+          "top": "%",
+          "left": "%",
+          "name": ""
+        }
+      }
+    },
+    "teleop": {
+      "": {
+        "id": "",
+        "top": "px",
+        "left": "%",
+        "width": "px",
+        "height": "px",
+        "name": "",
+        "color": "",
+        "size": "",
+        "actionType": "",
+        "customAttribute": true
+      }
+    },
+    "additionalActions": {
+      "": {
+        "id": "",
+        "top": "px",
+        "left": "%",
+        "width": "px",
+        "height": "px",
+        "name": "",
+        "color": "",
+        "size": ""
+      }
+    },
+    "endgame": {
+      "": {
+        "id": "",
+        "top": "px",
+        "left": "%",
+        "width": "px",
+        "height": "px",
+        "name": "",
+        "color": "",
+        "size": ""
+      },
+      "": {
+        "id": "",
+        "top": "px",
+        "left": "%",
+        "width": "px",
+        "height": "px",
+        "name": "",
+        "color": "",
+        "size": ""
+      },
+      "": {
+        "id": "",
+        "top": "px",
+        "left": "%",
+        "width": "px",
+        "height": "px",
+        "name": "",
+        "color": "",
+        "size": ""
+      }
+    },
+    "endgameOutcome": {
+      "": {
+        "id": "",
+        "name": "",
+        "top": "px",
+        "left": "px",
+        "width": "px",
+        "height": "px",
+        "color": "",
+        "size": ""
+      },
+      "": {
+        "id": "",
+        "name": "",
+        "top": "px",
+        "left": "px",
+        "width": "px",
+        "height": "px",
+        "color": "",
+        "size": ""
+      },
+      "": {
+        "id": "",
+        "name": "",
+        "top": "px",
+        "left": "px",
+        "width": "px",
+        "height": "px",
+        "color": "",
+        "size": ""
+      }
+    },
+    "addtop": -10,
+    "jsonAttributes": {
+      "matchNumber": "matchNumber",
+      "teamNumber": "teamNumber",
+      "scoutingData": "scoutingData",
+      "teleopActions": "teleopActions",
+      "endgameActions": "endgameActions",
+      "notes": "notes"
+    }
+  }
+}
