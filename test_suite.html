@@ -306,48 +306,88 @@
         },
 
         Canvas: async () => {
-            log('--- Starting Canvas Suite (Strat_Board_w_tabs) ---');
+            log('--- Starting Canvas Suite (Interaction Test) ---');
             await loadPage('Strat_Board_w_tabs.html');
             const doc = frame.contentDocument;
             const win = frame.contentWindow;
 
-            const code = getRandomEvent();
-            const input = doc.getElementById('eventCodeInput') || doc.querySelector('input[type="text"]');
+            // 1. Load Data
+            const code = '2023gal'; 
+            win.localStorage.setItem('eventCode', code);
             
-            if (input) {
-                input.value = code;
+            if (win.fetchMatches) {
+                win.fetchMatches();
+                log('Fetching matches...');
+                await new Promise(r => setTimeout(r, 3500)); 
+            }
+
+            const select = doc.getElementById('matchSelect');
+            if (select && select.options.length > 0) {
+                // 2. Select Match to Generate Hitboxes
+                select.value = select.options[0].value;
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+                await new Promise(r => setTimeout(r, 1000)); // Wait for drawTeams
                 
-                // 1. Load Matches
-                if (win.fetchMatches) {
-                    win.fetchMatches();
-                    log('Waiting for matches to load...');
-                    await new Promise(r => setTimeout(r, 3000));
-                }
+                // 3. Test Drawing & Interaction
+                const canvas = doc.getElementById('autoCanvas');
+                const rect = canvas.getBoundingClientRect();
+                const topRect = doc.getElementById('topRect');
 
-                const matchSelect = doc.getElementById('matchSelect');
-                // Check if dropdown populated
-                if (matchSelect && matchSelect.options.length > 0) {
-                    log(`[PASS] Matches populated in dropdown for ${code}.`, 'pass');
+                // Helper to simulate mouse events with correct Coordinate Scaling
+                // The app scales client coordinates to canvas coordinates, so we must reverse that
+                const mouseEvent = (type, canvasX, canvasY) => {
+                    // Calculate scale factor (Canvas Width / Visual Width)
+                    // The app does: scaledX = offsetX * (canvas.width / rect.width)
+                    // We want scaledX to be canvasX.
+                    // So offsetX = canvasX / (canvas.width / rect.width)
+                    const scaleX = canvas.width / rect.width;
+                    const scaleY = canvas.height / rect.height;
                     
-                    // 2. Force Select a Match to trigger drawing
-                    const firstMatchVal = matchSelect.options[0].value;
-                    matchSelect.value = firstMatchVal;
-                    // Dispatch change to run displayTeamsForSelectedMatch()
-                    matchSelect.dispatchEvent(new Event('change', { bubbles: true }));
-                    
-                    await new Promise(r => setTimeout(r, 500)); // Wait for draw
+                    const clientOffsetX = canvasX / scaleX;
+                    const clientOffsetY = canvasY / scaleY;
 
-                    // 3. Verify Hitboxes (numbers) exist
-                    if (win.teamPositions && win.teamPositions.length > 0) {
-                        log(`[PASS] Canvas drawn with ${win.teamPositions.length} team hitboxes (numbers).`, 'pass');
-                    } else {
-                        log('[FAIL] Canvas team hitboxes (numbers) not found. Draw function may not have run.', 'fail');
-                    }
+                    const ev = new MouseEvent(type, {
+                        bubbles: true, cancelable: true, view: win,
+                        clientX: rect.left + clientOffsetX, 
+                        clientY: rect.top + clientOffsetY
+                    });
+                    
+                    // Manually override offsetX/Y for the script to pick up
+                    Object.defineProperty(ev, 'offsetX', { get: () => clientOffsetX });
+                    Object.defineProperty(ev, 'offsetY', { get: () => clientOffsetY });
+                    
+                    canvas.dispatchEvent(ev);
+                };
+
+                log('Testing: Click Hitbox -> Verify Color Change...');
+
+                // Step A: Capture Start Color from UI Indicator
+                // Note: topRect might be transparent or have a default style initially
+                const startColor = win.getComputedStyle(topRect).backgroundColor;
+
+                // Step B: Click Blue Team 1 Hitbox
+                // Known position from code: x=70, y=250. Box is approx (65, 210) to (width, 260).
+                // We aim for (80, 240) to be safely inside.
+                const targetX = 80;
+                const targetY = 240;
+
+                mouseEvent('mousedown', targetX, targetY);
+                mouseEvent('mouseup', targetX, targetY);
+                await new Promise(r => setTimeout(r, 200));
+
+                // Step C: Verify Color Change
+                const endColor = win.getComputedStyle(topRect).backgroundColor;
+                
+                // We expect a change from default (transparent/black) to the team color
+                // Blue Team 1 color is usually a specific shade of cyan/blue
+                if (endColor !== startColor && endColor !== 'rgba(0, 0, 0, 0)' && endColor !== 'transparent') {
+                    log(`[PASS] Interaction Successful: Color indicator changed to ${endColor}.`, 'pass');
                 } else {
-                    log('[FAIL] Matches dropdown not populated.', 'fail');
+                    log(`[FAIL] Color indicator did not change. (Start: ${startColor}, End: ${endColor}). Check if scaling/coordinates match.`, 'fail');
                 }
+
             } else {
-                log('[FAIL] Event Code Input not found.', 'fail');
+                log('[FAIL] Match dropdown failed to populate (API issue?).', 'fail');
             }
         },
 
@@ -414,91 +454,132 @@
         },
 
         Checklist: async () => {
-            log('--- Starting Pre-Match Checklist Suite ---');
-            await loadPage('Checklist.html');
-            const doc = frame.contentDocument;
-            const win = frame.contentWindow;
+            try {
+                log('--- Starting Pre-Match Checklist Suite ---');
+                await loadPage('Checklist.html');
+                const doc = frame.contentDocument;
+                const win = frame.contentWindow;
 
-            const input = doc.getElementById('newItems');
-            const form = doc.getElementById('addItemForm');
-            const container = doc.getElementById('checklistContainer');
+                const input = doc.getElementById('newItems');
+                const form = doc.getElementById('addItemForm');
+                const container = doc.getElementById('checklistContainer');
 
-            // 1. Add Items (Normal + Markdown Header)
-            log('Testing Item Addition...');
-            input.value = "Check Battery, # Robot Inspection, Clean Wheels";
-            form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-            await new Promise(r => setTimeout(r, 200));
+                // 1. Add Items (Normal + Markdown Header)
+                log('Testing Item Addition...');
+                input.value = "Check Battery, # Robot Inspection, Clean Wheels";
+                form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                await new Promise(r => setTimeout(r, 200));
 
-            const items = container.querySelectorAll('.checklist-item');
-            if (items.length >= 3) {
-                log(`[PASS] Added 3 items. Total items: ${items.length}`, 'pass');
-            } else {
-                log(`[FAIL] Items not added correctly. Found: ${items.length}`, 'fail');
-            }
-
-            // 2. Verify Markdown Parsing
-            const headerItem = Array.from(items).find(i => i.querySelector('label')?.textContent.includes('Robot Inspection'));
-            const headerLabel = headerItem ? headerItem.querySelector('label') : null;
-            
-            if (headerLabel && (headerLabel.tagName === 'H1' || headerLabel.innerHTML.includes('<h1') || headerLabel.classList.contains('header-label'))) {
-                 log('[PASS] Markdown header parsed correctly.', 'pass');
-            } else {
-                 // Note: Your markdown parser might wrap it in specific tags or classes
-                 if (headerLabel && headerLabel.textContent.trim() === 'Robot Inspection') {
-                     log('[PASS] Markdown text stripped of # char.', 'pass');
-                 } else {
-                     log('[WARN] Markdown header formatting verification ambiguous.', 'warn');
-                 }
-            }
-
-            // 3. Checkbox Functionality
-            const firstCheckbox = container.querySelector('input[type="checkbox"]');
-            if (firstCheckbox) {
-                firstCheckbox.click();
-                if (firstCheckbox.checked) {
-                    log('[PASS] Checkbox toggled successfully.', 'pass');
+                const items = container.querySelectorAll('.checklist-item');
+                if (items.length >= 3) {
+                    log(`[PASS] Added 3 items successfully.`, 'pass');
                 } else {
-                    log('[FAIL] Checkbox failed to toggle.', 'fail');
+                    log(`[FAIL] Failed to add items. Count: ${items.length}`, 'fail');
                 }
-            }
 
-            // 4. Removal Mode
-            log('Testing Removal Mode...');
-            const removeToggle = doc.getElementById('itemRemovalToggle');
-            if (removeToggle) {
-                removeToggle.click(); // Enable removal mode
-                const itemToRemove = container.querySelector('.checklist-item label');
-                if (itemToRemove) {
-                    const originalCount = container.children.length;
-                    itemToRemove.click(); // Should delete
-                    await new Promise(r => setTimeout(r, 200));
+                // 2. Verify Markdown Parsing
+                const headerLabel = Array.from(container.querySelectorAll('label')).find(l => l.innerHTML.includes('<h1') || l.classList.contains('header-label'));
+                if (headerLabel) {
+                     log('[PASS] Markdown header (#) parsed correctly.', 'pass');
+                } else {
+                     log('[FAIL] Markdown header not parsed.', 'fail');
+                }
+
+                // 3. Checkbox Functionality
+                const checkbox = container.querySelector('input[type="checkbox"]');
+                if (checkbox) {
+                    checkbox.click();
+                    if (checkbox.checked) log('[PASS] Checkbox checks successfully.', 'pass');
+                    else log('[FAIL] Checkbox did not check.', 'fail');
+                }
+
+                // 4. Removal Mode
+                log('Testing Removal Mode...');
+                const removeToggle = doc.getElementById('itemRemovalToggle');
+                if (removeToggle) {
+                    removeToggle.click(); // Enable
+                    const itemToRemove = container.querySelector('.checklist-item label');
+                    if (itemToRemove) {
+                        const countBefore = container.children.length;
+                        itemToRemove.click(); // Should delete
+                        await new Promise(r => setTimeout(r, 200));
+                        if (container.children.length === countBefore - 1) {
+                            log('[PASS] Removal Mode: Item deleted on click.', 'pass');
+                        } else {
+                            log('[FAIL] Removal Mode: Item not deleted.', 'fail');
+                        }
+                    }
+                    removeToggle.click(); // Disable
+                }
+
+                // 5. Download Test
+                log('Testing Download...');
+                const dlBtn = doc.getElementById('downloadChecklist');
+                if (dlBtn) {
+                    // Spy on document.createElement to catch the anchor tag creation/click
+                    let downloadTriggered = false;
+                    const originalCreateElement = doc.createElement;
+                    doc.createElement = function(tagName) {
+                        const el = originalCreateElement.call(doc, tagName);
+                        if (tagName.toLowerCase() === 'a') {
+                            // Override click to detect download attempt
+                            el.click = function() { downloadTriggered = true; };
+                        }
+                        return el;
+                    };
                     
-                    if (container.children.length === originalCount - 1) {
-                        log('[PASS] Removal Mode: Clicked item was deleted.', 'pass');
-                    } else {
-                        log('[FAIL] Removal Mode: Item was NOT deleted.', 'fail');
-                    }
+                    dlBtn.click();
+                    doc.createElement = originalCreateElement; // Restore
+                    
+                    if (downloadTriggered) log('[PASS] Download button triggered file generation.', 'pass');
+                    else log('[FAIL] Download button did not trigger anchor click.', 'fail');
                 }
-                removeToggle.click(); // Disable removal mode
-            }
 
-            // 5. Clear All
-            const clearBtn = doc.getElementById('clearChecklist');
-            if (clearBtn) {
-                clearBtn.click();
-                await new Promise(r => setTimeout(r, 500)); // Wait for modal
-                const confirmBtn = doc.getElementById('confirmClear');
-                if (confirmBtn) {
-                    confirmBtn.click();
-                    await new Promise(r => setTimeout(r, 200));
-                    if (container.children.length === 0) {
-                        log('[PASS] "Clear Checklist" removed all items.', 'pass');
+                // 6. Upload Test
+                log('Testing Upload...');
+                const uploadInput = doc.getElementById('uploadChecklistInput');
+                if (uploadInput) {
+                    // Create a dummy JSON file
+                    const mockContent = JSON.stringify(["Uploaded Task A", "Uploaded Task B"]);
+                    const file = new File([mockContent], "test.json", { type: "application/json" });
+                    
+                    // Use DataTransfer to simulate file drag-and-drop/selection
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    uploadInput.files = dataTransfer.files;
+
+                    // Trigger the change event
+                    uploadInput.dispatchEvent(new Event('change', { bubbles: true }));
+                    
+                    log('Waiting for file upload...');
+                    await new Promise(r => setTimeout(r, 1000)); // Wait for FileReader
+
+                    if (container.textContent.includes('Uploaded Task A')) {
+                        log('[PASS] Uploaded file successfully parsed and rendered.', 'pass');
                     } else {
-                        log('[FAIL] "Clear Checklist" failed to empty list.', 'fail');
+                        log('[FAIL] Uploaded items not found in list.', 'fail');
                     }
                 }
+
+                // 7. Clear All
+                const clearBtn = doc.getElementById('clearChecklist');
+                if (clearBtn) {
+                    clearBtn.click();
+                    await new Promise(r => setTimeout(r, 500)); 
+                    const confirmBtn = doc.getElementById('confirmClear');
+                    if (confirmBtn) {
+                        confirmBtn.click();
+                        await new Promise(r => setTimeout(r, 200));
+                        if (container.children.length === 0) log('[PASS] "Clear Checklist" emptied the list.', 'pass');
+                        else log('[FAIL] List not empty after clear.', 'fail');
+                    }
+                }
+
+            } catch (e) {
+                log('CRITICAL ERROR IN CHECKLIST SUITE: ' + e.message, 'fail');
+                console.error(e);
             }
-        }
+        },
     };
 
     async function startTestSuite() {
