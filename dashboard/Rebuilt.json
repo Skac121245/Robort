@@ -5,18 +5,18 @@
       "positions": {
         "position1": {
           "id": "position-btn-p1",
-          "top": "%",
-          "left": "%"
+          "top": "20%",
+          "left": "23%"
         },
         "position2": {
           "id": "position-btn-p2",
-          "top": "%",
-          "left": "%"
+          "top": "55%",
+          "left": "23%"
         },
         "position3": {
           "id": "position-btn-p3",
-          "top": "%",
-          "left": "%"
+          "top": "92%",
+          "left": "23%"
         },
         "position4": {
           "id": "position-btn-p4",
@@ -26,55 +26,56 @@
         },
         "position5": {
           "id": "position-btn-p5",
-          "top": "%",
-          "left": "%"
+          "top": "20%",
+          "left": "70%"
         },
         "position6": {
           "id": "position-btn-p6",
-          "top": "%",
-          "left": "%"
+          "top": "55%",
+          "left": "70%"
         },
         "position7": {
           "id": "position-btn-p7",
-          "top": "%",
-          "left": "%"
+          "top": "92%",
+          "left": "70%"
         },
         "position8": {
           "id": "position-btn-p8",
           "top": "%",
-          "left": "%"
+          "left": "%",
+          "hide": true
         }
       },
       "driverStations": {
         "driverStation1_BLUE": {
           "id": "driver-station-btn-1",
-          "top": "%",
+          "top": "18%",
           "left": "%"
         },
         "driverStation2_BLUE": {
           "id": "driver-station-btn-2",
-          "top": "%",
+          "top": "35%",
           "left": "%"
         },
         "driverStation3_BLUE": {
           "id": "driver-station-btn-3",
-          "top": "%",
+          "top": "70%",
           "left": "%"
         },
         "driverStation1_RED": {
           "id": "driver-station-btn-4",
-          "top": "%",
-          "left": "%"
+          "top": "18%",
+          "left": "90%"
         },
         "driverStation2_RED": {
           "id": "driver-station-btn-5",
-          "top": "%",
-          "left": "%"
+          "top": "35%",
+          "left": "90%"
         },
         "driverStation3_RED": {
           "id": "driver-station-btn-6",
-          "top": "%",
-          "left": "%"
+          "top": "70%",
+          "left": "90%"
         }
       },
       "notes": {
