@@ -1,852 +1,1507 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>Team Match Viewer & Aggregator (EPA Integrated + Score Predictor)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRC Scouting App - Autonomous Mode</title>
+    <link rel="stylesheet" href="css/alertStyles.css">
+    <script src="js/alertHandler.js"></script>
+    <style>
+#teleopButtons, 
+#additionalActions, 
+#teleopContainer button,
+#noteOutcome {
+  position: relative;
+  z-index: 10002 !important;
+}
 
-  <!-- Bootstrap CSS (Optional) -->
-  <link href="bootstrap.min.css" rel="stylesheet"/>
 
-  <!-- jQuery (for toggler, optional) -->
-  <script src="jquery-3.3.1.slim.min.js"></script>
+        html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
 
-  <style>
-    /* ===== BASIC PAGE / DARK MODE STYLES ===== */
-    body, nav, .navbar {
-      transition: background-color 0.3s ease, color 0.3s ease;
-      margin:0; padding:0;
-      background-color:#f4f4f4; 
-      font-family:Arial,sans-serif;
-    }
-    .bg-dark, .navbar-dark {
-      background-color:#343a40 !important; 
-      color:#f8f9fa !important;
-    }
-    .bg-light, .navbar-light {
-      background-color:#f8f9fa !important; 
-      color:#343a40 !important;
-    }
+        #field {
+            width: 100%;
+            /* background-image: url('https://www.chiefdelphi.com/uploads/default/original/3X/a/a/aa745548020a507cf4a07051dcd0faa446607840.png'); */
+            /* background-image: url("images/crescendo_feild.png"); */
+            background-size: contain;
+            /* border: 1px solid #000; */
+            width: 1152px;
+            /* Adjust based on your actual need */
+            height: 498px;
+            /* Adjust based on your actual need */
+            position: fixed;
+            right: 20px;
 
-    /* Dark Mode Switch */
-    .switch {
-      position:relative; display:inline-block; 
-      width:80px; height:34px; margin:10px;
-    }
-    .switch input {
-      opacity:0; width:0; height:0;
-    }
-    .slider {
-      position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0;
-      background-color:#ccc; 
-      transition:background-color .4s;
-      border-radius:34px;
-    }
-    .slider:before {
-      position:absolute; content:""; 
-      height:26px; width:26px;
-      left:4px; bottom:4px; 
-      background-color:white;
-      transition:transform .4s; 
-      border-radius:50%;
-    }
-    input:checked + .slider {
-      background-color:#555;
-    }
-    input:checked + .slider:before {
-      transform:translateX(46px);
-    }
-    .icon {
-      color:#fff; position:absolute; top:50%; 
-      transform:translateY(-50%);
-      font-size:20px; transition:opacity 0.4s;
-    }
-    .sun {
-      left:10px; opacity:0;
-    }
-    .moon {
-      right:10px; opacity:1;
-    }
-    input:checked + .slider .sun {
-      opacity:1;
-    }
-    input:checked + .slider .moon {
-      opacity:0;
-    }
+        }
 
-    /* Container for Event Folder -> Teams */
-    #teamListContainer {
-      max-width:800px; 
-      margin:20px auto;
-      background:white; 
-      padding:20px;
-      box-shadow:0 0 10px rgba(0,0,0,0.1);
-    }
+        iframe {
+    position: fixed;
+    right: 20px;
+    transform-origin: center center;
+}
 
-    /* Team Home Container */
-    #teamHomeContainer {
-      max-width:800px; 
-      margin:20px auto;
-      background:white; 
-      padding:20px;
-      display:none;
-      box-shadow:0 0 10px rgba(0,0,0,0.1);
-    }
 
-    /* Team Match List Container */
-    #matchListContainer {
-      max-width:800px; 
-      margin:20px auto;
-      background:white; 
-      padding:20px;
-      display:none;
-      box-shadow:0 0 10px rgba(0,0,0,0.1);
-    }
+        #position-btn-p1, #position-btn-p2, #position-btn-p3, #position-btn-p4,
+        #driver-station-btn-1, #driver-station-btn-2, #driver-station-btn-3 {
+            position: absolute;
+            background-color: rgba(0, 123, 255, 0.5);
+            /* Semi-transparent blue */
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-    ul {
-      list-style-type:none; 
-      padding:0;
-    }
-    ul li {
-      padding:10px; 
-      border-bottom:1px solid #ddd; 
-      cursor:pointer;
-    }
-    ul li:hover {
-      background-color:#f0f0f0;
-    }
+        #position-btn-p5, #position-btn-p6, #position-btn-p7, #position-btn-p8, #driver-station-btn-4, #driver-station-btn-5, #driver-station-btn-6 {
+            position: absolute;
+            background-color: rgba(255, 65, 65, 0.6);
+            /* Semi-transparent blue */
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-    .dark-mode #teamListContainer,
-    .dark-mode #teamHomeContainer,
-    .dark-mode #matchListContainer {
-      background-color:#454d55; 
-      color:#f8f9fa;
-    }
+        .position-btn:hover,
+        .driver-station-btn:hover {
+            background-color: rgba(0, 123, 255, 0.8);
+        }
 
-    /* Hidden class for toggling visibility */
-    .hidden {
-      display:none;
-    }
+        .driver-station-btn {
+            left: 1%;
+        }
 
-    /* Basic match viewer styling (if used) */
-    .container-matchviewer {
-      margin:0; padding:10px; 
-      border:1px solid #ccc;
-      border-radius:8px;
-      display:none; 
-      width:100%;
-    }
+        #info {
+            margin-top: 20px;
+            padding-bottom: 20px;
+            text-align: center;
+        }
 
-    /* Score Predictor Section */
-    #scorePredictorContainer {
-      max-width:800px;
-      margin:20px auto;
-      background:white;
-      padding:20px;
-      box-shadow:0 0 10px rgba(0,0,0,0.1);
-      margin-bottom:20px;
+        .position-btn.red,
+        .driver-station-btn.red {
+            background-color: rgba(255, 0, 0, 0.5);
+            /* Semi-transparent red */
+        }
+
+        .position-btn.red:hover,
+        .driver-station-btn.red:hover {
+            background-color: rgba(255, 0, 0, 0.8);
+        }
+
+        #notesContainer .note-btn {
+            background-color: rgba(0, 200, 150, 0.5);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #notesContainer .note-btn:hover {
+            background-color: rgba(0, 200, 150, 0.8);
+        }
+
+        #noteOutcome button {
+            margin: 0 5px;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #noteOutcome button:hover {
+            background-color: #45a049;
+        }
+
+    
+
+        #notesSection {
+            position: relative;
+            width: 400px;
+            box-sizing: border-box;
+            top: 645px;
+            left: 1000px;
+        }
+
+        #teleopContainer button {
+            margin: 10px;
+            padding: 8px 20px;
+            /* background-color: #007bff; */
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #teleopContainer button:hover {
+            /* background-color: #0056b3; */
+        }
+
+        #endgameOutcome {
+            width:420px;
+        }
+
+        #groundPickupButton1{
+            top: 600px;
+            left: 510px;
+        }
+
+        #groundPickupButton2{
+            top: 745px; 
+            left: 510px;
+        }
+
+        #groundPickupButton3 {
+            top: 890px; 
+            left: 510px; 
+        }
+
+        #sourceButton {
+            top: 600px; 
+            left: 800px;
+            width: 400px;
+            height: 410px;
+            background-color: blue; 
+        }
+
+        #sourceButton2 {
+            top: 600px; 
+            left: 20px; 
+            width: 400px;
+            height: 410px; 
+            background-color:red; 
+        }
+
+        #speaker {
+            top: 600px; 
+            left: 20px; 
+            width: 350px; 
+            height:410px;
+            background-color: blue;
+        }
+
+        #amp {
+            top: 600px; 
+            left: 435px; 
+            width: 350px; 
+            height:410px;
+            background-color: blue;
+        }
+
+        #pass {
+            top: 600px; 
+            left: 850px; 
+            width: 350px; 
+            height:410px; 
+            background-color: blue;
+        }
+
+        #StageRightBLUE {
+            background-color: blue;top: 810px; left: 20px; width: 200px; height:200px; 
+        }
+
+        #StageLeftBLUE {
+            background-color: blue; top: 600px; left: 20px; width: 200px; height:200px; 
+        }
+
+        #CenterStageBLUE {
+            background-color: blue;top: 705px; left: 230px; width: 200px; height:200px; 
+        }
+
+        #None {
+            top: 600px; left: 390px; width: 100px; height:50px; 
+        }
+
+        #StageRightRED {
+            top: 600px; left: 670px; width: 200px; height:200px; 
+        }
+
+        #StageLeftRED {
+            top: 810px; left: 670px; width: 200px; height:200px; 
+        }
+
+        #CenterStageRED {
+            top: 705px; left: 460px; width: 200px; height:200px;
+        }
+
+        #miss {
+            top: 705px; left: 460px; width: 100px; height:50px; background-color: #45a049;
+        }
+
+        @media (max-width: 1800px) {
+
+        #miss {
+            top: 100px; left: 300px; width: 100px; height:50px; background-color: #45a049;
+
+        }
+
+        #groundPickupButton1{
+            top: 50px;
+            left: 230px;
+        }
+
+        #groundPickupButton2{
+            top: 195px;
+            left: 230px;
+        }
+
+        #groundPickupButton3 {
+            top: 340px; 
+            left: 230px; 
+        }
+
+        #sourceButton {
+            top: 50px; 
+            left: 10px; 
+            width: 200px;
+            height: 195px; 
+            background-color: blue;
+        }
+
+        #sourceButton2 {
+            top: 265px; 
+            left: 10px; 
+            width: 200px;
+            height: 195px;
+            background-color:red;  
+        }
+
+        #speaker {
+            top: 50px; 
+            left: 20px; 
+            width: 200px; 
+            height: 150px;
+            background-color: blue;
+        }
+
+        #amp {
+            top: 210px; 
+            left: 100px;
+            width: 200px; 
+            height:150px;
+            background-color: blue;
+        }
+
+        #pass {
+            top: 370px; 
+            left: 20px; 
+            width: 200px; 
+            height:150px; 
+            background-color: blue;
+        }
+
+        #StageRightBLUE {
+            top: 470px; left: 20px; width: 200px; height:200px; 
+        }
+
+        #StageLeftBLUE {
+            top: 260px; left: 20px; width: 200px; height:200px; 
+        }
+
+        #CenterStageBLUE {
+            top: 365px; left: 230px; width: 200px; height:200px; 
+        }
+
+        #None {
+            top: 600px; left: 300px; width: 100px; height:50px; 
+        }
+
+        #StageRightRED {
+            background-color:red; top: 150px; left: 230px; width: 200px; height:200px; 
+        }
+
+        #StageLeftRED {
+            background-color:red;top: -60px; left: 230px; width: 200px; height:200px; 
+        }
+
+        #CenterStageRED {
+            background-color:red;top: 50px; left: 20px; width: 200px; height:200px;
+        }
     }
-    #scorePredictorContainer label {
-      margin-right:10px;
-    }
-    #scorePredictorContainer input {
-      width:80px; 
-      margin:0 5px;
-    }
-    .dark-mode #scorePredictorContainer {
-      background-color:#454d55; 
-      color:#f8f9fa;
-    }
-  </style>
+    .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            /* margin-right: 50%; */
+        }
+
+        .button-link:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
-<body class="bg-light">
 
-<!-- NAVBAR (with dark mode toggle) -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4">
-  <div class="container">
-    <a class="navbar-brand" href="#" id="roborte">Robort</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarNav" aria-controls="navbarNav"
-            aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
-        <!-- Additional nav items as needed -->
-        <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
-      </ul>
-      <!-- Dark Mode Switch -->
-      <label class="switch">
-        <input type="checkbox" id="darkModeToggle">
-        <span class="slider round">
-          <span class="icon sun">🌞</span>
-          <span class="icon moon">🌜</span>
-        </span>
-      </label>
+<body>
+    <div id="info">
+        <a class="button-link" href="./index.html">Robort Home</a>
+        <!-- <label for="sideToggle">Toggle Side:</label> -->
+        <!-- <input type="checkbox" id="sideToggle" onchange="toggleSide()"> -->
+        <input type="number" id="matchNumber" placeholder="Match Number" min="1">
+        <input type="number" id="teamNumber" placeholder="Team Number" min="1">
+        <button onclick="startScouting()">Start Scouting</button>
+        <button onclick="startTeleop()" style="display:none;">Start Teleop</button>
+        <button onclick="startEndgame()" style="display:none;">Start Endgame</button>
+        <button onclick="downloadSessionStorageData()" style="display:none">Download Data</button>
+        <button onclick="rotateField()">Rotate Field</button>
+        <button id="reload" class="large-button" onclick="confirmRefresh()">Reload Scouter</button>
+        <button id="undoBtn" onclick="undoAction()">Undo</button>
+<button id="redoBtn" onclick="redoAction()">Redo</button>
+<div id="notesModeContainer" style="display:inline-block; margin-left:10px;">
+  <label for="notesModeToggle">Per Phase Notes:</label>
+  <input type="checkbox" id="notesModeToggle" checked onchange="toggleNotesMode()">
+  <span id="notesModeLabel">Enabled (Per Phase)</span>
+</div>
+    </div>
+    <div id="logWindow" style="position: fixed; bottom: 0; left: 0; width: 300px; height: 150px; background: rgba(0,0,0,0.7); color: white; overflow-y: auto; padding: 5px; font-size: 12px; z-index: 9999;">
+        <div id="logHeader" style="position: relative; cursor: pointer; background: #444; padding: 2px;" onclick="toggleLogWindow()">
+            <div id="minMax">Log (click to minimize)</div>
+            <button id="exportLogBtn" style="position: absolute; top: 2px; right: 2px; background: transparent; border: none; color: white; cursor: pointer; font-size: 14px;" onclick="exportLog(event)">&#x1F4BE;</button>
+          </div>
+        <div id="logContent"></div>
+      </div>
+      <script>
+      function toggleLogWindow(){
+          var logContent = document.getElementById('logContent');
+          if(logContent.style.display === 'none'){
+               logContent.style.display = 'block';
+               document.getElementById('logWindow').style.height = '150px';
+               document.getElementById('minMax').textContent = "Log (click to minimize)"
+          } else {
+               logContent.style.display = 'none';
+               document.getElementById('logWindow').style.height = 'auto';
+               document.getElementById('minMax').textContent = "Log (click to maximize)"
+          }
+      }
+      
+      // Override console.log to also write to our log window
+      (function(){
+  var originalLog = console.log;
+  console.log = function(...args){
+    originalLog.apply(console, args);
+    var logContent = document.getElementById('logContent');
+    if(logContent){
+       var timestamp = new Date().toLocaleTimeString();
+       var message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
+       var p = document.createElement('div');
+       p.textContent = "[" + timestamp + "] " + message;
+       logContent.appendChild(p);
+       // Auto-scroll to the bottom so the latest message is visible:
+       logContent.scrollTop = logContent.scrollHeight;
+    }
+  };
+})();
+
+function exportLog(e) {
+  // Prevent the header click event from toggling the log window
+  e.stopPropagation();
+  var logContent = document.getElementById('logContent').innerText;
+  var blob = new Blob([logContent], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'log.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+      </script>
+      <div id="fieldWrapper" style="position: fixed; right: 20px; top: 80px; width: 1152px; height: 498px;">
+        <div id="fieldInner">
+        <iframe id="field-canvas" src="pathingUI.html" width="1155px" height="601px" style="z-index: 6; "></iframe>
+    <div id="fieldOverlay" style="position: absolute; top: 0; left: 0; width: 1152px; height: 498px; background: rgba(128,128,128,0.7); z-index: 4; cursor: not-allowed;"></div>
+    <div id="field" style="z-index: 5; ">
+        <button id="driver-station-btn-1" class="driver-station-btn" style="top: 26%; width:120px;">Driver Station 1 BLUE</button>
+        <button id="driver-station-btn-2" class="driver-station-btn" style="top: 60%; width:120px;">Driver Station 2 BLUE</button>
+        <button id="driver-station-btn-3" class="driver-station-btn" style="top: 80%; width: 120px;">Driver Station 3 BLUE</button>
+
+        <button id="driver-station-btn-6" class="driver-station-btn" style="top: 26%; left: 90%;">Driver Station 3 RED</button>
+        <button id="driver-station-btn-5" class="driver-station-btn" style="top: 60%; left: 90%;">Driver Station 2 RED</button>
+        <button id="driver-station-btn-4" class="driver-station-btn" style="top: 80%; left: 90%;">Driver Station 1 RED</button>
+
+        <button id="position-btn-p1" class="position-btn" style="top: 28%; left: 15%;">Position 1</button>
+        <button id="position-btn-p2" class="position-btn" style="top: 45%; left: 18%;">Position 2</button>
+        <button id="position-btn-p3" class="position-btn" style="top: 62%; left: 15%;">Position 3</button>
+        <button id="position-btn-p4" class="position-btn" style="top: 82%; left: 15%;">Position 4</button>
+
+        <button id="position-btn-p5" class="position-btn" style="top: 28%; left: 78%;">Position 5</button>
+        <button id="position-btn-p6" class="position-btn" style="top: 45%; left: 75%;">Position 6</button>
+        <button id="position-btn-p7" class="position-btn" style="top: 62%; left: 78%;">Position 7</button>
+        <button id="position-btn-p8" class="position-btn" style="top: 82%; left: 78%;">Position 8</button>
+
+
+
+        <div id="notesContainer" style="display: none; position: relative; width: 100%; height: 100%;">
+            <!-- Example note buttons, position these as needed -->
+            <button class="note-btn" id="notebtn1" style="position: absolute; top: 31%; left: 23%;"
+                onclick="noteAction('Note 1')">Note
+                1</button>
+            <button class="note-btn" id="notebtn2" style="position: absolute; top: 46%; left: 23%;"
+                onclick="noteAction('Note 2')">Note
+                2</button>
+            <button class="note-btn" id="notebtn3" style="position: absolute; top: 61%; left: 23%;"
+                onclick="noteAction('Note 3')">Note
+                3</button>
+            <button class="note-btn" id="notebtn4" style="position: absolute; top: 26.5%; left: 46.5%;"
+                onclick="noteAction('Note 4')">Note
+                4</button>
+            <button class="note-btn" id="notebtn5" style="position: absolute; top: 43.5%; left: 46.5%;"
+                onclick="noteAction('Note 5')">Note
+                5</button>
+            <button class="note-btn" id="notebtn6" style="position: absolute; top: 60.5%; left: 46.5%;"
+                onclick="noteAction('Note 6')">Note
+                6</button>
+            <button class="note-btn" id="notebtn7" style="position: absolute; top: 77.5%; left: 46.5%;"
+                onclick="noteAction('Note 7')">Note
+                7</button>
+            <button class="note-btn" id="notebtn8" style="position: absolute; top: 95.5%; left: 46.5%;"
+                onclick="noteAction('Note 8')">Note
+                8</button>
+            <button class="note-btn" id="notebtn9" style="position: absolute; top: 31%; left: 70.5%;"
+                onclick="noteAction('Note 9')">Note
+                9</button>
+            <button class="note-btn" id="notebtn10" style="position: absolute; top: 46%; left: 70.5%;"
+                onclick="noteAction('Note 10')">Note
+                10</button>
+            <button class="note-btn" id="notebtn11" style="position: absolute; top: 61%; left: 70.5%;"
+                onclick="noteAction('Note 11')">Note
+                11</button>
+            <!-- Add more note buttons as required -->
+        </div>
     </div>
   </div>
-</nav>
-
-<!-- SCORE PREDICTOR -->
-<div id="scorePredictorContainer">
-  <h2>Score Predictor</h2>
-  <p>Manually enter three team numbers for the Blue Alliance and three for the Red Alliance. Then click "Predict Score" to sum their EPA values (based on your uploaded aggregator data).</p>
-  <div>
-    <label>Blue Alliance Teams:</label>
-    <input type="text" id="blueTeam1" placeholder="e.g. 95" />
-    <input type="text" id="blueTeam2" placeholder="e.g. 133" />
-    <input type="text" id="blueTeam3" placeholder="e.g. 6329" />
   </div>
-  <div style="margin-top:10px;">
-    <label>Red Alliance Teams:</label>
-    <input type="text" id="redTeam1" placeholder="e.g. 2067" />
-    <input type="text" id="redTeam2" placeholder="e.g. 319" />
-    <input type="text" id="redTeam3" placeholder="e.g. 195" />
-  </div>
-  <button class="btn btn-primary mt-3" id="predictBtn">Predict Score</button>
-  <div id="predictOutput" style="margin-top:15px; font-weight:bold;"></div>
-</div>
+    <div id="notesSection">
+        <textarea id="notes" placeholder="Enter your notes here..." style="position: absolute; bottom: -65px; right: -120px; width: 1200px; height: 96px; z-index: 10001;"></textarea>
+    </div>
 
-<!-- EVENT TEAMS VIEWER / AGGREGATOR -->
-<div id="teamListContainer">
-  <h2 style="text-align:center;">Event Teams Viewer</h2>
-  <p style="text-align:center;">
-    Select an EVENT folder containing subfolders named by team number,
-    with match JSON files inside each subfolder.
-  </p>
-  <div style="text-align:center;">
-    <input type="file" id="folderInput" webkitdirectory directory multiple/>
-    <button class="btn btn-primary mt-3" id="folderUploadBtn">Upload Folder</button>
-  </div>
-  <div id="teamList" style="margin-top:20px;">
-    <!-- Team list gets populated here -->
-  </div>
-</div>
 
-<!-- TEAM HOME PAGE -->
-<div id="teamHomeContainer">
-  <button class="btn btn-secondary mb-3" id="backToAllTeamsBtn">Back to All Teams</button>
-  <h2 id="teamHomeTitle"></h2>
-  <div id="teamStatsPanel">
-    <h3>Aggregated Stats</h3>
-    <div class="statItem">Auto Average Points Per Match (APPM): <span id="autoAPPM"></span></div>
-    <div class="statItem">Teleop Average Points Per Match (APPM): <span id="teleopAPPM"></span></div>
-    <div class="statItem">Endgame Average Points Per Match (APPM): <span id="endgameAPPM"></span></div>
-    <div class="statItem">Estimated Points Per Match (EPA): <span id="epa"></span></div>
-  </div>
-  <button class="btn btn-info mt-3" id="viewMatchesBtn">View Matches</button>
-</div>
+    <div id="teleopContainer" style="display: none; position: absolute; width: 100%; ">
+    
+        <div id="teleopButtons"></div>
+        <div id="additionalActions" style="display: none;">
+        </div>
 
-<!-- MATCH LIST PAGE -->
-<div id="matchListContainer">
-  <button class="btn btn-secondary mb-3" id="backToTeamHomeBtn">Back to Team Home</button>
-  <h3 id="selectedTeamHeader"></h3>
-  <div id="matchList"></div>
-</div>
+        <div id="endgameContainer" style="display: none; text-align: center;">
+            <!-- <button id="StageRightBLUE" style="font-size:20px; position:absolute; opacity: 0.6;" onclick="logEndgameAction('Stage Right BLUE')">Stage Right</button>
+            <button id="StageLeftBLUE"style="font-size:20px; position:absolute; opacity: 0.6;" onclick="logEndgameAction('Stage Left BLUE')">Stage Left</button>
+            <button id="CenterStageBLUE"style="font-size:20px; position:absolute; opacity: 0.6;" onclick="logEndgameAction('Center Stage BLUE')">Center Stage</button>
+            <button id="None"style="font-size:20px; background-color:green; position:absolute; opacity: 0.6;" onclick="logEndgameAction('None')">None</button>
 
-<!-- MATCH VIEWER -->
-<div class="container-matchviewer" id="matchViewerContainer">
-  <button class="btn btn-secondary mb-3" id="backToTeamHomeBtn2">Back to Team Home</button>
-  <p id="warningText" style="display:none"></p>
-  <div id="textNotesContainer"></div>
-  <h1 id="teamDisplay" class="hidden"></h1>
-  <h2 id="matchNumber" class="hidden"></h2>
-  <!-- Additional UI for auto/teleop/endgame, if needed -->
-</div>
+            <button id="StageRightRED" style="font-size:20px; position:absolute; opacity: 0.6;" onclick="logEndgameAction('Stage Right RED')">Stage Right</button>
+            <button id="StageLeftRED" style="font-size:20px; position:absolute; opacity: 0.6;" onclick="logEndgameAction('Stage Left RED')">Stage Left</button>
+            <button id="CenterStageRED" style="font-size:20px; position:absolute;  opacity: 0.6;" onclick="logEndgameAction('Center Stage RED')">Center Stage</button> -->
 
-<script>
-/* ========== DARK MODE ========== */
-document.addEventListener('DOMContentLoaded', function(){
-  const toggle = document.getElementById('darkModeToggle');
-  function enableDarkMode(){
-    document.body.classList.add('bg-dark','dark-mode');
-    document.body.classList.remove('bg-light');
-  }
-  function disableDarkMode(){
-    document.body.classList.add('bg-light');
-    document.body.classList.remove('bg-dark','dark-mode');
-  }
-  let stored=localStorage.getItem('darkMode');
-  if(stored==='true'){
-    enableDarkMode();
-    toggle.checked=true;
+            <div id="endgameOutcome" style="width:600px; position:absolute; top: 620px; left: 450px; display: none; text-align: center;">
+            </div>
+        </div>
+
+
+
+    </div>
+    <div id="noteOutcome"
+        style="display: none; padding-top:20px; position: fixed;  top: 660px; right: 360px; ">
+        <button onclick="saveNoteOutcome('scored')">Scored</button>
+        <button onclick="saveNoteOutcome('missed')">Missed</button>
+        <button onclick="saveNoteOutcome('not picked up')">Not Picked Up</button>
+        <button onclick="saveNoteOutcome('another team got it')">Another Team Got It</button>
+        <button onclick="saveNoteOutcome('taxi')">Taxi</button>
+    </div>
+    <script>
+        var currentPhase = "auto"; // Default phase is auto
+        var redoStack = [];
+        updateUndoRedoButtons();
+        var reloadCheck = 0;
+        var compOption = localStorage.getItem('compOption');
+        if (!compOption) { 
+            compOption = "Reefscape"; // This should be set to the latest competition
+            localStorage.setItem('compOption', "Reefscape"); // This should be set to the latest competition
+          }
+        const configPath = `dashboard/${compOption}.json`;
+        function toggleNotesMode(){
+  var toggle = document.getElementById('notesModeToggle');
+  var label = document.getElementById('notesModeLabel');
+  if (toggle.checked) {
+    label.textContent = "Enabled (Per Phase)";
   } else {
-    disableDarkMode();
+    label.textContent = "Disabled (Whole Match)";
   }
-  toggle.addEventListener('change', function(){
-    if(this.checked){
-      localStorage.setItem('darkMode','true');
-      enableDarkMode();
+}
+
+
+        // Load the configuration file.
+  fetch(configPath)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(config => {
+      // Use the loaded configuration to set up your UI.
+      const fieldIframe = document.getElementById("field-canvas");
+
+// Add an event listener for when the iframe finishes loading:
+fieldIframe.addEventListener("load", function() {
+  const iframeDoc = fieldIframe.contentDocument || fieldIframe.contentWindow.document;
+  const strategyCanvas = iframeDoc.getElementById("strategyCanvas");
+  if (strategyCanvas) {
+    const img = new Image();
+    img.onload = function() {
+      strategyCanvas.style.backgroundImage = `url('${config.fieldImage}')`;
+    };
+    img.onerror = function() {
+      console.error("Failed to load field image:", config.fieldImage);
+    };
+    img.src = config.fieldImage;
+  } else {
+    console.error("Element #strategyCanvas not found in the iframe.");
+  }
+});
+
+
+      // Apply field positions
+      const fieldPositions = config.buttonPositions.field;
+      for (let posKey in fieldPositions.positions) {
+        const btnConfig = fieldPositions.positions[posKey];
+        const btnElem = document.getElementById(btnConfig.id);
+        if (btnElem) {
+          btnElem.style.top = btnConfig.top;
+          btnElem.style.left = btnConfig.left;
+        } 
+        if (btnConfig.name) {
+            btnElem.innerText = btnConfig.name;
+        }
+        if (btnConfig.hide) {
+            btnElem.style.display = 'none';
+        }
+        
+      }
+
+      // Apply note button positions
+      for (let btnKey in fieldPositions.notes) {
+        const btnConfig = fieldPositions.notes[btnKey];
+        const btnElem = document.getElementById(btnConfig.id);
+        if (btnElem) {
+          btnElem.style.top = btnConfig.top;
+          btnElem.style.left = btnConfig.left;
+          btnElem.style.width = btnConfig.width;
+          btnElem.style.height = btnConfig.height;
+        }
+        if (btnConfig.name) {
+            btnElem.innerText = btnConfig.name;
+        }
+        if (btnConfig.hide) {
+            btnElem.style.display = 'none';
+        }
+      }
+
+      // Apply driver station positions
+      for (let dsKey in fieldPositions.driverStations) {
+        const btnConfig = fieldPositions.driverStations[dsKey];
+        const btnElem = document.getElementById(btnConfig.id);
+        if (btnElem) {
+          btnElem.style.top = btnConfig.top;
+          btnElem.style.left = btnConfig.left;
+        }
+        if (btnConfig.name) {
+            btnElem.innerText = btnConfig.name;
+        }
+        if (btnConfig.hide) {
+            btnElem.style.display = 'none';
+        }
+      }
+      // Set Teleop button positions
+      const teleopPositions = config.buttonPositions.teleop;
+      const teleopContainer = document.getElementById('teleopContainer');
+      const teleopButtonsContainer = document.getElementById('teleopButtons');
+// Clear only the teleop buttons container
+teleopButtonsContainer.innerHTML = '';
+
+      for (let btnKey in teleopPositions) {
+        const btnConfig = teleopPositions[btnKey];
+        // Create a new button element
+  const btn = document.createElement('button');
+  btn.id = btnConfig.id;
+  btn.dataset.actionType = btnConfig.actionType;
+
+  btn.style.position = "absolute";
+          btn.style.top = btnConfig.top;
+          btn.style.left = btnConfig.left;
+          btn.style.width = btnConfig.width;
+          btn.style.height = btnConfig.height;
+        
+        if (btnConfig.name) {
+            btn.innerText = btnConfig.name;
+        }
+        if (btnConfig.color) {
+      btn.style.backgroundColor = btnConfig.color;
+    }
+    if (btnConfig.size) {
+      btn.style.fontSize = (btnConfig.size === "large") ? "30px" : "16px";
+    }
+        if (btnConfig.hide) {
+            btn.style.display = 'none';
+        }
+        btn.addEventListener('click', function() {
+  const act = btnConfig.name || btnKey;
+  const type = btnConfig.actionType || 'shot';
+  logAction(act, type);
+});
+
+      // Append the button to the teleop container
+      teleopButtonsContainer.appendChild(btn);
+      }
+// Create dynamic additional actions
+const additionalActionsConfig = config.buttonPositions.additionalActions;
+const additionalActionsContainer = document.getElementById('additionalActions');
+// Clear the container in case it has old content
+additionalActionsContainer.innerHTML = '';
+
+for (let actionKey in additionalActionsConfig) {
+  const actionConfig = additionalActionsConfig[actionKey];
+  const btn = document.createElement('button');
+  btn.id = actionConfig.id;
+  btn.style.position = "absolute";
+  btn.style.top = actionConfig.top;
+  btn.style.left = actionConfig.left;
+  btn.style.width = actionConfig.width;
+  btn.style.height = actionConfig.height;
+  
+  if (actionConfig.name) {
+    btn.innerText = actionConfig.name;
+  }
+  if (actionConfig.color) {
+    btn.style.backgroundColor = actionConfig.color;
+  }
+  if (actionConfig.size) {
+    btn.style.fontSize = (actionConfig.size === "large") ? "30px" : "16px";
+  }
+  if (actionConfig.hide) {
+    btn.style.display = 'none';
+  }
+  
+  // Attach an event listener (using logAction as an example)
+  btn.addEventListener('click', function() {
+    console.log("Additional action clicked:", actionConfig.name || actionKey);
+    logAction(actionConfig.name || actionKey);
+  });
+  
+  additionalActionsContainer.appendChild(btn);
+}
+
+      // Set Endgame button positions
+      const endgamePositions = config.buttonPositions.endgame;
+      const endgameContainer = document.getElementById('endgameContainer');
+    // Clear any existing content first
+    const endgameOutcome = document.getElementById('endgameOutcome');
+if (endgameOutcome) {
+  // Remove the outcome element temporarily
+  endgameContainer.removeChild(endgameOutcome);
+}
+endgameContainer.innerHTML = ''; // Clears dynamic buttons
+
+      for (let btnKey in endgamePositions) {
+        const btnConfig = endgamePositions[btnKey];
+         // Create a new button element
+  const btn = document.createElement('button');
+  btn.id = btnConfig.id;
+      
+         btn.style.position = "absolute";
+         btn.style.top = btnConfig.top;
+         btn.style.left = btnConfig.left;
+         btn.style.width = btnConfig.width;
+         btn.style.height = btnConfig.height;
+        
+        if (btnConfig.name) {
+            btn.innerText = btnConfig.name;
+        }
+        if (btnConfig.color) {
+            btn.style.backgroundColor = btnConfig.color;
+    }
+    if (btnConfig.size) {
+        btn.style.fontSize = (btnConfig.size === "large") ? "30px" : "16px";
+    }
+        if (btnConfig.hide) {
+            btn.style.display = 'none';
+        }
+         // Attach a click event (customize as needed)
+      btn.addEventListener('click', function() {
+        logEndgameAction(btnConfig.name || btnKey);
+      });
+      // Append the button to the endgame container
+      endgameContainer.appendChild(btn);
+      }
+      if (endgameOutcome) {
+  // Reappend the outcome container after clearing
+  endgameContainer.appendChild(endgameOutcome);
+}
+
+// Create dynamic endgame outcome buttons
+const endgameOutcomeConfig = config.buttonPositions.endgameOutcome;
+const endgameOutcomeContainer = document.getElementById('endgameOutcome');
+
+// Clear any existing content
+endgameOutcomeContainer.innerHTML = '';
+
+for (let outcomeKey in endgameOutcomeConfig) {
+  const outcomeConfig = endgameOutcomeConfig[outcomeKey];
+  const btn = document.createElement('button');
+  btn.id = outcomeConfig.id + "_additionalactionendgame";
+  btn.style.position = "absolute";
+  btn.style.top = outcomeConfig.top;
+  btn.style.left = outcomeConfig.left;
+  btn.style.width = outcomeConfig.width;
+  btn.style.height = outcomeConfig.height;
+  
+  if (outcomeConfig.name) {
+    btn.innerText = outcomeConfig.name;
+  }
+  if (outcomeConfig.color) {
+    btn.style.backgroundColor = outcomeConfig.color;
+  }
+  if (outcomeConfig.size) {
+    // Adjust font size or styling based on a "medium" size or similar
+    btn.style.fontSize = (outcomeConfig.size === "large") ? "30px" : (outcomeConfig.size === "medium") ? "20px" : "16px";
+  }
+  if (outcomeConfig.hide) {
+    btn.style.display = 'none';
+  }
+  
+  // Attach event listener to save the outcome
+  btn.addEventListener('click', function() {
+    console.log("Endgame outcome selected:", outcomeConfig.name || outcomeKey);
+    saveEndgameOutcome(outcomeConfig.name || outcomeKey);
+  });
+  
+  endgameOutcomeContainer.appendChild(btn);
+}
+      // Example of using JSON attribute names:
+      // const matchNumberKey = config.jsonAttributes.matchNumber;
+      // Then, when storing data, you can do something like:
+      // scoutingData[matchNumberKey] = document.getElementById("matchNumber").value;
+    })
+    .catch(error => {
+      console.error("Error loading configuration:", error);
+    });
+
+       document.querySelectorAll('.position-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const position = this.innerText;
+        selectPosition(position);
+        disableOppositeDriverStations(this);
+    });
+});
+function disableOppositeDriverStations(posBtn) {
+    // Get the inline left style value (expected as a percentage, e.g. "40%")
+    let leftStr = posBtn.style.left; 
+    let leftPercent = parseFloat(leftStr);
+
+    // Re-enable all driver station buttons first (in case a position was previously selected)
+    document.querySelectorAll('.driver-station-btn').forEach(btn => {
+        btn.disabled = false;
+        // Reset their original background colors (adjust these values if needed)
+        if (btn.style.left.includes("1%")) {
+            // Blue alliance stations
+            btn.style.backgroundColor = "rgba(0, 123, 255, 0.5)";
+        } else if (btn.style.left.includes("90%")) {
+            // Red alliance stations
+            btn.style.backgroundColor = "rgba(255, 65, 65, 0.6)";
+        }
+        btn.style.cursor = "pointer";
+    });
+
+    if (leftPercent < 50) {
+        // Position is on the left side, so disable the red alliance stations (assumed to have left "90%")
+        document.querySelectorAll('.driver-station-btn').forEach(btn => {
+            if (btn.style.left.includes("90%")) {
+                btn.disabled = true;
+                btn.style.backgroundColor = "grey";
+                btn.style.cursor = "default";
+            }
+        });
     } else {
-      localStorage.setItem('darkMode','false');
-      disableDarkMode();
-    }
-  });
-});
-
-/* ========== GLOBAL DATA FOR AGGREGATOR ========== */
-let teamsData = {};
-
-/* ========== FOLDER UPLOAD ========== */
-document.getElementById('folderUploadBtn').addEventListener('click', () => {
-  const files = document.getElementById('folderInput').files;
-  if(!files || !files.length){
-    alert("Please select a folder first.");
-    return;
-  }
-  teamsData={};
-
-  const readPromises=Array.from(files).map(file=>{
-    return new Promise((resolve,reject)=>{
-      if(!file.name.toLowerCase().endsWith('.json')){
-        // ignore non-JSON
-        resolve(); return;
-      }
-      const pathParts=file.webkitRelativePath.split('/');
-      // Expect [EventName,TeamNumber, matchFile.json]
-      if(pathParts.length<3){
-        resolve(); return;
-      }
-      const teamNumber=pathParts[1];
-      const matchFileName= pathParts.slice(2).join('/');
-      const reader=new FileReader();
-      reader.onload=e=>{
-        const content=e.target.result;
-        if(!teamsData[teamNumber]){
-          teamsData[teamNumber]={};
-        }
-        teamsData[teamNumber][matchFileName]=content;
-        resolve();
-      };
-      reader.onerror=reject;
-      reader.readAsText(file);
-    });
-  });
-
-  Promise.all(readPromises)
-  .then(()=>{
-    displayTeamList();
-  })
-  .catch(err=>{
-    console.error("Error reading files:",err);
-  });
-});
-
-/* ========== DISPLAY TEAM LIST ========== */
-function displayTeamList(){
-  document.getElementById('teamListContainer').style.display='block';
-  document.getElementById('teamHomeContainer').style.display='none';
-  document.getElementById('matchListContainer').style.display='none';
-  document.getElementById('matchViewerContainer').style.display='none';
-
-  const teamListDiv=document.getElementById('teamList');
-  teamListDiv.innerHTML='';
-
-  const teams=Object.keys(teamsData).sort((a,b)=>{
-    let aa=parseInt(a,10),bb=parseInt(b,10);
-    if(!isNaN(aa)&&!isNaN(bb)) return aa-bb;
-    return a.localeCompare(b);
-  });
-  if(!teams.length){
-    teamListDiv.innerHTML='<p>No valid JSON found in subfolders.</p>';
-    return;
-  }
-
-  const ul=document.createElement('ul');
-  teamListDiv.appendChild(ul);
-  teams.forEach(tm=>{
-    const li=document.createElement('li');
-    li.textContent=`Team ${tm}`;
-    li.addEventListener('click',()=>showTeamHomePage(tm));
-    ul.appendChild(li);
-  });
-}
-
-/* ========== TEAM HOME PAGE ========== */
-function showTeamHomePage(teamNumber){
-  document.getElementById('teamListContainer').style.display='none';
-  document.getElementById('matchListContainer').style.display='none';
-  document.getElementById('matchViewerContainer').style.display='none';
-
-  document.getElementById('teamHomeContainer').style.display='block';
-  document.getElementById('teamHomeTitle').textContent=`Team ${teamNumber} Home`;
-
-  // Compute aggregator-based stats
-  const {autoAvg, teleopAvg, endgameAvg}= computeTeamAverages(teamNumber);
-  const epaVal= autoAvg+teleopAvg+endgameAvg;
-
-  document.getElementById('autoAPPM').textContent=autoAvg.toFixed(2);
-  document.getElementById('teleopAPPM').textContent=teleopAvg.toFixed(2);
-  document.getElementById('endgameAPPM').textContent=endgameAvg.toFixed(2);
-  document.getElementById('epa').textContent=epaVal.toFixed(2);
-
-  document.getElementById('backToAllTeamsBtn').onclick=()=>displayTeamList();
-  document.getElementById('viewMatchesBtn').onclick=()=>displayTeamMatches(teamNumber);
-}
-
-/* ========== TEAM MATCHES ========== */
-function displayTeamMatches(teamNumber){
-  document.getElementById('teamHomeContainer').style.display='none';
-  document.getElementById('matchListContainer').style.display='block';
-  document.getElementById('matchViewerContainer').style.display='none';
-
-  const matchListDiv=document.getElementById('matchList');
-  const selectedTeamHeader=document.getElementById('selectedTeamHeader');
-  matchListDiv.innerHTML='';
-  selectedTeamHeader.textContent=`Matches for Team ${teamNumber}`;
-
-  const matchFiles=Object.keys(teamsData[teamNumber])||[];
-  if(!matchFiles.length){
-    matchListDiv.innerHTML='<p>No match files found for this team.</p>';
-    return;
-  }
-  const ul=document.createElement('ul');
-  matchListDiv.appendChild(ul);
-
-  matchFiles.forEach(fn=>{
-    const li=document.createElement('li');
-    li.textContent=fn;
-    li.addEventListener('click',()=>{
-      try{
-        const fileContent=teamsData[teamNumber][fn];
-        const jsonData=JSON.parse(fileContent);
-        showMatchViewer(jsonData);
-      }catch(e){
-        alert(`Error parsing file "${fn}": ${e}`);
-      }
-    });
-    ul.appendChild(li);
-  });
-
-  document.getElementById('backToTeamHomeBtn').onclick=()=>showTeamHomePage(teamNumber);
-}
-
-/* ========== MATCH VIEWER ========== */
-function showMatchViewer(jsonData) {
-      document.getElementById('matchListContainer').style.display = 'none';
-      document.getElementById('matchViewerContainer').style.display = 'block';
-      resetPositions();
-      updateUI(jsonData);
-    }
-
-    // Reset dynamic elements in the match viewer
-    function resetPositions() {
-      const allButtons = document.querySelectorAll('.position-btnB, .position-btnR, .note-btn');
-      allButtons.forEach(btn => {
-        btn.style.top = '';
-        btn.style.left = '';
-        btn.style.display = 'none';
-        btn.style.backgroundColor = '';
-        btn.title = '';
-        btn.innerHTML = '';
-      });
-
-      const driverStations = document.querySelectorAll('.driver-station-btnB, .driver-station-btnR');
-      driverStations.forEach(btn => {
-        btn.style.top = '';
-        btn.style.left = '';
-        btn.style.display = 'none';
-        btn.innerText = '';
-      });
-
-      const endgameButtons = document.querySelectorAll('#endgame button');
-      endgameButtons.forEach(btn => {
-        btn.style.display = 'inline';
-        btn.style.top = '';
-        btn.style.left = '';
-      });
-
-      document.getElementById('textNotesContainer').style.display = "none";
-      document.getElementById('textNotesContainer').innerHTML = '';
-
-      document.getElementById('teamDisplay').textContent = '';
-      document.getElementById('teamDisplay').classList.add('hidden');
-      document.getElementById('matchNumber').textContent = '';
-      document.getElementById('matchNumber').classList.add('hidden');
-
-      document.getElementById('autoContainer').style.display = 'none';
-      document.getElementById('teleopContainer').style.display = 'none';
-      document.getElementById('endgameContainer').style.display = 'none';
-    }
-
-    function validateData(data) {
-      const requiredAttributes = [
-        'teamNumber',
-        'matchNumber',
-        'autoActions',
-        'teleopActions',
-        'endgameActions',
-        'robotPosition',
-        'driverStation'
-      ];
-      let missing = [];
-
-      if (!data.hasOwnProperty("matchNumber") || data["matchNumber"] === null || data["matchNumber"] === '') {
-        throw alert("Invalid or empty matchNumber. Please try again with a different file.");
-      }
-
-      requiredAttributes.forEach(attr => {
-        if (!data.hasOwnProperty(attr) || data[attr] === null || data[attr] === '') {
-          missing.push(attr);
-        }
-      });
-      if (missing.length > 0) {
-        alert("Warning: The JSON is missing these attributes: " + missing.join(", "));
-      }
-    }
-
-    function updateUI(data) {
-      validateData(data);
-
-      let textNotes = '';
-      const autoNotes = data.autoNotes || '';
-      const teleopNotes = data.teleopNotes || '';
-      const endgameNotes = data.endgameNotes || '';
-
-      if (autoNotes || teleopNotes || endgameNotes) {
-        if (autoNotes === teleopNotes && teleopNotes === endgameNotes && autoNotes !== '') {
-          textNotes = autoNotes;
-        } else {
-          textNotes = "<b>Auto:</b> " + autoNotes + "<br>" +
-                      "<b>Teleop:</b> " + teleopNotes + "<br>" +
-                      "<b>Endgame:</b> " + endgameNotes;
-        }
-        const notesContainer = document.getElementById('textNotesContainer');
-        if (notesContainer) {
-          notesContainer.innerHTML = "<b>Match Notes</b><br>" + textNotes;
-          notesContainer.style.display = "block";
-        }
-      }
-
-      document.getElementById('teamDisplay').textContent = "Team " + (data.teamNumber || "???");
-      document.getElementById('matchNumber').textContent = "Match #" + (data.matchNumber || "???");
-      document.getElementById('teamDisplay').classList.remove('hidden');
-      document.getElementById('matchNumber').classList.remove('hidden');
-
-      document.getElementById('autoContainer').classList.remove('hidden');
-      document.getElementById('teleopContainer').classList.remove('hidden');
-      document.getElementById('endgameContainer').classList.remove('hidden');
-      document.getElementById('autoContainer').style.display = "block";
-      document.getElementById('teleopContainer').style.display = "block";
-      document.getElementById('endgameContainer').style.display = "block";
-
-      document.getElementById('outOfAuto').textContent = '';
-      document.getElementById('numOfCycles').textContent = '0';
-
-      // Additional "Back to Team Home" button in the match viewer
-      document.getElementById('backToTeamHomeBtn2').onclick = () => {
-        showTeamHomePage(data.teamNumber);
-      };
-
-      let compOption = localStorage.getItem('compOption');
-      const configPath = `dashboard/${compOption}.json`;
-
-      fetch(configPath)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(config => {
-          // Base field images
-          const autoCanvas      = document.getElementById("field_image");
-          const teleopContainer = document.getElementById("field_image_auto");
-          const endgameContainer= document.getElementById("field_image_endgame");
-
-          if (config.fieldImage) {
-            autoCanvas.style.backgroundImage      = `url('${config.fieldImage}')`;
-            teleopContainer.style.backgroundImage = `url('${config.fieldImage}')`;
-            endgameContainer.style.backgroundImage= `url('${config.fieldImage}')`;
-          }
-
-          // Combine any canvasDrawing with teleop background
-          const compositeCanvas = document.createElement('canvas');
-          compositeCanvas.width  = teleopContainer.offsetWidth;
-          compositeCanvas.height = teleopContainer.offsetHeight;
-          const ctx = compositeCanvas.getContext('2d');
-
-          const fieldImg = new Image();
-          fieldImg.crossOrigin = "anonymous";
-          fieldImg.src = config.fieldImage || "images/crescendo_feild.png";
-
-          fieldImg.onload = function() {
-            ctx.drawImage(fieldImg, 0, 0, compositeCanvas.width, compositeCanvas.height);
-            if (data.canvasDrawing) {
-              const drawingImg = new Image();
-              drawingImg.src = data.canvasDrawing;
-              drawingImg.onload = function() {
-                ctx.drawImage(drawingImg, 0, 0, compositeCanvas.width, compositeCanvas.height);
-                teleopContainer.style.backgroundImage = `url('${compositeCanvas.toDataURL()}')`;
-              };
-            } else {
-              teleopContainer.style.backgroundImage = `url('${fieldImg.src}')`;
+        // Position is on the right side, so disable the blue alliance stations (assumed to have left "1%")
+        document.querySelectorAll('.driver-station-btn').forEach(btn => {
+            if (btn.style.left.includes("1%")) {
+                btn.disabled = true;
+                btn.style.backgroundColor = "grey";
+                btn.style.cursor = "default";
             }
-          };
-
-          // Place note buttons
-          const fieldPositions = config.buttonPositions.field;
-          if (fieldPositions && fieldPositions.positions) {
-            for (let posKey in fieldPositions.positions) {
-              const btnConfig = fieldPositions.positions[posKey];
-              const btnElem   = document.getElementById(btnConfig.id);
-              if (btnElem) {
-                const btnTop = parseFloat(btnConfig.top.replace('%', ''));
-                const currentTop = btnTop + (config.buttonPositions.addtop || 0);
-                btnElem.style.top  = currentTop + '%';
-                btnElem.style.left = btnConfig.left;
-                if (btnConfig.name) {
-                  btnElem.innerText = btnConfig.name;
-                }
-                if (btnConfig.hide) {
-                  btnElem.style.display = 'none';
-                }
-              }
-            }
-          }
-
-          // Auto note/outcome color
-          if (fieldPositions && fieldPositions.notes) {
-            const noteConfigs = Object.values(fieldPositions.notes);
-            const matchNotes  = data.autoActions; 
-            noteConfigs.forEach((note, index) => {
-              const note_button = document.getElementById(note.id);
-              if (!note_button) return;
-              note_button.style.display = "inline";
-
-              const btnTop = parseFloat(note.top.replace('%', ''));
-              const currentTop = btnTop + (config.buttonPositions.addtop || 0);
-              note_button.style.top  = currentTop + '%';
-              note_button.style.left = note.left;
-              note_button.style.width= note.width || '';
-              note_button.style.height= note.height || '';
-              if (note.hide) {
-                note_button.style.display = "none";
-              }
-
-              let outcome = "";
-              if (matchNotes && matchNotes[index] && matchNotes[index].outcome) {
-                outcome = matchNotes[index].outcome.trim().toLowerCase();
-              }
-              note_button.innerHTML = note.name;
-              if (outcome === "scored") {
-                note_button.style.backgroundColor = "green";
-                note_button.title = "Scored";
-              } else if (outcome === "missed") {
-                note_button.style.backgroundColor = "red";
-                note_button.title = "Missed";
-              }
-            });
-          }
-
-          // Driver station positions
-          if (fieldPositions && fieldPositions.driverStations) {
-            for (let dsKey in fieldPositions.driverStations) {
-              const dsBtnConfig = fieldPositions.driverStations[dsKey];
-              const dsElem = document.getElementById(dsBtnConfig.id);
-              if (dsElem) {
-                const btnTop = parseFloat(dsBtnConfig.top.replace('%', ''));
-                const currentTop = btnTop + (config.buttonPositions.addtop || 0);
-                dsElem.style.top = currentTop + '%';
-                dsElem.style.left= dsBtnConfig.left;
-                if (dsBtnConfig.name) {
-                  dsElem.innerText = dsBtnConfig.name;
-                }
-                if (dsBtnConfig.hide) {
-                  dsElem.style.display = 'none';
-                }
-              }
-            }
-          }
-
-          // Show the correct driver station and robot position
-          const buttons = document.querySelectorAll("button");
-          buttons.forEach(btn => {
-            if (btn.textContent.trim() === (data.driverStation || "").trim()) {
-              btn.style.display = "inline";
-            }
-          });
-          buttons.forEach(btn => {
-            if (btn.textContent.trim() === (data.robotPosition || "").trim()) {
-              btn.style.display = "inline";
-            }
-          });
-
-          // Teleop logic: # cycles
-          let teleopCycleCounter = 0;
-          if (data.teleopActions && Array.isArray(data.teleopActions)) {
-            data.teleopActions.forEach((action, i) => {
-              const shot = (action.shot_place || "").toLowerCase();
-              if (shot !== "miss") {
-                teleopCycleCounter++;
-              }
-              if (i === 0) {
-                document.getElementById('outOfAuto').textContent = action.pickup || '';
-              }
-            });
-          }
-          document.getElementById("numOfCycles").textContent = teleopCycleCounter;
-
-          // Custom teleop attributes
-          const customCounts = {};
-          if (config.buttonPositions.additionalActions) {
-            for (let key in config.buttonPositions.additionalActions) {
-              const customAction = config.buttonPositions.additionalActions[key];
-              customCounts[customAction.name] = 0;
-            }
-          }
-          if (config.buttonPositions.teleop) {
-            for (let key in config.buttonPositions.teleop) {
-              const teleopBtn = config.buttonPositions.teleop[key];
-              if (teleopBtn.customAttribute) {
-                if (!customCounts.hasOwnProperty(teleopBtn.name)) {
-                  customCounts[teleopBtn.name] = 0;
-                }
-              }
-            }
-          }
-          if (data.teleopActions && Array.isArray(data.teleopActions)) {
-            data.teleopActions.forEach(action => {
-              const pickup = (action.pickup || "").toLowerCase();
-              const shot   = (action.shot_place || "").toLowerCase();
-              for (let attr in customCounts) {
-                if (pickup === attr.toLowerCase() || shot === attr.toLowerCase()) {
-                  customCounts[attr]++;
-                }
-              }
-            });
-          }
-          const customContainer = document.getElementById('customAttributesContainer');
-          if (customContainer) {
-            let html = `<h3>Custom Attributes</h3>`;
-            for (let attr in customCounts) {
-              html += `<div>${attr}: ${customCounts[attr]}</div>`;
-            }
-            customContainer.innerHTML = html;
-          }
-
-          // Endgame
-          if (data.endgameActions && Array.isArray(data.endgameActions)) {
-            const endgameAttrContainer = document.getElementById('endgameAttributesContainer');
-            if (endgameAttrContainer) {
-              let html = '<h3 style="margin-left:40px;">Actions</h3>';
-              data.endgameActions.forEach(item => {
-                html += `<div style="margin-left:40px;">
-                          <div style="font-size:18px; font-weight:bold;">${item.action || "No Action"}</div>
-                          <div style="font-size:14px; color:gray;">${item.outcome || "No Outcome"}</div>
-                         </div>`;
-              });
-              endgameAttrContainer.innerHTML = html;
-            }
-          }
-
-          if (data.teleopActions && data.teleopActions.length > 0 && teleopCycleCounter === 0) {
-            alert("No successful teleop cycles were recorded. Possibly everything was missed?");
-          }
-          document.getElementById('warningText').style.display = "inline";
-          document.getElementById('warningText').textContent =
-            'For optimal results, reload the page before loading another file.';
-        })
-        .catch(error => {
-          console.error('Config File Error:', error);
-          alert('Error loading config: ' + error.message);
         });
     }
+}
+function disableOppositePositions(driverBtn) {
+    // Get the inline left style value of the driver station button (e.g. "1%" or "90%")
+    let leftStr = driverBtn.style.left;
+    let leftPercent = parseFloat(leftStr);
 
-    function logEndgameAction(action) {
-      console.log("Endgame action clicked:", action);
+    // Re-enable all position buttons first
+    document.querySelectorAll('.position-btn').forEach(btn => {
+        btn.disabled = false;
+        // Optionally, reset to the default background color.
+        // You can also store original colors in data attributes if needed.
+        btn.style.backgroundColor = ""; 
+        btn.style.cursor = "pointer";
+    });
+
+    if (leftPercent < 50) {
+        // Driver station is on the left side, so disable all position buttons on the right side
+        document.querySelectorAll('.position-btn').forEach(btn => {
+            let posLeft = parseFloat(btn.style.left);
+            if (posLeft > 50) {
+                btn.disabled = true;
+                btn.style.backgroundColor = "grey";
+                btn.style.cursor = "default";
+            }
+        });
+    } else {
+        // Driver station is on the right side, so disable all position buttons on the left side
+        document.querySelectorAll('.position-btn').forEach(btn => {
+            let posLeft = parseFloat(btn.style.left);
+            if (posLeft < 50) {
+                btn.disabled = true;
+                btn.style.backgroundColor = "grey";
+                btn.style.cursor = "default";
+            }
+        });
     }
+}
 
-/* ========== SCORING LOGIC ========== */
-function computeTeamAverages(teamNumber){
-  if(!teamsData[teamNumber]) return {autoAvg:0, teleopAvg:0, endgameAvg:0};
-  const matchFiles=Object.keys(teamsData[teamNumber]);
-  if(!matchFiles.length) return {autoAvg:0, teleopAvg:0, endgameAvg:0};
+        document.querySelectorAll('.driver-station-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                disableOppositePositions(this);
+                const driverStation = this.innerText;
+                selectDriverStation(driverStation);
+            });
+        });
 
-  let autoArr=[], teleArr=[], endArr=[];
-  matchFiles.forEach(fn=>{
-    try{
-      const data=JSON.parse(teamsData[teamNumber][fn]);
-      autoArr.push(getAutoPoints(data));
-      teleArr.push(getTeleopPoints(data));
-      endArr.push(getEndgamePoints(data));
-    }catch(e){console.log(e);}
+        function downloadSessionStorageData() {
+  reloadCheck = 1;
+
+  // Grab current scoutingData
+  let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+
+  // Save whatever is currently in the notes box into the appropriate phase notes
+  // (so you don't lose the last thing typed before downloading)
+  const perPhase = document.getElementById('notesModeToggle')?.checked;
+  if (perPhase) {
+    if (currentPhase === "auto") scoutingData.autoNotes = document.getElementById('notes').value;
+    if (currentPhase === "teleop") scoutingData.teleopNotes = document.getElementById('notes').value;
+    if (currentPhase === "endgame") scoutingData.endgameNotes = document.getElementById('notes').value;
+  } else {
+    // Whole match notes
+    scoutingData.matchNotes = document.getElementById('notes').value;
+  }
+
+  // Helper to actually download the JSON once we have drawings
+  function triggerDownload(finalData) {
+    sessionStorage.setItem('scoutingData', JSON.stringify(finalData));
+
+    const blob = new Blob([JSON.stringify(finalData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+
+    const matchNumber = finalData.matchNumber || scoutingData.matchNumber || "UnknownMatch";
+    const teamNumber  = finalData.teamNumber  || scoutingData.teamNumber  || "UnknownTeam";
+    a.download = `Match${matchNumber}_${teamNumber}_ScoutingData.json`;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // cleanup
+    URL.revokeObjectURL(url);
+  }
+
+  // Ask the iframe for BOTH auto + teleop drawings
+  const iframe = document.getElementById('field-canvas');
+
+  // If iframe isn't ready, just download without drawings (failsafe)
+  if (!iframe || !iframe.contentWindow) {
+    console.warn("Pathing iframe not available; downloading without path drawings.");
+    triggerDownload(scoutingData);
+    return;
+  }
+
+  // Set up a one-time listener for the response from the iframe
+  function handleMessage(e) {
+    if (!e.data || e.data.type !== "ALL_PHASES_DATA") return;
+
+    // Stop listening after we get what we need
+    window.removeEventListener("message", handleMessage);
+
+    // Save drawings into scoutingData
+    scoutingData.autoPathDrawing = e.data.payload?.auto || null;
+    scoutingData.teleopPathDrawing = e.data.payload?.teleop || null;
+
+    // Proceed with download
+    triggerDownload(scoutingData);
+  }
+
+  window.addEventListener("message", handleMessage);
+
+  // Send request to iframe
+  iframe.contentWindow.postMessage({ type: "REQUEST_ALL_PHASES" }, "*");
+
+  // Optional: failsafe timeout so you don't get stuck if the iframe never responds
+  setTimeout(() => {
+    // If we still haven't gotten drawings, remove listener and download anyway
+    window.removeEventListener("message", handleMessage);
+
+    if (!scoutingData.autoPathDrawing && !scoutingData.teleopPathDrawing) {
+      console.warn("Timed out waiting for path drawings; downloading without them.");
+      triggerDownload(scoutingData);
+    }
+  }, 800);
+}
+
+
+        // function downloadSessionStorageData() {
+        //     // Retrieve the scouting data from session storage
+        //     const scoutingData = sessionStorage.getItem('scoutingData');
+        //     const notes = document.getElementById('notes').value;
+
+        //     scoutingData.notes = notes;
+        //     if (scoutingData) {
+        //         const data = JSON.parse(scoutingData);
+        //         const matchNumber = data.matchNumber;
+        //         const teamNumber = data.teamNumber;
+        //         const filename = `Match${matchNumber}_${teamNumber}_ScoutingData.json`;
+
+        //         // Create a blob from the data
+        //         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+
+        //         // Create an anchor element and use it to trigger the download
+        //         const a = document.createElement('a');
+        //         a.href = URL.createObjectURL(blob);
+        //         a.download = filename;
+        //         a.style.display = 'none';
+
+        //         // Append the anchor to the body, click it, and then remove it
+        //         document.body.appendChild(a);
+        //         a.click();
+        //         document.body.removeChild(a);
+        //     } else {
+        //         alert('No scouting data available to download!');
+        //     }
+        // }
+
+        function selectDriverStation(driverStation) {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+            scoutingData.driverStation = driverStation;
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+            checkSelections();
+        }
+
+        function selectPosition(position) {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+            scoutingData.robotPosition = position;
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+            checkSelections();
+        }
+
+        function checkSelections() {
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+            if (scoutingData.driverStation && scoutingData.robotPosition) {
+                // Hide position and driver station buttons
+                document.querySelectorAll('.position-btn, .driver-station-btn').forEach(button => {
+                    button.style.display = 'none';
+                });
+                // Show notes container
+                // document.getElementById('notesContainer').style.display = 'block';
+            }
+        }
+
+        function noteAction(note) {
+  console.log('Note action for:', note);
+
+  let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+
+  // Keep a simple list if you want (optional)
+  scoutingData.notes = scoutingData.notes || [];
+  scoutingData.notes.push(note);
+
+  // Proper place for auto note actions:
+  scoutingData.autoActions = scoutingData.autoActions || [];
+  scoutingData.autoActions.push({ note: note, outcome: null });
+
+  sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+  // Show the note outcome options
+  document.getElementById('noteOutcome').style.display = 'block';
+
+  // Save which note we’re scoring
+  sessionStorage.setItem('currentNote', note);
+}
+
+
+function setPathingPhase(phase) {
+  const iframe = document.getElementById('field-canvas');
+  if (!iframe || !iframe.contentWindow) return;
+  iframe.contentWindow.postMessage({ type: "SET_PHASE", phase }, "*");
+}
+
+
+function saveNoteOutcome(outcome) {
+  const note = sessionStorage.getItem('currentNote');
+  const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+
+  scoutingData.autoActions = scoutingData.autoActions || [];
+
+  // Find the most recent autoAction with this note + null outcome
+  for (let i = scoutingData.autoActions.length - 1; i >= 0; i--) {
+    if (scoutingData.autoActions[i].note === note && scoutingData.autoActions[i].outcome === null) {
+      scoutingData.autoActions[i].outcome = outcome;
+      break;
+    }
+  }
+
+  sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+  document.getElementById('noteOutcome').style.display = 'none';
+}
+
+
+        function startScouting() {
+            const matchNumber = document.getElementById('matchNumber').value;
+            const teamNumber = document.getElementById('teamNumber').value;
+            setPathingPhase("auto");
+            if (matchNumber && teamNumber) {
+              // Hide toggle since scouting is starting
+document.getElementById('notesModeContainer').style.display = 'none';
+
+// Determine note mode and set placeholder
+var perPhase = document.getElementById('notesModeToggle').checked;
+if (perPhase) {
+  document.getElementById('notes').placeholder = 'Enter auto phase notes here...';
+} else {
+  document.getElementById('notes').placeholder = 'Enter match notes here...';
+}
+
+                const scoutingData = {
+                    matchNumber: matchNumber,
+                    teamNumber: teamNumber,
+                    actions: []
+                };
+                sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+                currentPhase = "auto"; // Set phase to auto
+        alert('Scouting started!');
+                document.getElementById('fieldOverlay').style.display = 'none';
+                document.querySelector('button[onclick="startTeleop()"]').style.display = 'inline-block';
+                document.querySelector('button[onclick="startScouting()"]').style.display = 'none';
+                
+            } else {
+                alert('Please enter both match and team numbers.');
+            }
+        }
+
+        function startTeleop() {
+  let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+
+  // Switch pathing UI to teleop canvas
+  setPathingPhase("teleop");
+
+  // Save notes from the previous phase ONLY if per-phase mode is enabled
+  const perPhase = document.getElementById('notesModeToggle')?.checked;
+  const notesBox = document.getElementById('notes');
+
+  if (perPhase) {
+    scoutingData.autoNotes = notesBox.value;
+  } else {
+    scoutingData.matchNotes = notesBox.value;
+  }
+
+  sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+  // Switch phase to teleop
+  currentPhase = "teleop";
+
+  // Update notes UI
+  if (perPhase) {
+    notesBox.placeholder = 'Enter teleop phase notes here...';
+    notesBox.value = scoutingData.teleopNotes || '';
+  } else {
+    notesBox.placeholder = 'Enter match notes here...';
+    notesBox.value = scoutingData.matchNotes || '';
+  }
+
+  document.querySelector('button[onclick="startTeleop()"]').style.display = 'none';
+  document.querySelector('button[onclick="startEndgame()"]').style.display = 'inline-block';
+  document.querySelector('button[onclick="downloadSessionStorageData()"]').style.display = 'inline-block';
+
+  // Hide field and auto note buttons
+  document.getElementById('field').style.display = "none";
+  document.getElementById('notesContainer').style.display = 'none';
+  document.getElementById('noteOutcome').style.display = 'none';
+  document.getElementById('teleopContainer').style.display = 'block';
+
+  // Ensure teleopActions exists
+  scoutingData.teleopActions = scoutingData.teleopActions || [];
+  sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+}
+
+
+
+
+function logAction(action, actionType) {
+  const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+  // Clear redoStack because a new action invalidates redo history.
+  redoStack = [];
+  if (actionType === 'pickup' || typeof scoutingData.currentActionIndex === 'undefined') {
+    // Start a new action.
+    scoutingData.teleopActions.push({ pickup: action, shot_place: null });
+    scoutingData.currentActionIndex = scoutingData.teleopActions.length - 1;
+    if (actionType === 'pickup'){
+      showAdditionalActions();
+    }
+  } else {
+    // Update the current action.
+    scoutingData.teleopActions[scoutingData.currentActionIndex].shot_place = action;
+    delete scoutingData.currentActionIndex;
+    hideAdditionalActions();
+  }
+  
+  sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+  console.log(action + ' action logged.');
+  updateUndoRedoButtons(); // Ensure UI reflects the new history.
+}
+
+
+
+
+        function showAdditionalActions() {
+  // Hide all dynamic teleop buttons
+  const teleopButtons = document.getElementById('teleopButtons');
+  Array.from(teleopButtons.children).forEach(child => {
+    child.style.display = 'none';
   });
-  return {
-    autoAvg: average(autoArr),
-    teleopAvg: average(teleArr),
-    endgameAvg: average(endArr)
-  };
+  // Show the additional actions container
+  const additional = document.getElementById('additionalActions');
+  if (additional) {
+    additional.style.display = 'block';
+  }
 }
-function getAutoPoints(data){
-  let total=0;
-  if(data.autoActions && Array.isArray(data.autoActions)){
-    data.autoActions.forEach(a=>{
-      const outcome=(a.outcome||'').toLowerCase();
-      if(outcome!=='missed') total+=7;
+
+function hideAdditionalActions() {
+  const additional = document.getElementById('additionalActions');
+  if (additional) {
+    additional.style.display = 'none';
+  }
+  // Only reset teleop buttons if endgame is NOT active:
+  if (document.getElementById('endgameContainer').style.display === 'none') {
+    const teleopButtons = document.getElementById('teleopButtons');
+    Array.from(teleopButtons.children).forEach(child => {
+      child.style.display = 'inline-block';
     });
   }
-  return total;
 }
-function getTeleopPoints(data){
-  let total=0;
-  if(data.teleopActions && Array.isArray(data.teleopActions)){
-    data.teleopActions.forEach(a=>{
-      const sp=(a.shot_place||'').toLowerCase();
-      if(sp==='coral level 4') total+=5;
-      else if(sp==='coral level 3') total+=4;
-      else if(sp==='coral level 2') total+=3;
-      else if(sp==='coral level 1') total+=1;
+
+
+
+
+
+        function logTeleopAction(action) {
+            updateUndoRedoButtons();
+            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+           
+            scoutingData.teleopActions.push(action);
+            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+            // Hide additional actions and show initial Teleop buttons again
+            document.getElementById('additionalActions').style.display = 'none';
+            document.getElementById('groundPickupButton').style.display = 'inline';
+            document.getElementById('sourceButton').style.display = 'inline';
+
+            console.log(action + ' action logged in Teleop.');
+        }
+
+        function startEndgame() {
+              // Save the current teleop notes before switching phases.
+    let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+    scoutingData.teleopNotes = document.getElementById('notes').value;
+    sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+    
+    // Switch phase to endgame and refresh note textbox.
+    currentPhase = "endgame";
+    var perPhase = document.getElementById('notesModeToggle').checked;
+if (perPhase) {
+  document.getElementById('notes').placeholder = 'Enter endgame phase notes here...';
+  document.getElementById('notes').value = scoutingData.endgameNotes || '';
+}
+
+            // Show endgame buttons
+            document.getElementById('endgameContainer').style.display = 'block';
+            document.getElementById('additionalActions').style.display = 'none';
+            document.getElementById('teleopButtons').style.display = 'none';
+
+
+            // Hide the "Start Endgame" button to prevent multiple endgame starts
+            document.querySelector('button[onclick="startEndgame()"]').style.display = 'none';
+        }
+
+function logEndgameAction(action) {
+  const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
+  scoutingData.teleopActions = scoutingData.teleopActions || [];
+  scoutingData.teleopActions.push({ pickup: action, shot_place: 'endgame' });
+  
+  // Save the current endgame action for later reference:
+  scoutingData.endgameAction = action;
+  
+  scoutingData.endgameActions = scoutingData.endgameActions || [];
+  scoutingData.endgameActions.push({ action: action, outcome: null });
+  sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+  console.log(action + ' endgame action logged.');
+  document.getElementById('endgameOutcome').style.display = 'block';
+}
+
+
+        function saveEndgameOutcome(outcome) {
+  const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
+  // Ensure there's at least one endgame action to update:
+  if (!scoutingData.endgameActions || scoutingData.endgameActions.length === 0) {
+    console.error("No endgame action to update!");
+    return;
+  }
+  // Update the outcome of the last endgame action instead of pushing a new one:
+  const lastIndex = scoutingData.endgameActions.length - 1;
+  scoutingData.endgameActions[lastIndex].outcome = outcome;
+  
+  sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+  console.log(scoutingData.endgameActions[lastIndex].action +
+    ' endgame action outcome logged as ' + outcome + '.');
+
+  document.getElementById('endgameOutcome').style.display = 'none';
+  document.getElementById('endgameContainer').style.display = 'none';
+}
+
+
+        let rotationAngle = 0;
+        const scale = 498 / 1152;  // Use this scale for vertical rotations (90° & 270°)
+const vOffset0 = 0;    // No extra shift for 0°
+const vOffset90 = 600; // Adjust this value for 90° rotation
+const vOffset180 = -580;  // Adjust this value for 180° rotation if needed
+const vOffset270 = 600; // Adjust this value for 270° rotation
+
+function rotateField() {
+  // Increase rotation in 90° increments: 0, 90, 180, 270
+  rotationAngle = (rotationAngle + 90) % 360;
+  const inner = document.getElementById('fieldInner');
+  const endgameContainer = document.getElementById('endgameContainer');
+  
+  // Store current visibility states
+  const additionalActionsVisible = document.getElementById('additionalActions').style.display;
+  const endgameOutcomeVisible = document.getElementById('endgameOutcome').style.display;
+  
+  // Temporarily hide these containers during rotation
+  document.getElementById('additionalActions').style.display = 'none';
+  document.getElementById('endgameOutcome').style.display = 'none';
+
+  // Reset button transforms for field elements only
+  document.querySelectorAll('#fieldInner button:not(#additionalActions button), #endgameContainer button:not(#endgameOutcome button)')
+    .forEach(button => {
+      button.style.transform = "none";
     });
+
+  // Always rotate about the center of the inner content
+  inner.style.transformOrigin = "center center";
+  endgameContainer.style.transformOrigin = "center center";
+  
+  if (rotationAngle === 0) {
+    inner.style.transform = `rotate(0deg) scale(1) translateY(${vOffset0}px)`;
+    endgameContainer.style.transform = `rotate(0deg) scale(1) translateY(${vOffset0}px)`;
+  } else if (rotationAngle === 90) {
+    inner.style.transform = `rotate(90deg) scale(${scale}) translateX(${vOffset90}px)`;
+    endgameContainer.style.transform = "rotate(90deg) scale(-1, -1) translateX(600px) translateY(340px)";
+  } else if (rotationAngle === 180) {
+    inner.style.transform = `rotate(180deg) scale(1) translateY(${vOffset180}px)`;
+    endgameContainer.style.transform = "scale(-1, -1) translateY(-600px) translateX(-340px)";
+    // Only rotate field elements at 180°
+    document.querySelectorAll('#fieldInner button:not(#additionalActions button), #endgameContainer button:not(#endgameOutcome button)')
+      .forEach(button => {
+        button.style.transform = "scale(-1, -1)";
+      });
+  } else if (rotationAngle === 270) {
+    inner.style.transform = `rotate(270deg) scale(${scale}) translateX(${-vOffset270}px)`;
+    endgameContainer.style.transform = "rotate(270deg) scale(-1, -1) translateX(-600px) translateY(-340px)";
   }
-  return total;
+  
+  // Restore visibility states
+  document.getElementById('additionalActions').style.display = additionalActionsVisible;
+  document.getElementById('endgameOutcome').style.display = endgameOutcomeVisible;
+  
+  // Reparent the endgame outcome container to document.body so it won't rotate.
+  const outcomeContainer = document.getElementById('endgameOutcome');
+  if (outcomeContainer.parentElement !== document.body) {
+    outcomeContainer.style.position = 'fixed'; // Ensure it's fixed
+    document.body.appendChild(outcomeContainer);
+  }
+
+  
 }
-function getEndgamePoints(data){
-  let total=0;
-  if(data.endgameActions && Array.isArray(data.endgameActions)){
-    data.endgameActions.forEach(a=>{
-      const outcome=(a.outcome||'').toLowerCase();
-      const act=(a.action||'').toLowerCase();
-      if(outcome.includes('deep')||act.includes('deep')) total+=12;
-      else if(outcome.includes('shallow')||act.includes('shallow')) total+=6;
-      else if(outcome.includes('park')||act.includes('park')) total+=2;
+
+
+
+
+
+
+
+
+// Undo / Redo Stuff
+
+
+function undoAction() {
+  const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+  if (scoutingData.teleopActions && scoutingData.teleopActions.length > 0) {
+    const undoneAction = scoutingData.teleopActions.pop();
+    redoStack.push(undoneAction);
+    sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+    
+    if (undoneAction.shot_place === 'endgame') {
+      // When undoing an endgame action, show the endgame UI again
+      document.getElementById('endgameContainer').style.display = 'block';
+      document.getElementById('endgameOutcome').style.display = 'block';
+    } else {
+      if (scoutingData.teleopActions.length > 0) {
+        const lastAction = scoutingData.teleopActions[scoutingData.teleopActions.length - 1];
+        if (!lastAction.shot_place) {
+          showAdditionalActions();
+        } else {
+          hideAdditionalActions();
+        }
+      } else {
+        hideAdditionalActions();
+      }
+    }
+    logTemporaryMessage("Undid action: " + (undoneAction.pickup || undoneAction));
+    updateUndoRedoButtons();
+  } else {
+    logTemporaryMessage("No actions to undo.");
+    updateUndoRedoButtons();
+  }
+}
+
+function redoAction() {
+  if (redoStack.length > 0) {
+    const action = redoStack.pop();
+    const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
+    scoutingData.teleopActions = scoutingData.teleopActions || [];
+    scoutingData.teleopActions.push(action);
+    sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+    
+    if (action.shot_place === 'endgame') {
+      document.getElementById('endgameContainer').style.display = 'block';
+      document.getElementById('endgameOutcome').style.display = 'block';
+    } else {
+      if (!action.shot_place) {
+         showAdditionalActions();
+      } else {
+         hideAdditionalActions();
+      }
+    }
+    logTemporaryMessage("Redid action: " + (action.pickup || action));
+  } else {
+    logTemporaryMessage("No actions to redo.");
+  }
+  updateUndoRedoButtons(); // <-- Call update after changes
+}
+
+window.onload = function() {
+  // Optionally, initialize scoutingData if it doesn't exist
+  let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
+  if (!scoutingData.teleopActions) {
+    scoutingData.teleopActions = [];
+    sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+  }
+  // Update the UI state of undo/redo buttons
+  updateUndoRedoButtons();
+};
+
+
+
+function updateUndoRedoButtons() {
+  const undoBtn = document.getElementById('undoBtn');
+  const redoBtn = document.getElementById('redoBtn');
+  const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+
+  if (!scoutingData.teleopActions || scoutingData.teleopActions.length === 0) {
+    undoBtn.disabled = true;
+    undoBtn.style.opacity = 0.5;
+  } else {
+    undoBtn.disabled = false;
+    undoBtn.style.opacity = 1;
+  }
+
+  if (!redoStack || redoStack.length === 0) {
+    redoBtn.disabled = true;
+    redoBtn.style.opacity = 0.5;
+  } else {
+    redoBtn.disabled = false;
+    redoBtn.style.opacity = 1;
+  }
+}
+
+
+
+function logTemporaryMessage(message) {
+  var logContent = document.getElementById('logContent');
+  if (logContent) {
+    var tempMsg = document.createElement('div');
+    tempMsg.textContent = message;
+    // Start fully opaque; add a CSS transition for fading
+    tempMsg.style.opacity = 1;
+    tempMsg.style.transition = "opacity 1s linear";
+    logContent.appendChild(tempMsg);
+    
+    // After 2 seconds, trigger fade-out over 1 second then remove the message
+    setTimeout(function() {
+      tempMsg.style.opacity = 0;
+      setTimeout(function() {
+        if (tempMsg.parentNode) {
+          tempMsg.parentNode.removeChild(tempMsg);
+        }
+      }, 1000);
+    }, 2000);
+  }
+}
+function clearUndoRedoState() {
+  let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData')) || {};
+  scoutingData.teleopActions = [];
+  sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+  redoStack = [];
+}
+
+function confirmRefresh() {
+  if (sessionStorage.getItem('scoutingData') && reloadCheck === 0) {
+    showCustomConfirm("You haven't downloaded your data yet. Are you sure you want to refresh?", function(confirmed) {
+      if (confirmed) {
+        clearUndoRedoState();
+        location.reload();
+      }
     });
+  } else {
+    clearUndoRedoState();
+    location.reload();
   }
-  return total;
-}
-function average(arr){
-  if(!arr.length)return 0;
-  return arr.reduce((acc,val)=>acc+val,0)/arr.length;
 }
 
-/* ========== PREDICT SCORE BUTTON ========== */
-// 1) We define getTeamEPA to return the aggregator-summed EPA for a given team
-function getTeamEPA(teamNumberStr){
-  if(!teamsData[teamNumberStr]){
-    return 0; // If aggregator has no data for this team, treat as 0
-  }
-  const {autoAvg, teleopAvg, endgameAvg}= computeTeamAverages(teamNumberStr);
-  return (autoAvg+teleopAvg+endgameAvg);
-}
 
-// 2) On "Predict" click, read all 6 inputs and sum
-document.getElementById('predictBtn').addEventListener('click', ()=>{
-  const b1=document.getElementById('blueTeam1').value.trim();
-  const b2=document.getElementById('blueTeam2').value.trim();
-  const b3=document.getElementById('blueTeam3').value.trim();
-  const r1=document.getElementById('redTeam1').value.trim();
-  const r2=document.getElementById('redTeam2').value.trim();
-  const r3=document.getElementById('redTeam3').value.trim();
-
-  // Convert them to aggregator-based EPAs
-  const blueScore= getTeamEPA(b1)+ getTeamEPA(b2)+ getTeamEPA(b3);
-  const redScore = getTeamEPA(r1)+ getTeamEPA(r2)+ getTeamEPA(r3);
-
-  const outputDiv=document.getElementById('predictOutput');
-  outputDiv.innerHTML=`
-    Blue Alliance Predicted Score: <b>${blueScore.toFixed(1)}</b><br>
-    Red Alliance Predicted Score: <b>${redScore.toFixed(1)}</b>`;
-});
-</script>
+    </script>
 </body>
+
 </html>

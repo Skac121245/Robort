@@ -80,6 +80,8 @@
 
 <script>
 
+  let currentPhase = 'auto';      // 'auto' or 'teleop'
+  let phaseImages = { auto: null, teleop: null };
   let eraserEnabled = false;
 
 document.getElementById('toggleEraser').addEventListener('click', function() {
@@ -183,6 +185,72 @@ document.getElementById('toggleEraser').addEventListener('click', function() {
       ctx.beginPath();
       ctx.moveTo(scaleX, scaleY);
     }
+
+    function saveCurrentPhaseDrawing() {
+  try {
+    phaseImages[currentPhase] = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  } catch (e) {
+    console.warn("Couldn't save ImageData:", e);
+  }
+}
+
+function loadPhaseDrawing(phase) {
+  clearCanvas();
+  const imgData = phaseImages[phase];
+  if (imgData) {
+    ctx.putImageData(imgData, 0, 0);
+  }
+}
+
+function setPhase(phase) {
+  if (phase !== 'auto' && phase !== 'teleop') return;
+
+  // Save old phase drawing
+  saveCurrentPhaseDrawing();
+
+  // Switch + load new phase drawing
+  currentPhase = phase;
+  loadPhaseDrawing(phase);
+
+  console.log("Pathing UI phase set to:", currentPhase);
+}
+
+window.addEventListener("message", (event) => {
+  if (!event.data) return;
+  if (event.data.type === "SET_PHASE") {
+    setPhase(event.data.phase);
+  }
+});
+
+function exportAllPhases() {
+  // save current first
+  saveCurrentPhaseDrawing();
+
+  function imageDataToDataURL(imgData) {
+    const temp = document.createElement("canvas");
+    temp.width = canvas.width;
+    temp.height = canvas.height;
+    const tctx = temp.getContext("2d");
+    if (imgData) tctx.putImageData(imgData, 0, 0);
+    return temp.toDataURL("image/png");
+  }
+
+  return {
+    auto: imageDataToDataURL(phaseImages.auto),
+    teleop: imageDataToDataURL(phaseImages.teleop)
+  };
+}
+
+window.addEventListener("message", (event) => {
+  if (!event.data) return;
+  if (event.data.type === "REQUEST_ALL_PHASES") {
+    const payload = exportAllPhases();
+    event.source.postMessage({ type: "ALL_PHASES_DATA", payload }, "*");
+  }
+});
+
+
+
 
 
     function displayTeamsForSelectedMatch() {

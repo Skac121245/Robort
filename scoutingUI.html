@@ -890,46 +890,87 @@ function disableOppositePositions(driverBtn) {
         });
 
         function downloadSessionStorageData() {
-            
-            reloadCheck = 1;
-            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
-            const notes = document.getElementById('notes').value;
-           
-    scoutingData.endgameNotes = document.getElementById('notes').value;
-    sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
-            // scoutingData.push(notes);
-            // Adding notes dire/////////////////////////////////////////////////////////////////////////////////////ctly to the scoutingData object
-            const iframe = document.getElementById('field-canvas');
-if (iframe && iframe.contentDocument) {
-    const strategyCanvas = iframe.contentDocument.getElementById('strategyCanvas');
-    if (strategyCanvas && strategyCanvas.toDataURL) {
-        scoutingData.canvasDrawing = strategyCanvas.toDataURL(); // Save Base64 image
-    } else {
-        console.warn("Canvas not found or unable to convert to base64.");
+  reloadCheck = 1;
+
+  // Grab current scoutingData
+  let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+
+  // Save whatever is currently in the notes box into the appropriate phase notes
+  // (so you don't lose the last thing typed before downloading)
+  const perPhase = document.getElementById('notesModeToggle')?.checked;
+  if (perPhase) {
+    if (currentPhase === "auto") scoutingData.autoNotes = document.getElementById('notes').value;
+    if (currentPhase === "teleop") scoutingData.teleopNotes = document.getElementById('notes').value;
+    if (currentPhase === "endgame") scoutingData.endgameNotes = document.getElementById('notes').value;
+  } else {
+    // Whole match notes
+    scoutingData.matchNotes = document.getElementById('notes').value;
+  }
+
+  // Helper to actually download the JSON once we have drawings
+  function triggerDownload(finalData) {
+    sessionStorage.setItem('scoutingData', JSON.stringify(finalData));
+
+    const blob = new Blob([JSON.stringify(finalData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+
+    const matchNumber = finalData.matchNumber || scoutingData.matchNumber || "UnknownMatch";
+    const teamNumber  = finalData.teamNumber  || scoutingData.teamNumber  || "UnknownTeam";
+    a.download = `Match${matchNumber}_${teamNumber}_ScoutingData.json`;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // cleanup
+    URL.revokeObjectURL(url);
+  }
+
+  // Ask the iframe for BOTH auto + teleop drawings
+  const iframe = document.getElementById('field-canvas');
+
+  // If iframe isn't ready, just download without drawings (failsafe)
+  if (!iframe || !iframe.contentWindow) {
+    console.warn("Pathing iframe not available; downloading without path drawings.");
+    triggerDownload(scoutingData);
+    return;
+  }
+
+  // Set up a one-time listener for the response from the iframe
+  function handleMessage(e) {
+    if (!e.data || e.data.type !== "ALL_PHASES_DATA") return;
+
+    // Stop listening after we get what we need
+    window.removeEventListener("message", handleMessage);
+
+    // Save drawings into scoutingData
+    scoutingData.autoPathDrawing = e.data.payload?.auto || null;
+    scoutingData.teleopPathDrawing = e.data.payload?.teleop || null;
+
+    // Proceed with download
+    triggerDownload(scoutingData);
+  }
+
+  window.addEventListener("message", handleMessage);
+
+  // Send request to iframe
+  iframe.contentWindow.postMessage({ type: "REQUEST_ALL_PHASES" }, "*");
+
+  // Optional: failsafe timeout so you don't get stuck if the iframe never responds
+  setTimeout(() => {
+    // If we still haven't gotten drawings, remove listener and download anyway
+    window.removeEventListener("message", handleMessage);
+
+    if (!scoutingData.autoPathDrawing && !scoutingData.teleopPathDrawing) {
+      console.warn("Timed out waiting for path drawings; downloading without them.");
+      triggerDownload(scoutingData);
     }
-} else {
-    console.warn("Iframe or contentDocument not accessible.");
+  }, 800);
 }
-            scoutingData.canvasDrawing = document.getElementById('field-canvas').contentDocument.getElementById('strategyCanvas').toDataURL();
 
-            if (!scoutingData) {
-                alert('No scouting data available to download!');
-                return;
-            }
-
-            const blob = new Blob([JSON.stringify(scoutingData, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            const matchNumber = scoutingData.matchNumber;
-const teamNumber = scoutingData.teamNumber;
-const filename = `Match${matchNumber}_${teamNumber}_ScoutingData.json`;
-a.download = filename;
-
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
 
         // function downloadSessionStorageData() {
         //     // Retrieve the scouting data from session storage
@@ -987,46 +1028,60 @@ a.download = filename;
             }
         }
 
-       function noteAction(note) {
+        function noteAction(note) {
   console.log('Note action for:', note);
-  let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
-  if (!scoutingData.notes) {
-    scoutingData.notes = [];
-  }
+
+  let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+
+  // Keep a simple list if you want (optional)
+  scoutingData.notes = scoutingData.notes || [];
   scoutingData.notes.push(note);
 
-  // Also add this auto action to the undo/redo stack,
-  // tagging it with 'auto' so your undo/redo functions can handle it.
-  scoutingData.teleopActions = scoutingData.teleopActions || [];
-  scoutingData.teleopActions.push({ pickup: note, shot_place: 'auto' });
+  // Proper place for auto note actions:
+  scoutingData.autoActions = scoutingData.autoActions || [];
+  scoutingData.autoActions.push({ note: note, outcome: null });
 
   sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
 
   // Show the note outcome options
   document.getElementById('noteOutcome').style.display = 'block';
-  // Store the current note globally for outcome processing
+
+  // Save which note we’re scoring
   sessionStorage.setItem('currentNote', note);
-  updateUndoRedoButtons();
 }
 
 
-        function saveNoteOutcome(outcome) {
-            const note = sessionStorage.getItem('currentNote');
-            const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData'));
-            // Append the outcome to the corresponding note
-            if (!scoutingData.autoActions) {
-                scoutingData.autoActions = [];
-            }
-            scoutingData.autoActions.push({ note: note, outcome: outcome });
-            sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+function setPathingPhase(phase) {
+  const iframe = document.getElementById('field-canvas');
+  if (!iframe || !iframe.contentWindow) return;
+  iframe.contentWindow.postMessage({ type: "SET_PHASE", phase }, "*");
+}
 
-            // Hide the outcome buttons until the next note is selected
-            document.getElementById('noteOutcome').style.display = 'none';
-        }
+
+function saveNoteOutcome(outcome) {
+  const note = sessionStorage.getItem('currentNote');
+  const scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+
+  scoutingData.autoActions = scoutingData.autoActions || [];
+
+  // Find the most recent autoAction with this note + null outcome
+  for (let i = scoutingData.autoActions.length - 1; i >= 0; i--) {
+    if (scoutingData.autoActions[i].note === note && scoutingData.autoActions[i].outcome === null) {
+      scoutingData.autoActions[i].outcome = outcome;
+      break;
+    }
+  }
+
+  sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+  document.getElementById('noteOutcome').style.display = 'none';
+}
+
 
         function startScouting() {
             const matchNumber = document.getElementById('matchNumber').value;
             const teamNumber = document.getElementById('teamNumber').value;
+            setPathingPhase("auto");
             if (matchNumber && teamNumber) {
               // Hide toggle since scouting is starting
 document.getElementById('notesModeContainer').style.display = 'none';
@@ -1057,38 +1112,50 @@ if (perPhase) {
         }
 
         function startTeleop() {
-    // Retrieve scoutingData from sessionStorage, or initialize if it doesn't exist
-    let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
-    
-    // Save the current auto notes before switching phases.
-    scoutingData.autoNotes = document.getElementById('notes').value;
-    sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
-    
-    // Switch phase to teleop and refresh note textbox.
-    currentPhase = "teleop";
-    var perPhase = document.getElementById('notesModeToggle').checked;
-if (perPhase) {
-  document.getElementById('notes').placeholder = 'Enter teleop phase notes here...';
-  document.getElementById('notes').value = scoutingData.teleopNotes || '';
+  let scoutingData = JSON.parse(sessionStorage.getItem('scoutingData') || '{}');
+
+  // Switch pathing UI to teleop canvas
+  setPathingPhase("teleop");
+
+  // Save notes from the previous phase ONLY if per-phase mode is enabled
+  const perPhase = document.getElementById('notesModeToggle')?.checked;
+  const notesBox = document.getElementById('notes');
+
+  if (perPhase) {
+    scoutingData.autoNotes = notesBox.value;
+  } else {
+    scoutingData.matchNotes = notesBox.value;
+  }
+
+  sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
+
+  // Switch phase to teleop
+  currentPhase = "teleop";
+
+  // Update notes UI
+  if (perPhase) {
+    notesBox.placeholder = 'Enter teleop phase notes here...';
+    notesBox.value = scoutingData.teleopNotes || '';
+  } else {
+    notesBox.placeholder = 'Enter match notes here...';
+    notesBox.value = scoutingData.matchNotes || '';
+  }
+
+  document.querySelector('button[onclick="startTeleop()"]').style.display = 'none';
+  document.querySelector('button[onclick="startEndgame()"]').style.display = 'inline-block';
+  document.querySelector('button[onclick="downloadSessionStorageData()"]').style.display = 'inline-block';
+
+  // Hide field and auto note buttons
+  document.getElementById('field').style.display = "none";
+  document.getElementById('notesContainer').style.display = 'none';
+  document.getElementById('noteOutcome').style.display = 'none';
+  document.getElementById('teleopContainer').style.display = 'block';
+
+  // Ensure teleopActions exists
+  scoutingData.teleopActions = scoutingData.teleopActions || [];
+  sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
 }
 
-    document.querySelector('button[onclick="startTeleop()"]').style.display = 'none';
-    document.querySelector('button[onclick="startEndgame()"]').style.display = 'inline-block';
-    document.querySelector('button[onclick="downloadSessionStorageData()"]').style.display = 'inline-block';
-    
-    // Hide field and note containers
-    document.getElementById('field').style.display = "none";
-    document.getElementById('notesContainer').style.display = 'none';
-    document.getElementById('noteOutcome').style.display = 'none';
-    document.getElementById('teleopContainer').style.display = 'block';
-    
-    // Initialize teleopActions array if it doesn't exist
-    if (!scoutingData.teleopActions) {
-      scoutingData.teleopActions = [];
-    }
-    
-    sessionStorage.setItem('scoutingData', JSON.stringify(scoutingData));
-}
 
 
 
