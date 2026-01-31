@@ -27,17 +27,20 @@
         "position5": {
           "id": "position-btn-p5",
           "top": "20%",
-          "left": "70%"
+          "left": "70%",
+          "name": "Position 4"
         },
         "position6": {
           "id": "position-btn-p6",
           "top": "55%",
-          "left": "70%"
+          "left": "70%",
+          "name": "Position 5"
         },
         "position7": {
           "id": "position-btn-p7",
           "top": "92%",
-          "left": "70%"
+          "left": "70%",
+          "name": "Position 6"
         },
         "position8": {
           "id": "position-btn-p8",
@@ -50,100 +53,100 @@
         "driverStation1_BLUE": {
           "id": "driver-station-btn-1",
           "top": "18%",
-          "left": "%"
+          "left": "0%"
         },
         "driverStation2_BLUE": {
           "id": "driver-station-btn-2",
-          "top": "35%",
-          "left": "%"
+          "top": "47%",
+          "left": "0%"
         },
         "driverStation3_BLUE": {
           "id": "driver-station-btn-3",
           "top": "70%",
-          "left": "%"
+          "left": "0%"
         },
         "driverStation1_RED": {
           "id": "driver-station-btn-4",
-          "top": "18%",
+          "top": "38%",
           "left": "90%"
         },
         "driverStation2_RED": {
           "id": "driver-station-btn-5",
-          "top": "35%",
+          "top": "64%",
           "left": "90%"
         },
         "driverStation3_RED": {
           "id": "driver-station-btn-6",
-          "top": "70%",
+          "top": "89%",
           "left": "90%"
         }
       },
       "notes": {
         "notebtn1": {
           "id": "notebtn1",
-          "top": "%",
-          "left": "%",
-          "name": ""
+          "top": "57%",
+          "left": "25%",
+          "name": "Blue Hub"
         },
         "notebtn2": {
           "id": "notebtn2",
-          "top": "%",
-          "left": "%",
-          "name": ""
+          "top": "57%",
+          "left": "68%",
+          "name": "Red Hub"
         },
         "notebtn3": {
           "id": "notebtn3",
           "top": "%",
           "left": "%",
-          "name": ""
+          "hide": true
         },
         "notebtn4": {
           "id": "notebtn4",
           "top": "%",
           "left": "%",
-          "name": ""
+          "hide": true
         },
         "notebtn5": {
           "id": "notebtn5",
           "top": "%",
           "left": "%",
-          "name": ""
+          "hide": true
         },
         "notebtn6": {
           "id": "notebtn6",
           "top": "%",
           "left": "%",
-          "name": ""
+          "hide": true
         },
         "notebtn7": {
           "id": "notebtn7",
           "top": "%",
           "left": "%",
-          "name": ""
+          "hide": true
         },
         "notebtn8": {
           "id": "notebtn8",
           "top": "%",
           "left": "%",
-          "name": ""
+          "hide": true
         },
         "notebtn9": {
           "id": "notebtn9",
           "top": "%",
           "left": "%",
-          "name": ""
+          "hide": true
         },
         "notebtn10": {
           "id": "notebtn10",
           "top": "%",
           "left": "%",
-          "name": ""
+          "hide": true
         },
         "notebtn11": {
           "id": "notebtn11",
           "top": "%",
           "left": "%",
-          "name": ""
+          "hide": true
         }
       }
     },
