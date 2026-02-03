@@ -151,16 +151,76 @@
       }
     },
     "teleop": {
-      "": {
-        "id": "",
-        "top": "px",
+      "score10": {
+        "id": "score10",
+        "top": "0px",
         "left": "%",
-        "width": "px",
-        "height": "px",
-        "name": "",
-        "color": "",
-        "size": "",
-        "actionType": "",
+        "width": "340px",
+        "height": "150px",
+        "name": "Score Fuel \n 10x",
+        "color": "green",
+        "size": "large",
+        "actionType": "action",
+        "customAttribute": true
+      },
+      "score5": {
+        "id": "score5",
+        "top": "155px",
+        "left": "%",
+        "width": "340px",
+        "height": "100px",
+        "name": "Score Fuel \n 5x",
+        "color": "green",
+        "size": "large",
+        "actionType": "action",
+        "customAttribute": true
+      },
+      "score3": {
+        "id": "score3",
+        "top": "260px",
+        "left": "%",
+        "width": "170px",
+        "height": "80px",
+        "name": "Score Fuel \n 3x",
+        "color": "green",
+        "size": "small",
+        "actionType": "action",
+        "customAttribute": true
+      },
+      "score1": {
+        "id": "score1",
+        "top": "260px",
+        "left": "11.5%",
+        "width": "163px",
+        "height": "80px",
+        "name": "Score Fuel \n 1x",
+        "color": "green",
+        "size": "small",
+        "actionType": "action",
+        "customAttribute": true
+      },
+      "teleopclimb": {
+        "id": "teleopclimb",
+        "top": "350px",
+        "left": "%",
+        "width": "170px",
+        "height": "80px",
+        "name": "Teleop Climb",
+        "color": "green",
+        "size": "small",
+        "actionType": "pickup",
+        "customAttribute": true
+      },
+      "miss": {
+        "id": "miss",
+        "top": "350px",
+        "left": "11.5%",
+        "width": "163px",
+        "height": "80px",
+        "name": "Miss",
+        "color": "red",
+        "size": "small",
+        "actionType": "action",
         "customAttribute": true
       }
     },
