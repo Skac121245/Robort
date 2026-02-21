@@ -225,80 +225,74 @@
       }
     },
     "additionalActions": {
-      "": {
-        "id": "",
-        "top": "px",
+      "towerL1": {
+        "id": "towerL1",
+        "top": "155px",
         "left": "%",
-        "width": "px",
-        "height": "px",
-        "name": "",
-        "color": "",
-        "size": ""
+        "width": "340px",
+        "height": "100px",
+        "name": "Tower L1",
+        "color": "blue",
+        "size": "large"
+      },
+      "towerL2": {
+        "id": "towerL2",
+        "top": "260px",
+        "left": "%",
+        "width": "170px",
+        "height": "80px",
+        "name": "Tower L2",
+        "color": "blue",
+        "size": "small"
+      },
+      "towerL3": {
+        "id": "towerL3",
+        "top": "260px",
+        "left": "11.5%",
+        "width": "163px",
+        "height": "80px",
+        "name": "Tower L3",
+        "color": "blue",
+        "size": "small"
+      },
+      "miss": {
+        "id": "miss",
+        "top": "350px",
+         "left": "0%",
+        "width": "340px",
+        "height": "100px",
+        "name": "Tower Miss",
+        "color": "red",
+        "size": "large"
       }
     },
     "endgame": {
-      "": {
-        "id": "",
-        "top": "px",
-        "left": "%",
-        "width": "px",
-        "height": "px",
-        "name": "",
-        "color": "",
-        "size": ""
+      "blueTower": {
+        "id": "blueTower",
+        "top": "250px",
+        "left": "28%",
+        "width": "70px",
+        "height": "80px",
+        "name": "Blue Tower",
+        "color": "blue",
+        "size": "small"
       },
-      "": {
-        "id": "",
-        "top": "px",
-        "left": "%",
-        "width": "px",
-        "height": "px",
-        "name": "",
-        "color": "",
-        "size": ""
-      },
-      "": {
-        "id": "",
-        "top": "px",
-        "left": "%",
-        "width": "px",
-        "height": "px",
-        "name": "",
-        "color": "",
-        "size": ""
+      "redTower": {
+        "id": "redTower",
+        "top": "220px",
+        "left": "87%",
+        "width": "70px",
+        "height": "80px",
+        "name": "Red Tower",
+        "color": "red",
+        "size": "small"
       }
     },
     "endgameOutcome": {
-      "": {
-        "id": "",
-        "name": "",
-        "top": "px",
-        "left": "px",
-        "width": "px",
-        "height": "px",
-        "color": "",
-        "size": ""
-      },
-      "": {
-        "id": "",
-        "name": "",
-        "top": "px",
-        "left": "px",
-        "width": "px",
-        "height": "px",
-        "color": "",
-        "size": ""
-      },
-      "": {
-        "id": "",
-        "name": "",
-        "top": "px",
-        "left": "px",
-        "width": "px",
-        "height": "px",
-        "color": "",
-        "size": ""
-      }
+      "Tower L1":    { "id": "endgameTowerL1", "name": "Tower L1", "top": "-500px", "left": "-420px", "width": "120px", "height": "70px", "color": "blue", "size": "medium" },
+        "Tower L2":   { "id": "endgameTowerL2", "name": "Tower L2", "top": "-500px", "left": "-250px", "width": "120px", "height": "70px", "color": "blue", "size": "medium" },
+        "Tower L3": { "id": "endgameTowerL3", "name": "Tower L3", "top": "-425px", "left": "-420px", "width": "120px", "height": "70px", "color": "blue", "size": "medium" },
+        "None":    { "id": "endgameTowerMiss", "name": "None", "top": "-425px", "left": "-250px", "width": "120px", "height": "70px", "color": "blue", "size": "medium" }
     },
     "addtop": -10,
     "jsonAttributes": {
