@@ -4,6 +4,9 @@ on:
     tags:
       - 'v*' # Triggers when you push a version tag like v3.1.3
 
+permissions:
+  contents: write
+
 jobs:
   publish:
     runs-on: ${{ matrix.os }}
