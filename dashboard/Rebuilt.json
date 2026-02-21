@@ -53,17 +53,17 @@
         "driverStation1_BLUE": {
           "id": "driver-station-btn-1",
           "top": "18%",
-          "left": "0%"
+          "left": "1%"
         },
         "driverStation2_BLUE": {
           "id": "driver-station-btn-2",
           "top": "47%",
-          "left": "0%"
+          "left": "1%"
         },
         "driverStation3_BLUE": {
           "id": "driver-station-btn-3",
           "top": "70%",
-          "left": "0%"
+          "left": "1%"
         },
         "driverStation1_RED": {
           "id": "driver-station-btn-4",

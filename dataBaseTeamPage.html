@@ -370,8 +370,8 @@
 
     <script>
  var compOption = localStorage.getItem('compOption');
-        if (compOption != ('Crescendo')) {
-            compOption = 'Reefscape';
+        if (!compOption) {
+            compOption = 'Rebuilt';
         }
         const configPath = `dashboard/${compOption}.json`;
 
