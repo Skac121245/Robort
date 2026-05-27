@@ -6,8 +6,18 @@
   <title>Robort Game Code JSON Documentation</title>
   
   <script src="jquery-3.3.1.slim.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="showdown.min.js"></script>
+    <style>
+        /* Optional: Ensure the iframe uses most of the modal height */
+        .modal-body {
+            height: 80vh;
+            padding: 0;
+        }
+        .modal-dialog {
+            max-width: 90%; /* Make the window wide */
+        }
+    </style>
 </head>
   <nav class="navbar navbar-expand-lg shadow-sm mb-4">
         <div class="container">
@@ -56,74 +66,399 @@
     </nav>
 <body>
   <div class="container my-5">
-    <h1>Robort Scouting App Documentation</h1>
-    <p>This documentation explains the JSON configuration used by your FRC scouting app <strong>Robort</strong>. The configuration file defines how the UI is built for the field, teleop, additional actions, and endgame phases. Each section below details the meaning of each parameter (excluding any game-specific custom attributes).</p>
-    
-    <h2>JSON Schema Overview</h2>
-    <p>The JSON configuration file contains two main parts:</p>
-    <ul>
-      <li><strong>fieldImage</strong> – A string path or URL to the background field image.</li>
-      <li>
-        <strong>buttonPositions</strong> – An object containing configurations for the various UI buttons. This includes:
-        <ul>
-          <li><strong>field</strong> – Positions for field buttons, driver station buttons, and note buttons.</li>
-          <li><strong>teleop</strong> – Configurations for teleoperated mode buttons.</li>
-          <li><strong>additionalActions</strong> – Extra action buttons used during teleop.</li>
-          <li><strong>endgame</strong> – Configurations for endgame buttons.</li>
-          <li><strong>endgameOutcome</strong> – Outcome buttons for endgame results.</li>
-          <li><strong>addtop</strong> – A numeric offset to adjust the vertical placement of buttons.</li>
-        </ul>
-      </li>
-      <li><strong>jsonAttributes</strong> – Maps keys (such as match number, team number, and various action arrays) used internally by the app.</li>
-    </ul>
+    <h1 id="creating-a-robort-json-dashboard">Creating a Robort JSON Dashboard</h1>
+<p>Any of the clickable links in this guide shows <strong>images or GIFs</strong> that demonstrate whatever is being discussed. If you&#39;re confused, check them out!</p>
+<h2 id="adding-your-json-to-configuration">Adding your JSON to configuration</h2>
+<p>In the future, you&#39;ll be able to add and work with new dashboards in Robort without touching the code. For now, you&#39;ll need to make dashboards selectable by <strong>modifying the configuration drop down directly.</strong>
+Go to <a href="https://github.com/tee-bee/RobortWiki/blob/main/wiki-images/config_tab_location.png">Config_tab.html</a> to the section of the code that looks like <a href="https://github.com/tee-bee/RobortWiki/blob/main/wiki-images/find_form_group.png">this</a> (corresponding to the dashboards drop down):</p>
+<pre><code>&lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">"form-group"</span>&gt;
+                                &lt;label <span class="hljs-keyword">for</span>=<span class="hljs-string">"compOption"</span>&gt;What competition season would you <span class="hljs-keyword">like</span> <span class="hljs-keyword">to</span> use?&lt;/label&gt;
+                                &lt;<span class="hljs-keyword">select</span> id=<span class="hljs-string">"compOption"</span> <span class="hljs-keyword">class</span>=<span class="hljs-string">"form-control bg-dark"</span>&gt;
+                                    &lt;<span class="hljs-keyword">option</span> value=<span class="hljs-string">"Reefscape"</span>&gt;<span class="hljs-number">2025</span> - Reefscape&lt;/<span class="hljs-keyword">option</span>&gt;
+                                    &lt;<span class="hljs-keyword">option</span> value=<span class="hljs-string">"Crescendo"</span>&gt;<span class="hljs-number">2024</span> - Crescendo&lt;/<span class="hljs-keyword">option</span>&gt;
+                                    &lt;<span class="hljs-keyword">option</span> value=<span class="hljs-string">"InfiniteRecharge"</span>&gt;<span class="hljs-number">2020</span> - Infinite Recharge (LEGACY)&lt;/<span class="hljs-keyword">option</span>&gt;    
+                                &lt;/<span class="hljs-keyword">select</span>&gt;
+                            &lt;/div&gt;
+</code></pre><p>Under the latest <code>&lt;option value=...&gt;&lt;/option&gt;</code> and before <code>&lt;/select&gt;</code>, you&#39;ll add a configuration option for the dashboard you&#39;re creating.<br></p>
+<pre><code>&lt;<span class="hljs-keyword">option</span> value=<span class="hljs-string">"competition_name"</span>&gt;[<span class="hljs-built_in">year</span>] - Competition&lt;/<span class="hljs-keyword">option</span>&gt;
+</code></pre><p>Replace &quot;competition_name&quot; with the <b>NAME OF THE DASHBOARD JSON FILE</b>. This is created in the next step; look a bit ahead if you&#39;re not sure what this name should be. If it is not exactly the same, your config option <strong>WILL NOT WORK.</strong>
+Replace &quot;[year]&quot; with the year the competition took place.
+Replace &quot;Competition&quot; with the name of the Competition.</p>
+<p>As far as testing / viewing your changes is considered, you should be using scoutingUI.html. This is where the main interface will appear.</p>
+<p>In order to switch to the dashboard you&#39;ve just created, open scoutingUI.html in your browser and click the home page button, then go to Configure and <a href="https://github.com/tee-bee/RobortWiki/blob/main/wiki-images/config_settings_tab.png">open the &#39;Competition Settings&#39; dropdown</a>. Click on the one corresponding to your new dashboard, save, then open Scouting -&gt; Scouting UI in the navbar to get back to where you started.</p>
+<hr>
+<h2 id="creating-your-dashboard-file">Creating your dashboard file</h2>
+<p>Make a new JSON file in the dashboard directory (it has Crescendo.json, Reefscape.json, etc). It should be titled [what you replaced &quot;competition_name&quot; with earlier].json <code>For example, if I replaced &quot;competition_name&quot; with beep, my file should be called beep.json.</code>
+(From here on out, I&#39;ll be working under the assumption that my competition name is &quot;beep&quot;.)</p>
+<p>Copy <a href="./robortTemplate.json">this entire block of code</a> into your file. We&#39;ll walk through what to do to make changes step by step next.</p>
+<h3 id="-fieldimage-images-png-https-github-com-tee-bee-robortwiki-blob-main-wiki-images-fieldimage-png-"><a href="https://github.com/tee-bee/RobortWiki/blob/main/wiki-images/fieldimage.png">&quot;fieldImage&quot;: &quot;images/.png&quot;,</a></h3>
+<p><strong>This line controls the background image you see on the field dashboard.</strong> In order for this to display properly, you should upload a 
+<strong>__1536x664px</strong> size image of the field to the images directory. This should be as clean as possible and can usually be found via the game manual, Chief Delphi, etc. <a href="https://github.com/Skac121245/Robort/blob/robortOfficialPlusScouting/images/reefscapefield.png?raw=true">Example here</a>. You might need to do some resizing or tweaking as well. This should be uploaded under naming convention &quot;[competition]field.png&quot;</p>
+<h4 id="buttonpositions">buttonPositions</h4>
+<p><strong>Broadly, this codeblock controls every button you will ever use in a Robort dashboard.</strong>
+The <strong>&quot;field&quot;</strong> codeblock controls all the buttons mapped to the field (robot positions, driver station locations, game piece buttons), and the &quot;positions&quot; codeblock controls all the position buttons (which show where a robot is starting on the field).
+<em>Don&#39;t get them confused- buttonPositions =/= position buttons!</em></p>
+<pre><code><span class="hljs-string">"buttonPositions"</span>: {
+    <span class="hljs-string">"field"</span>: {
+      <span class="hljs-string">"positions"</span>: {
+        <span class="hljs-string">"position1"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"position-btn-p1"</span>,...
+        },
+        <span class="hljs-string">"position2"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"position-btn-p2"</span>,...
+        },...
+        <span class="hljs-string">"position8"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"position-btn-p8"</span>,...
+        }
+      }
+</code></pre><p>Don&#39;t change any of the code that looks like this. YOU ALSO CANNOT REMOVE ANY POSITION CONTAINERS. You&#39;re only responsible for four attributes: <strong>top</strong>, <strong>left</strong>, <strong>name</strong>, and <strong>hide</strong>.
+This is what a position container with the maximum possible attributes <em>could</em> look like:</p>
+<pre><code><span class="hljs-string">"position1"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"position-btn-p1"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"30%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"50%"</span>,
+          <span class="hljs-string">"name"</span>: <span class="hljs-string">"Position 3"</span>,
+          <span class="hljs-string">"hide"</span>: <span class="hljs-literal">false</span>;
+        },<span class="hljs-params">...</span>
+</code></pre><p>Let&#39;s break this down line by line.</p>
+<p>The initial <strong>&quot;position1&quot;</strong> and <strong>id</strong> attribute should NEVER change. Leave these the way they are in the template.</p>
+<p>Think of the <strong>top</strong> and <strong>left</strong> attributes as a block on <em>top</em> or to the <em>left</em> of an element on the page. The greater a top percentage, the larger the block on <em>top</em>, meaning the element will get pushed down. The greater a left percentage, the larger the block to the <em>left</em>, meaning to the element will get pushed right. The same logic applies for decreasing percentages.</p>
+<p>The <strong>name</strong> attribute is redundant (meaning you don&#39;t need to include it) unless you have fewer than EIGHT places (four per alliance side) where robots can begin the match. </p>
+<p>If you do have fewer, you will need to use the <strong>name</strong> attribute in tandem with the <strong>hide</strong> attribute. As of 12/1/2025, the position buttons are hardcoded- the first four elements always correspond to the blue alliance, while the last four elements always correspond to the red alliance. This means if you want, say, three positions per alliance, you would need to <strong>hide</strong> Position 4 and Position 8 <code>(&quot;hide&quot;: true&quot;)</code> and <strong>name</strong> Position 5, 6, and 7 to Position 4, 5, and 6 respectively <code>(&quot;name&quot;: &quot;Position 4&quot;, etc)</code>.</p>
+<p>(Note: <code>&quot;hide&quot;: false</code> is redundant. If you&#39;re showing a button, it&#39;s already visible, and you don&#39;t need to call the attribute.)</p>
+<h4 id="-driverstations-https-github-com-tee-bee-robortwiki-blob-main-wiki-images-driverstations-png-"><a href="https://github.com/tee-bee/RobortWiki/blob/main/wiki-images/driverstations.png">driverStations</a></h4>
+<pre><code><span class="hljs-string">"driverStations"</span>: {
+        <span class="hljs-string">"driverStation1_BLUE"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"driver-station-btn-1"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>
+        },
+        <span class="hljs-string">"driverStation2_BLUE"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"driver-station-btn-2"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>
+        },
+        <span class="hljs-string">"driverStation3_BLUE"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"driver-station-btn-3"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>
+        },
+        <span class="hljs-string">"driverStation1_RED"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"driver-station-btn-4"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>
+        },
+        <span class="hljs-string">"driverStation2_RED"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"driver-station-btn-5"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>
+        },
+        <span class="hljs-string">"driverStation3_RED"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"driver-station-btn-6"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>
+        }
+      },
+</code></pre><p>The initial <strong>&quot;driverStation[num]_[alliance]&quot;</strong> and <strong>id</strong> attribute should NEVER change. Leave these the way they are in the template.</p>
+<p>The only attributes you can control for these are <strong>top</strong> and <strong>left</strong>. Think of the <strong>top</strong> and <strong>left</strong> attributes as a block on <em>top</em> or to the <em>left</em> of an element on the page. The greater a top percentage, the larger the block on <em>top</em>, meaning the element will get pushed down. The greater a left percentage, the larger the block to the <em>left</em>, meaning to the element will get pushed right. The same logic applies for decreasing percentages.</p>
+<h4 id="-notes-https-github-com-tee-bee-robortwiki-blob-main-wiki-images-gamepieces-png-"><a href="https://github.com/tee-bee/RobortWiki/blob/main/wiki-images/gamepieces.png">notes</a></h4>
+<pre><code><span class="hljs-string">"notes"</span>: {
+        <span class="hljs-string">"notebtn1"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"notebtn1"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>
+        },
+        <span class="hljs-string">"notebtn2"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"notebtn2"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>
+        },
+        <span class="hljs-string">"notebtn3"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"notebtn3"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>
+        },
+        <span class="hljs-string">"notebtn4"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"notebtn4"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>
+        },
+        <span class="hljs-string">"notebtn5"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"notebtn5"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>
+        },
+        <span class="hljs-string">"notebtn6"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"notebtn6"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>
+        },
+        <span class="hljs-string">"notebtn7"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"notebtn7"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>
+        },
+        <span class="hljs-string">"notebtn8"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"notebtn8"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>
+        },
+        <span class="hljs-string">"notebtn9"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"notebtn9"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>
+        },
+        <span class="hljs-string">"notebtn10"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">"notebtn10"</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>
+        },
+        <span class="hljs-string">"notebtn11"</span>: {
+          <span class="hljs-string">"id"</span>: <span class="hljs-string">""</span>,
+          <span class="hljs-string">"top"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+          <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>
+        }
+      }
+    },
+</code></pre><p>&quot;Notes?? What could notes possibly be??&quot; you ask...</p>
+<p>They&#39;re game pieces laid out at the start of a match. We built Robort for the Crescendo game first and foremost (which used notes as game pieces), and this is a hardcoded remnant. For now, you&#39;ll just have to live with it. Sorry!</p>
+<p>Please <em>note</em> that you may have to get creative with the note placement. Sometimes there are more than eleven game pieces on the field, and we currently only have 11 buttons to use! You might consider using arrow emojis or something of that nature to make a button for a general <em>area</em> of game pieces, rather than one specific game piece. It&#39;s up to you!</p>
+<p>The initial <strong>&quot;notebtn[num]&quot;</strong> and <strong>id</strong> attribute should NEVER change. Leave these the way they are in the template.</p>
+<p>Think of the <strong>top</strong> and <strong>left</strong> attributes as a block on <em>top</em> or to the <em>left</em> of an element on the page. The greater a top percentage, the larger the block on <em>top</em>, meaning the element will get pushed down. The greater a left percentage, the larger the block to the <em>left</em>, meaning to the element will get pushed right. The same logic applies for decreasing percentages.</p>
+<p>The <strong>name</strong> attribute is should be customized according to the name/function of the game piece AND accommodate for redundancies when you have fewer than 11 game pieces. Their default names are &quot;Note 1, Note 2... Note 11&quot;. If you do have fewer, you will need to use the <strong>name</strong> attribute in tandem with the <strong>hide</strong> attribute, as all the game piece elements are hardcoded. </p>
+<p>(Note: <code>&quot;hide&quot;: false</code> is redundant. If you&#39;re showing a button, it&#39;s already visible, and you don&#39;t need to call the attribute.)</p>
+<h3 id="-teleop-https-github-com-tee-bee-robortwiki-blob-main-wiki-images-teleop-png-"><a href="https://github.com/tee-bee/RobortWiki/blob/main/wiki-images/teleop.png">teleop</a></h3>
+<p><strong>Broadly-we are still working within buttonPositions-this codeblock AND additionalActions (below) controls every button you will ever use in the TELEOP PHASE of a match.</strong></p>
+<pre><code><span class="hljs-string">"teleop"</span>: {
+      <span class="hljs-string">""</span>: {
+        <span class="hljs-string">"id"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"top"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+        <span class="hljs-string">"width"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"height"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"color"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"size"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"actionType"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"customAttribute"</span>: true
+      }
+    }
+</code></pre><p>This block of code</p>
+<pre><code>      <span class="hljs-string">""</span>: {
+        <span class="hljs-string">"id"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"top"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+        <span class="hljs-string">"width"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"height"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"color"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"size"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"actionType"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"customAttribute"</span>: <span class="hljs-literal">true</span>
+      }
+</code></pre><p>represents a generic teleop BUTTON and can be copied as many times as necessary. All you need to do is add a comma after the final closing bracket every time you add a new button (the final closing bracket should not have a comma).</p>
+<pre><code><span class="hljs-string">""</span>: {
+        <span class="hljs-string">"id"</span>: <span class="hljs-string">""</span>,
+</code></pre><p>Unlike the auto buttons, you can give a teleop button any ID you want. The only thing you need to be aware of is that the name in <code>&quot;&quot;</code> should be the same as the name in <code>&quot;id&quot;: &quot;&quot;</code>.</p>
+<p><strong>top</strong> must be written with unit <strong>px</strong> (pixels) (e.g. 300px) and <strong>left</strong> must be written with unit <strong>%</strong>.</p>
+<p>Think of the <strong>top</strong> and <strong>left</strong> attributes as a block on <em>top</em> or to the <em>left</em> of an element on the page. The greater a top # of pixels, the larger the block on <em>top</em>, meaning the element will get pushed down. The greater a left percentage, the larger the block to the <em>left</em>, meaning to the element will get pushed right. The same logic applies for decreasing percentages.</p>
+<p><strong>name</strong> should be the name of the button, according to its function (e.g. if you want users to press the button when [Game Piece] is scored in [Structure], you would call it Game Piece [Structure]). </p>
+<p><em>Don&#39;t get ahead of yourself here!</em> We have sub-actions that you can make as well, so you should only account for the broadest possible actions at this point in the code. For example, if I can score in level 1, 2, and 3 in [Structure], I would <em>still</em> call the button &quot;Game Piece [Structure]&quot;. We&#39;ll worry about sub-actions in a little bit. </p>
+<p>The <strong>color</strong> attribute takes named colors, hex codes, RGB/RGBA, and HSL/HSLA.</p>
+<p>As of 12/1/2025, the <strong>size</strong> attribute is a little bit hardcoded and corresponds to how large your button text is. If you want it a little larger, type &quot;large&quot;; anything other entry will default to a &quot;small&quot; font size.</p>
+<p><strong>actionType</strong> should be set to &quot;score&quot; if there&#39;s really only one pathway for scoring (let&#39;s say there&#39;s a hole without levels that, when scored in, grants points immediately), and &quot;pickup&quot; if there are multiple (let&#39;s say level 1, level 2, level 3, level 4).</p>
+<p>This is where <strong>additionalActions</strong> come in... (also, don&#39;t touch &quot; &quot;customAttribute&quot;: true&quot; &quot;)</p>
+<h3 id="additionalactions-endgame-https-github-com-tee-bee-robortwiki-blob-main-wiki-images-endgame-png-">additionalActions / <a href="https://github.com/tee-bee/RobortWiki/blob/main/wiki-images/endgame.png">endgame</a></h3>
+<pre><code><span class="hljs-string">"additionalActions"</span>: {
+      <span class="hljs-string">""</span>: {
+        <span class="hljs-string">"id"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"top"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+        <span class="hljs-string">"width"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"height"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"color"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"size"</span>: <span class="hljs-string">""</span>
+      }
+    },
+    <span class="hljs-string">"endgame"</span>: {
+      <span class="hljs-string">""</span>: {
+        <span class="hljs-string">"id"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"top"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+        <span class="hljs-string">"width"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"height"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"color"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"size"</span>: <span class="hljs-string">""</span>
+      },
+      <span class="hljs-string">""</span>: {
+        <span class="hljs-string">"id"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"top"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+        <span class="hljs-string">"width"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"height"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"color"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"size"</span>: <span class="hljs-string">""</span>
+      },
+      <span class="hljs-string">""</span>: {
+        <span class="hljs-string">"id"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"top"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+        <span class="hljs-string">"width"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"height"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"color"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"size"</span>: <span class="hljs-string">""</span>
+      }
+    },
+</code></pre><p>Here&#39;s the generic block of code to copy when you want to make a new additional action or endgame button (refer to the teleop generic block for more details):</p>
+<pre><code><span class="hljs-string">""</span>: {
+        <span class="hljs-string">"id"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"top"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+        <span class="hljs-string">"width"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"height"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"color"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"size"</span>: <span class="hljs-string">""</span>
+      }
+</code></pre><p><strong>additionalActions</strong> controls the buttons that appear when you click on a &quot;pickup&quot; actionType button. </p>
+<p><strong>endgame</strong> controls the buttons that appear in the endgame phase of the match. You will want to do your best to either
+A) line these up with the actual endgame structures on the field (meaning smaller, centered buttons)
+B) OR style them like the teleop buttons, large and off to the side. </p>
+<p>Try to color them based on the corresponding alliance. Naming should be pretty straightforward as well; for example, here&#39;s an example from the Crescendo game: &quot;Stage Left RED, Center Stage RED, Stage Right RED, Stage Left BLUE...&quot;</p>
+<p>You don&#39;t need to simplify TOO MUCH- assume the person reading has a basic understanding of the game and its features.</p>
+<p>Creating these works exactly the same as teleop, so look to that if you&#39;re not sure how the attributes here work. The only difference is there&#39;s no <strong>actionType</strong> and <strong>customAttribute</strong> attributes. </p>
+<h3 id="endgameoutcome">endgameOutcome</h3>
+<pre><code> <span class="hljs-string">"endgameOutcome"</span>: {
+      <span class="hljs-string">""</span>: {
+        <span class="hljs-string">"id"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"top"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"left"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"width"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"height"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"color"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"size"</span>: <span class="hljs-string">""</span>
+      },
+      <span class="hljs-string">""</span>: {
+        <span class="hljs-string">"id"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"top"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"left"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"width"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"height"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"color"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"size"</span>: <span class="hljs-string">""</span>
+      },
+      <span class="hljs-string">""</span>: {
+        <span class="hljs-string">"id"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"top"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"left"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"width"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"height"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"color"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"size"</span>: <span class="hljs-string">""</span>
+      }
+    },
+</code></pre><p>Same logic here as <strong>additionalActions</strong>, except for endgame instead of teleop. Any action that would follow getting to an endgame spot should be added here. </p>
+<p>Here&#39;s the generic block of code to copy when you want to make a new endgame outcome button (refer to the teleop generic block for more details):</p>
+<pre><code><span class="hljs-string">""</span>: {
+        <span class="hljs-string">"id"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"top"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"left"</span>: <span class="hljs-string">"%"</span>,
+        <span class="hljs-string">"width"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"height"</span>: <span class="hljs-string">"px"</span>,
+        <span class="hljs-string">"name"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"color"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-string">"size"</span>: <span class="hljs-string">""</span>
+      }
+</code></pre><p>Don&#39;t touch any of this:</p>
+<pre><code> <span class="hljs-string">"addtop"</span>: -<span class="hljs-number">10</span>,
+    <span class="hljs-string">"jsonAttributes"</span>: {
+      <span class="hljs-string">"matchNumber"</span>: <span class="hljs-string">"matchNumber"</span>,
+      <span class="hljs-string">"teamNumber"</span>: <span class="hljs-string">"teamNumber"</span>,
+      <span class="hljs-string">"scoutingData"</span>: <span class="hljs-string">"scoutingData"</span>,
+      <span class="hljs-string">"teleopActions"</span>: <span class="hljs-string">"teleopActions"</span>,
+      <span class="hljs-string">"endgameActions"</span>: <span class="hljs-string">"endgameActions"</span>,
+      <span class="hljs-string">"notes"</span>: <span class="hljs-string">"notes"</span>
+    }
+</code></pre><p>And you&#39;re done! Wowza! You should&#39;ve created a complete dashboard at this point! Contact @teebeeYT on Discord if you have any questions :)</p>
 
-    <h2>Field Configuration</h2>
-    <p>The <strong>field</strong> object under <strong>buttonPositions</strong> controls the layout for elements that appear on the field. Each position includes:</p>
-    <ul>
-      <li><strong>id</strong>: The HTML element identifier.</li>
-      <li><strong>top</strong> and <strong>left</strong>: CSS positioning values determining the button’s location.</li>
-      <li><strong>hide</strong> (optional): If set to true, the button is hidden.</li>
-      <li><strong>name</strong> (optional): The text label displayed on the button.</li>
-    </ul>
-    <p>The configurations for driver stations and note buttons follow similar properties, with note buttons typically including a <strong>name</strong> property as their label.</p>
-
-    <h2>Teleop Configuration</h2>
-    <p>The <strong>teleop</strong> section defines the buttons used during the teleoperated phase. Each teleop button includes:</p>
-    <ul>
-      <li><strong>id</strong>: The HTML element identifier.</li>
-      <li><strong>top</strong>, <strong>left</strong>, <strong>width</strong>, and <strong>height</strong>: Values that control the button’s position and size.</li>
-      <li><strong>name</strong>: The label text shown on the button.</li>
-      <li><strong>color</strong>: The background color used for visual differentiation.</li>
-      <li><strong>size</strong>: A style indicator (for example, "large" or "medium") that affects font size and padding.</li>
-      <li><strong>actionType</strong>: The type of action (e.g., "score" or "pickup").</li>
-    </ul>
-
-    <h2>Additional Actions</h2>
-    <p>The <strong>additionalActions</strong> section allows you to specify extra buttons for teleop. Their properties mirror those of the teleop buttons, including position, size, and styling attributes.</p>
-
-    <h2>Endgame Configuration</h2>
-    <p>The <strong>endgame</strong> section defines the buttons available during the endgame phase. Each button here includes:</p>
-    <ul>
-      <li><strong>id</strong>: The HTML element identifier.</li>
-      <li><strong>top</strong>, <strong>left</strong>, <strong>width</strong>, and <strong>height</strong>: Values that control the button’s position and size.</li>
-      <li><strong>name</strong>: The label text shown on the button.</li>
-      <li><strong>color</strong> and <strong>size</strong>: Styling options for the button.</li>
-    </ul>
-    <p>The <strong>endgameOutcome</strong> subsection further specifies buttons that capture the outcome of an endgame action (for example, "Park" or "Hang Deep").</p>
-
-    <h2>JSON Attributes Mapping</h2>
-    <p>The <strong>jsonAttributes</strong> object maps the internal keys used by your app to the corresponding values in the JSON file. This mapping includes:</p>
-    <ul>
-      <li><strong>matchNumber</strong> – The match number.</li>
-      <li><strong>teamNumber</strong> – The team number.</li>
-      <li><strong>scoutingData</strong> – The overall scouting data object.</li>
-      <li><strong>teleopActions</strong> – An array of teleop actions.</li>
-      <li><strong>endgameActions</strong> – An array of endgame actions.</li>
-      <li><strong>notes</strong> – Collected notes.</li>
-    </ul>
   </div>
+
+  <div class="modal fade" id="iframeModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Preview</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" onclick="$('#iframeModal').modal('hide')"></button>
+      </div>
+      <div class="modal-body" style="height: 80vh; text-align: center; background-color: #f8f9fa; overflow: auto;">
+        
+        <img id="modalImage" src="" style="display: none; max-width: 100%; max-height: 100%; margin: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+
+        <iframe id="contentIframe" src="" style="display: none; width: 100%; height: 100%; border: none;"></iframe>
+      
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 <script src="jquery-3.3.1.slim.min.js"></script>
     <script src="bootstrap.min.js"></script>
 
+<script>
+$(document).ready(function(){
+    // Target any link that is NOT part of the navbar or dropdowns
+    $("a").not('.nav-link, .dropdown-item, .navbar-brand').click(function(e){
+        e.preventDefault();
+        var url = $(this).attr("href");
+
+        // 1. Convert GitHub "blob" links (webpages) to "raw" links (direct images)
+        if (url.includes('github.com') && url.includes('/blob/')) {
+            url = url.replace('github.com', 'raw.githubusercontent.com');
+            url = url.replace('/blob/', '/');
+        }
+
+        // 2. Check if the URL is an image
+        // We look for common extensions or if it's a raw github link (which is almost always an image in your case)
+        var isImage = url.match(/\.(jpeg|jpg|gif|png)$/) != null || url.includes('raw.githubusercontent.com');
+
+        if (isImage) {
+            // Show Image, Hide Iframe
+            $("#contentIframe").hide();
+            $("#modalImage").attr("src", url).show();
+        } else {
+            // Show Iframe, Hide Image (for text files, JSON, etc.)
+            $("#modalImage").hide();
+            $("#contentIframe").attr("src", url).show();
+        }
+
+        // Open the modal
+        $("#iframeModal").modal("show");
+    });
+
+    // Clean up when closing so old content doesn't linger
+    $('#iframeModal').on('hidden.bs.modal', function () {
+        $("#contentIframe").attr("src", "");
+        $("#modalImage").attr("src", "");
+    });
+});
+</script>
 </html>

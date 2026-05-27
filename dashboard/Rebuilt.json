@@ -1,0 +1,307 @@
+{
+  "fieldImage": "images/rebuilt_field.png",
+  "buttonPositions": {
+    "field": {
+      "positions": {
+        "position1": {
+          "id": "position-btn-p1",
+          "top": "20%",
+          "left": "23%"
+        },
+        "position2": {
+          "id": "position-btn-p2",
+          "top": "55%",
+          "left": "23%"
+        },
+        "position3": {
+          "id": "position-btn-p3",
+          "top": "92%",
+          "left": "23%"
+        },
+        "position4": {
+          "id": "position-btn-p4",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        },
+        "position5": {
+          "id": "position-btn-p5",
+          "top": "20%",
+          "left": "70%",
+          "name": "Position 4"
+        },
+        "position6": {
+          "id": "position-btn-p6",
+          "top": "55%",
+          "left": "70%",
+          "name": "Position 5"
+        },
+        "position7": {
+          "id": "position-btn-p7",
+          "top": "92%",
+          "left": "70%",
+          "name": "Position 6"
+        },
+        "position8": {
+          "id": "position-btn-p8",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        }
+      },
+      "driverStations": {
+        "driverStation1_BLUE": {
+          "id": "driver-station-btn-1",
+          "top": "18%",
+          "left": "1%"
+        },
+        "driverStation2_BLUE": {
+          "id": "driver-station-btn-2",
+          "top": "47%",
+          "left": "1%"
+        },
+        "driverStation3_BLUE": {
+          "id": "driver-station-btn-3",
+          "top": "70%",
+          "left": "1%"
+        },
+        "driverStation1_RED": {
+          "id": "driver-station-btn-4",
+          "top": "38%",
+          "left": "90%"
+        },
+        "driverStation2_RED": {
+          "id": "driver-station-btn-5",
+          "top": "64%",
+          "left": "90%"
+        },
+        "driverStation3_RED": {
+          "id": "driver-station-btn-6",
+          "top": "89%",
+          "left": "90%"
+        }
+      },
+      "notes": {
+        "notebtn1": {
+          "id": "notebtn1",
+          "top": "57%",
+          "left": "25%",
+          "name": "Blue Hub"
+        },
+        "notebtn2": {
+          "id": "notebtn2",
+          "top": "57%",
+          "left": "68%",
+          "name": "Red Hub"
+        },
+        "notebtn3": {
+          "id": "notebtn3",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        },
+        "notebtn4": {
+          "id": "notebtn4",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        },
+        "notebtn5": {
+          "id": "notebtn5",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        },
+        "notebtn6": {
+          "id": "notebtn6",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        },
+        "notebtn7": {
+          "id": "notebtn7",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        },
+        "notebtn8": {
+          "id": "notebtn8",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        },
+        "notebtn9": {
+          "id": "notebtn9",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        },
+        "notebtn10": {
+          "id": "notebtn10",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        },
+        "notebtn11": {
+          "id": "notebtn11",
+          "top": "%",
+          "left": "%",
+          "hide": true
+        }
+      }
+    },
+    "teleop": {
+      "score10": {
+        "id": "score10",
+        "top": "0px",
+        "left": "%",
+        "width": "340px",
+        "height": "150px",
+        "name": "Score Fuel \n 10x",
+        "color": "green",
+        "size": "large",
+        "actionType": "action",
+        "customAttribute": true
+      },
+      "score5": {
+        "id": "score5",
+        "top": "155px",
+        "left": "%",
+        "width": "340px",
+        "height": "100px",
+        "name": "Score Fuel \n 5x",
+        "color": "green",
+        "size": "large",
+        "actionType": "action",
+        "customAttribute": true
+      },
+      "score3": {
+        "id": "score3",
+        "top": "260px",
+        "left": "%",
+        "width": "170px",
+        "height": "80px",
+        "name": "Score Fuel \n 3x",
+        "color": "green",
+        "size": "small",
+        "actionType": "action",
+        "customAttribute": true
+      },
+      "score1": {
+        "id": "score1",
+        "top": "260px",
+        "left": "11.5%",
+        "width": "163px",
+        "height": "80px",
+        "name": "Score Fuel \n 1x",
+        "color": "green",
+        "size": "small",
+        "actionType": "action",
+        "customAttribute": true
+      },
+      "teleopclimb": {
+        "id": "teleopclimb",
+        "top": "350px",
+        "left": "%",
+        "width": "170px",
+        "height": "80px",
+        "name": "Teleop Climb",
+        "color": "green",
+        "size": "small",
+        "actionType": "pickup",
+        "customAttribute": true
+      },
+      "miss": {
+        "id": "miss",
+        "top": "350px",
+        "left": "11.5%",
+        "width": "163px",
+        "height": "80px",
+        "name": "Miss",
+        "color": "red",
+        "size": "small",
+        "actionType": "action",
+        "customAttribute": true
+      }
+    },
+    "additionalActions": {
+      "towerL1": {
+        "id": "towerL1",
+        "top": "155px",
+        "left": "%",
+        "width": "340px",
+        "height": "100px",
+        "name": "Tower L1",
+        "color": "blue",
+        "size": "large"
+      },
+      "towerL2": {
+        "id": "towerL2",
+        "top": "260px",
+        "left": "%",
+        "width": "170px",
+        "height": "80px",
+        "name": "Tower L2",
+        "color": "blue",
+        "size": "small"
+      },
+      "towerL3": {
+        "id": "towerL3",
+        "top": "260px",
+        "left": "11.5%",
+        "width": "163px",
+        "height": "80px",
+        "name": "Tower L3",
+        "color": "blue",
+        "size": "small"
+      },
+      "miss": {
+        "id": "miss",
+        "top": "350px",
+         "left": "0%",
+        "width": "340px",
+        "height": "100px",
+        "name": "Tower Miss",
+        "color": "red",
+        "size": "large"
+      }
+    },
+    "endgame": {
+      "blueTower": {
+        "id": "blueTower",
+        "top": "250px",
+        "left": "28%",
+        "width": "70px",
+        "height": "80px",
+        "name": "Blue Tower",
+        "color": "blue",
+        "size": "small"
+      },
+      "redTower": {
+        "id": "redTower",
+        "top": "220px",
+        "left": "87%",
+        "width": "70px",
+        "height": "80px",
+        "name": "Red Tower",
+        "color": "red",
+        "size": "small"
+      }
+    },
+    "endgameOutcome": {
+      "Tower L1":    { "id": "endgameTowerL1", "name": "Tower L1", "top": "-500px", "left": "-420px", "width": "120px", "height": "70px", "color": "blue", "size": "medium" },
+        "Tower L2":   { "id": "endgameTowerL2", "name": "Tower L2", "top": "-500px", "left": "-250px", "width": "120px", "height": "70px", "color": "blue", "size": "medium" },
+        "Tower L3": { "id": "endgameTowerL3", "name": "Tower L3", "top": "-425px", "left": "-420px", "width": "120px", "height": "70px", "color": "blue", "size": "medium" },
+        "None":    { "id": "endgameTowerMiss", "name": "None", "top": "-425px", "left": "-250px", "width": "120px", "height": "70px", "color": "blue", "size": "medium" }
+    },
+    "addtop": -10,
+    "jsonAttributes": {
+      "matchNumber": "matchNumber",
+      "teamNumber": "teamNumber",
+      "scoutingData": "scoutingData",
+      "teleopActions": "teleopActions",
+      "endgameActions": "endgameActions",
+      "notes": "notes"
+    }
+  }
+}

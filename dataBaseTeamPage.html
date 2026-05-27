@@ -259,6 +259,12 @@
       <h3>Stats</h3>
       <h4>Out of Auto: <span id="outOfAuto"></span></h4>
       <h4># of Complete Cycles: <span id="numOfCycles"></span></h4>
+    <script>
+ var compOption = localStorage.getItem('compOption');
+        if (!compOption) {
+            compOption = 'Rebuilt';
+        }
+        const configPath = `dashboard/${compOption}.json`;
 
       <div id="customAttributesContainer">
         <h3>Custom Attributes</h3>

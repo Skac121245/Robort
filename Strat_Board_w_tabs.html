@@ -81,7 +81,7 @@
     /* Default to crescendo images; can be changed by script */
     #autoCanvas {
       width: 100%;
-      background-image: url("images/crescendo_feild.png");
+      background-image: url("images/rebuilt_field.png");
       background-size: contain;
       border: 1px solid #000;
       width: 1152;
@@ -90,7 +90,7 @@
 
     #teleopCanvas {
       width: 100%;
-      background-image: url("images/crescendo_feild.png");
+      background-image: url("images/rebuilt_field.png");
       background-size: contain;
       border: 1px solid #000;
       width: 1152;
@@ -692,7 +692,7 @@
       document.getElementById('saveCanvas').addEventListener('click', function () {
         const canvas = isAuto ? document.getElementById('autoCanvas') : document.getElementById('teleopCanvas');
         const backgroundImage = new Image();
-        backgroundImage.src = isAuto ? "images/crescendo_feild.png" : "images/crescendo_feild.png";
+        backgroundImage.src = isAuto ? "images/rebuilt_field.png" : "images/rebuilt_field.png";
 
         const fileName = `${isAuto ? 'autonomous' : 'teleop'}-${selectedMatchKey}-canvas.png`;
 
@@ -1276,8 +1276,8 @@
             autoCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')";
             teleopCanvas.style.backgroundImage = "url('images/crescendo_feild_dark.png')";
         } else {
-          autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
-          teleopCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
+          autoCanvas.style.backgroundImage = "url('images/rebuilt_field.png')";
+          teleopCanvas.style.backgroundImage = "url('images/rebuilt_field.png')";
         }
       </script>
       <script>
@@ -1317,8 +1317,8 @@
               autoCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
               teleopCanvas.style.backgroundImage = "url('images/reefscapefield.png')";
             } else {
-              autoCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
-              teleopCanvas.style.backgroundImage = "url('images/crescendo_feild.png')";
+              autoCanvas.style.backgroundImage = "url('images/rebuilt_field.png')";
+              teleopCanvas.style.backgroundImage = "url('images/rebuilt_field.png')";
             }
             autoCanvas.style.opacity = 1;
             teleopCanvas.style.opacity = 1;
