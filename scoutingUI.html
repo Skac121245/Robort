@@ -351,6 +351,17 @@
         <!-- <input type="checkbox" id="sideToggle" onchange="toggleSide()"> -->
         <input type="number" id="matchNumber" placeholder="Match Number" min="1">
         <input type="number" id="teamNumber" placeholder="Team Number" min="1">
+        <div id="autoAssignControls" style="display:inline-block; margin-left:10px; border: 1px solid #ccc; padding: 2px 5px; border-radius: 5px; background: white; color: black;">
+            <label><input type="checkbox" id="autoAssignToggle" onchange="toggleAutoAssign()"> Auto-Assign</label>
+            <span id="autoSettings" style="display:none;">
+                <select id="scouterId" onchange="updateAutoAssign()">
+                    <option value="0">Laptop 1</option>
+                </select>
+                <button onclick="prevAutoMatch()">⬅️</button>
+                <button onclick="nextAutoMatch()">➡️</button>
+                <button onclick="openConfigModal()">⚙️ Config</button>
+            </span>
+        </div>
         <button onclick="startScouting()">Start Scouting</button>
         <button onclick="startTeleop()" style="display:none;">Start Teleop</button>
         <button onclick="startEndgame()" style="display:none;">Start Endgame</button>
@@ -1433,8 +1444,122 @@ function confirmRefresh() {
   }
 }
 
+// --- AUTO-ASSIGN LOGIC ---
+        let generatedSchedule = {}; 
+        let currentAutoMatch = 1;
 
+        function toggleAutoAssign() {
+            const isAuto = document.getElementById('autoAssignToggle').checked;
+            const teamInput = document.getElementById('teamNumber');
+            const matchInput = document.getElementById('matchNumber');
+            const settings = document.getElementById('autoSettings');
+
+            if (isAuto) {
+                teamInput.readOnly = true;
+                matchInput.readOnly = true;
+                teamInput.style.backgroundColor = '#d3d3d3'; // Grey out
+                matchInput.style.backgroundColor = '#d3d3d3'; // Grey out
+                settings.style.display = 'inline-block';
+                updateAutoAssign();
+            } else {
+                teamInput.readOnly = false;
+                matchInput.readOnly = false;
+                teamInput.style.backgroundColor = '';
+                matchInput.style.backgroundColor = '';
+                settings.style.display = 'none';
+            }
+        }
+
+        function updateAutoAssign() {
+            if (!document.getElementById('autoAssignToggle').checked) return;
+            const matchInput = document.getElementById('matchNumber');
+            const teamInput = document.getElementById('teamNumber');
+            const scouterIdx = parseInt(document.getElementById('scouterId').value, 10);
+
+            matchInput.value = currentAutoMatch;
+
+            // If schedule exists for this match, populate the team box
+            if (generatedSchedule[currentAutoMatch] && generatedSchedule[currentAutoMatch][scouterIdx]) {
+                teamInput.value = generatedSchedule[currentAutoMatch][scouterIdx];
+            } else {
+                teamInput.value = 'N/A';
+            }
+        }
+
+        function nextAutoMatch() { currentAutoMatch++; updateAutoAssign(); }
+        function prevAutoMatch() { if(currentAutoMatch > 1) { currentAutoMatch--; updateAutoAssign(); } }
+
+        function openConfigModal() { document.getElementById('configModal').style.display = 'block'; }
+        function closeConfigModal() { document.getElementById('configModal').style.display = 'none'; }
+
+        function generateSchedule() {
+            const eventCode = document.getElementById('cfgEventCode').value;
+            const teamsPerMatch = parseInt(document.getElementById('cfgTeams').value, 10);
+            const maxApp = parseInt(document.getElementById('cfgApp').value, 10);
+            const statusText = document.getElementById('configStatus');
+
+            if (!eventCode) {
+                statusText.innerText = "Please enter an Event Code.";
+                return;
+            }
+
+            statusText.innerText = "Fetching matches...";
+
+            fetch(`https://www.thebluealliance.com/api/v3/event/${eventCode}/matches/simple`, {
+                headers: { 'X-TBA-Auth-Key': 'J43Af3iggAp3XBvsVaGm5Hbc7IlK6XR8W8WxQhLDlPiQbv6BbW8LWDvVg8Zj9fCV' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                let qm = data.filter(m => m.comp_level === 'qm').sort((a,b) => a.match_number - b.match_number);
+                let appearanceCount = {};
+                generatedSchedule = {};
+
+                // Count-Based Sorting Algorithm
+                qm.forEach(match => {
+                    let teams = match.alliances.red.team_keys.concat(match.alliances.blue.team_keys).map(t => t.replace('frc',''));
+                    
+                    let potentialTeams = teams.filter(t => (appearanceCount[t]||0) < maxApp);
+                    potentialTeams.sort((a,b) => (appearanceCount[a]||0) - (appearanceCount[b]||0));
+
+                    let picked = [];
+                    for(let i=0; i<potentialTeams.length && picked.length < teamsPerMatch; i++) {
+                        let t = potentialTeams[i];
+                        appearanceCount[t] = (appearanceCount[t]||0) + 1;
+                        picked.push(t);
+                    }
+                    generatedSchedule[match.match_number] = picked;
+                });
+
+                // Update Laptop Dropdown
+                const scouterSelect = document.getElementById('scouterId');
+                scouterSelect.innerHTML = '';
+                for(let i=0; i < teamsPerMatch; i++) {
+                    scouterSelect.innerHTML += `<option value="${i}">Laptop ${i+1}</option>`;
+                }
+
+                statusText.innerText = "Success! Close modal to begin.";
+                updateAutoAssign();
+            })
+            .catch(err => {
+                statusText.innerText = "Failed to fetch data.";
+            });
+        }
     </script>
+    <div id="configModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#343a40; color:#f8f9fa; padding:20px; border-radius:8px; z-index:100000; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">
+        <h3 style="margin-top: 0;">Auto-Assign Config</h3>
+        <div style="margin-bottom: 10px;">
+            <label>Event Code: <input type="text" id="cfgEventCode" style="width: 100%;"></label>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label>Teams per Match: <input type="number" id="cfgTeams" min="1" max="6" value="6" style="width: 100%;"></label>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label>Max Appearances: <input type="number" id="cfgApp" min="1" max="12" value="12" style="width: 100%;"></label>
+        </div>
+        <button onclick="generateSchedule()" style="background-color:#28a745; color:white; border:none; padding:8px 12px; cursor:pointer;">Fetch & Generate</button>
+        <button onclick="closeConfigModal()" style="background-color:#6c757d; color:white; border:none; padding:8px 12px; cursor:pointer;">Close</button>
+        <p id="configStatus" style="margin-top: 10px; font-weight: bold;"></p>
+    </div>
 </body>
 
 </html>

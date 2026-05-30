@@ -287,7 +287,7 @@ body.bg-dark .dropdown-menu {
 <button type="button" id="exportExcel" class="btn btn-success" style="display:none;">Export to Excel</button>
 <!-- Print button -->
 <button type="button" id="printButton" class="btn btn-secondary" style="display:none;" onclick="printTable()">Print</button>
-<button type="button" id="simulateButtonn" class="btn btn-info" style="display:none;">
+<button type="button" id="simulateButton" class="btn btn-info" style="display:none;">
     Simulate
 </button>
 <div class="form-group">
@@ -611,68 +611,64 @@ $('#highlightTeamSelect').change(function() {
     var matchData = '';
     let simulationData = [];
     let appearanceCount = {};
-    let teamFlags = {}; // Tracks whether each team has ever been chosen
 
 
     matches.forEach(function(match, index) {
-        var teams = match.alliances.red.team_keys.concat(match.alliances.blue.team_keys);
-        teams = teams.map(team => team.replace('frc', '')); // Normalize team numbers
-        // Build a small map of alliance color for each team in this match
-let allianceMap = {};
-match.alliances.red.team_keys.forEach(t => {
-    t = t.replace('frc', '');
-    allianceMap[t] = 'red';
-});
-match.alliances.blue.team_keys.forEach(t => {
-    t = t.replace('frc', '');
-    allianceMap[t] = 'blue';
-});
+    var teams = match.alliances.red.team_keys.concat(match.alliances.blue.team_keys);
+    teams = teams.map(team => team.replace('frc', '')); // Normalize team numbers
+    
+    // Alliance map setup (keep your existing code for this)
+    let allianceMap = {};
+    match.alliances.red.team_keys.forEach(t => {
+        t = t.replace('frc', '');
+        allianceMap[t] = 'red';
+    });
+    match.alliances.blue.team_keys.forEach(t => {
+        t = t.replace('frc', '');
+        allianceMap[t] = 'blue';
+    });
 
-        // Initially filter teams based on the current appearances not exceeding the max allowed
-        let potentialTeams = teams.filter(team => (appearanceCount[team] || 0) < $('#teamAppearances').val());
-        // Separate unflagged vs flagged in THIS match
-let matchUnflagged = potentialTeams.filter(t => !teamFlags[t]);
-let pickFrom       = (matchUnflagged.length > 0) ? matchUnflagged : potentialTeams;
+    // 1. Filter out teams that have hit the max appearance cap
+    let maxAppearances = parseInt($('#teamAppearances').val(), 10);
+    let potentialTeams = teams.filter(team => (appearanceCount[team] || 0) < maxAppearances);
 
-        // Now limit the teams based on the 'Teams per Match' setting
-        let displayedTeams = [];
-        for (let i = 0; i < pickFrom.length && displayedTeams.length < teamsPerMatch; i++) {
-    let team = pickFrom[i];
-    // Double-check you haven't exceeded the slider's max appearances
-    if ((appearanceCount[team] || 0) + 1 <= parseInt($('#teamAppearances').val(), 10)) {
+    // 2. SORT the remaining teams by their appearance count (Ascending)
+    // This perfectly prioritizes the least-scouted teams.
+    potentialTeams.sort((a, b) => (appearanceCount[a] || 0) - (appearanceCount[b] || 0));
+
+    // 3. Pick the top teams up to your teamsPerMatch limit
+    let displayedTeams = [];
+    for (let i = 0; i < potentialTeams.length && displayedTeams.length < teamsPerMatch; i++) {
+        let team = potentialTeams[i];
+        
         // Mark a new appearance
         appearanceCount[team] = (appearanceCount[team] || 0) + 1;
-        // Once a team is picked, set its flag on
-        if (!teamFlags[team]) {
-            teamFlags[team] = true;
-        }
         displayedTeams.push(team);
     }
-}
 
-// Build a snapshot of all teams' states
-let teamsState = {};
-teams.forEach(t => {
-    const flagged = !!teamFlags[t];
-    const done = (appearanceCount[t] || 0) >= parseInt($('#teamAppearances').val(), 10);
-    const alliance = allianceMap[t] || 'neutral'; // fallback if not found
+    // Build a snapshot of all teams' states for simulation
+    let teamsState = {};
+    teams.forEach(t => {
+        const done = (appearanceCount[t] || 0) >= maxAppearances;
+        const alliance = allianceMap[t] || 'neutral'; // fallback if not found
+        // Flagged is now just whether they have > 0 appearances
+        const flagged = (appearanceCount[t] || 0) > 0; 
 
-    teamsState[t] = { flagged, done, alliance };
-});
-
-
-
-// Save info for the simulation feature
-simulationData.push({
-    matchNumber: match.match_number,
-    teamsPicked: [...displayedTeams],
-    teamsState: teamsState
-});
-        // Add the match row only if there are displayed teams
-        if (displayedTeams.length > 0) {
-            matchData += `<tr><td>Match ${match.match_number}</td><td>${displayedTeams.map(team => `<span class='team-number'>${team}</span>`).join(', ')}</td></tr>`;
-        }
+        teamsState[t] = { flagged, done, alliance };
     });
+
+    // Save info for the simulation feature
+    simulationData.push({
+        matchNumber: match.match_number,
+        teamsPicked: [...displayedTeams],
+        teamsState: teamsState
+    });
+
+    // Add the match row only if there are displayed teams
+    if (displayedTeams.length > 0) {
+        matchData += `<tr><td>Match ${match.match_number}</td><td>${displayedTeams.map(team => `<span class='team-number'>${team}</span>`).join(', ')}</td></tr>`;
+    }
+});
 
     $('#matchData').html(matchData);
     setupSimulation(simulationData);
